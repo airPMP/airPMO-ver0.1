@@ -7,6 +7,9 @@ import Card from "./components/layout/Card";
 import AdminLayout from "./components/layout/AdminLayout";
 import NotificationBar from "./components/layout/NotificationBar";
 import SignUpTemplate from "./components/layout/SignUpTemplate";
+import TableDesign from "./components/Tablelayouts/TableDesign";
+import NewJobCard from "./components/Tablelayouts/NewJobCard";
+import ManpowerAndMachinery from "./components/Tablelayouts/ManpowerAndMachinery";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -20,6 +23,10 @@ function App() {
       <Route path="/admin" element={<AdminLayout/>}/>
       <Route path="/notification" element={<NotificationBar/>}/> 
       <Route path="/admin/edit" element={<SignUpTemplate/>}/>
+      <Route path="/table" element={<TableDesign/>}/>
+      <Route path="/newjobcard" element={<NewJobCard/>}/>
+      <Route path="/manpower" element={<ManpowerAndMachinery/>}/>
+
       </Routes>
     </div>
   );

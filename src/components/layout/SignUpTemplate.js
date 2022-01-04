@@ -1,5 +1,5 @@
 import React from "react";
-//import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { useFormik } from "formik";
 
 const validate = (values) => {
@@ -44,10 +44,9 @@ const validate = (values) => {
   return errors;
 };
 const SignUpTemplate = () => {
-   // let navigate = useNavigate();
+    let navigate = useNavigate();
     const redirectToAdmin =()=>{
-       // navigate("/card");
-        console.log("redirect Methods Call");
+       navigate("/");
     }
   const formik = useFormik({
     initialValues: {

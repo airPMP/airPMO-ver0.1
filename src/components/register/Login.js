@@ -5,6 +5,9 @@ const Login = () => {
   const signUp = () => {
 navigate('/sign-up');
   };
+  const Login = () => {
+    navigate('/admin');
+      };
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
@@ -103,7 +106,7 @@ navigate('/sign-up');
               </button>
             </div>
             <div className=" ml-[28px]  border-[1px] border-solid border-[#000000] rounded bg-[#0FCC7C] mt-[37px]">
-              <button className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+              <button onClick={()=>{Login()}} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Login
               </button>
             </div>

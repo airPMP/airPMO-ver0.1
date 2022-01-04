@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const validate = (values) => {
   const errors = {};
@@ -42,6 +43,10 @@ const validate = (values) => {
 };
 
 const SignUp = () => {
+  let navigate = useNavigate();
+  const Login = () => {
+    navigate('/');
+      };
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -253,9 +258,9 @@ const SignUp = () => {
                 )}
               </div>
             </div>
-            <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px]">
+            <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px] mr-[-60px]">
               <div className="mr-[45px] shadow-[buttonshadow] ">
-                <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                <button onClick={()=> Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                   Cancel
                 </button>
               </div>

@@ -1,8 +1,8 @@
 import React from "react";
 
-const SearchBox = (props) => {
+const SearchBox = ({placeHolderName, handleChangeForClient, handleChangeForProject}) => {
   return (
-    <div className=" basic-1/4 flex flex-row  items-center w-[432px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] ">
+    <div className=" basic-1/4 flex flex-row  items-center w-[332px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] ">
       <div>
         <svg
           width="11"
@@ -26,8 +26,9 @@ const SearchBox = (props) => {
       <div className="bg-[#FFFFFF] pl-[7px]">
         <input
           type="text"
-          placeholder={props.placeHolderName}
+          placeholder={placeHolderName}
           className="outline-none"
+          onChange={handleChangeForClient}
         />
       </div>
     </div>
