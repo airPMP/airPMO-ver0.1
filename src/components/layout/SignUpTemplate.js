@@ -65,21 +65,22 @@ const SignUpTemplate = () => {
   });
   console.log(formik.values);
   return (
-    <div className="max-w-[1099px] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center mr-[30px] ml-[20px] my-[10px] px-[20px]  pb-[20px] rounded-[31.529px]">
-      <div className="flex flex-row justify-between content-center items-center px-[50px] ">
-        <div className="bg-[#F4F7FE] w-[268.28px] flex items-center h-[68.28px] mt-[31.93px]  rounded-full">
-          <img
-            src="/Group 8.png"
-            alt="logo"
-            width="42.79px"
-            height="44px"
-            className="content-center"
-          />
-          <div className=" font-secondaryFont ml-[30px]  mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
-            My account
-          </div>
-        </div>
-
+    <div className="max-w-[999px] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center mr-[60px] ml-[20px] my-[10px] px-[20px] mt-[37px] pb-[20px] rounded-[31.529px]">
+      <div className="flex flex-row justify-between content-center items-center px-[30px] ">
+      <div className="flex flex-row items-center ">
+      <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px] mt-[31.93px]  rounded-full">
+        <img
+          src="/Group 8.png"
+          alt="logo"
+          width="42.79px"
+          height="44px"
+          className="content-center"
+        />
+      </div>
+      <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
+        My Account
+      </div>
+    </div>
         <div className="flex flex-row justify-end shadow-[buttonshadow]  mr-[40px]  content-center mt-[42px]">
           <div className="mr-[45px] shadow-[buttonshadow] ">
             <button className="w-[120px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#000000] ">
@@ -267,7 +268,7 @@ const SignUpTemplate = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px]">
+          <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] content-center mt-[42px]">
             <div className="mr-[45px] shadow-[buttonshadow] ">
               <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#000000] "
               onClick={()=>{redirectToAdmin()}}

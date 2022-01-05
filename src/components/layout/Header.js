@@ -12,12 +12,12 @@ const Header = ({ title, sendPage }) => {
   console.log("dp for check", dp);
   return (
     <>
-      <div className="flex flex-row w-[75vw] max-h-[100px] justify-between  mx-[20px] items-center border-b border-[#000000] lg:w-[75vw] xl:w[75vw] 2xl:w[85vw] sm:w-[75vw]">
-        <div className="  font-secondaryFont font-medium not-italic text-6xl leading-[94px] tracking-[-5%] text-[#000000]">
+      <div className="flex flex-row w-[100vw] max-h-[100px] justify-between  mx-[20px] items-center border-b border-[#000000] lg:w-[75vw] xl:w[75vw] 2xl:w[85vw] sm:w-[75vw]">
+        <div className="  font-secondaryFont font-medium max-w[350px] not-italic text-6xl leading-[94px] tracking-[-5%] text-[#000000]">
           {title !== null ? title : "Dashboard"}
         </div>
-        <div className="  flex flex-row  items-center w-[341px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] ">
-          <div className="ml-[20px]">
+        <div className="  flex flex-row  items-center w-[341px] h-[46px] ml-[140px]  bg-[#FFFFFF] rounded-[0.625rem] ">
+          <div className="pl-[20px]">
             <svg
               width="11"
               height="12"
@@ -47,9 +47,9 @@ const Header = ({ title, sendPage }) => {
             <input type="text" placeholder="Search" className="outline-none" />
           </div>
         </div>
-        <div className="mr-[110px] z-50">
+        <div className=" z-50">
           {dp === true ? (
-            <div className=" absolute top-0 w-[full] h-[full] ">
+            <div className=" absolute top-0 right-0 w-[full] h-[full] ">
               <NotificationBar sendStyle={sendStyle} />
             </div>
           ) : (

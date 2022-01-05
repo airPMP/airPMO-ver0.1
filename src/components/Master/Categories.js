@@ -2,9 +2,10 @@ import React from "react";
 
 const Categories = () => {
   return (
-    <div className=" flex flex-col max-w-[1099px] mh-[632.01px] bg-[#FFFFFF] py-[50px] px-[50px]">
+    <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
       <div className="flex flex-row justify-between">
-        <div className="flex space-x-10 self-center">
+        <div className="flex space-x-[27.92px] self-center">
+        <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px]  rounded-full">
           <img
             src="/Group 8.png"
             alt="logo"
@@ -12,7 +13,8 @@ const Categories = () => {
             height="44px"
             className="content-center"
           />
-          <div className="font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] text-[#000000] ">
+          </div>
+          <div className="font-secondaryFont font-medium not-italic mt-[10px] text-[28.09px] leading-[37.83px] text-[#000000] ">
             Categories
           </div>
         </div>
@@ -60,16 +62,16 @@ const Categories = () => {
         <table className="table-auto pt-[24px]">
           <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
             <tr className="max-h-[52.84px] w-[901.2px]">
-              <th className="pr-[70px] py-[13px]">Name</th>
-              <th className="px-[250px] py-[13px]">Type</th>
-              <th className="px-[220px] py-[13px]">Actions</th>
+              <th className="pr-[80px] py-[13px]">Name</th>
+              <th className="px-[300px] py-[13px]">Type</th>
+              <th className=" px-[15px] py-[13px]">Actions</th>
             </tr>
           </thead>
           <tbody className="font-secondaryFont bg-[#ECF1F0] text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
             <tr>
               <th className="pr-[70px] py-[13px]">Name</th>
               <th className="px-[250px] py-[13px]">Type</th>
-              <th className="px-[220px] py-[13px]">
+              <th className=" py-[13px]">
                 <div className="flex flex-row space-x-xl">
                   <div>
                     <svg
