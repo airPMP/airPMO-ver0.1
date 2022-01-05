@@ -10,6 +10,9 @@ import SignUpTemplate from "./components/layout/SignUpTemplate";
 import TableDesign from "./components/Tablelayouts/TableDesign";
 import NewJobCard from "./components/Tablelayouts/NewJobCard";
 import ManpowerAndMachinery from "./components/Tablelayouts/ManpowerAndMachinery";
+import Clients from "./components/Master/Clients";
+import Projects from "./components/Master/Projects";
+import Categories from "./components/Master/Categories";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -26,7 +29,9 @@ function App() {
       <Route path="/table" element={<TableDesign/>}/>
       <Route path="/newjobcard" element={<NewJobCard/>}/>
       <Route path="/manpower" element={<ManpowerAndMachinery/>}/>
-
+      <Route path="/clients" element={<Clients/>}/>
+      <Route path="/projects" element={<Projects/>}/>
+      <Route path="/categories" element={<Categories/>}/>
       </Routes>
     </div>
   );

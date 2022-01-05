@@ -1,5 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
+import ManpowerAndMachinery from "./ManpowerAndMachinery";
 const validate = (values) => {
   const errors = {};
   if (!values.activityCode) {
@@ -10,11 +13,11 @@ const validate = (values) => {
   }
   if (!values.qcRemarks) {
     errors.qcRemarks = "qcRemarks Required";
-  } 
+  }
 
   if (!values.jcCreation) {
     errors.jcCreation = "JC Creation Required";
-  } 
+  }
   if (!values.hseRemarks) {
     errors.hseRemarks = "HSE Remarks Required";
   }
@@ -31,6 +34,9 @@ const validate = (values) => {
   return errors;
 };
 const NewJobCard = () => {
+
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
   const formik = useFormik({
     initialValues: {
       activityCode: "",
@@ -143,7 +149,7 @@ const NewJobCard = () => {
                   htmlFor="jcCreation"
                   className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
-                JC Creation
+                  JC Creation
                   {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.jcCreation && (
@@ -289,25 +295,32 @@ const NewJobCard = () => {
           </div>
 
           <div className="flex flex-row justify-between shadow-[buttonshadow]   mt-[42px]">
-          <div className="mr-[45px] shadow-[buttonshadow] ">
-              <button className="w-[200px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px]  font-medium not-italic   bg-[#FFFFFF] text-[#2E3A59] ">
+            <div className="mr-[45px] shadow-[buttonshadow] ">
+            <button onClick={() => setOpen(o => !o)} className="w-[200px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px]  font-medium not-italic   bg-[#FFFFFF] text-[#2E3A59] ">
               Add Manpower & Machinery
-              </button>
+            </button>
+              <Popup
+              open={open}
+                modal
+                position="right center"
+              >
+                <ManpowerAndMachinery closeModal={closeModal} />
+              </Popup>
             </div>
             <div className="flex flex-row mr-[-50px]">
-            <div className="mr-[45px] shadow-[buttonshadow] ">
-              <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                Cancel
-              </button>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-              >
-                Issue JC
-              </button>
-            </div>
+              <div className="mr-[45px] shadow-[buttonshadow] ">
+                <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                  Cancel
+                </button>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                >
+                  Issue JC
+                </button>
+              </div>
             </div>
           </div>
         </form>
