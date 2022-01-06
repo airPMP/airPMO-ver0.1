@@ -52,6 +52,7 @@ const AdminLayout = () => {
         <div className="flex flex-col">
           <Header title={title} sendPage={sendPage} />
           {
+            title=== "User Roles" ? "hello":
             newClient === "add" ? <NewClientProfile/> :
             title === "Master" ? (
             cardTitle === "Clients" ? (
