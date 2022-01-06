@@ -64,10 +64,11 @@ const NewJobCard = () => {
             height="44px"
             className="content-center"
           />
-          <div className=" font-secondaryFont ml-[30px]  mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
-            Create New Job Card
-          </div>
+         
         </div>
+        <div className=" font-secondaryFont ml-[30px]  mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
+        Create New Job Card
+      </div>
       </div>
       <div className="pl-[120px] pr-[96px] pt-[33.49px]">
         <form onSubmit={formik.handleSubmit}>
