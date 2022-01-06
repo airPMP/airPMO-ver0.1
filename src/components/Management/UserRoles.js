@@ -6,7 +6,7 @@ const UserRoles = () => {
         { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
         ,
         { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
-
+               
     ]
 
 
@@ -68,8 +68,8 @@ const UserRoles = () => {
                 </div>
             </div>
 
-            <div className="pl-[143.96px] pr-[53.84px]" >
-                <table className="table-auto pt-[24px] text-center font-secondaryFont text-[#000000]
+            <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
+                <table className="table-auto   text-center font-secondaryFont text-[#000000]
                          font-normal not-italic text-[12px " style={{ width: "100%" }}>
 
                     <tr className="max-h-[52.84px] text-center  ">
@@ -83,12 +83,12 @@ const UserRoles = () => {
 
                     {data?.map((item, i) => (
                         <tbody className="  mb-[10px]   ">
-                            <tr className="   bg-[#ECF1F0]">
-                                <td className="py-[13px] ">{item.name} </td>
-                                <td className="py-[13px] ">{item.role}</td>
-                                <td className="py-[13px] ">{item.email}</td>
-                                <td className="py-[13px] ">{item.mobile}</td>
-                                <td className="py-[13px] ">
+                            <tr className="   bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  ">
+                                <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
+                                <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
+                                <td className="pt-[15px] pb-[14.83px]">{item.email}</td>
+                                <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td>
+                                <td className="pt-[15px] pb-[14.83px]">
                                     <div className="flex flex-row justify-center  space-x-xl">
                                         <div>
                                             <svg
@@ -122,7 +122,7 @@ const UserRoles = () => {
                                 </td>
                             </tr>
                             <tr>
-                            <td className="p-[10px]"></td>
+                                <td className="p-[10px]"></td>
                             </tr>
                         </tbody>
                     ))}
