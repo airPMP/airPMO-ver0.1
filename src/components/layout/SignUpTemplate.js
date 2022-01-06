@@ -65,7 +65,7 @@ const SignUpTemplate = () => {
   });
   console.log(formik.values);
   return (
-    <div className="max-w-[999px] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center mr-[60px] ml-[20px] my-[10px] px-[20px] mt-[37px] pb-[20px] rounded-[31.529px]">
+    <div className="max-w-[100%] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center  ml-[20px] my-[10px] px-[10px]  mt-[37px] pb-[20px] rounded-[31.529px]">
       <div className="flex flex-row justify-between content-center items-center px-[30px] ">
       <div className="flex flex-row items-center ">
       <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px] mt-[31.93px]  rounded-full">

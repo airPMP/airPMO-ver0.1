@@ -1,6 +1,6 @@
 import React from "react";
 
-const Clients = () => {
+const Clients = ({addNewCliient}) => {
   return (
     <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
       <div className="flex flex-row justify-between">
@@ -72,7 +72,7 @@ const Clients = () => {
             <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
           </svg>
 
-          <div>Add Client</div>
+          <div onClick={()=>{addNewCliient("add")}}>Add Client</div>
         </div>
       </div>
       <div className="pl-[80px] mt-[16px]">

@@ -9,12 +9,18 @@ import Clients from "../Master/Clients";
 import Projects from "../Master/Projects";
 import Categories from "../Master/Categories";
 import Card from "./Card";
+import NewClientProfile from "../Master/NewClientProfile";
 const AdminLayout = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [page, setPage] = useState(null);
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [cardTitle, setCardTitle] = useState(null);
+  const [newClient, setNewClient] = useState(null);
+
+  const addNewCliient = (name) => {
+    setNewClient(name);
+  }
 
   const cardTitles = (name) => {
     setCardTitle(name);
@@ -44,10 +50,12 @@ const AdminLayout = () => {
         </div>
         <div className="flex flex-col">
           <Header title={title} sendPage={sendPage} />
-          {title === "Master" ? (
+          {
+            newClient === "add" ? <NewClientProfile/> :
+            title === "Master" ? (
             cardTitle === "Clients" ? (
               // < NewJobCard />
-              <Clients />
+              <Clients addNewCliient={addNewCliient} />
             ) : cardTitle === "Projects" ? (
               <Projects />
             ) : cardTitle === "Categories" ? (
