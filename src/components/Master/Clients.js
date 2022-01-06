@@ -1,6 +1,14 @@
 import React from "react";
 
 const Clients = () => {
+
+  const data ={
+    "users": [
+      { "name": "Name", "role": "Client", "Email": "USA"}
+      
+    ]
+  }
+
   return (
     <div className=" flex flex-col max-w-[1099px] mh-[632.01px] bg-[#FFFFFF] py-[50px] px-[50px]">
       <div className="flex flex-row justify-between">

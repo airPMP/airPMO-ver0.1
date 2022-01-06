@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
-const SideBar = ({ sendDataToParent }) => {
-  const [style, setStyle] = useState(1);
 
+
+const SideBar = ({ sendDataToParent }) => {
+  const [style, setStyle] = useState(1); 
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">

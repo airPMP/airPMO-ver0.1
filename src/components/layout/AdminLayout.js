@@ -8,6 +8,7 @@ import NewJobCard from "../Tablelayouts/NewJobCard";
 import Clients from "../Master/Clients";
 import Projects from "../Master/Projects";
 import Card from "./Card";
+import UserRoles from "../Management/UserRoles";
 const AdminLayout = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [page, setPage] = useState(null);
@@ -43,7 +44,10 @@ const AdminLayout = () => {
         </div>
         <div className="flex flex-col">
           <Header title={title} sendPage={sendPage} />
-          {title === "Master" ? (
+          {
+          title === "User Roles"?<UserRoles/>:
+          
+          title === "Master" ? (
             
             cardTitle === "Clients" ? 
             // < NewJobCard /> 
