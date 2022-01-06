@@ -6,13 +6,13 @@ const Login = () => {
 navigate('/sign-up');
   };
   const Login = () => {
-    navigate('/admin');
+    navigate('/dashboard');
       };
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
         <img
-          src="/logo 1.svg"
+          src="/logo1.svg"
           alt="logo"
           className="ml-[4.313rem] w-[150px] h-[50px]  right-[765px] mt-[70px]"
         />
@@ -23,7 +23,7 @@ navigate('/sign-up');
         </div>
         <div className="mt-[50px] ml-[121px]  mb-[130px]">
           <img
-            src="/Layer 2.svg"
+            src="/Layer2.svg"
             width="454px"
             height="295.84px"
             alt="imagee"

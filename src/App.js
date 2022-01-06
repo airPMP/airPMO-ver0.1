@@ -14,6 +14,9 @@ import Clients from "./components/Master/Clients";
 import Projects from "./components/Master/Projects";
 import Categories from "./components/Master/Categories";
 import UserRoles from "./components/Management/UserRoles";
+import DashBoard from "./pages/DashBoard";
+import JobCards from "./pages/JobCards";
+import Master from "./pages/Master";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -26,14 +29,17 @@ function App() {
       <Route path="/card" element={<Card/>}/> 
       <Route path="/admin" element={<AdminLayout/>}/>
       <Route path="/notification" element={<NotificationBar/>}/> 
-      <Route path="/admin/edit" element={<SignUpTemplate/>}/>
+      <Route path="/dashboard/user" element={<SignUpTemplate/>}/>
       <Route path="/table" element={<TableDesign/>}/>
       <Route path="/newjobcard" element={<NewJobCard/>}/>
       <Route path="/manpower" element={<ManpowerAndMachinery/>}/>
-      <Route path="/clients" element={<Clients/>}/>
-      <Route path="/projects" element={<Projects/>}/>
-      <Route path="/categories" element={<Categories/>}/>
+      <Route path="/master/clients" element={<Clients/>}/>
+      <Route path="/master/projects" element={<Projects/>}/>
+      <Route path="/master/categories" element={<Categories/>}/>
       <Route path="/UserRoles" element={<UserRoles/>}/>
+      <Route path="dashboard" element={<DashBoard/>}/>
+      <Route path="job_cards" element={<JobCards/>}/>
+      <Route path="master" element={<Master/>}/>
       </Routes>
     </div>
   );

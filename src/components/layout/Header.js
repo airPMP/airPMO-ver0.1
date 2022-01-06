@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import NotificationBar from "./NotificationBar";
-
+import {useLocation} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Header = ({ title, sendPage }) => {
+  let navigate = useNavigate();
   const [dp, setDp] = useState(false);
-
+let param = useLocation();
   const sendStyle = (name) => {
     setDp(name);
     //setDp(!dp);
   };
-
+console.log(param.pathname);
   console.log("dp for check", dp);
   return (
     <>
       <div className="flex flex-row w-[100vw] max-h-[100px] justify-between  mx-[20px] items-center border-b border-[#000000] lg:w-[75vw] xl:w[75vw] 2xl:w[85vw] sm:w-[75vw]">
         <div className="  font-secondaryFont font-medium max-w[350px] not-italic text-6xl leading-[94px] tracking-[-5%] text-[#000000]">
-          {title !== null ? title : "Dashboard"}
+          {title}
         </div>
         <div className="  flex flex-row  items-center w-[341px] h-[46px] ml-[140px]  bg-[#FFFFFF] rounded-[0.625rem] ">
           <div className="pl-[20px]">
@@ -82,7 +84,7 @@ const Header = ({ title, sendPage }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             onClick={() => {
-              sendPage("user");
+              navigate("/dashboard/user");
             }}
           >
             <path

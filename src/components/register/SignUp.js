@@ -67,7 +67,7 @@ const SignUp = () => {
     <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100vh] lg:w-[100vw] xl:w[100vw] sm:w-[100vw]">
       <div className="flex flex-row  place-items-start">
         <img
-          src="/logo 1.svg"
+          src="/logo1.svg"
           alt="logo"
           className="ml-[4.313rem] mt-[68px]  w-[150px] h-[50px]  right-[765px]"
         />
@@ -76,7 +76,7 @@ const SignUp = () => {
         <div className="flex flex-row items-center ">
           <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px] mt-[31.93px] ml-[26.8px] rounded-full">
             <img
-              src="/Group 8.png"
+              src="/Group8.png"
               alt="logo"
               width="42.79px"
               height="44px"

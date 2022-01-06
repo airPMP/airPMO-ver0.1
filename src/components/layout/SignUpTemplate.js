@@ -1,9 +1,13 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import SideBar from "./SideBar";
+import Header from "./Header";
 import {useNavigate} from "react-router-dom";
 import { useFormik } from "formik";
+import {useLocation} from "react-router-dom";
 
 const validate = (values) => {
 
+  
     
   const errors = {};
   if (!values.firstName) {
@@ -43,10 +47,18 @@ const validate = (values) => {
   // console.log(errors);
   return errors;
 };
-const SignUpTemplate = () => {
+const SignUpTemplate = ({dashboardtrue}) => {
+  const [title, setTitle] = useState(null);
+  let urlTitle = useLocation();
+  useEffect(() => {
+       
+    if(urlTitle.pathname === "/dashboard/user"){
+        setTitle("Master");
+    } 
+   }, [])
     let navigate = useNavigate();
     const redirectToAdmin =()=>{
-       navigate("/");
+       navigate("/dashboard");
     }
   const formik = useFormik({
     initialValues: {
@@ -65,12 +77,19 @@ const SignUpTemplate = () => {
   });
   console.log(formik.values);
   return (
-    <div className="max-w-[100%] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center  ml-[20px] my-[10px] px-[10px]  mt-[37px] pb-[20px] rounded-[31.529px]">
+    <div className="flex flex-row justify-start overflow-hidden">
+        <div>
+          <SideBar  />
+        </div>
+        <div className="flex flex-col">
+          <Header title={title} />
+
+          <div className="max-w-[100%] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center  ml-[20px] my-[10px] px-[10px]  mt-[37px] pb-[20px] rounded-[31.529px]">
       <div className="flex flex-row justify-between content-center items-center px-[30px] ">
       <div className="flex flex-row items-center ">
       <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px] mt-[31.93px]  rounded-full">
         <img
-          src="/Group 8.png"
+          src="/Group8.png"
           alt="logo"
           width="42.79px"
           height="44px"
@@ -99,7 +118,7 @@ const SignUpTemplate = () => {
       </div>
       <div className="pl-[120px] pr-[96px] pt-[33.49px]">
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex flex-row space-x-40 pb-[16px]">
+          <div className="flex flex-row space-x-20 pb-[16px]">
             <div className="relative w-[350px]">
               <input
                 id="firstName"
@@ -147,7 +166,7 @@ const SignUpTemplate = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row space-x-40 pb-[16px]">
+          <div className="flex flex-row space-x-20 pb-[16px]">
             <div className="relative w-[350px]">
               <input
                 id="phoneNumber"
@@ -195,7 +214,7 @@ const SignUpTemplate = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row space-x-40 pb-[16px]">
+          <div className="flex flex-row space-x-20 pb-[16px]">
             <div className="relative w-[350px]">
               <input
                 id="jobtitle"
@@ -288,6 +307,9 @@ const SignUpTemplate = () => {
         </form>
       </div>
     </div>
+        </div>
+      </div>
+   
   );
 };
 

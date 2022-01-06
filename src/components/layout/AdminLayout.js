@@ -4,12 +4,12 @@ import SideBar from "./SideBar";
 import SearchBox from "./SearchBox";
 import SignUpTemplate from "./SignUpTemplate";
 import TableDesign from "../Tablelayouts/TableDesign";
-import NewJobCard from "../Tablelayouts/NewJobCard";
+
 import Clients from "../Master/Clients";
 import Projects from "../Master/Projects";
 import Categories from "../Master/Categories";
 import Card from "./Card";
-import UserRoles from "../Management/UserRoles";
+
 import NewClientProfile from "../Master/NewClientProfile";
 const AdminLayout = () => {
   const [title, setTitle] = useState(null); // the lifted state
@@ -140,7 +140,7 @@ const AdminLayout = () => {
               </div>
             )
           ) : page === "user" ? (
-            <SignUpTemplate />
+            <SignUpTemplate  />
           ) : (
             <>
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
@@ -155,7 +155,14 @@ const AdminLayout = () => {
                   value={project}
                 />
               </div>
-              {client ? (
+
+              
+
+
+              
+              {
+                title === "User Roles" ? <div>Hello</div> :
+                client ? (
                 <TableDesign />
               ) : title === "Job Cards" ? (
                 <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">

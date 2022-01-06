@@ -5,39 +5,27 @@ const validate = (values) => {
 
     
     const errors = {};
-    if (!values.firstName) {
-      errors.firstName = "First Name Required";
+    if (!values.category) {
+      errors.category = "Category Required";
     }
-    if (!values.lastName) {
-      errors.lastName = "Last Name Required";
+    if (!values.clientName) {
+      errors.clientName = "Client Name Required";
     }
-    if (!values.email) {
-      errors.email = "Email Required";
-    } else if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-        values.email
-      )
-    ) {
-      errors.email = "Invalid email format!";
-    }
+    if (!values.uploadLogoFile) {
+      errors.uploadLogoFile = "uploadLogoFile Required";
+    } 
   
-    if (!values.phoneNumber) {
-      errors.phoneNumber = "Phone Number Required";
-    } else if (
-      !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(
-        values.phoneNumber
-      )
-    ) {
-      errors.phoneNumber = "Invalid Phone Number";
+    if (!values.location) {
+      errors.location = "Location Required";
+    } 
+    if (!values.addNewField) {
+      errors.addNewField = "Add New Field Required";
     }
-    if (!values.jobtitle) {
-      errors.jobtitle = "Job Title Required";
+    if (!values.addNewField2) {
+      errors.addNewField2 = "Company Name Required";
     }
-    if (!values.companyName) {
-      errors.companyName = "Company Name Required";
-    }
-    if (!values.comment) {
-      errors.comment = "comment Required";
+    if (!values.description) {
+      errors.description = "description Required";
     }
     // console.log(errors);
     return errors;
@@ -46,13 +34,13 @@ const NewClientProfile = () => {
 
     const formik = useFormik({
         initialValues: {
-          firstName: "",
-          lastName: "",
-          phoneNumber: "",
-          email: "",
+          category: "",
+          clientName: "",
+          location: "",
+          uploadLogoFile: "",
           jobtitle: "",
-          companyName: "",
-          comment: "",
+          addNewField2: "",
+          description: "",
         },
         validate,
         onSubmit: async (values, { resetForm }) => {
@@ -60,11 +48,11 @@ const NewClientProfile = () => {
         },
       });
   return (
-    <div className=" flex flex-col max-w-[1099px] max-h-[632.01px] bg-[#FFFFFF] pl-[26px] pr-[46.02px] mt-[103px] ml-[38px] rounded-[31.53px]">
+    <div className=" flex flex-col max-w-[1099px] max-h-[632.01px] bg-[#FFFFFF] pl-[26px] pr-[46.02px] mt-[103px] ml-[38px] mr-[51px] rounded-[31.53px] ">
       <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
         <div className="bg-[#F4F7FE] w-[88.28px] flex items-center justify-center h-[88.28px]   rounded-full">
           <img
-            src="/Group 8.png"
+            src="/Group8.png"
             alt="logo"
             width="42.79px"
             height="44px"
@@ -75,148 +63,148 @@ const NewClientProfile = () => {
           Create new client profile
         </div>
       </div>
-      <div className="pl-[120px] pr-[96px] pt-[33.49px]">
+<div className="pl-[120px] pr-[26px] pt-[33.49px]">
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-row space-x-40 pb-[16px]">
+        <div className="flex flex-row space-x-20 pb-[16px]">
           <div className="relative w-[350px]">
             <input
-              id="firstName"
-              name="firstName"
+              id="category"
+              name="category"
               type="text"
-              value={formik.values.firstName}
+              value={formik.values.category}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="john@doe.com"
             />
             <label
-              htmlFor="firstName"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="category"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              First Name
-              {/* <span className="text-red-700">*</span> */}
+              Category
+            
             </label>
-            {formik.errors.firstName && (
+            {formik.errors.category && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.firstName}{" "}
+                {formik.errors.category}{" "}
               </div>
             )}
           </div>
           <div className="relative w-[350px]">
             <input
-              id="lastName"
-              name="lastName"
+              id="clientName"
+              name="clientName"
               type="text"
-              value={formik.values.lastName}
+              value={formik.values.clientName}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="john@doe.com"
             />
             <label
-              htmlFor="lastName"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="clientName"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Last Name
-              {/* <span className="text-red-700">*</span> */}
+              Client Name
+               
             </label>
-            {formik.errors.lastName && (
+            {formik.errors.clientName && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.lastName}{" "}
+                {formik.errors.clientName}{" "}
               </div>
             )}
           </div>
         </div>
-        <div className="flex flex-row space-x-40 pb-[16px]">
+        <div className="flex flex-row space-x-20 pb-[16px]">
           <div className="relative w-[350px]">
             <input
-              id="phoneNumber"
-              name="phoneNumber"
+              id="location"
+              name="location"
               type="text"
-              value={formik.values.phoneNumber}
+              value={formik.values.location}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="john@doe.com"
             />
             <label
-              htmlFor="phoneNumber"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="location"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Phone Number
-              {/* <span className="text-red-700">*</span> */}
+             Location
+              
             </label>
-            {formik.errors.phoneNumber && (
+            {formik.errors.location && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.phoneNumber}{" "}
+                {formik.errors.location}{" "}
               </div>
             )}
           </div>
           <div className=" relative w-[350px]">
             <input
-              id="email"
+              id="uploadLogoFile"
               type="text"
-              name="email"
-              value={formik.values.email}
+              name="uploadLogoFile"
+              value={formik.values.uploadLogoFile}
               onChange={formik.handleChange}
               className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="Password"
             />
             <label
-              htmlFor="email"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="uploadLogoFile"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Email
-              {/* <span className="text-red-700">*</span> */}
+              Upload Logo File
+               
             </label>
-            {formik.errors.email && (
+            {formik.errors.uploadLogoFile && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.email}{" "}
+                {formik.errors.uploadLogoFile}{" "}
               </div>
             )}
           </div>
         </div>
-        <div className="flex flex-row space-x-40 pb-[16px]">
+        <div className="flex flex-row space-x-20 pb-[16px]">
           <div className="relative w-[350px]">
             <input
-              id="jobtitle"
-              name="jobtitle"
+              id="addNewField"
+              name="addNewField"
               type="text"
-              value={formik.values.jobtitle}
+              value={formik.values.addNewField}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="john@doe.com"
             />
             <label
-              htmlFor="jobtitle"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="addNewField"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Job Title
-              {/* <span className="text-red-700">*</span> */}
+            Add new field
+               
             </label>
-            {formik.errors.jobtitle && (
+            {formik.errors.addNewField && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.jobtitle}{" "}
+                {formik.errors.addNewField}{" "}
               </div>
             )}
           </div>
           <div className=" relative w-[350px]">
             <input
-              id="companyName"
+              id="addNewField2"
               type="text"
-              name="companyName"
-              value={formik.values.companyName}
+              name="addNewField2"
+              value={formik.values.addNewField2}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="Password"
             />
             <label
-              htmlFor="companyName"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="addNewField2"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Company Name
-              {/* <span className="text-red-700">*</span> */}
+            Add new field
+               
             </label>
-            {formik.errors.companyName && (
+            {formik.errors.addNewField2 && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.companyName}{" "}
+                {formik.errors.addNewField2}{" "}
               </div>
             )}
           </div>
@@ -224,31 +212,31 @@ const NewClientProfile = () => {
         <div className="flex flex-col ">
           <div className="relative max-w-[860px]">
             <input
-              id="comment"
-              name="comment"
+              id="description"
+              name="description"
               type="text"
-              value={formik.values.comment}
+              value={formik.values.description}
               onChange={formik.handleChange}
               className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
               placeholder="john@doe.com"
             />
             <label
-              htmlFor="comment"
-              className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+              htmlFor="description"
+              className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
             >
-              Comment
-              {/* <span className="text-red-700">*</span> */}
+            Description
+               
             </label>
-            {formik.errors.comment && (
+            {formik.errors.description && (
               <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                {formik.errors.comment}{" "}
+                {formik.errors.description}{" "}
               </div>
             )}
           </div>
         </div>
         <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] content-center mt-[42px]">
           <div className="mr-[45px] shadow-[buttonshadow] ">
-            <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#000000] "
+            <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
             >
               Cancel
             </button>
@@ -258,14 +246,14 @@ const NewClientProfile = () => {
               type="submit"
               className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
             >
-              Save Changes
+              Save 
             </button>
           </div>
         </div>
       </form>
     </div>
 
-      <div></div>
+      
     </div>
   );
 };

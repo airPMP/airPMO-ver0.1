@@ -17,7 +17,7 @@ const UserRoles = () => {
                 <div className="flex">
                     <div className=" ml-[26.8px] mt-[31.94px]   h-[88.28px] w-[88.28px] bg-[#F4F7FE] rounded-[50%]">
                         <img
-                            src="/Group 8.png"
+                            src="/Group8.png"
                             alt="logo"
                             className="ml-[23px] mt-[16.57px] h-[44px]  w-[42.79px]"
                         />

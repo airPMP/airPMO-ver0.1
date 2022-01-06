@@ -58,7 +58,7 @@ const NewJobCard = () => {
       <div className="flex flex-row justify-between content-center items-center px-[50px] ">
         <div className="bg-[#F4F7FE] w-[288.28px] flex items-center h-[68.28px] mt-[31.93px]  rounded-full">
           <img
-            src="/Group 8.png"
+            src="/Group8.png"
             alt="logo"
             width="42.79px"
             height="44px"
