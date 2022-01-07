@@ -11,6 +11,12 @@ left: 95%;
 top:-20px
 }
 
+.searchbtn {
+
+    /* width: 332px;
+    margin-left: 50px; */
+ 
+}
 /* .btn{
     &:hover + .box {
         transform: translate(100px, 0);

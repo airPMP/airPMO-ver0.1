@@ -30,6 +30,8 @@ import UserRole2 from "./components/Management/UserRole2";
 import UserRole3 from "./components/Management/UserRole3";
 import DataInjestion from "./pages/DataInjestion";
 import ProductivitySheet from "./components/Injestion/ProductivitySheet";
+import HRMS from "./components/Injestion/HRMS";
+import QuantitySheet from "./components/Injestion/QuantitySheet";
 function App() {
   return (
     <div className="bg-[#ECF1F0]">
@@ -64,7 +66,9 @@ function App() {
       <Route path="/UserManagement/UserRole2" element={<UserRole2/>}/>
       <Route path="/UserManagement/UserRole3" element={<UserRole3/>}/> 
       <Route path="/DataInjestion" element={<DataInjestion/>}/>
-      <Route path="/DataInjestion/ProductivitySheet" element={<ProductivitySheet/>}/>
+      <Route path="/DataInjestion/ProductivitySheet" element={<ProductivitySheet/>}/> 
+      <Route path="/DataInjestion/HRMS" element={<HRMS/>}/>
+      <Route path="/DataInjestion/QuantitySheet" element={<QuantitySheet/>}/>
       </Routes>
     </div>
   );
