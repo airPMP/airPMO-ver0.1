@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
-import SideBar from "../components/layout/SideBar";
-import SearchBox from "../components/layout/SearchBox";
-import Card from "../components/layout/Card";
-import SignUpTemplate from "../components/layout/SignUpTemplate";
-import UserRolesCard from "../components/layout/UserRolesCard";
-import UserRolesCardCreate from "../components/layout/UserRolesCardCreate";
+import SideBar from "../components/layout/SideBar"; 
+import SignUpTemplate from "../components/layout/SignUpTemplate"; 
 import InjestionSearchBox from "../components/Injestion/InjestionSearchBox";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
@@ -36,10 +32,7 @@ const DataInjestion = () => {
         setPage(pagename);
     };
 
-    const handleScroll = () => {
-        let offsetTop = window.pageYOffset;
-        console.log('Top ' + offsetTop);
-    };
+     
 
     console.log("DashBoard", urlTitle.pathname);
     return (
