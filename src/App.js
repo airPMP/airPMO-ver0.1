@@ -51,7 +51,6 @@ function App() {
       <Route path="dashboard" element={<DashBoard/>}/>
       <Route path="job_cards" element={<JobCards/>}/>
       <Route path="master" element={<Master/>}/>
-<<<<<<< HEAD
       <Route path="/master/clients/new_client" element={<NewClientProfile/>}/>
       <Route path="/master/clients/new_client/client_name" element={<ClientName/>}/>
       <Route path="/master/Projects/new_project" element={<NewProject/>}/>
@@ -60,14 +59,12 @@ function App() {
       <Route path="timeline" element={<TimeLine/>}/>
       <Route path="/timeline/client" element={<ClientTimeLine/>}/>
       
-=======
       <Route path="UserManagement" element={<UserManagement/>}/>
       <Route path="/UserManagement/UserRole1" element={<UserRole1/>}/>
       <Route path="/UserManagement/UserRole2" element={<UserRole2/>}/>
       <Route path="/UserManagement/UserRole3" element={<UserRole3/>}/> 
       <Route path="/DataInjestion" element={<DataInjestion/>}/>
       <Route path="/DataInjestion/ProductivitySheet" element={<ProductivitySheet/>}/>
->>>>>>> 56ca50ae564e29ab57727350283379d1cb20d430
       </Routes>
     </div>
   );

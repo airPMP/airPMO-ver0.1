@@ -21,8 +21,8 @@ const DataInjestion = () => {
 
     useEffect(() => {
 
-        if (urlTitle.pathname === "/dashboard") {
-            setTitle("Dashboard");
+        if (urlTitle.pathname === "/DataInjestion") {
+            setTitle("Data Injestion");
         }
     }, [urlTitle.pathname])
 
@@ -96,7 +96,7 @@ const DataInjestion = () => {
                                             }
                                         />
                                     </Link>
-                                    <Link to={`/UserManagement/UserRole2`}>
+                                    <Link to={`#`}>
                                         <InjestionCardOffine
                                             title={"Quantity Sheet"}
                                             totalNumber={800}
@@ -111,7 +111,7 @@ const DataInjestion = () => {
                                             }
                                         />
                                     </Link>
-                                    <Link to={`/UserManagement/UserRole3`}>
+                                    <Link to={`#`}>
                                         <InjestionCardOnline
                                             title={"HRMS"}
                                             totalNumber={1500}

@@ -17,8 +17,8 @@ const UserManagement = () => {
 
   useEffect(() => {
 
-    if (urlTitle.pathname === "/dashboard") {
-      setTitle("Dashboard");
+    if (urlTitle.pathname === "/UserManagement") {
+      setTitle("User Roles");
     }
   }, [urlTitle.pathname])
 
