@@ -10,8 +10,8 @@ const ProductivitySheet = () => {
     let urlTitle = useLocation();
     useEffect(() => {
 
-        if (urlTitle.pathname === "/master/categories") {
-            setTitle("Master");
+        if (urlTitle.pathname === "/DataInjestion/ProductivitySheet") {
+            setTitle("Data Injestion");
         }
     }, [urlTitle.pathname])
 

@@ -9,8 +9,8 @@ const UserRole1 = () => {
     let urlTitle = useLocation();
     useEffect(() => {
 
-        if (urlTitle.pathname === "/master/categories") {
-            setTitle("Master");
+        if (urlTitle.pathname === "/UserManagement/UserRole3") {
+            setTitle("User Roles");
         }
     }, [urlTitle.pathname])
 

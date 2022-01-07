@@ -22,7 +22,9 @@ const ClientTimeLine = () => {
           <Header title={title} />
 
           <div className="flex flex-col">
-            <div>Adit (Client) - Arabtech</div>
+            <div className="font-secondaryFont font-medium not-italic text-[
+                36px] leading-[37.83px] " >Adit <span>(Client) - Arabtech </span> </div>
+            <div className="flex flex-row">
             <div>
               <svg
                 width="60"
@@ -33,23 +35,28 @@ const ClientTimeLine = () => {
               >
                 <circle cx="30" cy="30" r="30" fill="#0FCC7C" />
               </svg>
-              <div>
-              <svg
-                width="1"
-                height="672"
-                viewBox="0 0 1 672"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <line
-                  x1="0.5"
-                  y1="703.001"
-                  x2="0.5"
-                  y2="0.000244141"
-                  stroke="black"
-                />
-              </svg>
-              </div>
+             
+            </div>
+            <div className="max-w-[309px] max-h-[60px]">
+            Visited Job Card Page  Today at 2:00pm
+            </div>
+            </div>
+            <div>
+            <svg
+              width="1"
+              height="67"
+              viewBox="0 0 1 67"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="0.5"
+                y1="703.001"
+                x2="0.5"
+                y2="0.000244141"
+                stroke="black"
+              />
+            </svg>
             </div>
           </div>
         </div>

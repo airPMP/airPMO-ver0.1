@@ -1,5 +1,4 @@
 import React from "react";
-
 const SearchBox = ({placeHolderName, handleChangeForClient, handleChangeForProject}) => {
   return (
     <div className=" basic-1/4 flex flex-row px-[20px]  items-center w-[332px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] ">
