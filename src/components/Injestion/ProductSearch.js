@@ -27,9 +27,9 @@ const ProductSearch = ({placeHolderName, handleChangeForClient, handleChangeForP
         <input
           type="text"
           placeholder={placeHolderName}
-          className="outline-none"
+          className="outline-none w-[332px] h-[46px] rounded-[10px]"
           onChange={handleChangeForClient}
-          className='w-[332px] h-[46px] rounded-[10px]'
+          
         />
       </div>
     </div>

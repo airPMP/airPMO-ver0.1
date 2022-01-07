@@ -27,9 +27,8 @@ const InjestionSearchBox = ({placeHolderName, handleChangeForClient, handleChang
         <input
           type="text"
           placeholder={placeHolderName}
-          className="outline-none"
-          onChange={handleChangeForClient}
-          className='w-[332px] h-[46px] rounded-[10px]'
+          className="outline-none w-[332px] h-[46px] rounded-[10px]"
+          onChange={handleChangeForClient} 
         />
       </div>
     </div>
