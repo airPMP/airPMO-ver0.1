@@ -12,12 +12,17 @@ import NewJobCard from "./components/Tablelayouts/NewJobCard";
 import ManpowerAndMachinery from "./components/Tablelayouts/ManpowerAndMachinery";
 import Clients from "./components/Master/Clients";
 import Projects from "./components/Master/Projects";
-import Categories from "./components/Master/Categories";
-import UserRoles from "./components/Management/UserRoles";
+import Categories from "./components/Master/Categories"; 
 import DashBoard from "./pages/DashBoard";
 import JobCards from "./pages/JobCards";
 import Master from "./pages/Master";
 import { Routes, Route } from "react-router-dom";
+import UserManagement from "./pages/UserManagement";
+import UserRole1 from "./components/Management/UserRole1";
+import UserRole2 from "./components/Management/UserRole2";
+import UserRole3 from "./components/Management/UserRole3";
+import DataInjestion from "./pages/DataInjestion";
+import ProductivitySheet from "./components/Injestion/ProductivitySheet";
 function App() {
   return (
     <div className="bg-[#ECF1F0]">
@@ -35,11 +40,16 @@ function App() {
       <Route path="/manpower" element={<ManpowerAndMachinery/>}/>
       <Route path="/master/clients" element={<Clients/>}/>
       <Route path="/master/projects" element={<Projects/>}/>
-      <Route path="/master/categories" element={<Categories/>}/>
-      <Route path="/UserRoles" element={<UserRoles/>}/>
+      <Route path="/master/categories" element={<Categories/>}/> 
       <Route path="dashboard" element={<DashBoard/>}/>
       <Route path="job_cards" element={<JobCards/>}/>
       <Route path="master" element={<Master/>}/>
+      <Route path="UserManagement" element={<UserManagement/>}/>
+      <Route path="/UserManagement/UserRole1" element={<UserRole1/>}/>
+      <Route path="/UserManagement/UserRole2" element={<UserRole2/>}/>
+      <Route path="/UserManagement/UserRole3" element={<UserRole3/>}/> 
+      <Route path="/DataInjestion" element={<DataInjestion/>}/>
+      <Route path="/DataInjestion/ProductivitySheet" element={<ProductivitySheet/>}/>
       </Routes>
     </div>
   );
