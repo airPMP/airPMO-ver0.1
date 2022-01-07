@@ -1,28 +1,26 @@
-import React, {useState, useEffect} from 'react'
-import SideBar from '../layout/SideBar';
-import Header from '../layout/Header';
-import {useLocation, useNavigate} from "react-router-dom";
-const Clients = ({addNewCliient}) => {
+import React, { useState, useEffect } from "react";
+import { useLocation, } from "react-router-dom";
+import Header from "../components/layout/Header";
+import SideBar from "../components/layout/SideBar";
+
+const TimeLine = () => {
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
-  let navigate = useNavigate();
+
   useEffect(() => {
-       
-    if(urlTitle.pathname === "/master/clients"){
-        setTitle("Master");
-    } 
-   }, [urlTitle.pathname])
- 
+    if (urlTitle.pathname === "/timeline") {
+      setTitle("Timeline");
+    }
+  }, [urlTitle.pathname]);
 
- 
   return (
-
-    <div className="flex flex-row justify-start overflow-hidden">
+    <>
+      <div className="flex flex-row justify-start overflow-hidden">
         <div>
-          <SideBar  />
+          <SideBar />
         </div>
         <div className="flex flex-col">
-          <Header title={title}  />
+          <Header title={title} />
           <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
           <div className="flex flex-row justify-between">
             <div className="flex space-x-[27.92px] self-center">
@@ -36,7 +34,7 @@ const Clients = ({addNewCliient}) => {
                 />
               </div>
               <div className="font-secondaryFont font-medium not-italic mt-[10px] text-[28.09px] leading-[37.83px] text-[#000000] ">
-                Clients
+                Users
               </div>
             </div>
             <div
@@ -72,58 +70,35 @@ const Clients = ({addNewCliient}) => {
               <div className="bg-[#FFFFFF] pl-[7px]">
                 <input
                   type="text"
-                  placeholder="Search for user"
+                  placeholder="Search"
                   className="outline-none"
                 />
               </div>
             </div>
           </div>
-          <div className="flex flex-row space-x-sm justify-end items-center mt-[10px] bg-[#FFFFFF]">
-            <div
-              style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className="flex items-center space-x-sm px-2 rounded cursor-pointer"
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
-              </svg>
-    
-              <div onClick={()=>{navigate("/master/clients/new_client")}}>Add Client</div>
-            </div>
-          </div>
+          
           <div className="pl-[80px] mt-[16px]">
             <table className="table-auto pt-[24px]">
               <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr className="max-h-[52.84px] w-[901.2px]">
-                  <th className="">Logo</th>
-                  <th className="pl-[140px]">Name</th>
-                  <th className="pl-[140px]">Location</th>
-                  <th className="pl-[140px]">Category</th>
-                  <th className="pl-[140px] ">Actions</th>
+                  <th className="">Name</th>
+                  <th className="pl-[100px]">Company</th>
+                  <th className="pl-[100px]">Role</th>
+                  <th className="pl-[100px]">Email</th>
+                  <th className="pl-[100px]">Mobile</th>
+                  <th className="pl-[100px] ">Actions</th>
                 </tr>
               </thead>
-              <tbody className="font-secondaryFont bg-[#ECF1F0] text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-                <tr>
-                  <th className="pl-[10px]">
-                    <svg
-                      width="53"
-                      height="54"
-                      viewBox="0 0 53 54"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="26.5" cy="27.0063" r="26.5" fill="#D3E8FF" />
-                    </svg>
+              <tbody className="font-secondaryFont  bg-[#ECF1F0] text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+                <tr className="py-[53px] cursor-pointer  " onClick={()=>{console.log("table row name")}}>
+                  <th className="pl-[10px] py-[10px]">
+                   Name
                   </th>
-                  <th className="pl-[140px]">Name</th>
-                  <th className="pl-[140px]">Location</th>
-                  <th className="pl-[140px]">Category</th>
-                  <th className=" pl-[140px] pr-[10px]">
+                  <th className="pl-[100px]">Company</th>
+                  <th className="pl-[100px]">Role</th>
+                  <th className="pl-[100px]">Email</th>
+                  <th className="pl-[100px]">Mobile</th>
+                  <th className=" pl-[100px] pr-[10px]">
                     <div className="flex flex-row space-x-xl">
                       <div>
                         <svg
@@ -160,11 +135,11 @@ const Clients = ({addNewCliient}) => {
             </table>
           </div>
         </div>
-          
+         
         </div>
       </div>
-    
+    </>
   );
 };
 
-export default Clients;
+export default TimeLine;

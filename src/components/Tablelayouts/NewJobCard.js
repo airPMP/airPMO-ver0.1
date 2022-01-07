@@ -1,5 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useLocation} from "react-router-dom";
 import Popup from "reactjs-popup";
+import Header from "../layout/Header";
+import SideBar from "../layout/SideBar";
 import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import ManpowerAndMachinery from "./ManpowerAndMachinery";
@@ -35,6 +38,15 @@ const validate = (values) => {
 };
 const NewJobCard = () => {
 
+  const [title, setTitle] = useState(null); // the lifted state
+    let urlTitle = useLocation();
+    useEffect(() => {
+       
+        if(urlTitle.pathname === "/job_cards/new_job_card"){
+            setTitle("Job Cards");
+        } 
+       }, [urlTitle.pathname])
+
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const formik = useFormik({
@@ -54,62 +66,36 @@ const NewJobCard = () => {
     },
   });
   return (
-    <div className="max-w-[1099px] max-h-[632.01px]  overflow-hidden bg-[#FFFFFF] justify-center mr-[50px] ml-[20px] my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
-      <div className="flex flex-row justify-between content-center items-center px-[50px] ">
-        <div className="bg-[#F4F7FE] w-[288.28px] flex items-center h-[68.28px] mt-[31.93px]  rounded-full">
-          <img
-            src="/Group8.png"
-            alt="logo"
-            width="42.79px"
-            height="44px"
-            className="content-center"
-          />
-         
+    <div className="flex flex-row justify-start overflow-hidden">
+        <div>
+          <SideBar />
         </div>
-        <div className=" font-secondaryFont ml-[30px]  mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
-        Create New Job Card
-      </div>
-      </div>
-      <div className="pl-[120px] pr-[96px] pt-[33.49px]">
+        <div className="flex flex-col">
+          <Header title={title}  />
+    <div className="max-w-[1099px] max-h-[632.01px] mt-[103px] overflow-hidden bg-[#FFFFFF] justify-center mr-[50px] ml-[20px] my-[10px]   pb-[20px] rounded-[31.529px]">
+    <div className="flex flex-row space-x-[27.92px] pt-[31.94px] pl-[26px] items-center ">
+    <div className="bg-[#F4F7FE] w-[88.28px] flex items-center justify-center h-[88.28px]   rounded-full">
+      <img
+        src="/Group8.png"
+        alt="logo"
+        width="42.79px"
+        height="44px"
+        className="content-center"
+      />
+    </div>
+    <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
+      Create new Job Card
+    </div>
+  </div>
+      <div className="pl-[140px] pr-[96px] pt-[33.49px]">
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex flex-row space-x-40 pb-[16px]">
-            <div className="  relative w-[350px]">
-              <svg
-                className=" absolute  right-0 bottom-4 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm "
-                width="14"
-                height="8"
-                viewBox="0 0 14 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.00023 7.71309L13.0102 1.70309L11.5972 0.288086L7.00023 4.88809L2.40423 0.288086L0.990234 1.70209L7.00023 7.71309Z"
-                  fill="#2E3A59"
-                />
-              </svg>
-              <input
-                id="activityCode"
-                name="activityCode"
-                type="text"
-                value={formik.values.activityCode}
-                onChange={formik.handleChange}
-                className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                placeholder="john@doe.com"
-              />
-
-              <label
-                htmlFor="activityCode"
-                className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-              >
-                Activity Code
-                {/* <span className="text-red-700">*</span> */}
-              </label>
-              {formik.errors.activityCode && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.activityCode}{" "}
-                </div>
-              )}
-            </div>
+          <div className="flex flex-row space-x-20 pb-[16px]">
+          <div className="relative w-[350px] border-b border-black ">
+          <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+            <option>Activity Code</option>
+          </select>
+        </div>
             <div className="relative w-[350px]">
               <input
                 id="activityName"
@@ -134,7 +120,7 @@ const NewJobCard = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row space-x-40 pb-[16px]">
+          <div className="flex flex-row space-x-20 pb-[16px]">
             <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
               <div className="w-[165px]">
                 <input
@@ -159,43 +145,12 @@ const NewJobCard = () => {
                   </div>
                 )}
               </div>
-              <div className="w-[165px]">
-                <svg
-                  className=" absolute  right-0 bottom-4 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm "
-                  width="14"
-                  height="8"
-                  viewBox="0 0 14 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.00023 7.71309L13.0102 1.70309L11.5972 0.288086L7.00023 4.88809L2.40423 0.288086L0.990234 1.70209L7.00023 7.71309Z"
-                    fill="#2E3A59"
-                  />
-                </svg>
-                <input
-                  id="zone"
-                  name="zone"
-                  type="text"
-                  value={formik.values.zone}
-                  onChange={formik.handleChange}
-                  className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                  placeholder="john@doe.com"
-                />
-
-                <label
-                  htmlFor="zone"
-                  className="  absolute left-0 ml-[190px] -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                >
-                  Zone
-                  {/* <span className="text-red-700">*</span> */}
-                </label>
-                {formik.errors.zone && (
-                  <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                    {formik.errors.zone}{" "}
-                  </div>
-                )}
-              </div>
+              <div className="relative w-[165px] border-b border-black ">
+                  <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+                    <option>Zone</option>
+                  </select>
+                </div>
             </div>
             <div className=" relative w-[350px]">
               <input
@@ -221,7 +176,7 @@ const NewJobCard = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row space-x-40 pb-[16px]">
+          <div className="flex flex-row space-x-20 pb-[16px]">
             <div className="relative w-[350px]">
               <input
                 id="hseRemarks"
@@ -326,6 +281,8 @@ const NewJobCard = () => {
           </div>
         </form>
       </div>
+    </div>
+    </div>
     </div>
   );
 };

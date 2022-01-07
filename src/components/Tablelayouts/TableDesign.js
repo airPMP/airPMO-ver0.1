@@ -1,6 +1,34 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
+import Header from "../layout/Header";
+import SideBar from "../layout/SideBar";
+import SearchBox from "../layout/SearchBox";
 const TableDesign = () => {
+  const [title, setTitle] = useState(null); // the lifted state
+  let urlTitle = useLocation();
+  useEffect(() => {
+     
+      if(urlTitle.pathname === "/job_cards/table"){
+          setTitle("Job Cards");
+      } 
+     }, [urlTitle.pathname])
   return (
+    <div className="flex flex-row justify-start overflow-hidden">
+        <div>
+          <SideBar />
+        </div>
+        <div className="flex flex-col">
+          <Header title={title}  />
+          <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
+                <SearchBox
+                  placeHolderName={"Arab Electrician"}
+                 
+                />
+                <SearchBox
+                  placeHolderName={"Shinning Towers"}
+                  
+                />
+              </div>
     <div className="flex flex-col max-w-[939px] max-h-[540px] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
       <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
       <div className="">
@@ -144,7 +172,7 @@ const TableDesign = () => {
         </table>
       </div>
       <div className="flex flex-row justify-end py-[20px] space-x-2 ">
-        <div>
+        <div className="mt-[5px]">
           <svg
             width="20"
             height="24"
@@ -165,6 +193,8 @@ const TableDesign = () => {
           <button>Export Sheet</button>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 };
