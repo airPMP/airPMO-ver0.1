@@ -1,38 +1,38 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import SideBar from '../layout/SideBar';
 import Header from '../layout/Header';
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Categories = () => {
 
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
   useEffect(() => {
-       
-    if(urlTitle.pathname === "/master/categories"){
-        setTitle("Master");
-    } 
-   }, [urlTitle.pathname])
+
+    if (urlTitle.pathname === "/master/categories") {
+      setTitle("Master");
+    }
+  }, [urlTitle.pathname])
   return (
 
     <div className="flex flex-row justify-start overflow-hidden">
-        <div>
-          <SideBar  />
-        </div>
-        <div className="flex flex-col">
-          <Header title={title}  />
+      <div>
+        <SideBar />
+      </div>
+      <div className="flex flex-col">
+        <Header title={title} />
 
-          <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
+        <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
           <div className="flex flex-row justify-between">
             <div className="flex space-x-[27.92px] self-center">
-            <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px]  rounded-full">
-              <img
-                src="/Group8.png"
-                alt="logo"
-                width="42.79px"
-                height="44px"
-                className="content-center"
-              />
+              <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px]  rounded-full">
+                <img
+                  src="/Group8.png"
+                  alt="logo"
+                  width="42.79px"
+                  height="44px"
+                  className="content-center"
+                />
               </div>
               <div className="font-secondaryFont font-medium not-italic mt-[10px] text-[28.09px] leading-[37.83px] text-[#000000] ">
                 Categories
@@ -77,7 +77,7 @@ const Categories = () => {
               </div>
             </div>
           </div>
-    
+
           <div className="pl-[80px]">
             <table className="table-auto pt-[24px]">
               <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
@@ -128,9 +128,9 @@ const Categories = () => {
             </table>
           </div>
         </div>
-        </div>
       </div>
-   
+    </div>
+
   );
 };
 

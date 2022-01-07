@@ -261,7 +261,10 @@ const SideBar = ({ sendDataToParent }) => {
             style === 7 ? "text-white" : "text-[#000000]"
           } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
+
           User Management
+
+          
         </div>
       </div>
     </div>
