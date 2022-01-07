@@ -17,6 +17,13 @@ import UserRoles from "./components/Management/UserRoles";
 import DashBoard from "./pages/DashBoard";
 import JobCards from "./pages/JobCards";
 import Master from "./pages/Master";
+import NewClientProfile from "./components/Master/NewClientProfile";
+import ClientName from "./components/Master/ClientName";
+import NewProject from "./components/Master/NewProject";
+import EditNewProject from "./components/Master/EditNewProject";
+import ZoneList from "./components/Master/ZoneList";
+import TimeLine from "./pages/TimeLine";
+import ClientTimeLine from "./components/Timeline/ClientTimeLine";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -30,8 +37,8 @@ function App() {
       <Route path="/admin" element={<AdminLayout/>}/>
       <Route path="/notification" element={<NotificationBar/>}/> 
       <Route path="/dashboard/user" element={<SignUpTemplate/>}/>
-      <Route path="/table" element={<TableDesign/>}/>
-      <Route path="/newjobcard" element={<NewJobCard/>}/>
+      <Route path="/job_cards/table" element={<TableDesign/>}/>
+      <Route path="/job_cards/new_job_card" element={<NewJobCard/>}/>
       <Route path="/manpower" element={<ManpowerAndMachinery/>}/>
       <Route path="/master/clients" element={<Clients/>}/>
       <Route path="/master/projects" element={<Projects/>}/>
@@ -40,6 +47,14 @@ function App() {
       <Route path="dashboard" element={<DashBoard/>}/>
       <Route path="job_cards" element={<JobCards/>}/>
       <Route path="master" element={<Master/>}/>
+      <Route path="/master/clients/new_client" element={<NewClientProfile/>}/>
+      <Route path="/master/clients/new_client/client_name" element={<ClientName/>}/>
+      <Route path="/master/Projects/new_project" element={<NewProject/>}/>
+      <Route path="/master/Projects/Edit_Project" element={<EditNewProject/>}/>
+      <Route path="/master/Projects/zone_list" element={<ZoneList/>}/>
+      <Route path="timeline" element={<TimeLine/>}/>
+      <Route path="/timeline/client" element={<ClientTimeLine/>}/>
+      
       </Routes>
     </div>
   );
