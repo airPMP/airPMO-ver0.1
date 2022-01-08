@@ -10,11 +10,20 @@ position:absolute;
 left: 95%;
 top:-20px
 }
+.greenball1{
+    position: relative;
+    }
+    
+    .greenballavailable1{
+    position:absolute;
+    left: 250%;
+    top:-20px
+    }
 
-.searchbtn {
-
-    /* width: 332px;
-    margin-left: 50px; */
+.searchList li {
+ padding-top: 15px;
+ padding-left: 56px;
+     padding-bottom: 15px;
  
 }
 /* .btn{
