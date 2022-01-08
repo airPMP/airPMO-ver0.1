@@ -50,11 +50,8 @@ const ClientTimeLine = () => {
           <Header title={title} />
 
           <div className="flex flex-col px-[38px]">
-            <div
-              className=" w-[385px] h-[38px] font-secondaryFont font-medium not-italic text-[
-                36px] leading-[37.83px] mb-[55px] "
-            >
-              Adit <span className="text-[#9AA6C1]">(Client) - Arabtech </span>{" "}
+            <div className=" w-[385px] h-[38px] mt-[20px] font-secondaryFont font-medium not-italic text-[36px] leading-[37.83px] mb-[55px] ">
+              Adit <span className="text-[#9AA6C1]">(Client)-&#160;Arabtech </span>{" "}
             </div>
 
             {data?.map((item, id) => {

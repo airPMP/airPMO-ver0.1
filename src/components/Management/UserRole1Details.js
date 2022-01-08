@@ -35,8 +35,8 @@ const UserRole1Details = () => {
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   useEffect(() => {
-    if (urlTitle.pathname === "/master/clients/new_client") {
-      setTitle("Master");
+    if (urlTitle.pathname.includes("/UserManagement")) {
+      setTitle("User Roles");
     }
   }, [urlTitle.pathname]);
 
