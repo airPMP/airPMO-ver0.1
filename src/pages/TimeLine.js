@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 
 const TimeLine = () => {
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (urlTitle.pathname === "/timeline") {
@@ -90,7 +91,7 @@ const TimeLine = () => {
                 </tr>
               </thead>
               <tbody className="font-secondaryFont  bg-[#ECF1F0] text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-                <tr className="py-[53px] cursor-pointer  " onClick={()=>{console.log("table row name")}}>
+                <tr className="py-[53px] cursor-pointer  " onClick={()=>{navigate("/timeline/client")}}>
                   <th className="pl-[10px] py-[10px]">
                    Name
                   </th>

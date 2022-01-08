@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const SideBar = ({ sendDataToParent }) => {
   const [style, setStyle] = useState(1);
-  const [online, setOnline] = useState(false);
+  
   let navigate = useNavigate();
   let param = useLocation();
   const gotoDashboard = () => {
@@ -116,24 +116,16 @@ const SideBar = ({ sendDataToParent }) => {
         </div>
       </div>
       <div
-        className={`flex flex-row justify-start greenball mt-[15px] max-w-[200px] max-h-[50px]  py-[11px]   rounded cursor-pointer space-x-4 ${
+        className={`flex flex-row justify-start greenball mt-[15px] max-w-[200px] max-h-[50px] px-[15px] py-[11px]   rounded cursor-pointer space-x-4 ${
           param.pathname.includes("/master") ? "bg-[#136C57]" : ""
         } `}
         onClick={() => {
+         
           gotoJobMaster();
         }}
       >
-        {
-          
-          <div className={` greenballavailable  `} >
-        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12.5" cy="12.5" r="12.5" fill="#0FCC7C"/>
-        </svg>
-        </div>
-     
-      }
-        <div>
        
+        <div>
           <svg
             width="27"
             height="28"
