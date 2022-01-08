@@ -4,6 +4,7 @@ import Header from '../components/layout/Header';
 import SideBar from '../components/layout/SideBar';
 import SearchBox from '../components/layout/SearchBox';
 import Card from '../components/layout/Card';
+import ProductSearch from '../components/Injestion/ProductSearch';
 const JobCards = () => {
     const [title, setTitle] = useState(null); // the lifted state
     let navigate = useNavigate();
@@ -28,16 +29,23 @@ const JobCards = () => {
         <div className="flex flex-col">
           <Header title={title}  />
     {/* <SignUpTemplate/>*/}
-          <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
-                <SearchBox
-                  placeHolderName={"Choose Client"}
-                  handleChangeForClient = {handleChangeForClient}
-                />
-                <SearchBox
-                  placeHolderName={"Choose Project"}
-                  
-                />
-              </div>
+    <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
+    <div className="mr-[70px]">
+      <ProductSearch
+        placeHolderName={"Choose Client"}
+
+      // value={client}
+      />
+    </div>
+    <div>
+      <ProductSearch
+        placeHolderName={"Choose Project"}
+
+      // value={client}
+      />
+
+    </div>
+  </div>
               <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
               <Card
                 title={"Job Cards"}

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
-import SideBar from "../components/layout/SideBar"; 
+import SideBar from "../components/layout/SideBar";
 import SignUpTemplate from "../components/layout/SignUpTemplate"; 
-import InjestionSearchBox from "../components/Injestion/InjestionSearchBox";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
+import ProductSearch from "../components/Injestion/ProductSearch";
 
 const DataInjestion = () => {
-  const [title, setTitle] = useState(null);
-  const [client, setClient] = useState();
-  const [project, setProject] = useState();
+  const [title, setTitle] = useState(null); 
   const [page, setPage] = useState(null);
   let urlTitle = useLocation();
 
@@ -20,20 +18,12 @@ const DataInjestion = () => {
     }
   }, [urlTitle.pathname]);
 
-  const handleChangeForClient = (event) => {
-    setClient(event.target.value);
-  };
-  const handleChangeForProject = (event) => {
-    setProject(event.target.value);
-  };
+   
   const sendPage = (pagename) => {
     setPage(pagename);
   };
 
-  const handleScroll = () => {
-    let offsetTop = window.pageYOffset;
-    console.log("Top " + offsetTop);
-  };
+   
 
   console.log("DashBoard", urlTitle.pathname);
   return (
@@ -50,18 +40,19 @@ const DataInjestion = () => {
             <>
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
                 <div className="mr-[70px]">
-                  <InjestionSearchBox
+                  <ProductSearch
                     placeHolderName={"Choose Client"}
-                    handleChangeForClient={handleChangeForClient}
-                    value={client}
+
+                  // value={client}
                   />
                 </div>
                 <div>
-                  <InjestionSearchBox
+                  <ProductSearch
                     placeHolderName={"Choose Project"}
-                    handleChangeForProject={handleChangeForProject}
-                    value={project}
+
+                  // value={client}
                   />
+
                 </div>
               </div>
               <div className="w-10/12">
@@ -88,7 +79,7 @@ const DataInjestion = () => {
                       }
                     />
                   </Link>
-                  <Link to={`#`}>
+                  <Link to={`/DataInjestion/QuantitySheet`}>
                     <InjestionCardOffine
                       title={"Quantity Sheet"}
                       totalNumber={800}
@@ -109,7 +100,7 @@ const DataInjestion = () => {
                       }
                     />
                   </Link>
-                  <Link to={`#`}>
+                  <Link to={`/DataInjestion/HRMS`}>
                     <InjestionCardOnline
                       title={"HRMS"}
                       totalNumber={1500}

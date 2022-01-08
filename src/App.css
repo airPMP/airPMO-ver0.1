@@ -10,7 +10,22 @@ position:absolute;
 left: 95%;
 top:-20px
 }
+.greenball1{
+    position: relative;
+    }
+    
+    .greenballavailable1{
+    position:absolute;
+    left: 250%;
+    top:-20px
+    }
 
+.searchList li {
+ padding-top: 15px;
+ padding-left: 56px;
+     padding-bottom: 15px;
+ 
+}
 /* .btn{
     &:hover + .box {
         transform: translate(100px, 0);

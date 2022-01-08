@@ -4,13 +4,13 @@ import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
 import ProductSearch from './ProductSearch';
 
-const ProductivitySheet = () => {
+const HRMS = () => {
 
     const [title, setTitle] = useState(null);
     let urlTitle = useLocation();
     useEffect(() => {
 
-        if (urlTitle.pathname === "/DataInjestion/ProductivitySheet") {
+        if (urlTitle.pathname === "/DataInjestion/HRMS") {
             setTitle("Data Injestion");
         }
     }, [urlTitle.pathname])
@@ -33,7 +33,7 @@ const ProductivitySheet = () => {
                     <Header title={title} />
 
 
-                    <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
+                    <div className="flex flex-row justify-start space-x-10 mt-[48px] px-[30px]  ">
 
                         <div className="mr-[70px]"   >
                             <ProductSearch
@@ -67,7 +67,7 @@ const ProductivitySheet = () => {
                                     <div className=" grid grid-cols-2">
                                         <div>
                                             <p className="text-[#A3AED0] text-[24px] font-medium font-sans">
-                                                Productivity Sheet
+                                            HRMS
                                             </p>
                                             <div className="text-[#1B2559] text-[18px] font-bold">
                                                 Shining Towers
@@ -186,4 +186,4 @@ const ProductivitySheet = () => {
     )
 }
 
-export default ProductivitySheet
+export default HRMS
