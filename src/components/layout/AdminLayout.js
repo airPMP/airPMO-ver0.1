@@ -3,7 +3,7 @@ import Header from "./Header";
 import SideBar from "./SideBar";
 import SearchBox from "./SearchBox";
 import SignUpTemplate from "./SignUpTemplate";
-import TableDesign from "../Tablelayouts/TableDesign";
+import TableDesign from "../Tablelayouts/MyJobCards";
 
 import Clients from "../Master/Clients";
 import Projects from "../Master/Projects";

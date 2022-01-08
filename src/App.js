@@ -7,7 +7,6 @@ import Card from "./components/layout/Card";
 import AdminLayout from "./components/layout/AdminLayout";
 import NotificationBar from "./components/layout/NotificationBar";
 import SignUpTemplate from "./components/layout/SignUpTemplate";
-import TableDesign from "./components/Tablelayouts/TableDesign";
 import NewJobCard from "./components/Tablelayouts/NewJobCard";
 import ManpowerAndMachinery from "./components/Tablelayouts/ManpowerAndMachinery";
 import Clients from "./components/Master/Clients";
@@ -30,6 +29,10 @@ import UserRole2 from "./components/Management/UserRole2";
 import UserRole3 from "./components/Management/UserRole3";
 import DataInjestion from "./pages/DataInjestion";
 import ProductivitySheet from "./components/Injestion/ProductivitySheet";
+import UserRole1Details from "./components/Management/UserRole1Details";
+import AllJobCards from "./components/Tablelayouts/AllJobCards";
+import JobCardAssigned from "./components/Tablelayouts/JobCardAssigned";
+import MyJobCards from "./components/Tablelayouts/MyJobCards";
 function App() {
   return (
     <div className="bg-[#ECF1F0]">
@@ -42,8 +45,12 @@ function App() {
         <Route path="/admin" element={<AdminLayout />} />
         <Route path="/notification" element={<NotificationBar />} />
         <Route path="/dashboard/user" element={<SignUpTemplate />} />
-        <Route path="/job_cards/table" element={<TableDesign />} />
+        <Route path="/job_cards/my-job-cards" element={<MyJobCards />} />
+       
+       
         <Route path="/job_cards/new_job_card" element={<NewJobCard />} />
+        <Route path="/job_cards/All-job-cards" element={<AllJobCards />} />
+        <Route path="/job_cards/job-cards-assigned" element={<JobCardAssigned />} />
         <Route path="/manpower" element={<ManpowerAndMachinery />} />
         <Route path="/master/clients" element={<Clients />} />
         <Route path="/master/projects" element={<Projects />} />
@@ -72,6 +79,7 @@ function App() {
         <Route path="/UserManagement/UserRole1" element={<UserRole1 />} />
         <Route path="/UserManagement/UserRole2" element={<UserRole2 />} />
         <Route path="/UserManagement/UserRole3" element={<UserRole3 />} />
+        <Route path="/UserManagement/UserRole1/Details" element={<UserRole1Details />} />
         <Route path="/DataInjestion" element={<DataInjestion />} />
         <Route
           path="/DataInjestion/ProductivitySheet"

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const UserRole1 = () => {
 
     const [title, setTitle] = useState(null);
+    let navigate = useNavigate();
     let urlTitle = useLocation();
     useEffect(() => {
 
@@ -97,7 +98,7 @@ const UserRole1 = () => {
                             <table className="table-auto   text-center font-secondaryFont text-[#000000]
                          font-normal not-italic text-[12px " style={{ width: "100%" }}>
 
-                                <tr className="max-h-[52.84px] text-center  ">
+                                <tr className="max-h-[52.84px] text-center  " >
                                     <th className="w-[10%] py-[13px]">Name</th>
                                     <th className="w-[30%] py-[13px]">Role</th>
                                     <th className="w-[25%] py-[13px]">Email</th>
@@ -108,7 +109,7 @@ const UserRole1 = () => {
 
                                 {data?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
-                                        <tr className="   bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  ">
+                                        <tr className="   bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}}>
                                             <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.email}</td>

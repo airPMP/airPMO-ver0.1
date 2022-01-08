@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
+import ZoneList from "./ZoneList";
+import SubZoneList from "./SubZoneList";
 const validate = (values) => {
   const errors = {};
   if (!values.category) {
@@ -31,6 +35,10 @@ const validate = (values) => {
   return errors;
 };
 const EditNewProject = () => {
+    const [open, setOpen] = useState(false);
+    const [openSub, setOpenSub] = useState(false);
+  const closeModal = () => setOpen(false);
+  const closeModalSub = () => setOpenSub(false);
   const [title, setTitle] = useState(null); // the lifted state
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -282,17 +290,31 @@ const EditNewProject = () => {
               <div className="flex flex-row justify-between shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
               <div className="flex flex-row">
               <div className="mr-[45px] shadow-[buttonshadow] ">
-                  <button onClick={()=>{naviagte("/master/clients")}} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                  <button  className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                   Add Delay
                   </button>
                 </div>
+                <Popup
+                open={open}
+                  position="right center"
+                  model
+                >
+                  <ZoneList closeModal={closeModal} />
+                </Popup>
+                <Popup
+                open={openSub}
+                  position="right center"
+                  model
+                >
+                  <SubZoneList closeModal={closeModalSub} />
+                </Popup>
                 <div className="mr-[45px] shadow-[buttonshadow] ">
-                  <button onClick={()=>{naviagte("/master/clients")}} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                  <button onClick={() => setOpen(o => !o)} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                   View Zones
                   </button>
                 </div>
                 <div className="mr-[45px] shadow-[buttonshadow] ">
-                  <button onClick={()=>{naviagte("/master/clients")}} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                  <button onClick={() => setOpenSub(o => !o)} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                   View Subzones
                   </button>
                 </div>

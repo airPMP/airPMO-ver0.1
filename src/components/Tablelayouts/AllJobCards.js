@@ -1,14 +1,15 @@
 import React,{useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
 import SearchBox from "../layout/SearchBox";
-const TableDesign = () => {
+const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   let urlTitle = useLocation();
+  let navigate = useNavigate();
   useEffect(() => {
      
-      if(urlTitle.pathname === "/job_cards/table"){
+      if(urlTitle.pathname === "/job_cards/All-job-cards"){
           setTitle("Job Cards");
       } 
      }, [urlTitle.pathname])
@@ -97,9 +98,6 @@ const TableDesign = () => {
               <th className="">Description</th>
               <th className="">Qty</th>
               <th className="">Zone</th>
-              <th className="">Assign To</th>
-              <th className="">SPI</th>
-              <th className="">CPI</th>
               <th className="">Status</th>
             </tr>
           </thead>
@@ -111,29 +109,11 @@ const TableDesign = () => {
               <th className="">Description</th>
               <th className="">Qty</th>
               <th className="">Zone</th>
-              <th className="">
-                <select className=" outline-none bg-[#ECF1F0] ">
-                  <option>Rahul</option>
-                  <option>Jhon</option>
-                  <option>David</option>
-                  <option>Muller</option>
-                </select>
-              </th>
-              <th className="">0</th>
-              <th className="">0</th>
-              <th className="">
-                <svg
-                  width="20"
-                  height="16"
-                  viewBox="0 0 20 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6.81806 15.7791L0.454102 9.41515L3.2841 6.58515L6.81806 10.1291L16.716 0.221191L19.546 3.05119L6.81806 15.7791Z"
-                    fill="#0FCC7C"
-                  />
-                </svg>
+        
+              <th className="cursor-pointer" onClick={()=> {
+                navigate("/job_cards/job-cards-assigned");
+              }}>
+            Status
               </th>
             </tr>
             <tr>
@@ -143,29 +123,10 @@ const TableDesign = () => {
             <th className="">Description</th>
             <th className="">Qty</th>
             <th className="">Zone</th>
-            <th className="">
-              <select className=" outline-none bg-[#ECF1F0] ">
-                <option>Rahul</option>
-                <option>Jhon</option>
-                <option>David</option>
-                <option>Muller</option>
-              </select>
-            </th>
-            <th className="">0</th>
-            <th className="">0</th>
-            <th className="">
-              <svg
-                width="20"
-                height="16"
-                viewBox="0 0 20 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.81806 15.7791L0.454102 9.41515L3.2841 6.58515L6.81806 10.1291L16.716 0.221191L19.546 3.05119L6.81806 15.7791Z"
-                  fill="#0FCC7C"
-                />
-              </svg>
+            <th className="cursor-pointer" onClick={()=> {
+                navigate("/job_cards/job-cards-assigned");
+              }}>
+              Status
             </th>
           </tr>
           </tbody>
@@ -199,4 +160,4 @@ const TableDesign = () => {
   );
 };
 
-export default TableDesign;
+export default AllJobCards;

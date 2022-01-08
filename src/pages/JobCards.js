@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Header from '../components/layout/Header';
 import SideBar from '../components/layout/SideBar';
 import SearchBox from '../components/layout/SearchBox';
 import Card from '../components/layout/Card';
 const JobCards = () => {
     const [title, setTitle] = useState(null); // the lifted state
+    let navigate = useNavigate();
+    const handleChangeForClient = () => {
+      navigate("/job_cards/All-job-cards");
+    }
     let urlTitle = useLocation();
     useEffect(() => {
        
@@ -27,7 +31,7 @@ const JobCards = () => {
           <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
                 <SearchBox
                   placeHolderName={"Choose Client"}
-                 
+                  handleChangeForClient = {handleChangeForClient}
                 />
                 <SearchBox
                   placeHolderName={"Choose Project"}
