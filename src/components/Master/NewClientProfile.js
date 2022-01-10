@@ -32,6 +32,7 @@ const validate = (values) => {
 };
 const NewClientProfile = () => {
   const [title, setTitle] = useState(null); // the lifted state
+  const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   useEffect(() => {
@@ -82,14 +83,18 @@ const NewClientProfile = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px] border-b border-black ">
-                  <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none ">
+                  <select
+                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                  >
                     <option>Cateogry</option>
                   </select>
                 </div>
                 <div className="relative w-[350px] border-b border-black pb-[10px]">
                   <select
-                  onChange={()=>{naviagte("/master/clients/new_client/client_name")}}
+                    onChange={() => {
+                      naviagte("/master/clients/new_client/client_name");
+                    }}
                     className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
                   >
@@ -122,20 +127,36 @@ const NewClientProfile = () => {
                   )}
                 </div>
                 <div className=" relative w-[350px]">
-                  <input
-                    id="uploadLogoFile"
-                    type="text"
-                    name="uploadLogoFile"
-                    value={formik.values.uploadLogoFile}
-                    onChange={formik.handleChange}
-                    className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="Password"
-                  />
+                  {
+                    <>
+                      <input
+                        type="file"
+                        onChange={(e) => {
+                          setFileName(e.target.files[0].name);
+                        }}
+                        name="uploadfile"
+                        className=" absolute z-[10] opacity-0 "
+                      />
+                      <input
+                        id="uploadLogoFile"
+                        type="text"
+                        name="uploadLogoFile"
+                        value={formik.values.uploadLogoFile}
+                        onChange={formik.handleChange}
+                        className="peer h-10 w-full  font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                        placeholder="Password"
+                      />
+                    </>
+                  }
                   <label
                     htmlFor="uploadLogoFile"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Upload Logo File
+                    {` ${
+                      fileName
+                        ? `Uploaded Logo File - ${fileName}`
+                        : "Upload Logo File"
+                    }  `}
                   </label>
                   {formik.errors.uploadLogoFile && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -216,7 +237,12 @@ const NewClientProfile = () => {
               </div>
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="mr-[45px] shadow-[buttonshadow] ">
-                  <button onClick={()=>{naviagte("/master/clients")}} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                  <button
+                    onClick={() => {
+                      naviagte("/master/clients");
+                    }}
+                    className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
+                  >
                     Cancel
                   </button>
                 </div>

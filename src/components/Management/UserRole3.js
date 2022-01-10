@@ -109,7 +109,7 @@ const UserRole1 = () => {
 
                                 {data?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
-                                        <tr className="   bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}} >
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}} >
                                             <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.email}</td>

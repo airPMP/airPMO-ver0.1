@@ -7,8 +7,6 @@ import {useLocation} from "react-router-dom";
 
 const validate = (values) => {
 
-  
-    
   const errors = {};
   if (!values.firstName) {
     errors.firstName = "First Name Required";
@@ -55,7 +53,7 @@ const SignUpTemplate = ({dashboardtrue}) => {
     if(urlTitle.pathname === "/dashboard/user"){
         setTitle("Master");
     } 
-   }, [])
+   }, [urlTitle.pathname])
     let navigate = useNavigate();
     const redirectToAdmin =()=>{
        navigate("/dashboard");

@@ -59,7 +59,7 @@ const ZoneList = ({closeModal}) => {
         <div className="flex flex-col">
           
   
-          <div className=" flex flex-col sm:w-[500px] md:w-[600px]  w-[734px] max-h-[40%] bg-[#FFFFFF] pl-[26px] pr-[46.02px]    rounded-[31.53px] ">
+          <div className=" flex flex-col  sm:w-[500px] md:w-[600px]  w-[734px] max-h-[40%] bg-[#FFFFFF] pl-[26px] pr-[46.02px]    rounded-[31.53px] ">
             <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
               <div className="bg-[#F4F7FE] w-[58.96px] flex items-center justify-center h-[58.96px]   rounded-full">
                 <img

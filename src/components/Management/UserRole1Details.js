@@ -120,11 +120,13 @@ const UserRole1Details = () => {
                   >
                   Email
                   </label>
-                  {formik.errors.location && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.location}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.location && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.location}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
                 <div className=" relative w-[350px]">
                   <input
@@ -142,11 +144,13 @@ const UserRole1Details = () => {
                   >
                     Mobile
                   </label>
-                  {formik.errors.uploadLogoFile && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.uploadLogoFile}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.uploadLogoFile && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.uploadLogoFile}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -172,11 +176,13 @@ const UserRole1Details = () => {
                   >
                   Add screens
                   </label>
-                  {formik.errors.addNewField2 && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.addNewField2}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.addNewField2 && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.addNewField2}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
               </div>
              

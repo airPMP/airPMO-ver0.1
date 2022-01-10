@@ -81,20 +81,20 @@ const MyJobCards = () => {
         <table className="table-auto pt-[24px] w-[100%]  ">
           <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
             <tr>
-              <th className="">Activity ID</th>
-              <th className="">Job Card No.</th>
-              <th className="">Date(YY/MM/DD)</th>
-              <th className="">Description</th>
-              <th className="">Qty</th>
-              <th className="">Zone</th>
-              <th className="">Assign To</th>
-              <th className="">SPI</th>
-              <th className="">CPI</th>
-              <th className="">Status</th>
+              <th className=" pb-[15.39px] ">Activity ID</th>
+              <th className="pb-[15.39px]">Job Card No.</th>
+              <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
+              <th className="pb-[15.39px]">Description</th>
+              <th className="pb-[15.39px]">Qty</th>
+              <th className="pb-[15.39px]">Zone</th>
+              <th className="pb-[15.39px]">Assign To</th>
+              <th className="pb-[15.39px]">SPI</th>
+              <th className="pb-[15.39px]">CPI</th>
+              <th className="pb-[15.39px]">Status</th>
             </tr>
           </thead>
-          <tbody className="font-secondaryFont bg-[#ECF1F0] text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-            <tr className="mb-[5px]">
+          <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+            <tr className="mb-[5px] bg-[#ECF1F0] ">
               <th className="py-[13px]">Activity ID</th>
               <th className="">Job Card No.</th>
               <th className="">Date(YY/MM/DD)</th>
@@ -111,7 +111,7 @@ const MyJobCards = () => {
               </th>
               <th className="">0</th>
               <th className="">0</th>
-              <th className="">
+              <th className="pl-[20px]">
                 <svg
                   width="20"
                   height="16"
@@ -126,7 +126,10 @@ const MyJobCards = () => {
                 </svg>
               </th>
             </tr>
-            <tr>
+            <tr className="p-[15px]">
+            <td className="p-[10px]" ></td>
+            </tr>
+            <tr className="bg-[#ECF1F0]">
             <th className="py-[13px]">Activity ID</th>
             <th className="">Job Card No.</th>
             <th className="">Date(YY/MM/DD)</th>
@@ -143,7 +146,7 @@ const MyJobCards = () => {
             </th>
             <th className="">0</th>
             <th className="">0</th>
-            <th className="">
+            <th className="pl-[20px]">
               <svg
                 width="20"
                 height="16"

@@ -118,11 +118,13 @@ const EditNewProject = () => {
                 >
                   Project Name
                 </label>
-                {formik.errors.projectName && (
-                  <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                    {formik.errors.projectName}{" "}
-                  </div>
-                )}
+                {
+                //   formik.errors.projectName && (
+                //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                //     {formik.errors.projectName}{" "}
+                //   </div>
+                // )
+              }
               </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -143,11 +145,13 @@ const EditNewProject = () => {
                   >
                     Start Date
                   </label>
-                  {formik.errors.startDate && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.startDate}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.startDate && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.startDate}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
                 <div className="relative w-[165px]">
                   <input
@@ -165,11 +169,13 @@ const EditNewProject = () => {
                   >
                     End Date
                   </label>
-                  {formik.errors.endDate && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.endDate}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.endDate && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.endDate}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
                 </div>
                 <div className=" relative w-[350px]">
@@ -188,11 +194,13 @@ const EditNewProject = () => {
                   >
                     Description
                   </label>
-                  {formik.errors.description && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.description}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.description && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.description}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -212,11 +220,13 @@ const EditNewProject = () => {
                   >
                     Zone Name
                   </label>
-                  {formik.errors.zonename && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.zonename}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.zonename && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.zonename}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
                 <div className=" relative w-[350px]">
                   <input
@@ -234,11 +244,13 @@ const EditNewProject = () => {
                   >
                   Zone Description
                   </label>
-                  {formik.errors.zonedescription && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.zonedescription}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.zonedescription && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.zonedescription}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -258,11 +270,13 @@ const EditNewProject = () => {
                   >
                     Subzone Name
                   </label>
-                  {formik.errors.addNewField && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.addNewField}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.addNewField && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.addNewField}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
                 <div className=" relative w-[350px]">
                   <input
@@ -280,11 +294,13 @@ const EditNewProject = () => {
                   >
                   Subzone Description
                   </label>
-                  {formik.errors.subzonedescription && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.subzonedescription}{" "}
-                    </div>
-                  )}
+                  {
+                  //   formik.errors.subzonedescription && (
+                  //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                  //     {formik.errors.subzonedescription}{" "}
+                  //   </div>
+                  // )
+                }
                 </div>
               </div>
               <div className="flex flex-row justify-between shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">

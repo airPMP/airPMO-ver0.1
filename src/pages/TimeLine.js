@@ -82,24 +82,24 @@ const TimeLine = () => {
             <table className="table-auto pt-[24px]">
               <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr className="max-h-[52.84px] w-[901.2px]">
-                  <th className="">Name</th>
-                  <th className="pl-[100px]">Company</th>
-                  <th className="pl-[100px]">Role</th>
-                  <th className="pl-[100px]">Email</th>
-                  <th className="pl-[100px]">Mobile</th>
-                  <th className="pl-[100px] ">Actions</th>
+                  <th className="pb-[15.39px]">Name</th>
+                  <th className="pl-[100px] pb-[15.39px]">Company</th>
+                  <th className="pl-[100px] pb-[15.39px]">Role</th>
+                  <th className="pl-[100px] pb-[15.39px]">Email</th>
+                  <th className="pl-[100px] pb-[15.39px]">Mobile</th>
+                  <th className="pl-[100px]  pb-[15.39px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="font-secondaryFont  bg-[#ECF1F0] text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                 <tr className="py-[53px] cursor-pointer  " onClick={()=>{navigate("/timeline/client")}}>
-                  <th className="pl-[10px] py-[10px]">
+                  <td className="pl-[10px] py-[10px]">
                    Name
-                  </th>
-                  <th className="pl-[100px]">Company</th>
-                  <th className="pl-[100px]">Role</th>
-                  <th className="pl-[100px]">Email</th>
-                  <th className="pl-[100px]">Mobile</th>
-                  <th className=" pl-[100px] pr-[10px]">
+                  </td>
+                  <td className="pl-[100px]">Company</td>
+                  <td className="pl-[100px]">Role</td>
+                  <td className="pl-[100px]">Email</td>
+                  <td className="pl-[100px]">Mobile</td>
+                  <td className=" pl-[100px] pr-[10px]">
                     <div className="flex flex-row space-x-xl">
                       <div>
                         <svg
@@ -130,7 +130,7 @@ const TimeLine = () => {
                         </svg>
                       </div>
                     </div>
-                  </th>
+                  </td>
                 </tr>
               </tbody>
             </table>

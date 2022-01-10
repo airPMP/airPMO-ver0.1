@@ -2,14 +2,13 @@ import React,{useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
-import SearchBox from "../layout/SearchBox";
-const AllJobCards = () => {
+const JobCardAssigned = () => {
   const [title, setTitle] = useState(null); // the lifted state
-  let urlTitle = useLocation();
   let navigate = useNavigate();
+  let urlTitle = useLocation();
   useEffect(() => {
      
-      if(urlTitle.pathname === "/job_cards/All-job-cards"){
+      if(urlTitle.pathname === "/job_cards/job-cards-assigned"){
           setTitle("Job Cards");
       } 
      }, [urlTitle.pathname])
@@ -20,16 +19,8 @@ const AllJobCards = () => {
         </div>
         <div className="flex flex-col">
           <Header title={title}  />
-          <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
-                <SearchBox
-                  placeHolderName={"Arab Electrician"}
-                 
-                />
-                <SearchBox
-                  placeHolderName={"Shinning Towers"}
-                  
-                />
-              </div>
+
+        <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >Job Cards Assigned</div>
     <div className="flex flex-col max-w-[939px] max-h-[540px] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
       <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
       <div className="">
@@ -92,17 +83,17 @@ const AllJobCards = () => {
         <table className="table-auto pt-[24px] w-[100%]  ">
           <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
             <tr>
-              <th className="">Activity ID</th>
-              <th className="">Job Card No.</th>
-              <th className="">Date(YY/MM/DD)</th>
-              <th className="">Description</th>
-              <th className="">Qty</th>
-              <th className="">Zone</th>
-              <th className="">Status</th>
+              <th className="pb-[15.39px]">Activity ID</th>
+              <th className="pb-[15.39px]">Job Card No.</th>
+              <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
+              <th className="pb-[15.39px]">Description</th>
+              <th className="pb-[15.39px]">Qty</th>
+              <th className="pb-[15.39px]">Zone</th>
+              <th className="pb-[15.39px]">Assign To</th>
             </tr>
           </thead>
-          <tbody className="font-secondaryFont bg-[#ECF1F0] text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-            <tr className="mb-[5px]">
+          <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+            <tr className="mb-[5px] bg-[#ECF1F0]">
               <th className="py-[13px]">Activity ID</th>
               <th className="">Job Card No.</th>
               <th className="">Date(YY/MM/DD)</th>
@@ -110,48 +101,44 @@ const AllJobCards = () => {
               <th className="">Qty</th>
               <th className="">Zone</th>
         
-              <th className="cursor-pointer" onClick={()=> {
-                navigate("/job_cards/job-cards-assigned");
-              }}>
-            Status
-              </th>
+              <th className="">
+              <select className=" outline-none bg-[#ECF1F0] ">
+                <option>Rahul</option>
+                <option>Jhon</option>
+                <option>David</option>
+                <option>Muller</option>
+              </select>
+            </th>
             </tr>
-            <tr>
+            <tr className="p-[15px]">
+            <td className="p-[10px]" ></td>
+            </tr>
+            <tr className="bg-[#ECF1F0]">
             <th className="py-[13px]">Activity ID</th>
             <th className="">Job Card No.</th>
             <th className="">Date(YY/MM/DD)</th>
             <th className="">Description</th>
             <th className="">Qty</th>
             <th className="">Zone</th>
-            <th className="cursor-pointer" onClick={()=> {
-                navigate("/job_cards/job-cards-assigned");
-              }}>
-              Status
-            </th>
+            <th className="">
+                <select className=" outline-none bg-[#ECF1F0] ">
+                  <option>Name</option>
+                  <option>Jhon</option>
+                  <option>David</option>
+                  <option>Muller</option>
+                </select>
+              </th>
           </tr>
           </tbody>
         </table>
       </div>
       <div className="flex flex-row justify-end py-[20px] space-x-2 ">
-        <div className="mt-[5px]">
-          <svg
-            width="20"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 2H19V4H5V2ZM12 6L18 12L16.59 13.41L13 9.83L13 22H11L11 9.83L7.41 13.41L6 12L12 6Z"
-              fill="#8F9BBA"
-            />
-          </svg>
-        </div>
         <div
-          className="w-[100px] h-[30px] text-center font-secondaryFont font-medium text-[#8F9BBA] text-[14px] leading-[37.83px] self-center pb-[10px]"
+        onClick={() =>{navigate("/job_cards/my-job-cards")}}
+          className=" cursor-pointer flex justify-center items-center w-[100px] h-[25px]   font-secondaryFont font-medium bg-[#0FCC7C] text-[#000000] rounded-[4px] text-[14px] leading-[37.83px] self-center "
           style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
         >
-          <button>Export Sheet</button>
+          <span>Save</span>
         </div>
       </div>
     </div>
@@ -160,4 +147,4 @@ const AllJobCards = () => {
   );
 };
 
-export default AllJobCards;
+export default JobCardAssigned;

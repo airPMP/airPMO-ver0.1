@@ -157,7 +157,7 @@ const SideBar = ({ sendDataToParent }) => {
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em] greenball1`}
         >
 
-          {param.pathname.includes("/master") ?
+          {param.pathname === ("/master") ?
             (<div className="greenballavailable1">
               <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="23.6866" cy="23.6866" r="23.6866" fill="#0FCC7C" />

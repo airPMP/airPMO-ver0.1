@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Popup from "reactjs-popup";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
@@ -40,6 +40,7 @@ const NewJobCard = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
     let urlTitle = useLocation();
+    let naviagte = useNavigate();
     useEffect(() => {
        
         if(urlTitle.pathname === "/job_cards/new_job_card"){
@@ -113,11 +114,13 @@ const NewJobCard = () => {
                 Activity Name
                 {/* <span className="text-red-700">*</span> */}
               </label>
-              {formik.errors.activityName && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.activityName}{" "}
-                </div>
-              )}
+              {
+              //   formik.errors.activityName && (
+              //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+              //     {formik.errors.activityName}{" "}
+              //   </div>
+              // )
+            }
             </div>
           </div>
           <div className="flex flex-row space-x-20 pb-[16px]">
@@ -139,11 +142,13 @@ const NewJobCard = () => {
                   JC Creation
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.jcCreation && (
-                  <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                    {formik.errors.jcCreation}{" "}
-                  </div>
-                )}
+                {
+                //   formik.errors.jcCreation && (
+                //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                //     {formik.errors.jcCreation}{" "}
+                //   </div>
+                // )
+              }
               </div>
               <div className="relative w-[165px] border-b border-black ">
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
@@ -169,11 +174,13 @@ const NewJobCard = () => {
                 QC Remarks
                 {/* <span className="text-red-700">*</span> */}
               </label>
-              {formik.errors.qcRemarks && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.qcRemarks}{" "}
-                </div>
-              )}
+              {
+              //   formik.errors.qcRemarks && (
+              //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+              //     {formik.errors.qcRemarks}{" "}
+              //   </div>
+              // )
+            }
             </div>
           </div>
           <div className="flex flex-row space-x-20 pb-[16px]">
@@ -194,11 +201,13 @@ const NewJobCard = () => {
                 HSE Remarks
                 {/* <span className="text-red-700">*</span> */}
               </label>
-              {formik.errors.hseRemarks && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.hseRemarks}{" "}
-                </div>
-              )}
+              {
+              //   formik.errors.hseRemarks && (
+              //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+              //     {formik.errors.hseRemarks}{" "}
+              //   </div>
+              // )
+            }
             </div>
             <div className=" relative w-[350px]">
               <input
@@ -217,11 +226,13 @@ const NewJobCard = () => {
                 Manager Comments
                 {/* <span className="text-red-700">*</span> */}
               </label>
-              {formik.errors.managerComments && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.managerComments}{" "}
-                </div>
-              )}
+              {
+              //   formik.errors.managerComments && (
+              //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+              //     {formik.errors.managerComments}{" "}
+              //   </div>
+              // )
+            }
             </div>
           </div>
           <div className="flex flex-col ">
@@ -242,11 +253,13 @@ const NewJobCard = () => {
                 Description
                 {/* <span className="text-red-700">*</span> */}
               </label>
-              {formik.errors.Description && (
-                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                  {formik.errors.Description}{" "}
-                </div>
-              )}
+              {
+              //   formik.errors.Description && (
+              //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+              //     {formik.errors.Description}{" "}
+              //   </div>
+              // )
+            }
             </div>
           </div>
 
@@ -265,7 +278,7 @@ const NewJobCard = () => {
             </div>
             <div className="flex flex-row mr-[-50px]">
               <div className="mr-[45px] shadow-[buttonshadow] ">
-                <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                <button onClick={()=>{naviagte("/job_cards")}} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                   Cancel
                 </button>
               </div>
