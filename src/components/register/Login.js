@@ -1,13 +1,62 @@
-import React from "react";
+import React, { useState} from "react";
+import { reactLocalStorage } from "reactjs-localstorage";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
+
 const Login = () => {
+
+  const { addToast } = useToasts();
+  const [userdetail, setDetail] = useState([]);
+  const [userName, setName] = useState("");
+  const [userpassword, setPassword] = useState("");
+
   let navigate = useNavigate();
   const signUp = () => {
-navigate('/sign-up');
+    navigate('/sign-up');
   };
-  const Login = () => {
-    navigate('/dashboard');
-      };
+
+  const submit = () => {
+
+    console.log("done")
+    const allData = { Email: userName, Password: userpassword };
+    setDetail([...userdetail, allData]);
+    axios
+      .post("http://192.168.1.31:8000/api/login/", {
+        
+        Email: userName,
+        Password: userpassword,
+      })
+      .then((response) => {
+        console.log(response)
+        if (response.status === 201) {
+           
+          addToast("form submitted Sucessfully", {
+            appearance: "success",
+            autoDismiss: true,
+          })
+          reactLocalStorage.set("access_token", response?.data?.token);  
+          navigate('/dashboard')
+        }
+        else{
+          addToast("login fail", {
+            appearance: "red",
+            autoDismiss: true,
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        addToast("login fail", {
+          appearance: "red",
+          autoDismiss: true,
+        })
+
+      });
+
+    // navigate('/dashboard');
+  };
+
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
@@ -37,7 +86,10 @@ navigate('/sign-up');
           </div>
           <div className=" mt-[39px]">
             <span className=" font-secondaryFont leading-5 font-normal text-[15px] text-[#4D627A] not-italic w-[109px] h-[20px]">
-              Email Or Mobile{" "}
+             <a href="/sign-up">
+             Email Or Mobile{" "}
+               </a>
+               
             </span>
           </div>
           <div className=" flex 10px items-center mt-[10px]">
@@ -46,6 +98,8 @@ navigate('/sign-up');
                 className="w-[227px] h-[20px] focus:outline-none"
                 type="text"
                 placeholder="Enter your email or phone number"
+                onChange={(event) => setName(event.target.value)}
+                value={userName}
               />
               <div>
                 <svg
@@ -78,6 +132,8 @@ navigate('/sign-up');
                 className="w-[101px] h-[20px] focus:outline-none "
                 type="password"
                 placeholder="**************"
+                value={userpassword} 
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div>
                 <svg
@@ -101,12 +157,12 @@ navigate('/sign-up');
           </div>
           <div className="flex flex-row">
             <div className="   border-[1px] border-solid border-[#000000] rounded bg-[#FFFFFF] mt-[37px]">
-              <button onClick={()=>{signUp()}} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+              <button onClick={() => { signUp() }} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Sign Up
               </button>
             </div>
             <div className=" ml-[28px]  border-[1px] border-solid border-[#000000] rounded bg-[#0FCC7C] mt-[37px]">
-              <button onClick={()=>{Login()}} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+              <button onClick={() => { submit() }} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Login
               </button>
             </div>
