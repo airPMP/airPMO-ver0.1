@@ -1,3 +1,4 @@
+import { config } from 'dotenv';
 import { Module } from '@nestjs/common';
 import { ForgetService } from './forget.service';
 import { ForgetController } from './forget.controller';
@@ -21,15 +22,15 @@ import { PassportModule } from '@nestjs/passport';
     // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
     // or
     transport: {
-      host: 'smtp.mailtrap.io',
+      host: process.env.MAIL_HOST,
       secure: false,
       auth: {
-        user: 'e7ad40294a2e1b',
-        pass: '0a3d53e8c9771c',
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
       },
     },
     defaults: {
-      from: '"No Reply" <support@gmail.com>',
+      from: process.env.MAIL_FROM,
     },
 
   }),

@@ -1,3 +1,5 @@
+const dotenv =require('dotenv') 
+dotenv.config()
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose'
 import { UsersModule } from './users/users.module';
@@ -12,17 +14,18 @@ import { ForgetService } from './forget/forget.service';
 
 
 
+
 @Module({
 
-  imports: [MongooseModule.forRoot('mongodb://'+'192.168.1.20'+':'+'27017', {
-    user: 'admin',
-    pass: 'admin',
-    dbName: 'nest',
+  imports: [MongooseModule.forRoot('mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT, {
+    user:process.env.DB_USERNAME,
+    pass:process.env.DB_PASSWORD,
+    dbName:process.env.DATABASE,
     w: 'majority',
     retryWrites: true
   }
       ), UsersModule, AuthModule, ForgetModule, ]
- 
+
 
 })
 export class AppModule {}
