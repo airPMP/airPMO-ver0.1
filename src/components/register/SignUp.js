@@ -1,68 +1,97 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useToasts } from "react-toast-notifications";
 
 const validate = (values) => {
+
+
+
   const errors = {};
-  if (!values.firstName) {
-    errors.firstName = "First Name Required";
+  if (!values.FirstName) {
+    errors.FirstName = "First Name Required";
   }
-  if (!values.lastName) {
-    errors.lastName = "Last Name Required";
+  if (!values.LastName) {
+    errors.LastName = "Last Name Required";
   }
-  if (!values.email) {
-    errors.email = "Email Required";
+  if (!values.Email) {
+    errors.Email = "Email Required";
   } else if (
     !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-      values.email
+      values.Email
     )
   ) {
-    errors.email = "Invalid email format!";
+    errors.Email = "Invalid email format!";
   }
 
-  if (!values.phoneNumber) {
-    errors.phoneNumber = "Phone Number Required";
+  if (!values.PhoneNumber) {
+    errors.PhoneNumber = "Phone Number Required";
   } else if (
     !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(
-      values.phoneNumber
+      values.PhoneNumber
     )
   ) {
-    errors.phoneNumber = "Invalid Phone Number";
+    errors.PhoneNumber = "Invalid Phone Number";
   }
-  if (!values.jobtitle) {
-    errors.jobtitle = "Job Title Required";
+  if (!values.Jobtitle) {
+    errors.Jobtitle = "Job Title Required";
   }
-  if (!values.companyName) {
-    errors.companyName = "Company Name Required";
+  if (!values.CompanyName) {
+    errors.CompanyName = "Company Name Required";
   }
-  if (!values.comment) {
-    errors.comment = "comment Required";
+  if (!values.Comments) {
+    errors.Comments = "comment Required";
   }
   // console.log(errors);
   return errors;
 };
 
 const SignUp = () => {
+  const { addToast } = useToasts();
+
   let navigate = useNavigate();
   const Login = () => {
     navigate('/');
-      };
+  };
+
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      jobtitle: "",
-      companyName: "",
-      comment: "",
+      FirstName: "",
+      LastName: "",
+      Email: "",
+      PhoneNumber: "",
+      CompanyName: "",
+      Comments: "",
+      Jobtitle: "",
+      Password: ""
     },
     validate,
-    onSubmit: async (values, { resetForm }) => {
-      // console.log(`Form data`, values);
+    onSubmit: (values, { resetForm }) => {
+      values.Password = "demo@123"
+      console.log(`Form data`, values);
+      axios.post("http://192.168.1.31:8000/api/register/", values)
+        .then((response) => {
+          console.log(response)
+          if (response.status === 201) {
+            addToast("form submitted Sucessfully", {
+              appearance: "success",
+              autoDismiss: true,
+            })
+            navigate('/')
+          }
+          resetForm()
+        })
+        .catch((error) => {
+          console.log(error)
+          addToast("form submitted fail", {
+            appearance: "red",
+            autoDismiss: true,
+          })
+        })
     },
   });
-  console.log(formik.values);
+
   return (
     <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100vh] lg:w-[100vw] xl:w[100vw] sm:w-[100vw]">
       <div className="flex flex-row  place-items-start">
@@ -92,10 +121,10 @@ const SignUp = () => {
             <div className="flex flex-row space-x-40 pb-[36px]">
               <div className="relative w-[350px]">
                 <input
-                  id="firstName"
-                  name="firstName"
+                  id="FirstName"
+                  name="FirstName"
                   type="text"
-                  value={formik.values.firstName}
+                  value={formik.values.FirstName}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="john@doe.com"
@@ -107,18 +136,18 @@ const SignUp = () => {
                   First Name
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.firstName && (
+                {formik.errors.FirstName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.firstName}{" "}
+                    {formik.errors.FirstName}{" "}
                   </div>
                 )}
               </div>
               <div className="relative w-[350px]">
                 <input
-                  id="lastName"
-                  name="lastName"
+                  id="LastName"
+                  name="LastName"
                   type="text"
-                  value={formik.values.lastName}
+                  value={formik.values.LastName}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="john@doe.com"
@@ -130,9 +159,9 @@ const SignUp = () => {
                   Last Name
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.lastName && (
+                {formik.errors.LastName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.lastName}{" "}
+                    {formik.errors.LastName}{" "}
                   </div>
                 )}
               </div>
@@ -140,10 +169,10 @@ const SignUp = () => {
             <div className="flex flex-row space-x-40 pb-[36px]">
               <div className="relative w-[350px]">
                 <input
-                  id="phoneNumber"
-                  name="phoneNumber"
+                  id="PhoneNumber"
+                  name="PhoneNumber"
                   type="text"
-                  value={formik.values.phoneNumber}
+                  value={formik.values.PhoneNumber}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="john@doe.com"
@@ -155,18 +184,18 @@ const SignUp = () => {
                   Phone Number
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.phoneNumber && (
+                {formik.errors.PhoneNumber && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.phoneNumber}{" "}
+                    {formik.errors.PhoneNumber}{" "}
                   </div>
                 )}
               </div>
               <div className=" relative w-[350px]">
                 <input
-                  id="email"
+                  id="Email"
                   type="text"
-                  name="email"
-                  value={formik.values.email}
+                  name="Email"
+                  value={formik.values.Email}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="Password"
@@ -178,9 +207,9 @@ const SignUp = () => {
                   Email
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.email && (
+                {formik.errors.Email && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.email}{" "}
+                    {formik.errors.Email}{" "}
                   </div>
                 )}
               </div>
@@ -188,10 +217,10 @@ const SignUp = () => {
             <div className="flex flex-row space-x-40 pb-[36px]">
               <div className="relative w-[350px]">
                 <input
-                  id="jobtitle"
-                  name="jobtitle"
+                  id="Jobtitle"
+                  name="Jobtitle"
                   type="text"
-                  value={formik.values.jobtitle}
+                  value={formik.values.Jobtitle}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="john@doe.com"
@@ -203,18 +232,18 @@ const SignUp = () => {
                   Job Title
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.jobtitle && (
+                {formik.errors.Jobtitle && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.jobtitle}{" "}
+                    {formik.errors.Jobtitle}{" "}
                   </div>
                 )}
               </div>
               <div className=" relative w-[350px]">
                 <input
-                  id="companyName"
+                  id="CompanyName"
                   type="text"
-                  name="companyName"
-                  value={formik.values.companyName}
+                  name="CompanyName"
+                  value={formik.values.CompanyName}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="Password"
@@ -226,9 +255,9 @@ const SignUp = () => {
                   Company Name
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.companyName && (
+                {formik.errors.CompanyName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.companyName}{" "}
+                    {formik.errors.CompanyName}{" "}
                   </div>
                 )}
               </div>
@@ -237,9 +266,9 @@ const SignUp = () => {
               <div className="relative max-w-[860px]">
                 <input
                   id="comment"
-                  name="comment"
+                  name="Comments"
                   type="text"
-                  value={formik.values.comment}
+                  value={formik.values.Comments}
                   onChange={formik.handleChange}
                   className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                   placeholder="john@doe.com"
@@ -251,16 +280,16 @@ const SignUp = () => {
                   Comment
                   {/* <span className="text-red-700">*</span> */}
                 </label>
-                {formik.errors.comment && (
+                {formik.errors.Comments && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                    {formik.errors.comment}{" "}
+                    {formik.errors.Comments}{" "}
                   </div>
                 )}
               </div>
             </div>
             <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px] mr-[-60px]">
               <div className="mr-[45px] shadow-[buttonshadow] ">
-                <button onClick={()=> Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                <button onClick={() => Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                   Cancel
                 </button>
               </div>

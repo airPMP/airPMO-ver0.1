@@ -1,22 +1,95 @@
 import React, { useState } from "react";
-import Popup from "reactjs-popup";
+import { reactLocalStorage } from "reactjs-localstorage";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
+import Popup from "reactjs-popup";
 
 const Login = () => {
 
+  const { addToast } = useToasts();
   const [open, setOpen] = useState(false);
-  const [email, setName] = useState("");
-  // const closeModal = () => setOpen(false);
+  const [email, setEmail] = useState("");
+  const [userdetail, setDetail] = useState([]);
+  const [userdetailemail, setDetailEmail] = useState([]);
+  const [userName, setName] = useState("");
+  const [userpassword, setPassword] = useState("");
+
+
+
   let navigate = useNavigate();
+
   const signUp = () => {
     navigate('/sign-up');
   };
-  const Login = () => {
-    navigate('/dashboard');
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    const allData = { Email: userName, Password: userpassword };
+    setDetail([...userdetail, allData]);
+    axios
+      .post("http://192.168.1.31:8000/api/login/", {
+
+        Email: userName,
+        Password: userpassword,
+      })
+      .then((response) => {
+        console.log(response)
+        if (response.status === 201) {
+
+          addToast("Login  Sucessfully", {
+            appearance: "success",
+            autoDismiss: true,
+          })
+          reactLocalStorage.set("access_token", response?.data?.token);
+          navigate('/dashboard')
+        }
+        else {
+          alert("Login Fail ")
+          // addToast("login fail", {
+          //   appearance: "red",
+          //   autoDismiss: true,
+          // })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        alert("login Fail")
+        // addToast("login fail", {
+        //   appearance: "red",
+        //   autoDismiss: true,
+        // })
+        navigate('/'); 
+
+      });
+
+    // navigate('/dashboard');
   };
 
-  
-  console.log(open)
+  const Forget = () => {
+    const allData = { Email: email };
+    setDetail([...userdetailemail, allData]);
+    axios.post("http://192.168.1.31:8000/api/forget/", { Email: email })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+
+          addToast("Please Check Your Email", {
+            appearance: "success",
+            autoDismiss: true,
+          })
+        }
+      })
+      .catch((error) => {
+         alert(error.response.data.message);
+        // addToast(error.response.data.message, {
+        //   appearance: "red",
+        //   autoDismiss: true,
+        // })
+      });
+  }
+
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
@@ -46,7 +119,10 @@ const Login = () => {
           </div>
           <div className=" mt-[39px]">
             <span className=" font-secondaryFont leading-5 font-normal text-[15px] text-[#4D627A] not-italic w-[109px] h-[20px]">
-              Email Or Mobile{" "}
+              <a href="/sign-up">
+                Email Or Mobile{" "}
+              </a>
+
             </span>
           </div>
           <div className=" flex 10px items-center mt-[10px]">
@@ -55,6 +131,8 @@ const Login = () => {
                 className="w-[227px] h-[20px] focus:outline-none"
                 type="text"
                 placeholder="Enter your email or phone number"
+                onChange={(event) => setName(event.target.value)}
+                value={userName}
               />
               <div>
                 <svg
@@ -87,6 +165,8 @@ const Login = () => {
                 className="w-[101px] h-[20px] focus:outline-none "
                 type="password"
                 placeholder="**************"
+                value={userpassword}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div>
                 <svg
@@ -115,7 +195,7 @@ const Login = () => {
               </button>
             </div>
             <div className=" ml-[28px]  border-[1px] border-solid border-[#000000] rounded bg-[#0FCC7C] mt-[37px]">
-              <button onClick={() => { Login() }} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+              <button onClick={(e) => { submit(e) }} className="w-[161px] h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Login
               </button>
             </div>
@@ -146,15 +226,15 @@ const Login = () => {
                     className="form-control w-[100%] py-2 px-2"
                     placeholder="Enter Your Email"
                     id="email"
-                    onChange={(event) => setName(event.target.value)}
+                    onChange={(event) => setEmail(event.target.value)}
                     value={email}
                     style={{ border: "1px solid gray" }}
                   />
                 </div>
                 <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
-                  <button 
-                  onClick={() => { Forget() }}
-                   className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                  <button
+                    onClick={() => { Forget() }}
+                    className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
                     Submit
                   </button>
                 </div>
