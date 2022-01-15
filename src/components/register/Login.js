@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+
+  const [open, setOpen] = useState(false);
+  const [email, setName] = useState("");
+  // const closeModal = () => setOpen(false);
   let navigate = useNavigate();
   const signUp = () => {
     navigate('/sign-up');
@@ -8,6 +14,9 @@ const Login = () => {
   const Login = () => {
     navigate('/dashboard');
   };
+
+  
+  console.log(open)
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
@@ -113,11 +122,45 @@ const Login = () => {
 
           </div>
           <div className="mt-3 " >
-            <div className="float-right text-[14px] text-[blue]"> 
-              <a href=""  >
-                Forget Password ?
-              </a>
+            <div className="float-right text-[14px] text-[blue] cursor-pointer" onClick={() => setOpen(o => !o)}>
+              Forget Password ?
             </div>
+
+            <Popup
+              open={open}
+              position="right center"
+              model
+            >
+              <div className="p-5">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="font-size-4 text-black-2 font-weight-semibold  "
+                  >
+                    Email
+                  </label>
+                </div>
+                <div className="mt-3">
+                  <input
+                    type="email"
+                    className="form-control w-[100%] py-2 px-2"
+                    placeholder="Enter Your Email"
+                    id="email"
+                    onChange={(event) => setName(event.target.value)}
+                    value={email}
+                    style={{ border: "1px solid gray" }}
+                  />
+                </div>
+                <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                  <button 
+                  onClick={() => { Forget() }}
+                   className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                    Submit
+                  </button>
+                </div>
+              </div>
+
+            </Popup>
           </div>
         </div>
       </div>
