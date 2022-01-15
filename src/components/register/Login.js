@@ -29,7 +29,7 @@ const Login = () => {
     const allData = { Email: userName, Password: userpassword };
     setDetail([...userdetail, allData]);
     axios
-      .post("http://192.168.1.31:8000/api/login/", {
+      .post("http://143.110.189.79:8000/api/login/", {
 
         Email: userName,
         Password: userpassword,
@@ -70,7 +70,8 @@ const Login = () => {
   const Forget = () => {
     const allData = { Email: email };
     setDetail([...userdetailemail, allData]);
-    axios.post("http://192.168.1.31:8000/api/forget/", { Email: email })
+    axios.post("http://143.110.189.79:8000/api/forget/", { Email: email })
+    // http://143.110.189.79:8000/api/login
       .then((response) => {
         console.log(response);
         if (response.status === 201) {

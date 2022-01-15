@@ -70,7 +70,7 @@ const SignUp = () => {
     onSubmit: (values, { resetForm }) => {
       values.Password = "demo@123"
       console.log(`Form data`, values);
-      axios.post("http://192.168.1.31:8000/api/register/", values)
+      axios.post("http://143.110.189.79:8000/api/register/", values)
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
