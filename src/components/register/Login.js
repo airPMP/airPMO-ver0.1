@@ -15,7 +15,7 @@ const Login = () => {
   const [userName, setName] = useState("");
   const [userpassword, setPassword] = useState("");
 
-
+ 
 
   let navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Login = () => {
     const allData = { Email: userName, Password: userpassword };
     setDetail([...userdetail, allData]);
     axios
-      .post("http://143.110.189.79:8000/api/login/", {
+      .post(`${process.env.REACT_APP_BASE_URL}/api/login/`, {
 
         Email: userName,
         Password: userpassword,
@@ -70,8 +70,8 @@ const Login = () => {
   const Forget = () => {
     const allData = { Email: email };
     setDetail([...userdetailemail, allData]);
-    axios.post("http://143.110.189.79:8000/api/forget/", { Email: email })
-    // http://143.110.189.79:8000/api/login
+    axios.post(`${process.env.REACT_APP_BASE_URL}/api/forget/`, { Email: email })
+     
       .then((response) => {
         console.log(response);
         if (response.status === 201) {

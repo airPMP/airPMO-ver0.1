@@ -21,7 +21,7 @@ const ResetPassword = () => {
     if (tokenData) {
       axios
         .post(
-          "http://143.110.189.79:8000/api/changepassword/",
+          `${process.env.REACT_APP_BASE_URL}/api/changepassword/`,
           {
             Password: NewPassword,
             Confirm_Password: ConformPassword
