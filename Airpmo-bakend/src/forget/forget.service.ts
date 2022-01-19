@@ -26,6 +26,7 @@ export class ForgetService {
 
   async forgetPassword(forgetuserdto: forgetuserdto) {
     const user = await this.usersModel.findOne({ 'Email': forgetuserdto.Email })
+    console.log(user)
 
     if (!user) {
       throw new UnauthorizedException("email not found")
@@ -33,8 +34,7 @@ export class ForgetService {
     else {
       const payload = {'Email':user.Email}
       const token = this.jwtservice.sign(payload)
-      console.log(token)
-      const url = `http://localhost:3000/ResetPassword?token=${token}`
+      const url = `http://${process.env.HOST_NAME}/ResetPassword?token=${token}`
       await this.mailerService.sendMail
         ({
           to: user.Email,
@@ -62,10 +62,10 @@ export class ForgetService {
       const find = req.user
       const users = await this.usersModel.findOne({ "Email": find.Email })
       console.log(users)
-      return await this.usersModel.updateOne({Password:users.Password },{ Password:hash })
+     const updatepass = await this.usersModel.updateOne({Password:users.Password },{ Password:hash })
      
       return {
-        massage: "confirm"
+        massage: "password updatetd"
       }
     }
   }

@@ -20,7 +20,6 @@ export class AuthService {
 
     const user = await this.usersService.findByEmail(loginusersDto)
 
-
     if (!user) {
       throw new UnauthorizedException("user not found")
     }

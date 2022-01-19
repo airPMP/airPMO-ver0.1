@@ -70,7 +70,7 @@ const SignUp = () => {
     onSubmit: (values, { resetForm }) => {
       values.Password = "demo@123"
       console.log(`Form data`, values);
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/register/`, values)
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values)
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
@@ -85,7 +85,7 @@ const SignUp = () => {
         .catch((error) => {
           console.log(error)
           addToast("form submitted fail", {
-            appearance: "red",
+            appearance: "error",
             autoDismiss: true,
           })
         })

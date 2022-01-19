@@ -43,19 +43,19 @@ const ResetPassword = () => {
 
           }
           else{
-            alert("Login Fail")
-            // addToast("Login fail", {
-            //   appearance: "red",
-            //   autoDismiss: true,
-            // })
+            
+            addToast("Login fail", {
+              appearance: "error",
+              autoDismiss: true,
+            })
           }
         })
         .catch((error) => {
-          alert(error?.response.data.message);
-          // addToast(error?.response?.data?.message , {
-          //   appearance: "red",
-          //   autoDismiss: true,
-          // })
+          
+          addToast(error?.response?.data?.message , {
+            appearance: "error",
+            autoDismiss: true,
+          })
         });
     }
   }

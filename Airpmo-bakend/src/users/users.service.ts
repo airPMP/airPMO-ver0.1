@@ -1,8 +1,6 @@
-import { Injectable, NotFoundException, Request, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException, Request, UnauthorizedException } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { hash } from 'bcrypt';
-import { isEmail } from 'class-validator';
 import { Model } from 'mongoose';
 import { users, ussersDocument } from 'src/schemas/users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,14 +17,27 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
+    if(createUserDto.Password){
     const saltOrRounds = 10;
     const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
     createUserDto.Password = hash;
-    return await this.usersModel.create(createUserDto)
+    }
+    const user = await this.usersModel.findOne({ "Email": createUserDto.Email })
+   
+    if(!user)
+    {
+     return await this.usersModel.create(createUserDto)
+    }
+    else{
+      throw new UnauthorizedException("User already rigister")
+    }
+   
+  
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-    return await this.usersModel.findOne({ "Email": loginusersDto.Email })
+    const user = await this.usersModel.findOne({ "Email": loginusersDto.Email })
+    return user
   }
 
 
@@ -35,16 +46,23 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.usersModel.updateMany({ id }, { $set: { ...updateUserDto } })
+    return this.usersModel.updateMany({ "_id":id },{ ...updateUserDto } )
   }
 
   remove(id: string) {
-    return this.usersModel.deleteOne({ id })
+    return this.usersModel.deleteOne({ "_id":id })
   }
 
 
   findOne(id: string) {
-    return this.usersModel.findOne({ _id: id })
+    try {
+     const user = this.usersModel.findOne({ _id: id })
+     return user
+    } catch {
+      throw new NotFoundException()
+    }
+   
+
   }
 
 
@@ -74,11 +92,4 @@ export class UsersService {
   }
 
 
-
-
-
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }

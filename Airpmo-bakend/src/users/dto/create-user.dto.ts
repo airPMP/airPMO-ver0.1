@@ -14,7 +14,9 @@ export class CreateUserDto {
     @ApiProperty()
     LastName:string;
     
+
     @IsString()
+    @IsNotEmpty()
     @ApiProperty()
     Email:string;
 
@@ -26,19 +28,70 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-  CompanyName:string;
+     CompanyName:string;
 
   
-    @IsString()
+   
     @IsOptional()
     @ApiProperty()
-   Comments:string;
+    Comments:string;
 
   
    @IsString()
    @IsOptional()
    @ApiProperty()
    Password:string;
+
+
+  
+    @ApiProperty()
+    organization_id: string;
+
+
+  
+    @IsOptional()
+    @ApiProperty()
+    mob_no:string;
+   
+   
+    @IsOptional()
+    @ApiProperty()
+    district:string;
+    
+   
+    @IsOptional()
+    @ApiProperty()
+    address:string;
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty()
+    blood_group:string;
+
+   
+    @IsOptional()
+    @ApiProperty()
+    place:string;
+
+  
+    @IsOptional()
+    @ApiProperty()
+    emergency_contact:string;
+
+  
+    @IsOptional()
+   @ApiProperty()
+   image:string;
+
+
+   
+    @ApiProperty()
+    spread_sheet_user_id: string;
+
+    @IsOptional()
+    @ApiProperty()
+    designation:string;
+
 
 }
 

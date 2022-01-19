@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
-import {useLocation} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import SearchBox from "../components/layout/SearchBox";
 import Card from "../components/layout/Card";
+import { reactLocalStorage } from "reactjs-localstorage";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
+import { useToasts } from "react-toast-notifications";
 const DashBoard = () => {
   const [title, setTitle] = useState(null);
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [page, setPage] = useState(null);
-   let urlTitle = useLocation();
+  let urlTitle = useLocation();
+  let navigate = useNavigate();
+  const { addToast } = useToasts();
+  useEffect(() => {
 
-   useEffect(() => {
-       
-    if(urlTitle.pathname === "/dashboard"){
-        setTitle("Dashboard");
-    } 
-   }, [urlTitle.pathname])
-  
+    if (urlTitle.pathname === "/dashboard") {
+      setTitle("Dashboard");
+    }
+
+
+  }, [urlTitle.pathname])
+
   const handleChangeForClient = (event) => {
     setClient(event.target.value);
   };
@@ -29,12 +34,22 @@ const DashBoard = () => {
     setPage(pagename);
   };
 
-  console.log("DashBoard",urlTitle.pathname);
+  const Logout = (e) => {
+
+    reactLocalStorage.clear();
+    navigate('/')
+
+    addToast("LogOut  submitted ", {
+      appearance: "error",
+      autoDismiss: true,
+    })
+  }
+
   return (
     <>
       <div className="flex flex-row justify-start overflow-hidden  ">
         <div>
-          <SideBar  />
+          <SideBar />
         </div>
         <div className="flex flex-col ">
           <Header title={title} sendPage={sendPage} />
@@ -42,6 +57,11 @@ const DashBoard = () => {
             <SignUpTemplate />
           ) : (
             <>
+              <div className="ml-[90%] pt-3">
+                <button style={{ border: "2px solid red", background: "red" }}
+                  className="text-[white] px-3" onClick={(e) => Logout(e)}>
+                  <b>LogOut</b></button>
+              </div>
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
                 <SearchBox
                   placeHolderName={"Choose Client"}

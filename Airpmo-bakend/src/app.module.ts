@@ -10,6 +10,10 @@ import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
 import { ForgetModule } from './forget/forget.module';
 import { ForgetService } from './forget/forget.service';
+import { ClientprofileModule } from './clientprofile/clientprofile.module';
+import { CategoriesModule } from './categories/categories.module';
+import { ProjectsModule } from './projects/projects.module';
+import { OrgainizationModule } from './organization/orgainization.module';
 
 
 
@@ -24,7 +28,7 @@ import { ForgetService } from './forget/forget.service';
     w: 'majority',
     retryWrites: true
   }
-      ), UsersModule, AuthModule, ForgetModule, ]
+      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ]
 
 
 })

@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, Headers, Header, Req, Request } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { request } from 'http';
 import { Token } from 'nodemailer/lib/xoauth2';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -11,6 +12,7 @@ import { ForgetService } from './forget.service';
 import { AuthUser } from './user.decorator';
 
 
+@ApiTags('Forget Reset Api')
 @Controller('api')
 export class ForgetController {
   constructor(private readonly forgetService: ForgetService,) {}
@@ -21,8 +23,10 @@ export class ForgetController {
      return await this.forgetService.forgetPassword(forgetuserdto);
     
   }
+  
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Post('changepassword')
+  @Post('updatedpassword')
   async changePassword( @Body()  resetuserdto:resetuserdto ,@Request() req ) {
     // const a = req.headers.authorization
     // console.log(req.user)

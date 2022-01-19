@@ -15,7 +15,7 @@ const Login = () => {
   const [userName, setName] = useState("");
   const [userpassword, setPassword] = useState("");
 
- 
+
 
   let navigate = useNavigate();
 
@@ -46,21 +46,19 @@ const Login = () => {
           navigate('/dashboard')
         }
         else {
-          alert("Login Fail ")
-          // addToast("login fail", {
-          //   appearance: "red",
-          //   autoDismiss: true,
-          // })
+          
+          addToast("login fail", {
+            appearance: "error",
+            autoDismiss: true,
+          })
         }
       })
-      .catch((error) => {
-        console.log(error)
-        alert("login Fail")
-        // addToast("login fail", {
-        //   appearance: "red",
-        //   autoDismiss: true,
-        // })
-        navigate('/'); 
+      .catch((error) => { 
+        addToast("login fail", {
+          appearance: "error",
+          autoDismiss: true,
+        })
+        navigate('/');
 
       });
 
@@ -71,26 +69,27 @@ const Login = () => {
     const allData = { Email: email };
     setDetail([...userdetailemail, allData]);
     axios.post(`${process.env.REACT_APP_BASE_URL}/api/forget/`, { Email: email })
-     
+
       .then((response) => {
         console.log(response);
-        if (response.status === 201) {
-
+        if (response.status === 201) { 
           addToast("Please Check Your Email", {
             appearance: "success",
             autoDismiss: true,
           })
         }
       })
-      .catch((error) => {
-         alert(error.response.data.message);
-        // addToast(error.response.data.message, {
-        //   appearance: "red",
-        //   autoDismiss: true,
-        // })
+      .catch((error) => { 
+        addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+        })
       });
   }
 
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+  }
   return (
     <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">
       <div className="flex flex-col justify-center place-items-start w-[50%]">
@@ -212,14 +211,21 @@ const Login = () => {
               position="right center"
               model
             >
-              <div className="p-5">
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="font-size-4 text-black-2 font-weight-semibold  "
-                  >
-                    Email
-                  </label>
+              <div className="p-7">
+                <div className="flex pb-3">
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="font-size-4 text-black-2 font-weight-semibold  "
+                    >
+                      Email
+                    </label>
+                  </div>
+                  <div style={{ marginLeft: "90%" }}>
+                    <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                      <b>X</b>
+                    </span>
+                  </div>
                 </div>
                 <div className="mt-3">
                   <input
