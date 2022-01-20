@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Categories, CategoriesDocument } from 'src/schemas/categories.schema';
@@ -17,14 +17,32 @@ export class CategoriesService {
   }
 
  async findOne(id: string) {
-    return await this.categoriesModel.findById({_id:id})
+   try{
+    const user = await this.categoriesModel.findById({_id:id})
+    return user
+  }catch{
+    throw new NotFoundException("categories not exist")
+  }
+ }
+ async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+   try{
+   const user = await this.categoriesModel.updateOne({"_id":id},{"name":updateCategoryDto.name,"type":updateCategoryDto.type," discription":updateCategoryDto.discription, "categories_id":updateCategoryDto.categories_id,"orgainization_id":updateCategoryDto.orgainization_id})
+    return{
+      "massage":"categories Updated"
+    }
+  }catch{
+    throw new NotFoundException("categories not exist")
+  }
   }
 
- async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    return  await this.categoriesModel.updateOne({"_id":id},{"name":updateCategoryDto.name,"type":updateCategoryDto.type," discription":updateCategoryDto.discription, "categories_id":updateCategoryDto.categories_id,"orgainization_id":updateCategoryDto.orgainization_id})
-   }
-
-  remove(id: string) {
-    return this.categoriesModel.deleteOne({"_id":id})
+ async remove(id: string) {
+   try{
+  const user = await this.categoriesModel.deleteOne({"_id":id})
+  return {
+    "massage":"categories Deleted"
+  }
+}catch{
+  throw new NotFoundException("categories not exist")
+}
   }
 }

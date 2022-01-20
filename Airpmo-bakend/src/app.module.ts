@@ -14,6 +14,7 @@ import { ClientprofileModule } from './clientprofile/clientprofile.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProjectsModule } from './projects/projects.module';
 import { OrgainizationModule } from './organization/orgainization.module';
+import { APP_FILTER } from '@nestjs/core';
 
 
 
@@ -28,7 +29,7 @@ import { OrgainizationModule } from './organization/orgainization.module';
     w: 'majority',
     retryWrites: true
   }
-      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ]
+      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ],
 
 
 })

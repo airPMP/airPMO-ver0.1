@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException, Request, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException, Request, UnauthorizedException, UseFilters } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -9,7 +9,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersController } from './users.controller';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
-
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(users.name) private usersModel: Model<ussersDocument>,
@@ -23,16 +22,13 @@ export class UsersService {
     createUserDto.Password = hash;
     }
     const user = await this.usersModel.findOne({ "Email": createUserDto.Email })
-   
     if(!user)
     {
      return await this.usersModel.create(createUserDto)
     }
     else{
       throw new UnauthorizedException("User already rigister")
-    }
-   
-  
+    } 
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
@@ -44,25 +40,44 @@ export class UsersService {
   findAll() {
     return this.usersModel.find();
   }
-
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.usersModel.updateMany({ "_id":id },{ ...updateUserDto } )
-  }
-
-  remove(id: string) {
-    return this.usersModel.deleteOne({ "_id":id })
-  }
-
-
-  findOne(id: string) {
-    try {
-     const user = this.usersModel.findOne({ _id: id })
-     return user
-    } catch {
-      throw new NotFoundException()
+ 
+ async update(id: string, updateUserDto: UpdateUserDto) {
+   try{
+   const user=await this.usersModel.updateMany({ "_id":id },{ ...updateUserDto } )
+    console.log(user)
+    return {
+      "massage":"User Updated"
     }
-   
+   }catch{
+     throw new NotFoundException("user not exist")
+   }
+  }
 
+ async remove(id: string) {
+    try{
+      const user = await this.usersModel.deleteOne({ "_id":id })
+      return {
+        "massage":"user deleted"
+      }
+    }
+    catch{
+      throw new NotFoundException("user not exist")
+      
+    }
+  }
+
+       
+ async findOne(id: string) {
+    try{
+  const user =await this.usersModel.findOne({ "_id": id })
+  return user
+  
+    }
+    catch{
+      throw new NotFoundException("user not exist")
+      
+    }
+  
   }
 
 
@@ -70,12 +85,9 @@ export class UsersService {
     const EmailPayload = req.user
     console.log(EmailPayload.Email)
     const user = await this.usersModel.findOne({ "Email": EmailPayload.Email })
-    console.log(user)
     if (!user) {
       throw new UnauthorizedException("wrong user")
     }
-
-
     else  {
       if(updateUserDto.Password)
       {
