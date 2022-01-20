@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
+import { reactLocalStorage } from "reactjs-localstorage";
 
 
 const validate = (values) => {
-
-  console.log(values)
-
+ 
   const errors = {};
   // if (!values.category) {
   //   errors.category = "Category Required";
@@ -43,13 +42,39 @@ const NewClientProfile = () => {
   const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+  const [editdata, setEditData] = useState(null)
+  let useperma= useParams()
 
+  console.log(useperma)
+  
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }) 
+         
+        setEditData(data?.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+    feach();
+
+
   }, [urlTitle.pathname]);
+
  
+
+console.log(editdata)
 
   const formik = useFormik({
     initialValues: {
@@ -65,17 +90,7 @@ const NewClientProfile = () => {
       orgainization_id: "",
 
 
-      // category: category,
-      // client_name: client_name,
-      // location: location,
-      // upload_logo_file: upload_logo_file, 
-      // // jobtitle: jobtitle,
-      // add_new_feild: contact_no,
-
-      // discription:discription,
-      // contact_no:"",
-      // client_id:"",
-      // orgainization_id:"",
+      
     },
     validate,
     onSubmit: (values, { resetForm }) => {

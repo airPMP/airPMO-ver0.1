@@ -79,7 +79,8 @@ function App() {
         <Route path="/master/clients" element={<Clients />} />
         <Route path="/master/projects" element={<Projects />} />
         <Route path="/master/categories" element={<Categories />} />
-        <Route path="/master/clients/new_client" element={<NewClientProfile />} />
+        <Route path="/master/clients/new_client/" element={<NewClientProfile />} />
+        <Route path="/master/edit_client/:id" element={<NewClientProfile />} />
         <Route path="/master/clients/new_client/client_name" element={<ClientName />} />
         <Route path="/master/Projects/new_project" element={<NewProject />} />
         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
