@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { name } from 'ejs';
 import { Model } from 'mongoose';
@@ -21,20 +21,34 @@ export class ClientprofileService {
   }
 
  async findOne(id: string) {
-   return await this.clientModel.findOne({ "_id": id })
+   try{
+   const client = await this.clientModel.findOne({ "_id": id })
+   return client
+   }catch{
+     throw new NotFoundException("client not exist")
+   }
   }
 
  async update(id: string, updateClientprofileDto: UpdateClientprofileDto) {
-    const user=  await this.clientModel.updateOne({"_id":id},{"category":updateClientprofileDto.category, "client_name":updateClientprofileDto.client_name , "location":updateClientprofileDto.location,"upload_logo_file":updateClientprofileDto.upload_logo_file,  "add_new_feild":updateClientprofileDto.add_new_feild, "discription":updateClientprofileDto.discription,"client_id":updateClientprofileDto.client_id,"contact_no":updateClientprofileDto.contact_no,"orgainization_id":updateClientprofileDto.orgainization_id})
+   try{
+    const client=  await this.clientModel.updateOne({"_id":id},{...updateClientprofileDto})
     return {
       "massage":" Updated "
     }
+  }catch{
+    throw new NotFoundException("client not exist")
+  }
   }
 
  async remove(id:string) {
-  const deleteuser= await this.clientModel.deleteOne({ "_id":id })
+   try {
+    const client= await this.clientModel.deleteOne({ "_id":id })
     return {
       "massage":" Deleted "
     }
+   } catch {
+     throw new NotFoundException("client not exist")
+   }
+  
   }
 }

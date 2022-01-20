@@ -65,6 +65,12 @@ export class users {
   @Prop()
   designation: string;
 
+  @Prop()
+  is_employee: string;
+
+  @Prop()
+  roles: string;
+
 
   @Prop({ default: Date })
   createdAt: string;

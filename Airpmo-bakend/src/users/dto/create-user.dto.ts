@@ -1,6 +1,5 @@
-import { Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty,  IsOptional , IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty,  IsOptional  } from 'class-validator';
 export class CreateUserDto {
 
 
@@ -92,7 +91,11 @@ export class CreateUserDto {
     @ApiProperty()
     designation:string;
 
+    @ApiProperty()
+    is_employee: string;
 
+    @ApiProperty()
+    roles: string;
 }
 
 

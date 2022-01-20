@@ -20,7 +20,6 @@ export class ClientprofileController {
 
  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @UseGuards(AuthGuard('jwt'))
   @Get('client')
   findAll() {
     return this.clientprofileService.findAll();

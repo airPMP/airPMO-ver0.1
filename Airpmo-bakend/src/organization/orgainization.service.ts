@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { orgainization, orgainizationDocument } from 'src/schemas/organization.schema';
@@ -18,16 +18,34 @@ export class OrgainizationService {
     return this.orgainizationmodel.find();
   }
 
-  findOne(id: string) {
-    return this.orgainizationmodel.findById({"_id":id})
+ async findOne(id: string) {
+
+ try{
+    const orgainizationf = await this.orgainizationmodel.findById({"_id":id})
+    return orgainizationf 
+ }catch{
+   throw new NotFoundException("oraganization is not exist")
+ }
   }
 
-  update(id: string, updateOrgainizationDto: UpdateOrgainizationDto) {
-   const user =this.orgainizationmodel.updateMany({"_id":id},{...updateOrgainizationDto})
-   
+  async update(id: string, updateOrgainizationDto: UpdateOrgainizationDto) {
+    try{
+   const orgainizationu = await this.orgainizationmodel.updateMany({"_id":id},{...updateOrgainizationDto})
+   return{
+     "massage":"oraganization updated"
+   }
+  }catch{
+    throw new NotFoundException("oraganization is not exist")
   }
-  remove(id: string) {
-   return this.orgainizationmodel.deleteOne({"_id":id})
-    
+  }
+ async remove(id: string) {
+    try{
+   const orgainizationd = await this.orgainizationmodel.deleteOne({"_id":id})
+   return{
+     "massage":"orgainization Deleted"
+   }
+  }catch{
+    throw new NotFoundException("oraganization is not exist")
+  }
   }
 }

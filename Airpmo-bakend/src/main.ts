@@ -11,7 +11,6 @@ async function bootstrap() {
   .setTitle('API DOCUMENTATION')
   .setDescription('ALL ENDPOINTS INFORMATION IS AVAILABLE')
   .setVersion('1.0')
-  
   .addBearerAuth(
     {
       type: 'http',
