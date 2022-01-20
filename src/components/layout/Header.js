@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import NotificationBar from "./NotificationBar";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const Header = ({ title, sendPage }) => {
+
   let navigate = useNavigate();
   const [dp, setDp] = useState(false);
-let param = useLocation();
+  let param = useLocation();
   const sendStyle = (name) => {
     setDp(name);
-    //setDp(!dp);
-  };
-console.log(param.pathname);
-  console.log("dp for check", dp);
+     
+  }; 
+  
   return (
     <>
       <div className="flex flex-row w-[100vw] max-h-[100px] justify-between  mx-[20px] items-center border-b border-[#000000] lg:w-[75vw] xl:w[75vw] 2xl:w[85vw] sm:w-[75vw]">
