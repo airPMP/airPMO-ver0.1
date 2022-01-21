@@ -2,18 +2,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsJSON, IsNotEmpty, IsString } from "class-validator";
 export class CreateProjectDto {
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     project_name:string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     start_date:string;
 
-    @IsString()
-    @IsNotEmpty()
+    
     @ApiProperty()
     end_date:string;
 
@@ -38,19 +35,16 @@ export class CreateProjectDto {
     @ApiProperty()
     client_name:string;
 
-    @IsString()
-    @IsNotEmpty()
+    
     @ApiProperty()
     categories_id:string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     client_id:string;
 
 
-    @IsString()
-    @IsNotEmpty()
+    
     @ApiProperty()
     orgainization_id: string;
 
@@ -58,13 +52,11 @@ export class CreateProjectDto {
     @ApiProperty()
     discription: string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     min_hours:string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     max_hours:string;
 
@@ -77,8 +69,7 @@ export class CreateProjectDto {
     consultant_name:string;
 
 
-    @IsString()
-    @IsNotEmpty()
+    
     @ApiProperty()
     project_value: string;
 

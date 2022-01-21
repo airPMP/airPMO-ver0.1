@@ -16,19 +16,18 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    if(createUserDto.Password){
-    const saltOrRounds = 10;
-    const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
-    createUserDto.Password = hash;
+    if (createUserDto.Password) {
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
+      createUserDto.Password = hash;
     }
     const user = await this.usersModel.findOne({ "Email": createUserDto.Email })
-    if(!user)
-    {
-     return await this.usersModel.create(createUserDto)
+    if (!user) {
+      return await this.usersModel.create(createUserDto)
     }
-    else{
+    else {
       throw new UnauthorizedException("User already rigister")
-    } 
+    }
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
@@ -40,44 +39,44 @@ export class UsersService {
   findAll() {
     return this.usersModel.find();
   }
- 
- async update(id: string, updateUserDto: UpdateUserDto) {
-   try{
-   const user=await this.usersModel.updateMany({ "_id":id },{ ...updateUserDto } )
-    console.log(user)
-    return {
-      "massage":"User Updated"
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.usersModel.updateMany({ "_id": id }, { ...updateUserDto })
+      console.log(user)
+      return {
+        "massage": "User Updated"
+      }
+    } catch {
+      throw new NotFoundException("user not exist")
     }
-   }catch{
-     throw new NotFoundException("user not exist")
-   }
   }
 
- async remove(id: string) {
-    try{
-      const user = await this.usersModel.deleteOne({ "_id":id })
+  async remove(id: string) {
+    try {
+      const user = await this.usersModel.deleteOne({ "_id": id })
       return {
-        "massage":"user deleted"
+        "massage": "user deleted"
       }
     }
-    catch{
+    catch {
       throw new NotFoundException("user not exist")
-      
+
     }
   }
 
-       
- async findOne(id: string) {
-    try{
-  const user =await this.usersModel.findOne({ "_id": id })
-  return user
-  
+
+  async findOne(id: string) {
+    try {
+      const user = await this.usersModel.findOne({ "_id": id })
+      return user
+
     }
-    catch{
+    catch {
       throw new NotFoundException("user not exist")
-      
+
     }
-  
+
   }
 
 
@@ -88,20 +87,31 @@ export class UsersService {
     if (!user) {
       throw new UnauthorizedException("wrong user")
     }
-    else  {
-      if(updateUserDto.Password)
-      {
-      const saltOrRounds = 10;
-      const hash = await bcrypt.hash(updateUserDto.Password, saltOrRounds);
-      updateUserDto.Password = hash
+    else {
+      if (updateUserDto.Password) {
+        const saltOrRounds = 10;
+        const hash = await bcrypt.hash(updateUserDto.Password, saltOrRounds);
+        updateUserDto.Password = hash
       }
-      const updatedata = await this.usersModel.updateMany({ "Email": user.Email }, { "Email":updateUserDto.Email,"FirstName":updateUserDto.FirstName,"LastName":updateUserDto.LastName,"PhoneNumber":updateUserDto.PhoneNumber,"CompanyName":updateUserDto.CompanyName,"Comments":updateUserDto.Comments,"Password":updateUserDto.Password,})
+      const updatedata = await this.usersModel.updateMany({ "Email": user.Email }, { "Email": updateUserDto.Email, "FirstName": updateUserDto.FirstName, "LastName": updateUserDto.LastName, "PhoneNumber": updateUserDto.PhoneNumber, "CompanyName": updateUserDto.CompanyName, "Comments": updateUserDto.Comments, "Password": updateUserDto.Password, })
       return user
     }
-    
-
 
   }
+
+ async filterData(){
+ var user = await this.usersModel.find()
+   
+    
+    
+   for (let index = 0; index <user.length; index++) {
+    var element = [];
+    element[index] = user[0].FirstName;
+    // console.log(element[index])
+    
+   } 
+   return element
+ }
 
 
 }
