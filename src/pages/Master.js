@@ -4,9 +4,13 @@ import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
+import { CategorieLengthSet } from '../SimplerR/auth'
+
 const Master = () => {
+
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
+  const CategorieLengthget = CategorieLengthSet.use()
 
   useEffect(() => {
     if (urlTitle.pathname === "/master") {
@@ -14,7 +18,8 @@ const Master = () => {
     }
   }, [urlTitle.pathname]);
 
-  console.log("Master", urlTitle.pathname);
+  console.log(CategorieLengthget);
+
   return (
     <>
       <div className="flex flex-row justify-start overflow-hidden">
@@ -70,7 +75,7 @@ const Master = () => {
             <Link to={`/master/categories`}>
               <InjestionCardOnline
                 title={"Categories"}
-                totalNumber={1500}
+                totalNumber={500}
                 iconn={
                   <svg
                     width="45.64px"
