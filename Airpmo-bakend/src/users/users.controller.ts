@@ -9,6 +9,7 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 
 
+
 @ApiTags('Users api')
 @Controller('api')
 
@@ -20,6 +21,7 @@ export class UsersController {
     create(@Body() createUserDto: CreateUserDto) {
    return this.UsersService.create( createUserDto);
    }
+
 
   @ApiBearerAuth()
   @Get('users')
@@ -57,6 +59,14 @@ export class UsersController {
   async updateprofile(@Body() UpdateUserDto:UpdateUserDto,@Request() req) {
     return this.UsersService.updateprofile(UpdateUserDto,req);
   }
+
+@Get("fliterdata")
+  async filterData(){
+    return await  this.UsersService.filterData()
+  }
+
+
+
 }
 
 

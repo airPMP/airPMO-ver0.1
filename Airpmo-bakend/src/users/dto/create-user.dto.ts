@@ -92,7 +92,7 @@ export class CreateUserDto {
     designation:string;
 
     @ApiProperty()
-    is_employee: string;
+    is_employee: boolean;
 
     @ApiProperty()
     roles: string;

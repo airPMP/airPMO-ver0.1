@@ -66,7 +66,7 @@ export class users {
   designation: string;
 
   @Prop()
-  is_employee: string;
+  is_employee: boolean;
 
   @Prop()
   roles: string;
