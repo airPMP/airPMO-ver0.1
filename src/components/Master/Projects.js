@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import SideBar from '../layout/SideBar';
 import Header from '../layout/Header';
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
 const Projects = () => {
   const [title, setTitle] = useState(null);
-  const [projectdata, setProjectData] = useState(null)
+  const [projectdata, setProjectData] = useState(null) 
+  const [filteredData, setFilteredData] = useState(projectdata);
   let urlTitle = useLocation();
+  let navigate = useNavigate();
+
   useEffect(() => {
 
     if (urlTitle.pathname === "/master/projects") {
@@ -24,17 +27,63 @@ const Projects = () => {
         })
 
         setProjectData(data?.data)
+        setFilteredData(data?.data)
       } catch (error) {
         console.log(error)
       }
     }
     feach();
-
-    console.log(projectdata)
+    handleSearch();
 
   }, [urlTitle.pathname])
 
-  console.log(projectdata)
+  const handleSearch = (e) => {
+
+    let value = e?.target?.value?.toUpperCase();
+    let result = []
+    console.log("functiom iahsdi")
+    result = projectdata?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.client_name?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+    setFilteredData(result)
+
+    if (value === "") {
+      setFilteredData(projectdata)
+    }
+  }
+
+   
+  const DeleteProfile =(e)=>{ 
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/projects/${e}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (data?.status === 200){
+          console.log("2000 get data")
+          window.location.reload(false);
+        }
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach(); 
+  }
+
+  const EditProfile = (e) => {
+    console.log(e)
+    navigate(`/master/edit_project/${e}`)
+  }
+
+  console.log(filteredData)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -93,6 +142,7 @@ const Projects = () => {
               </div>
               <div className="bg-[#FFFFFF] pl-[7px]">
                 <input
+                onChange={(e) => handleSearch(e)}
                   type="text"
                   placeholder="Search for user"
                   className="outline-none"
@@ -112,7 +162,7 @@ const Projects = () => {
                   <td className="pl-[140px]   ">Actions</td>
                 </tr>
               </thead>
-              {projectdata?.map((item, i) => {
+              {filteredData?.map((item, i) => {
                 return <tbody className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="py-[13px]  bg-[#ECF1F0]" >
                     <td className="pl-[2%] ">
@@ -123,7 +173,8 @@ const Projects = () => {
                     <td className="pl-[15%]">{item?.end_date}</td>
                     <td className=" pl-[15%] pr-[10px]">
                       <div className="flex flex-row space-x-xl">
-                        <div>
+                        <div className="cursor-pointer" 
+                        onClick={(e) => EditProfile(item._id)}>
                           <svg
                             width="19"
                             height="20"
@@ -137,7 +188,8 @@ const Projects = () => {
                             />
                           </svg>
                         </div>
-                        <div>
+                        <div className="cursor-pointer" 
+                        onClick={(e) => DeleteProfile(item._id)}>
                           <svg
                             width="18"
                             height="21"

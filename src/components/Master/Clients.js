@@ -64,6 +64,29 @@ const Clients = ({ addNewCliient }) => {
     navigate(`/master/edit_client/${e}`)
   }
 
+  const DeleteProfile =(e)=>{ 
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/client/${e}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (data?.status === 200){
+          console.log("2000 get data")
+          window.location.reload(false);
+        }
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach();
+
+
+  }
   
 
   return (
@@ -164,7 +187,8 @@ const Clients = ({ addNewCliient }) => {
                   return <tbody key={i} className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                     <tr className="bg-[#ECF1F0]">
                       <td className="pl-[10px]">
-                        <img src={item?.upload_logo_file} style={{ width: "53px", height: "53px", borderRadius: "50%" }} />
+                        <img src={item?.upload_logo_file}
+                         style={{ width: "53px", height: "53px", borderRadius: "50%" }} />
 
                       </td>
                       <td className="pl-[140px]">{item?.client_name}</td>
@@ -187,7 +211,8 @@ const Clients = ({ addNewCliient }) => {
                               />
                             </svg>
                           </div>
-                          <div className="cursor-pointer">
+                          <div className="cursor-pointer" 
+                          onClick={(e) => DeleteProfile(item._id)}>
                             <svg
                               width="18"
                               height="21"

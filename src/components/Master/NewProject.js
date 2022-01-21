@@ -15,28 +15,28 @@ import { reactLocalStorage } from "reactjs-localstorage";
 const validate = (values) => {   
 
   const errors = {};
-  if (!values.category) {
-    errors.category = "Category Required";
-  }
-  if (!values.client_name) {
-    errors.client_name = "Client Name Required";
-  }
-  if (!values.uploadLogoFile) {
-    errors.uploadLogoFile = "uploadLogoFile Required";
-  }
+  // if (!values.category) {
+  //   errors.category = "Category Required";
+  // }
+  // if (!values.client_name) {
+  //   errors.client_name = "Client Name Required";
+  // }
+  // if (!values.uploadLogoFile) {
+  //   errors.uploadLogoFile = "uploadLogoFile Required";
+  // }
 
-  if (!values.project_name) {
-    errors.project_name = "project_name Required";
-  }
+  // if (!values.project_name) {
+  //   errors.project_name = "project_name Required";
+  // }
   // if (!values.addNewField) {
   //   errors.addNewField = "Add New Field Required";
   // }
-  if (!values.addNewField2) {
-    errors.addNewField2 = "Company Name Required";
-  }
-  if (!values.discription) {
-    errors.discription = "discription Required";
-  }
+  // if (!values.addNewField2) {
+  //   errors.addNewField2 = "Company Name Required";
+  // }
+  // if (!values.discription) {
+  //   errors.discription = "discription Required";
+  // }
   
   return errors;
 };
@@ -100,7 +100,31 @@ const NewProject = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
-      resetForm()
+     values.client_name=somedata
+       // const formData = new FormData();
+      // formData.append('img', fileName[0]);
+      // console.log(`Form data`, values);
+      // values.upload_logo_file = formData
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values)
+        .then((response) => {
+          console.log(response)
+          if (response.status === 201) {
+            // addToast("form submitted Sucessfully", {
+            //   appearance: "success",
+            //   autoDismiss: true,
+            // })
+            // navigate('/')
+          }
+          resetForm()
+        })
+        .catch((error) => {
+          console.log(error)
+          // addToast("form submitted fail", {
+          //   appearance: "error",
+          //   autoDismiss: true,
+          // })
+        })
+
     },
   });
   return (
@@ -137,7 +161,7 @@ const NewProject = () => {
                     }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
                     {projectdata?.map((item, id) => {
-                      return <option  
+                      return <option key={id} 
                       > {item.client_name}</option>
                     })}
                   </select>
