@@ -67,7 +67,7 @@ const Projects = () => {
           },
         })
         if (data?.status === 200){
-          console.log("2000 get data")
+          
           window.location.reload(false);
         }
         console.log(data)

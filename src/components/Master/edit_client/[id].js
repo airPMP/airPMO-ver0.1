@@ -42,8 +42,10 @@ const EditClientProfile = () => {
   const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+  const { addToast } = useToasts();
   const [editdata, setEditData] = useState(null)
-  
+  const [truedata,setTrueData]= useState(false)
+
   const [clintnamedata, setClintName] = useState("")
   const [location, setLocation] = useState("")
   const [uploadlogofile, setUploadLogoFile] = useState("")
@@ -62,14 +64,14 @@ const EditClientProfile = () => {
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
-      try {
-        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, {
+        try {
+          const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
 
-        setEditData(data?.data) 
+        setEditData(data?.data)
         setClintName(data?.data?.client_name)
         setLocation(data?.data?.location)
         setUploadLogoFile(data?.data?.upload_logo_file)
@@ -87,13 +89,13 @@ const EditClientProfile = () => {
 
 
 
-  const SaveButton = () => {
+  const SaveButton =  (e) => {
 
-    console.log("enter in save buttton")
+    e.preventDefault()
+
     const token = reactLocalStorage.get("access_token", false);
 
-    axios
-      .patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, { 
+      axios.patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}/`, {
         add_new_feild: addnewfield,
         category: " ",
         client_id: " ",
@@ -105,22 +107,19 @@ const EditClientProfile = () => {
         orgainization_id: " ",
         updatedAt: " ",
         upload_logo_file: uploadlogofile,
-      },{
+      }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        console.log(response)
-        // if (response.status === 201) {
-
-        //   addToast("Login  Sucessfully", {
-        //     appearance: "success",
-        //     autoDismiss: true,
-        //   })
-        //   reactLocalStorage.set("access_token", response?.data?.token);
-        //   navigate('/dashboard')
-        // }
+      .then((response)  => { 
+        if (response.status === 200) { 
+          addToast("Profile is Edit Sucessfully", {
+            appearance: "success",
+            autoDismiss: true,
+          })
+           
+        }
         // else {
 
         //   addToast("login fail", {
@@ -131,23 +130,21 @@ const EditClientProfile = () => {
       })
       .catch((error) => {
         console.log(error)
-        // addToast("login fail", {
-        //   appearance: "error",
-        //   autoDismiss: true,
-        // })
+        addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+        })
         // navigate('/');
 
       });
 
   }
+  
+  if(truedata){
+    console.log("done deta")
+  }
 
-
-  console.log(uploadlogofile)
-
-
-
-
-
+  console.log(truedata)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -196,7 +193,7 @@ const EditClientProfile = () => {
                     <option>Demo Name</option>
                   </select> */}
                   <input
-                     
+
                     type="text"
                     value={clintnamedata}
                     onChange={(e) => setClintName(e.target.value)}
@@ -215,7 +212,7 @@ const EditClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-                     
+
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -237,8 +234,8 @@ const EditClientProfile = () => {
                 <div className=" relative w-[350px]">
                   {
                     <>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={uploadlogofile}
                         onChange={(e) => setUploadLogoFile(e.target.value)}
                         className="peer h-10 w-full  font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -265,7 +262,7 @@ const EditClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-                    
+
                     type="text"
                     value={addnewfield}
                     onChange={(e) => setAddNewField(e.target.value)}
@@ -287,8 +284,8 @@ const EditClientProfile = () => {
                 </div>
                 <div className=" relative w-[350px]">
                   <input
-                   
-                    type="text" 
+
+                    type="text"
                     value={contactno}
                     onChange={(e) => setContactNo(e.target.value)}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -310,7 +307,7 @@ const EditClientProfile = () => {
               <div className="flex flex-col ">
                 <div className="relative max-w-[860px]">
                   <input
-                     
+
                     type="text"
                     value={discription}
                     onChange={(e) => setDiscription(e.target.value)}

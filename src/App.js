@@ -38,6 +38,8 @@ import QuantitySheet from "./components/Injestion/QuantitySheet";
 import ResetPassword from "./pages/ResetPassword";
 import EditClientProfile from "./components/Master/edit_client/[id]";
 import EditProject from "./components/Master/edit_project/[id]";
+import AddCategories from "./components/Master/AddCategories";
+import EditCategories from "./components/Master/edit_categories/[id]";
 
 function App() {
   return (
@@ -80,6 +82,8 @@ function App() {
         <Route path="master" element={<Master />} />
         <Route path="/master/clients" element={<Clients />} />
         <Route path="/master/projects" element={<Projects />} />
+        <Route path="/master/categories/add_categories" element={<AddCategories />} />
+        <Route path="/master/edit_categories/:id" element={<EditCategories/>} />
         <Route path="/master/categories" element={<Categories />} />
         <Route path="/master/clients/new_client/" element={<NewClientProfile />} />
         <Route path="/master/edit_client/:id" element={<EditClientProfile />} />
