@@ -43,6 +43,7 @@ const NewClientProfile = () => {
   const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
@@ -88,20 +89,19 @@ const NewClientProfile = () => {
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
-            // addToast("form submitted Sucessfully", {
-            //   appearance: "success",
-            //   autoDismiss: true,
-            // })
+            addToast("Client is Added Sucessfully", {
+              appearance: "success",
+              autoDismiss: true,
+            })
             // navigate('/')
           }
           resetForm()
         })
-        .catch((error) => {
-          console.log(error)
-          // addToast("form submitted fail", {
-          //   appearance: "error",
-          //   autoDismiss: true,
-          // })
+        .catch((error) => { 
+          addToast(error.response.data.message, {
+            appearance: "error",
+            autoDismiss: true,
+          })
         })
     },
   });

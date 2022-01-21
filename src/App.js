@@ -36,6 +36,8 @@ import MyJobCards from "./components/JobCards/MyJobCards";
 import HRMS from "./components/Injestion/HRMS";
 import QuantitySheet from "./components/Injestion/QuantitySheet";
 import ResetPassword from "./pages/ResetPassword";
+import EditClientProfile from "./components/Master/edit_client/[id]";
+import EditProject from "./components/Master/edit_project/[id]";
 
 function App() {
   return (
@@ -80,9 +82,10 @@ function App() {
         <Route path="/master/projects" element={<Projects />} />
         <Route path="/master/categories" element={<Categories />} />
         <Route path="/master/clients/new_client/" element={<NewClientProfile />} />
-        <Route path="/master/edit_client/:id" element={<NewClientProfile />} />
+        <Route path="/master/edit_client/:id" element={<EditClientProfile />} />
         <Route path="/master/clients/new_client/client_name" element={<ClientName />} />
         <Route path="/master/Projects/new_project" element={<NewProject />} />
+        <Route path="/master/edit_project/:id" element={<EditProject/>} />
         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
         <Route path="/master/Projects/zone_list" element={<ZoneList />} />
         {
