@@ -3,59 +3,116 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
+import axios from "axios";
+import { useToasts } from "react-toast-notifications";
+
+
 const validate = (values) => {
+
+  console.log(values)
+
   const errors = {};
-  if (!values.category) {
-    errors.category = "Category Required";
+  // if (!values.category) {
+  //   errors.category = "Category Required";
+  // }
+  if (!values.client_name) {
+    errors.client_name = "Client Name Required";
   }
-  if (!values.clientName) {
-    errors.clientName = "Client Name Required";
-  }
-  if (!values.uploadLogoFile) {
-    errors.uploadLogoFile = "uploadLogoFile Required";
-  }
+  // if (!values.upload_logo_file) {
+  //   errors.upload_logo_file = "upload_logo_file Required";
+  // }
 
   if (!values.location) {
     errors.location = "Location Required";
   }
-  if (!values.addNewField) {
-    errors.addNewField = "Add New Field Required";
+  if (!values.add_new_feild) {
+    errors.add_new_feild = "Add New Field Required";
   }
-  if (!values.addNewField2) {
-    errors.addNewField2 = "Company Name Required";
+  if (!values.contact_no) {
+    errors.contact_no = "Company Name Required";
   }
-  if (!values.description) {
-    errors.description = "description Required";
+  if (!values.discription) {
+    errors.discription = "discription Required";
   }
   // console.log(errors);
   return errors;
 };
 const NewClientProfile = () => {
+
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+  const { addToast } = useToasts();
+
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
   }, [urlTitle.pathname]);
+ 
 
   const formik = useFormik({
     initialValues: {
       category: "",
-      clientName: "",
+      client_name: "",
       location: "",
-      uploadLogoFile: "",
-      jobtitle: "",
-      addNewField2: "",
-      description: "",
+      upload_logo_file: "",
+      add_new_feild: "",
+      discription: "",
+      contact_no: "",
+      // jobtitle: "",
+      client_id: "",
+      orgainization_id: "",
+
+
+      // category: category,
+      // client_name: client_name,
+      // location: location,
+      // upload_logo_file: upload_logo_file, 
+      // // jobtitle: jobtitle,
+      // add_new_feild: contact_no,
+
+      // discription:discription,
+      // contact_no:"",
+      // client_id:"",
+      // orgainization_id:"",
     },
     validate,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: (values, { resetForm }) => {
+
+      // const formData = new FormData();
+      // formData.append('img', fileName[0]);
       // console.log(`Form data`, values);
+      // values.upload_logo_file = formData
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values)
+        .then((response) => {
+          console.log(response)
+          if (response.status === 201) {
+            addToast("Client is Added Sucessfully", {
+              appearance: "success",
+              autoDismiss: true,
+            })
+            // navigate('/')
+          }
+          resetForm()
+        })
+        .catch((error) => { 
+          addToast(error.response.data.message, {
+            appearance: "error",
+            autoDismiss: true,
+          })
+        })
     },
   });
+
+
+  const SaveButton = () => {
+
+
+  }
+
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -90,17 +147,38 @@ const NewClientProfile = () => {
                     <option>Cateogry</option>
                   </select>
                 </div>
-                <div className="relative w-[350px] border-b border-black pb-[10px]">
-                  <select
+                <div className="relative w-[350px]">
+                {/* <div className="relative w-[350px] border-b border-black pb-[10px]"> */}
+                  {/* <select
                     onChange={() => {
                       naviagte("/master/clients/new_client/client_name");
                     }}
                     className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-            37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
                   >
                     <option>Client Name</option>
                     <option>Demo Name</option>
-                  </select>
+                  </select> */}
+                  <input
+                    id="client_name"
+                    name="client_name"
+                    type="text"
+                    value={formik.values.client_name}
+                    onChange={formik.handleChange}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="client_name"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                  >
+                   Client Name
+                  </label>
+                  {formik.errors.client_name && (
+                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                      {formik.errors.client_name}{" "}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -129,19 +207,19 @@ const NewClientProfile = () => {
                 <div className=" relative w-[350px]">
                   {
                     <>
-                      <input
+                      {/* <input
                         type="file"
                         onChange={(e) => {
-                          setFileName(e.target.files[0].name);
+                          setFileName(e.target.files);
                         }}
                         name="uploadfile"
                         className=" absolute z-[10] opacity-0 "
-                      />
+                      /> */}
                       <input
-                        id="uploadLogoFile"
+                        id="upload_logo_file"
                         type="text"
-                        name="uploadLogoFile"
-                        value={formik.values.uploadLogoFile}
+                        name="upload_logo_file"
+                        value={formik.values.upload_logo_file}
                         onChange={formik.handleChange}
                         className="peer h-10 w-full  font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                         placeholder="Password"
@@ -149,18 +227,17 @@ const NewClientProfile = () => {
                     </>
                   }
                   <label
-                    htmlFor="uploadLogoFile"
+                    htmlFor="upload_logo_file"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    {` ${
-                      fileName
-                        ? `Uploaded Logo File - ${fileName}`
-                        : "Upload Logo File"
-                    }  `}
+                    {` ${fileName
+                      ? `Uploaded Logo File - ${fileName}`
+                      : "Upload Logo File"
+                      }  `}
                   </label>
-                  {formik.errors.uploadLogoFile && (
+                  {formik.errors.upload_logo_file && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.uploadLogoFile}{" "}
+                      {formik.errors.upload_logo_file}{" "}
                     </div>
                   )}
                 </div>
@@ -168,45 +245,45 @@ const NewClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-                    id="addNewField"
-                    name="addNewField"
+                    id="add_new_feild"
+                    name="add_new_feild"
                     type="text"
-                    value={formik.values.addNewField}
+                    value={formik.values.add_new_feild}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="addNewField"
+                    htmlFor="add_new_feild"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     Add new field
                   </label>
-                  {formik.errors.addNewField && (
+                  {formik.errors.add_new_feild && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.addNewField}{" "}
+                      {formik.errors.add_new_feild}{" "}
                     </div>
                   )}
                 </div>
                 <div className=" relative w-[350px]">
                   <input
-                    id="addNewField2"
+                    id="contact_no"
                     type="text"
-                    name="addNewField2"
-                    value={formik.values.addNewField2}
+                    name="contact_no"
+                    value={formik.values.contact_no}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="Password"
                   />
                   <label
-                    htmlFor="addNewField2"
+                    htmlFor="contact_no"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     Add new field
                   </label>
-                  {formik.errors.addNewField2 && (
+                  {formik.errors.contact_no && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.addNewField2}{" "}
+                      {formik.errors.contact_no}{" "}
                     </div>
                   )}
                 </div>
@@ -214,23 +291,23 @@ const NewClientProfile = () => {
               <div className="flex flex-col ">
                 <div className="relative max-w-[860px]">
                   <input
-                    id="description"
-                    name="description"
+                    id="discription"
+                    name="discription"
                     type="text"
-                    value={formik.values.description}
+                    value={formik.values.discription}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="description"
+                    htmlFor="discription"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Description
+                    Discription
                   </label>
-                  {formik.errors.description && (
+                  {formik.errors.discription && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.description}{" "}
+                      {formik.errors.discription}{" "}
                     </div>
                   )}
                 </div>
@@ -248,6 +325,7 @@ const NewClientProfile = () => {
                 </div>
                 <div>
                   <button
+                    // onClick={(e) => SaveButton(e)}
                     type="submit"
                     className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                   >
