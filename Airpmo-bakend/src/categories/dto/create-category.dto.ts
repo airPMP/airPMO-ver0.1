@@ -13,21 +13,16 @@ export class CreateCategoryDto {
         type:string;
     
 
-        @IsNotEmpty()
-        @IsString()
         @ApiProperty()
         discription:string;
 
 
-        @IsNotEmpty()
-        @IsString()
         @ApiProperty()
         categories_id:string;
 
       
 
-        @IsNotEmpty()
-        @IsString()
+       
         @ApiProperty()
         orgainization_id: string;
 
