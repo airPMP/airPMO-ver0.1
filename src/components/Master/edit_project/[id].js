@@ -99,10 +99,11 @@ const EditProject = () => {
                 console.log(response)
                 if (response.status === 200) {
 
-                    addToast("Edit new Project Sucessfully", {
+                    addToast("Edit Project Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
+                    naviagte("/master/projects")
                     //   reactLocalStorage.set("access_token", response?.data?.token);
                     //   navigate('/dashboard')
                 }

@@ -77,7 +77,7 @@ const EditCategories = () => {
             appearance: "success",
             autoDismiss: true,
           })
-           
+          naviagte("/master/categories")
         }
         
       })
