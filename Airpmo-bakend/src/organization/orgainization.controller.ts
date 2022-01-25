@@ -35,4 +35,10 @@ export class OrgainizationController {
   remove(@Param('id') id: string) {
     return this.orgainizationService.remove(id);
   }
+
+  @Get('/user/:user_id/organization')
+  finduser(@Param('user_id') user_id: string) {
+    return this.orgainizationService.finduser(user_id);
+  }
+
 }

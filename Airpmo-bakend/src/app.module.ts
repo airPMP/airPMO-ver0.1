@@ -15,6 +15,9 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProjectsModule } from './projects/projects.module';
 import { OrgainizationModule } from './organization/orgainization.module';
 import { APP_FILTER } from '@nestjs/core';
+import { ZoneModule } from './zone/zone.module';
+import { SubzoneModule } from './subzone/subzone.module';
+import { SubdividedzoneModule } from './subdividedzone/subdividedzone.module';
 
 
 
@@ -29,7 +32,7 @@ import { APP_FILTER } from '@nestjs/core';
     w: 'majority',
     retryWrites: true
   }
-      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ],
+      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, ],
 
 
 })

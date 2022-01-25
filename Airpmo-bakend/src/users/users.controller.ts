@@ -60,11 +60,16 @@ export class UsersController {
     return this.UsersService.updateprofile(UpdateUserDto,req);
   }
 
-@Get("fliterdata")
-  async filterData(){
-    return await  this.UsersService.filterData()
-  }
 
+
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/organization/:oraganization_id/find_organization')
+  findorganization(@Param('oraganization_id') oraganization_id: string ) {
+    return this.UsersService.findorganization(oraganization_id);
+   
+  }
 
 
 }

@@ -25,9 +25,6 @@ export class Client {
     discription:string;
 
     @Prop()
-    client_id:string;
-
-    @Prop()
     orgainization_id: string;
 
     @Prop()
