@@ -5,15 +5,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { CategorieLengthSet } from '../../SimplerR/auth'
 import axios from "axios";
+import Popup from "reactjs-popup";
 
 const Categories = () => {
 
-  const [title, setTitle] = useState(null);
-
-  const [categoriesdata, setCategoriesData] = useState(null)
-
-  const [filteredData, setFilteredData] = useState(categoriesdata);
-
+  const [title, setTitle] = useState(null); 
+  const [open, setOpen] = useState(false); 
+  const [categoriesdata, setCategoriesData] = useState(null) 
+  const [filteredData, setFilteredData] = useState(categoriesdata); 
   const CategorieLengthget = CategorieLengthSet.use()
 
   let urlTitle = useLocation();
@@ -72,6 +71,7 @@ const Categories = () => {
   }
 
   const DeleteProfile = (e) => {
+    setOpen(o => !o)
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
@@ -90,11 +90,11 @@ const Categories = () => {
         console.log(error)
       }
     }
-    feach();
-
-
+    feach(); 
   }
-
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+  }
 
   return (
 
@@ -178,7 +178,7 @@ const Categories = () => {
                     <th className="px-[250px] py-[13px]">{item.type}</th>
                     <th className=" py-[13px]">
                       <div className="flex flex-row space-x-xl">
-                        <div className="cursor-pointer"
+                        <div className="cursor-pointer" 
                           onClick={(e) => EditProfile(item._id)} >
                           <svg
                             width="19"
@@ -194,7 +194,8 @@ const Categories = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer"
-                          onClick={(e) => DeleteProfile(item._id)}>
+                         onClick={(e) => setOpen(o => !o)}
+                           >
                           <svg
                             width="18"
                             height="21"
@@ -214,7 +215,37 @@ const Categories = () => {
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
+                  <Popup
+                        open={open}
+                        position="right center"
+                        model
+                      >
+                        <div className="p-7">
+                          <div className="flex pb-3">
+                            <div>
 
+                            </div>
+                            <div style={{ marginLeft: "90%" }}>
+                              <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                                <b>X</b>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-3">
+                            <h3>
+                              Are You sure You Want to Delete 
+                            </h3>
+                          </div>
+                          <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                            <button
+                             onClick={(e) => DeleteProfile(item._id)}
+                              className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                              Yes
+                            </button>
+                          </div>
+                        </div>
+
+                      </Popup>
                 </tbody>
               })}
             </table>

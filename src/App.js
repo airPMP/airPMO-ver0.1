@@ -40,6 +40,8 @@ import EditClientProfile from "./components/Master/edit_client/[id]";
 import EditProject from "./components/Master/edit_project/[id]";
 import AddCategories from "./components/Master/AddCategories";
 import EditCategories from "./components/Master/edit_categories/[id]";
+import SuperAdmin from "./pages/SuperAdmin";
+import UserEmpolyee from "./pages/UserEmpolyee";
 
 function App() {
   return (
@@ -83,13 +85,13 @@ function App() {
         <Route path="/master/clients" element={<Clients />} />
         <Route path="/master/projects" element={<Projects />} />
         <Route path="/master/categories/add_categories" element={<AddCategories />} />
-        <Route path="/master/edit_categories/:id" element={<EditCategories/>} />
+        <Route path="/master/edit_categories/:id" element={<EditCategories />} />
         <Route path="/master/categories" element={<Categories />} />
         <Route path="/master/clients/new_client/" element={<NewClientProfile />} />
         <Route path="/master/edit_client/:id" element={<EditClientProfile />} />
         <Route path="/master/clients/new_client/client_name" element={<ClientName />} />
         <Route path="/master/Projects/new_project" element={<NewProject />} />
-        <Route path="/master/edit_project/:id" element={<EditProject/>} />
+        <Route path="/master/edit_project/:id" element={<EditProject />} />
         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
         <Route path="/master/Projects/zone_list" element={<ZoneList />} />
         {
@@ -114,7 +116,10 @@ function App() {
         <Route path="/DataInjestion/HRMS" element={<HRMS />} />
         <Route path="/DataInjestion/QuantitySheet" element={<QuantitySheet />} />
 
-        {
+        {/* superAmin pages */}
+        <Route path="super_admin" element={<SuperAdmin/>}/>
+        <Route path="user_empolyee" element={<UserEmpolyee/>}/>
+          {
           /*<Route path="/master/clients" element={<Clients />} />
          <Route path="/master/projects" element={<Projects />} />
          <Route path="/master/categories" element={<Categories />} />

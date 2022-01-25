@@ -39,8 +39,8 @@ const DashBoard = () => {
     reactLocalStorage.clear();
     navigate('/')
 
-    addToast("LogOut  submitted ", {
-      appearance: "error",
+    addToast("Logout  Sucessfully ", {
+      appearance: "success",
       autoDismiss: true,
     })
   }
