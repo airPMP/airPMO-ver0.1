@@ -38,4 +38,25 @@ export class ProjectsController {
   remove(@Param('id') id: string) {
     return this.projectsService.remove(id);
   }
+
+
+  @ApiBearerAuth()
+  @Get('organization/:organization_id/project')
+  findorganization(@Param('organization_id') organization_id: string) {
+    return this.projectsService.findorganization(organization_id);
+  }
+
+
+  @ApiBearerAuth()
+  @Get('catagories/:catagories_id/project')
+  findcatagories(@Param('catagories_id') catagories_id: string) {
+    return this.projectsService.findcatagories(catagories_id);
+  }
+
+
+  @ApiBearerAuth()
+  @Get('client/:client_id/project')
+  findclient(@Param('client_id') client_id: string) {
+    return this.projectsService.findclient(client_id);
+  }
 }
