@@ -7,42 +7,49 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
-  constructor(@InjectModel(Categories.name) private categoriesModel: Model<CategoriesDocument>){}
- async create(createCategoryDto: CreateCategoryDto) {
-    return await this. categoriesModel.create(createCategoryDto)
+  constructor(@InjectModel(Categories.name) private categoriesModel: Model<CategoriesDocument>) { }
+  async create(createCategoryDto: CreateCategoryDto) {
+    return await this.categoriesModel.create(createCategoryDto)
   }
 
- async findAll() {
-    return await this. categoriesModel.find()
+  async findAll() {
+    return await this.categoriesModel.find()
   }
 
- async findOne(id: string) {
-   try{
-    const user = await this.categoriesModel.findById({_id:id})
-    return user
-  }catch{
-    throw new NotFoundException("categories not exist")
-  }
- }
- async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-   try{
-   const user = await this.categoriesModel.updateOne({"_id":id},{"name":updateCategoryDto.name,"type":updateCategoryDto.type," discription":updateCategoryDto.discription, "categories_id":updateCategoryDto.categories_id,"orgainization_id":updateCategoryDto.orgainization_id})
-    return{
-      "massage":"categories Updated"
+  async findOne(id: string) {
+    try {
+      const user = await this.categoriesModel.findById({ _id: id })
+      return user
+    } catch {
+      throw new NotFoundException("categories not exist")
     }
-  }catch{
-    throw new NotFoundException("categories not exist")
   }
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const user = await this.categoriesModel.updateOne({ "_id": id }, { "name": updateCategoryDto.name, "type": updateCategoryDto.type, " discription": updateCategoryDto.discription,  "orgainization_id": updateCategoryDto.orgainization_id })
+      return {
+        "massage": "categories Updated"
+      }
+    } catch {
+      throw new NotFoundException("categories not exist")
+    }
   }
 
- async remove(id: string) {
-   try{
-  const user = await this.categoriesModel.deleteOne({"_id":id})
-  return {
-    "massage":"categories Deleted"
+  async remove(id: string) {
+    try {
+      const user = await this.categoriesModel.deleteOne({ "_id": id })
+      return {
+        "massage": "categories Deleted"
+      }
+    } catch {
+      throw new NotFoundException("categories not exist")
+    }
   }
-}catch{
-  throw new NotFoundException("categories not exist")
+
+async  findorganization(organization_id:string){
+  const findorgaize = await this.categoriesModel.find({"orgainization_id":organization_id})
+  return findorgaize
 }
-  }
+
+
 }

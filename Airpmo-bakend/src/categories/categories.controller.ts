@@ -44,4 +44,12 @@ export class CategoriesController {
   remove(@Param('id') id: string) {
     return this.categoriesService.remove(id);
   }
+
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('organization/:organization_id/categories')
+  findorganization(@Param('organization_id') organization_id: string) {
+    return this.categoriesService.findorganization(organization_id);
+  }
 }

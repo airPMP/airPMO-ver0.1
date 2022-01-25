@@ -16,13 +16,7 @@ export class CreateCategoryDto {
         @ApiProperty()
         discription:string;
 
-
-        @ApiProperty()
-        categories_id:string;
-
       
-
-       
         @ApiProperty()
         orgainization_id: string;
 

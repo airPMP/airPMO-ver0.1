@@ -99,19 +99,9 @@ export class UsersService {
 
   }
 
- async filterData(){
- var user = await this.usersModel.find()
-   
-    
-    
-   for (let index = 0; index <user.length; index++) {
-    var element = [];
-    element[index] = user[0].FirstName;
-    // console.log(element[index])
-    
-   } 
-   return element
- }
-
+async findorganization(oraganization_id:string){
+  const organization = await this.usersModel.find({organization_id:oraganization_id})
+  return organization
+}
 
 }

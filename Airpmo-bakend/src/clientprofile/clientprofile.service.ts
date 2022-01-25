@@ -51,4 +51,10 @@ export class ClientprofileService {
    }
   
   }
+
+
+  async findorganization(organization_id:string){
+    const organization = await this.clientModel.find({"orgainization_id":organization_id})
+    return organization
+  }
 }

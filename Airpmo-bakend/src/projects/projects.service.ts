@@ -48,5 +48,22 @@ catch{
    }
     
   }
-  
+ 
+ async findorganization(organization_id:string){
+   const projectorganization = await this.projectModel.find({"orgainization_id":organization_id})
+   return projectorganization
+ }
+
+
+async findcatagories(catagories_id:string){
+  const  catagoriesdata = await this.projectModel.find({"categories_id":catagories_id})
+  return catagoriesdata
 }
+
+
+async findclient(client_id:string){
+  const  clientdata = await this.projectModel.find({"client_id":client_id})
+  return clientdata
+}
+}
+

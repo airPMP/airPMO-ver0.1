@@ -44,4 +44,13 @@ export class ClientprofileController {
   remove(@Param('id') id: string) {
     return this.clientprofileService.remove(id);
   }
+
+
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/organization/:organization_id/client')
+  findorganization(@Param('organization_id') organization_id: string) {
+    return this.clientprofileService.findorganization(organization_id);
+  }
 }

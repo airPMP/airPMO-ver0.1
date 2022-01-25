@@ -1,21 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CategoriesDocument = Categories & Document;
+export type subzoneDocument = subzone & Document;
 
 @Schema()
-export class Categories {
+export class subzone {
     @Prop()
-    name:string;
+    subzone_name:string;
 
-    @Prop()
-    type:string;
     
     @Prop()
     discription:string;
 
     @Prop()
-    orgainization_id: string;
+     zone_id:string;
+    
+     @Prop()
+     organization_id:string;
 
     @Prop({default:Date})
     createdAt: string;
@@ -25,4 +26,4 @@ export class Categories {
   
 }
 
-export const CategoriesSchema = SchemaFactory.createForClass(Categories);
+export const subzoneSchema = SchemaFactory.createForClass(subzone);
