@@ -1,20 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { ConsoleLogger, Injectable, UnauthorizedException } from '@nestjs/common';
 import { loginusersDto } from 'src/users/dto/login-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { createSecretKey, sign, verify } from 'crypto';
-import { throwError } from 'rxjs';
-import { Console } from 'console';
-import { jwtConstants } from './constants';
+import { RolesService } from 'src/roles/roles.service';
+
 
 @Injectable()
 export class AuthService {
 
-
-  constructor(private usersService: UsersService, private jwtService: JwtService){ }
+  constructor(private usersService: UsersService, private jwtService: JwtService,private roleService: RolesService){ }
 
   async validateUser(loginusersDto: loginusersDto): Promise<any> {
 
@@ -31,36 +26,49 @@ export class AuthService {
         throw new UnauthorizedException("Unauthorized")
       }
       else {
-        const payload = { FirstName: user.FirstName, Email: user.Email};
-      
+     
+       let roles= await this.roleService.userroles(user.id);
+
+       var per=[];
+       var role_name=[]; 
+       for(let i=0;i<roles.length;i++)
+       {
+
+        var per=per.concat(roles[i].permission);
+        role_name.push(roles[i].name);
+
+       }
+       var permission=this.arrayUnique(per);
+       
+        const payload = { FirstName: user.FirstName, Email: user.Email,roles:role_name,permission:permission};
         const token = this.jwtService.sign(payload)
        
-          
-        
         if (!token) {
           throw new UnauthorizedException
         }
         else {
         
-          return {token,user};
+          return {"access_token":token,"user":user,"roles":role_name,"permissions":permission};
         }
       }
     }
   }
+
+   arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] == a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
   
 
 }
 
-
-
-
-    // console.log(user.Email)
-    // console.log(loginusersDto.Password)
-    // const saltOrRounds = 10;
-    // const hash = await bcrypt.hash(user.Password,saltOrRounds);
-    // console.log(hash)
-    // const isMactchh =   await bcrypt.compare(user.Password,hash);
-    //  console.log(isMactchh)
 
 
 

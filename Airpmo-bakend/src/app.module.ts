@@ -3,18 +3,13 @@ dotenv.config()
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose'
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { UsersController } from './users/users.controller';
-import { AuthService } from './auth/auth.service';
-import { UsersService } from './users/users.service';
 import { ForgetModule } from './forget/forget.module';
-import { ForgetService } from './forget/forget.service';
 import { ClientprofileModule } from './clientprofile/clientprofile.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProjectsModule } from './projects/projects.module';
 import { OrgainizationModule } from './organization/orgainization.module';
-import { APP_FILTER } from '@nestjs/core';
+import { RolesModule } from './roles/roles.module';
 
 
 
@@ -29,8 +24,7 @@ import { APP_FILTER } from '@nestjs/core';
     w: 'majority',
     retryWrites: true
   }
-      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ],
-
-
+      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, RolesModule, ],
+      
 })
 export class AppModule {}

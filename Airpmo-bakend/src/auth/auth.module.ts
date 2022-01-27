@@ -11,6 +11,7 @@ import { jwtConstants } from './constants';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RolesModule } from 'src/roles/roles.module';
 
 
 
@@ -21,7 +22,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
     
     secret: jwtConstants.secret,
     signOptions: { expiresIn: '24h' },
-  }),],
+  }),RolesModule],
   providers: [AuthService,JwtStrategy,
    JwtAuthGuard,
   ],

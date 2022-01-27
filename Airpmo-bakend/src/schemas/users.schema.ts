@@ -32,7 +32,6 @@ export class users {
   @Prop()
   Password: string;
 
-
   @Prop()
   organization_id: string;
 
@@ -68,10 +67,7 @@ export class users {
   @Prop()
   is_employee: boolean;
 
-  @Prop()
-  roles: string;
-
-
+  
   @Prop({ default: Date })
   createdAt: string;
 

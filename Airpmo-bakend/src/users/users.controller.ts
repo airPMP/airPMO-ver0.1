@@ -2,13 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UsePipes, Valid
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { users } from 'src/schemas/users.schema';
-import { loginusersDto } from './dto/login-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-
-
-
 
 @ApiTags('Users api')
 @Controller('api')
