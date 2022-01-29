@@ -3,13 +3,13 @@ import { loginusersDto } from 'src/users/dto/login-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { RolesService } from 'src/roles/roles.service';
+import { UserRolesService } from 'src/user-roles/user-roles.service';
 
 
 @Injectable()
 export class AuthService {
 
-  constructor(private usersService: UsersService, private jwtService: JwtService,private roleService: RolesService){ }
+  constructor(private usersService: UsersService, private jwtService: JwtService,private userroleService: UserRolesService){ }
 
   async validateUser(loginusersDto: loginusersDto): Promise<any> {
 
@@ -20,14 +20,14 @@ export class AuthService {
     }
     else {
 
-      const isMactchh = await bcrypt.compare(loginusersDto.Password, user.Password);
+      const isMatch = await bcrypt.compare(loginusersDto.Password, user.Password);
 
-      if (!isMactchh) {
+      if (!isMatch) {
         throw new UnauthorizedException("Unauthorized")
       }
       else {
      
-       let roles= await this.roleService.userroles(user.id);
+       let roles= await this.userroleService.userroles(user.id);
 
        var per=[];
        var role_name=[]; 

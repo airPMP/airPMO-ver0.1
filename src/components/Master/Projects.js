@@ -4,10 +4,13 @@ import Header from '../layout/Header';
 import { useLocation,useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
+import Popup from "reactjs-popup";
+
 const Projects = () => {
   const [title, setTitle] = useState(null);
   const [projectdata, setProjectData] = useState(null) 
   const [filteredData, setFilteredData] = useState(projectdata);
+  const [open, setOpen] = useState(false);
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -57,6 +60,7 @@ const Projects = () => {
 
    
   const DeleteProfile =(e)=>{ 
+    setOpen(o => !o)
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
@@ -67,7 +71,7 @@ const Projects = () => {
           },
         })
         if (data?.status === 200){
-          console.log("2000 get data")
+          
           window.location.reload(false);
         }
         console.log(data)
@@ -83,7 +87,11 @@ const Projects = () => {
     navigate(`/master/edit_project/${e}`)
   }
 
-  console.log(filteredData)
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+  }
+
+ 
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -189,7 +197,8 @@ const Projects = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer" 
-                        onClick={(e) => DeleteProfile(item._id)}>
+                        onClick={(e) => setOpen(o => !o)}
+                        >
                           <svg
                             width="18"
                             height="21"
@@ -209,6 +218,38 @@ const Projects = () => {
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
+
+                  <Popup
+                        open={open}
+                        position="right center"
+                        model
+                      >
+                        <div className="p-7">
+                          <div className="flex pb-3">
+                            <div>
+
+                            </div>
+                            <div style={{ marginLeft: "90%" }}>
+                              <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                                <b>X</b>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-3">
+                            <h3>
+                              Are You sure You Want to Delete 
+                            </h3>
+                          </div>
+                          <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                            <button
+                             onClick={(e) => DeleteProfile(item._id)}
+                              className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                              Yes
+                            </button>
+                          </div>
+                        </div>
+
+                      </Popup>
 
                 </tbody>
               })}

@@ -15,9 +15,6 @@ export class Categories {
     discription:string;
 
     @Prop()
-    categories_id:string;
-
-    @Prop()
     orgainization_id: string;
 
     @Prop({default:Date})

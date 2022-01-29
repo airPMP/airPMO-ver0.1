@@ -2,14 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
 
 @ApiTags('Roles')
-@ApiBearerAuth()
 @Controller('api')
-@UseGuards(AuthGuard('jwt'))
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
@@ -44,8 +41,14 @@ export class RolesController {
   }
 
   @Auth('GET-ROLES')
-  @Get('user/:user_id/roles')
-  finduserroles(@Param('user_id') user_id: string) {
-    return this.rolesService.userroles(user_id);
+  @Get('project/:project_id/roles')
+  find_project_roles(@Param('project_id') project_id: string) {
+    return this.rolesService.projectroles(project_id);
+  }
+
+  @Auth('GET-ROLES')
+  @Get('organization/:organization_id/roles')
+  findorganizationroles(@Param('organization_id') organization_id: string) {
+    return this.rolesService.findorganizationroles(organization_id);
   }
 }

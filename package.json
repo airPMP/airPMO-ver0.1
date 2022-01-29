@@ -16,6 +16,7 @@
     "react-toastify": "^8.1.0",
     "reactjs-localstorage": "^1.0.1",
     "reactjs-popup": "^2.0.5",
+    "simpler-state": "^1.0.3",
     "web-vitals": "^2.1.2"
   },
   "scripts": {

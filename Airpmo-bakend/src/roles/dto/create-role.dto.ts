@@ -15,5 +15,12 @@ description: string;
 permission: [];
 
 @ApiProperty() 
-user_id: string;
+organization_id: string;
+
+@ApiProperty() 
+  project_id: string;
+
+@ApiProperty() 
+  is_assign_to_all_project: boolean;
+
 }

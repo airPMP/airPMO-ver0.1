@@ -22,6 +22,7 @@ const EditProject = () => {
     let urlTitle = useLocation();
     let naviagte = useNavigate();
     let useperma = useParams()
+    const { addToast } = useToasts();
 
     const [projectdata, setProjectData] = useState(null)
     const [somedata, setdeta] = useState("");
@@ -64,7 +65,8 @@ const EditProject = () => {
     }, [urlTitle.pathname]);
 
 
-    const SaveButton = () => {
+    const SaveButton = (e) => {
+        e.preventDefault()
 
         console.log("enter in save buttton")
         const token = reactLocalStorage.get("access_token", false);
@@ -95,14 +97,15 @@ const EditProject = () => {
             })
             .then((response) => {
                 console.log(response)
-                if (response.status === 201) {
+                if (response.status === 200) {
 
-                //   addToast("Login  Sucessfully", {
-                //     appearance: "success",
-                //     autoDismiss: true,
-                //   })
-                //   reactLocalStorage.set("access_token", response?.data?.token);
-                //   navigate('/dashboard')
+                    addToast("Edit Project Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    })
+                    naviagte("/master/projects")
+                    //   reactLocalStorage.set("access_token", response?.data?.token);
+                    //   navigate('/dashboard')
                 }
                 // else {
 
@@ -177,7 +180,7 @@ const EditProject = () => {
                                         htmlFor="project_name"
                                         className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                                     >
-                                        Project Name
+                                        Client Name
                                     </label>
                                 </div>
                                 <div className="relative w-[350px]">

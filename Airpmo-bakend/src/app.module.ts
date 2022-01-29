@@ -10,21 +10,19 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProjectsModule } from './projects/projects.module';
 import { OrgainizationModule } from './organization/orgainization.module';
 import { RolesModule } from './roles/roles.module';
-
-
-
-
+import { ZoneModule } from './zone/zone.module';
+import { SubzoneModule } from './subzone/subzone.module';
+import { SubdividedzoneModule } from './subdividedzone/subdividedzone.module';
+import { UserRolesModule } from './user-roles/user-roles.module';
 
 @Module({
-
   imports: [MongooseModule.forRoot('mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT, {
     user:process.env.DB_USERNAME,
     pass:process.env.DB_PASSWORD,
     dbName:process.env.DATABASE,
     w: 'majority',
     retryWrites: true
-  }
-      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, RolesModule, ],
-      
+  }), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule],
+
 })
 export class AppModule {}

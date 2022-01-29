@@ -7,10 +7,9 @@ import { UpdateOrgainizationDto } from './dto/update-orgainization.dto';
 
 @Injectable()
 export class OrgainizationService {
-  constructor(@InjectModel(orgainization.name) private orgainizationmodel:Model<orgainizationDocument>) {}
- 
+  constructor(@InjectModel(orgainization.name) private orgainizationmodel: Model<orgainizationDocument>) { }
+
   create(createOrgainizationDto: CreateOrgainizationDto) {
-    console.log(createOrgainizationDto)
     return this.orgainizationmodel.create(createOrgainizationDto)
   }
 
@@ -18,34 +17,40 @@ export class OrgainizationService {
     return this.orgainizationmodel.find();
   }
 
- async findOne(id: string) {
+  async findOne(id: string) {
 
- try{
-    const orgainizationf = await this.orgainizationmodel.findById({"_id":id})
-    return orgainizationf 
- }catch{
-   throw new NotFoundException("oraganization is not exist")
- }
+    try {
+      const orgainizationf = await this.orgainizationmodel.findById({ "_id": id })
+      return orgainizationf
+    } catch {
+      throw new NotFoundException("oraganization is not exist")
+    }
   }
 
   async update(id: string, updateOrgainizationDto: UpdateOrgainizationDto) {
-    try{
-   const orgainizationu = await this.orgainizationmodel.updateMany({"_id":id},{...updateOrgainizationDto})
-   return{
-     "massage":"oraganization updated"
-   }
-  }catch{
-    throw new NotFoundException("oraganization is not exist")
+    try {
+      const orgainizationu = await this.orgainizationmodel.updateMany({ "_id": id }, { ...updateOrgainizationDto })
+      return {
+        "massage": "oraganization updated"
+      }
+    } catch {
+      throw new NotFoundException("oraganization is not exist")
+    }
   }
+  async remove(id: string) {
+    try {
+      const orgainizationd = await this.orgainizationmodel.deleteOne({ "_id": id })
+      return {
+        "massage": "orgainization Deleted"
+      }
+    } catch {
+      throw new NotFoundException("oraganization is not exist")
+    }
   }
- async remove(id: string) {
-    try{
-   const orgainizationd = await this.orgainizationmodel.deleteOne({"_id":id})
-   return{
-     "massage":"orgainization Deleted"
-   }
-  }catch{
-    throw new NotFoundException("oraganization is not exist")
+
+  async finduser(user_id: string) {
+    const finduser = await this.orgainizationmodel.find({ "user_id":user_id })
+    return finduser
   }
-  }
+
 }

@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Document } from 'mongoose';
-import { User } from 'src/users/entities/user.entity';
 
 export type ussersDocument = users & Document;
 
@@ -28,15 +26,11 @@ export class users {
   @Prop()
   Comments: string;
 
-
   @Prop()
   Password: string;
 
   @Prop()
   organization_id: string;
-
-  @Prop()
-  mob_no: string;
 
   @Prop()
   district: string;
@@ -56,18 +50,12 @@ export class users {
   @Prop()
   image: string;
 
-
   @Prop()
   spread_sheet_user_id: string;
 
-
-  @Prop()
-  designation: string;
-
-  @Prop()
+  @Prop({ default: false })
   is_employee: boolean;
 
-  
   @Prop({ default: Date })
   createdAt: string;
 

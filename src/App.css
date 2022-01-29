@@ -37,3 +37,20 @@ top:-20px
     height: 100px;
     transition: transform 330ms ease-in-out;
 } */
+
+.popup-overlay{
+    background-color: rgb(109, 108, 109);
+     
+}
+.popup-content{
+    width: 63% !important;
+}
+.ex1 {
+
+    padding: inherit;
+    justify-items: center;
+    background-color: rgb(255, 255, 255);
+    height:500px;
+    width: 100%;
+    overflow-y: scroll;
+  }

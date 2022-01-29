@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import SideBar from '../layout/SideBar';
 import Header from '../layout/Header';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { CategorieLengthSet } from '../../SimplerR/auth'
 import axios from "axios";
+import Popup from "reactjs-popup";
 
 const Categories = () => {
 
-  const [title, setTitle] = useState(null);
-
-  const [categoriesdata, setCategoriesData] = useState(null)
+  const [title, setTitle] = useState(null); 
+  const [open, setOpen] = useState(false); 
+  const [categoriesdata, setCategoriesData] = useState(null) 
+  const [filteredData, setFilteredData] = useState(categoriesdata); 
+  const CategorieLengthget = CategorieLengthSet.use()
 
   let urlTitle = useLocation();
+  let navigate = useNavigate();
+  console.log(CategorieLengthget)
   useEffect(() => {
 
     if (urlTitle.pathname === "/master/categories") {
@@ -26,16 +32,70 @@ const Categories = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-
+         
         setCategoriesData(data?.data)
+        setFilteredData(data?.data)
       } catch (error) {
         console.log(error)
       }
     }
     feach();
+    handleSearch();
+
+       
 
   }, [urlTitle.pathname])
-  console.log(categoriesdata)
+
+
+  const handleSearch = (e) => {
+
+    let value = e?.target?.value?.toUpperCase();
+    let result = []
+    console.log("functiom iahsdi")
+    result = categoriesdata?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.name?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+    setFilteredData(result)
+
+    if (value === "") {
+      setFilteredData(categoriesdata)
+    }
+  }
+
+  const EditProfile = (e) => {
+    console.log(e)
+    navigate(`/master/edit_categories/${e}`)
+  }
+
+  const DeleteProfile = (e) => {
+    setOpen(o => !o)
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/Categories/${e}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (data?.status === 200) {
+
+          window.location.reload(false);
+        }
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach(); 
+  }
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+  }
+
   return (
 
     <div className="flex flex-row justify-start overflow-hidden">
@@ -93,6 +153,7 @@ const Categories = () => {
               </div>
               <div className="bg-[#FFFFFF] pl-[7px]">
                 <input
+                  onChange={(e) => handleSearch(e)}
                   type="text"
                   placeholder="Search for user"
                   className="outline-none"
@@ -110,14 +171,15 @@ const Categories = () => {
                   <th className=" px-[15px] py-[13px]">Actions</th>
                 </tr>
               </thead>
-              {categoriesdata?.map((item, i) => {
+              {filteredData?.map((item, i) => {
                 return <tbody className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="bg-[#ECF1F0]">
                     <th className="pr-[70px] py-[13px]">{item.name}</th>
                     <th className="px-[250px] py-[13px]">{item.type}</th>
                     <th className=" py-[13px]">
                       <div className="flex flex-row space-x-xl">
-                        <div>
+                        <div className="cursor-pointer" 
+                          onClick={(e) => EditProfile(item._id)} >
                           <svg
                             width="19"
                             height="20"
@@ -131,7 +193,9 @@ const Categories = () => {
                             />
                           </svg>
                         </div>
-                        <div>
+                        <div className="cursor-pointer"
+                         onClick={(e) => setOpen(o => !o)}
+                           >
                           <svg
                             width="18"
                             height="21"
@@ -151,7 +215,37 @@ const Categories = () => {
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
+                  <Popup
+                        open={open}
+                        position="right center"
+                        model
+                      >
+                        <div className="p-7">
+                          <div className="flex pb-3">
+                            <div>
 
+                            </div>
+                            <div style={{ marginLeft: "90%" }}>
+                              <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                                <b>X</b>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-3">
+                            <h3>
+                              Are You sure You Want to Delete 
+                            </h3>
+                          </div>
+                          <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                            <button
+                             onClick={(e) => DeleteProfile(item._id)}
+                              className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                              Yes
+                            </button>
+                          </div>
+                        </div>
+
+                      </Popup>
                 </tbody>
               })}
             </table>
