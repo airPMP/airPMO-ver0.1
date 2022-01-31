@@ -94,11 +94,7 @@ const Clients = ({ addNewCliient }) => {
 
   const CancelButton = (e) => {
     setOpen(o => !o)
-  }
-
-
-
-
+  } 
 
   return (
     <>
