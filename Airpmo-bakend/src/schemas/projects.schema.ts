@@ -8,67 +8,75 @@ export type projectDocument = project & Document;
 
 export class project {
     @Prop()
-   project_name:string;
+    project_name: string;
 
     @Prop()
-   start_date:string;
-    
+    start_date: string;
+
     @Prop()
-   end_date:string;
+    end_date: string;
 
-   @Prop()
-   discription:string;
+    @Prop()
+    discription: string;
 
-   @Prop()
-   zone_name:string;
+    @Prop()
+    zone_name: string;
 
-   @Prop()
-   zone_discription:string;
+    @Prop()
+    zone_discription: string;
 
-   @Prop()
-   subzone_name:string;
+    @Prop()
+    subzone_name: string;
 
-   @Prop()
-   subzone_discription:string;
+    @Prop()
+    subzone_discription: string;
 
-   @Prop()
-   client_name:string;
+    @Prop()
+    client_name: string;
 
-   @Prop()
-   categories_id:string;
-
-
-   @Prop()
-   client_id:string;
-
-   @Prop()
-   orgainization_id: string;
+    @Prop()
+    categories_id: string;
 
 
-   @Prop()
-   min_hours:string;
+    @Prop()
+    client_id: string;
 
-   @Prop()
-   max_hours:string;
+    @Prop()
+    orgainization_id: string;
 
-   @Prop()
-   location:string;
+    @Prop()
+    min_hours: string;
 
+    @Prop()
+    max_hours: string;
 
-   @Prop()
-   consultant_name:string;
+    @Prop()
+    location: string;
 
-   @Prop()
-   project_value: string;
-   
-   @Prop({default:Date})
-   createdAt: string;
+    @Prop()
+    consultant_name: string;
 
-   @Prop({default:Date})
-   updatedAt:string;
+    @Prop()
+    project_value: string;
 
-   
-  
+    @Prop()
+    category: string;
+
+    @Prop()
+    sub_category: string;
+
+    @Prop()
+    spread_sheet_key: string;
+
+    @Prop({ default: Date })
+    createdAt: string;
+
+    @Prop({ default: Date })
+    updatedAt: string;
+
+    @Prop()
+    project_id: string;
+
 }
 
 export const projectSchema = SchemaFactory.createForClass(project);

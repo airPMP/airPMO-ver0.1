@@ -26,7 +26,7 @@ export class CategoriesService {
   }
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     try {
-      const user = await this.categoriesModel.updateOne({ "_id": id }, { "name": updateCategoryDto.name, "type": updateCategoryDto.type, " discription": updateCategoryDto.discription,  "orgainization_id": updateCategoryDto.orgainization_id })
+      const user = await this.categoriesModel.updateOne({ "_id": id }, { "category": updateCategoryDto.category, "sub_category": updateCategoryDto.sub_category, "discription": updateCategoryDto.discription,  "orgainization_id": updateCategoryDto.orgainization_id })
       return {
         "massage": "categories Updated"
       }

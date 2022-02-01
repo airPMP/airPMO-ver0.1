@@ -10,8 +10,7 @@ export class CreateClientprofileDto {
     @ApiProperty()
     client_name:string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     location:string;
 
@@ -19,25 +18,32 @@ export class CreateClientprofileDto {
     @ApiProperty()
     upload_logo_file:string;
 
-    @IsString()
-    @IsNotEmpty()
     @ApiProperty()
     add_new_feild:string;
 
   
     
-    @IsString()
-    @IsNotEmpty()
+    
     @ApiProperty()
     discription:string;
 
-    @IsString()
-    @IsNotEmpty()
+   
     @ApiProperty()
     contact_no:string;
 
   
     @ApiProperty()
     orgainization_id: string;
+
+
+    @ApiProperty()
+    address:string;
+
+
+    @ApiProperty()
+    client_id:string;
+
+    @ApiProperty()
+    sub_category:string;
 
 }
