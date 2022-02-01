@@ -8,8 +8,18 @@ export type excelDocument = excels & Document;
 export class excels {
  
  
-   @Prop()
-   array:[{Object}] 
+ @Prop()
+  s_no:string
+  @Prop()
+  first_name:string
+  @Prop()
+  last_name:string
+  @Prop()
+  country:string
+  @Prop()
+  age:string
+  @Prop()
+  id:string
 }
 
 export const excelSchema = DefinitionsFactory.createForClass(excels);

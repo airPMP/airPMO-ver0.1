@@ -20,16 +20,13 @@ export class ExcelService {
     const sheetName = workBook?.SheetNames[0];
     const sheet: xlsx.WorkSheet = workBook.Sheets[sheetName];
     const jsonData = xlsx.utils.sheet_to_json(sheet, { dateNF: 'YYYY-MM-DD', });
-    var element = []
-    for (let index = 0; index < jsonData.length; index++) {
-      element[index] = jsonData[index];
-    
-      
-    }
-    console.log(element)
-    const user= await this.excelModel.create(element)
-   
+    console.log(jsonData[0])
+    return await this.excelModel.create(jsonData[0])
+  //   var element = []
+  //   for (let index = 0; index < jsonData.length; index++) {
 
+  //   return  await this.excelModel.create(element[index] = jsonData[index]);
+  //   }
   }
 
 
