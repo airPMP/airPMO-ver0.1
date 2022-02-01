@@ -77,6 +77,12 @@ export class project {
     @Prop()
     project_id: string;
 
+    @Prop()
+    time_sheet_id: string;
+
+    @Prop()
+    spread_sheet_id: string;
+
 }
 
 export const projectSchema = SchemaFactory.createForClass(project);

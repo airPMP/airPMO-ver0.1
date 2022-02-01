@@ -66,4 +66,10 @@ export class CreateProjectDto {
     @ApiProperty()
     project_id:string;
 
+    @ApiProperty()
+    time_sheet_id: string;
+
+    @ApiProperty()
+    spread_sheet_id: string;
+
 }
