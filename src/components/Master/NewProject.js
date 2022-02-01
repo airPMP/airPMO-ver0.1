@@ -12,15 +12,15 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
 
-const validate = (values) => {   
+const validate = (values) => {
 
   const errors = {};
   // if (!values.category) {
   //   errors.category = "Category Required";
   // }
-  // if (!values.client_name) {
-  //   errors.client_name = "Client Name Required";
-  // }
+  if (!values.client_name) {
+    errors.client_name = "Client Name Required";
+  }
   // if (!values.uploadLogoFile) {
   //   errors.uploadLogoFile = "uploadLogoFile Required";
   // }
@@ -37,24 +37,28 @@ const validate = (values) => {
   // if (!values.discription) {
   //   errors.discription = "discription Required";
   // }
-  
+
   return errors;
 };
 const NewProject = () => {
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState(false);
-  const [somedata, setdeta] = useState("");
+  const [client_name_data, setdeta] = useState("");
 
   const closeModal = () => setOpen(false);
   const closeModalSub = () => setOpenSub(false);
   const [title, setTitle] = useState(null); // the lifted state
   const [projectdata, setProjectData] = useState(null)
+  const [categoriesdata, setCategoriesData] = useState(null)
+  const [category, setCategory] = useState(null)
+  const [subcategory, setSubCategory] = useState(null)
 
 
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+  const { addToast } = useToasts();
 
-   
+
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/projects/new_project") {
@@ -76,22 +80,40 @@ const NewProject = () => {
     }
     feach();
 
+
+    const feach1 = async () => {
+      try {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setCategoriesData(data?.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach1();
+
   }, [urlTitle.pathname]);
 
-  console.log(projectdata)
 
   const formik = useFormik({
     initialValues: {
-      project_name: "", 
+      project_name: "",
+      min_hours: "",
+      max_hours: "",
       start_date: "",
       end_date: "",
       zone_name: "",
-      zone_discription: "",
+      project_id: "",
+      project_value: "",
       subzone_name: "",
       subzone_discription: "",
       client_name: "",
       category: "",
-      discription: "", 
+      sub_category: "",
+      discription: "",
       uploadLogoFile: "",
       jobtitle: "",
       addNewField2: "",
@@ -100,8 +122,10 @@ const NewProject = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
-     values.client_name=somedata
-       // const formData = new FormData();
+      values.client_name = client_name_data
+      values.category = category
+      values.sub_category = subcategory
+      // const formData = new FormData();
       // formData.append('img', fileName[0]);
       // console.log(`Form data`, values);
       // values.upload_logo_file = formData
@@ -109,20 +133,20 @@ const NewProject = () => {
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
-            // addToast("form submitted Sucessfully", {
-            //   appearance: "success",
-            //   autoDismiss: true,
-            // })
+            addToast("Project is Added Sucessfully", {
+              appearance: "success",
+              autoDismiss: true,
+            })
             // navigate('/')
           }
           resetForm()
         })
         .catch((error) => {
           console.log(error)
-          // addToast("form submitted fail", {
-          //   appearance: "error",
-          //   autoDismiss: true,
-          // })
+          addToast(error.response.data.message, {
+            appearance: "error",
+            autoDismiss: true,
+          })
         })
 
     },
@@ -154,17 +178,31 @@ const NewProject = () => {
 
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[16px]">
-                <div className="relative w-[350px] border-b border-black ">
-                  <select
-                    onChange={(e) => {
-                      setdeta(e.target.value);
-                    }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                  <div className="relative w-[165px] border-b border-black ">
+                    <select
+                      onChange={(e) => {
+                        setCategory(e.target.value);
+                      }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
-                    {projectdata?.map((item, id) => {
-                      return <option key={id} 
-                      > {item.client_name}</option>
-                    })}
-                  </select>
+                      {categoriesdata?.map((item, id) => {
+                        return <option key={id}
+                        > {item.category}</option>
+                      })}
+                    </select>
+                  </div>
+                  <div className="relative w-[165px] border-b border-black ">
+                    <select
+                      onChange={(e) => {
+                        setSubCategory(e.target.value);
+                      }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+                      {categoriesdata?.map((item, id) => {
+                        return <option key={id}
+                        > {item.sub_category}</option>
+                      })}
+                    </select>
+                  </div>
                 </div>
                 <div className="relative w-[350px]">
                   <input
@@ -183,9 +221,47 @@ const NewProject = () => {
                     Project Name
                   </label>
                   {
-                      formik.errors.project_name && (
+                    formik.errors.project_name && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                         {formik.errors.project_name}{" "}
+                      </div>
+                    )
+                  }
+                </div>
+              </div>
+              <div className="flex flex-row space-x-20 pb-[16px]">
+                <div className="relative w-[350px]  border-b border-black">
+                  <select
+                    onChange={(e) => {
+                      setdeta(e.target.value);
+                    }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+                    {projectdata?.map((item, id) => {
+                      return <option key={id}
+                      > {item.client_name}</option>
+                    })}
+                  </select>
+                </div>
+                <div className=" relative w-[350px]">
+                  <input
+                    id="project_id"
+                    type="text"
+                    name="project_id"
+                    value={formik.values.project_id}
+                    onChange={formik.handleChange}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                    placeholder="Password"
+                  />
+                  <label
+                    htmlFor="project_id"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                  >
+                    Project ID
+                  </label>
+                  {
+                    formik.errors.project_id && (
+                      <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                        {formik.errors.project_id}{" "}
                       </div>
                     )
                   }
@@ -197,7 +273,7 @@ const NewProject = () => {
                     <input
                       id="start_date"
                       name="start_date"
-                      type="text"
+                      type="date"
                       value={formik.values.start_date}
                       onChange={formik.handleChange}
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -210,7 +286,7 @@ const NewProject = () => {
                       Start Date
                     </label>
                     {
-                        formik.errors.start_date && (
+                      formik.errors.start_date && (
                         <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                           {formik.errors.start_date}{" "}
                         </div>
@@ -221,7 +297,7 @@ const NewProject = () => {
                     <input
                       id="end_date"
                       name="end_date"
-                      type="text"
+                      type="date"
                       value={formik.values.end_date}
                       onChange={formik.handleChange}
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
@@ -234,7 +310,7 @@ const NewProject = () => {
                       End Date
                     </label>
                     {
-                        formik.errors.end_date && (
+                      formik.errors.end_date && (
                         <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                           {formik.errors.end_date}{" "}
                         </div>
@@ -256,10 +332,10 @@ const NewProject = () => {
                     htmlFor="discription"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                   >
-                    discription
+                    Project Discription
                   </label>
                   {
-                      formik.errors.discription && (
+                    formik.errors.discription && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                         {formik.errors.discription}{" "}
                       </div>
@@ -269,49 +345,77 @@ const NewProject = () => {
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
-                  <input
-                    id="zone_name"
-                    name="zone_name"
-                    type="text"
-                    value={formik.values.zone_name}
-                    onChange={formik.handleChange}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="zone_name"
-                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
-                  >
-                    Zone Name
-                  </label>
-                  {
-                      formik.errors.zone_name && (
-                      <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.zone_name}{" "}
-                      </div>
-                    )
-                  }
+                  <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                    <div className="relative w-[165px]">
+                      <input
+                        id="min_hours"
+                        name="min_hours"
+                        type="text"
+                        value={formik.values.min_hours}
+                        onChange={formik.handleChange}
+                        className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                        placeholder="john@doe.com"
+                      />
+                      <label
+                        htmlFor="min_hours"
+                        className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                      >
+                        Min hours
+                      </label>
+                      {
+                        formik.errors.min_hours && (
+                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                            {formik.errors.min_hours}{" "}
+                          </div>
+                        )
+                      }
+                    </div>
+                    <div className="relative w-[165px]">
+                      <input
+                        id="max_hours"
+                        name="max_hours"
+                        type="text"
+                        value={formik.values.max_hours}
+                        onChange={formik.handleChange}
+                        className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                        placeholder="john@doe.com"
+                      />
+                      <label
+                        htmlFor="max_hours"
+                        className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                      >
+                        Max hours
+                      </label>
+                      {
+                        formik.errors.max_hours && (
+                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                            {formik.errors.max_hours}{" "}
+                          </div>
+                        )
+                      }
+                    </div>
+                  </div>
                 </div>
                 <div className=" relative w-[350px]">
                   <input
-                    id="zone_discription"
+                    id="project_value"
                     type="text"
-                    name="zone_discription"
-                    value={formik.values.zone_discription}
+                    name="project_value"
+                    value={formik.values.project_value}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
                     placeholder="Password"
                   />
                   <label
-                    htmlFor="zone_discription"
+                    htmlFor="project_value"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                   >
-                    Zone discription
+                    Project value
                   </label>
                   {
-                      formik.errors.zone_discription && (
+                    formik.errors.project_value && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.zone_discription}{" "}
+                        {formik.errors.project_value}{" "}
                       </div>
                     )
                   }
@@ -332,10 +436,10 @@ const NewProject = () => {
                     htmlFor="subzone_name"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                   >
-                    Subzone Name
+                    Time Sheet ID
                   </label>
                   {
-                      formik.errors.addNewField && (
+                    formik.errors.addNewField && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                         {formik.errors.addNewField}{" "}
                       </div>
@@ -356,10 +460,10 @@ const NewProject = () => {
                     htmlFor="subzone_discription"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                   >
-                    Subzone discription
+                    Spreadsheet ID
                   </label>
                   {
-                      formik.errors.subzone_discription && (
+                    formik.errors.subzone_discription && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                         {formik.errors.subzone_discription}{" "}
                       </div>
@@ -402,7 +506,7 @@ const NewProject = () => {
                 </div>
                 <div className="flex flex-row">
                   <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                    <button onClick={() => { naviagte("/master/projects") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                       Cancel
                     </button>
                   </div>

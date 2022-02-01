@@ -98,22 +98,13 @@ const EditProject = () => {
             .then((response) => {
                 console.log(response)
                 if (response.status === 200) {
-
                     addToast("Edit Project Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
                     naviagte("/master/projects")
-                    //   reactLocalStorage.set("access_token", response?.data?.token);
-                    //   navigate('/dashboard')
                 }
-                // else {
 
-                //   addToast("login fail", {
-                //     appearance: "error",
-                //     autoDismiss: true,
-                //   })
-                // }
             })
             .catch((error) => {
                 console.log(error)
@@ -121,8 +112,7 @@ const EditProject = () => {
                 //   appearance: "error",
                 //   autoDismiss: true,
                 // })
-                // navigate('/');
-
+                // navigate('/'); 
             });
 
     }
@@ -155,8 +145,9 @@ const EditProject = () => {
 
                         <form  >
                             <div className="flex flex-row space-x-20 pb-[16px]">
-                                <div className="relative w-[350px] border-b border-black ">
-                                    {/* <select
+                                <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                                    <div className="relative w-[165px] border-b border-black ">
+                                        {/* <select
                                         onChange={(e) => {
                                             setdeta(e.target.value);
                                         }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
@@ -167,21 +158,50 @@ const EditProject = () => {
                                         })}
                                     </select> */}
 
-                                    <input
-                                        id="project_name"
-                                        name="project_name"
-                                        type="text"
-                                        value={clintnamedata}
-                                        onChange={(e) => setClintName(e.target.value)}
-                                        className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
-                                        placeholder="john@doe.com"
-                                    />
-                                    <label
-                                        htmlFor="project_name"
-                                        className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
-                                    >
-                                        Client Name
-                                    </label>
+                                        <input
+                                            id="project_name"
+                                            name="project_name"
+                                            type="text"
+                                            value={clintnamedata}
+                                            onChange={(e) => setClintName(e.target.value)}
+                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                                            placeholder="john@doe.com"
+                                        />
+                                        <label
+                                            htmlFor="project_name"
+                                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                                        >
+                                            Category
+                                        </label>
+                                    </div>
+                                    <div className="relative w-[165px] border-b border-black ">
+                                        {/* <select
+                                        onChange={(e) => {
+                                            setdeta(e.target.value);
+                                        }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+                                        {projectdata?.map((item, id) => {
+                                            return <option key={id}
+                                            > {item.client_name}</option>
+                                        })}
+                                    </select> */}
+
+                                        <input
+                                            id="project_name"
+                                            name="project_name"
+                                            type="text"
+                                            value={clintnamedata}
+                                            onChange={(e) => setClintName(e.target.value)}
+                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                                            placeholder="john@doe.com"
+                                        />
+                                        <label
+                                            htmlFor="project_name"
+                                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                                        >
+                                            Sub Category
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="relative w-[350px]">
                                     <input
@@ -210,11 +230,57 @@ const EditProject = () => {
                             </div>
                             <div className="flex flex-row space-x-20 pb-[16px]">
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
-                                    <div className="relative w-[165px]">
+                                     
                                         <input
                                             id="start_date"
                                             name="start_date"
                                             type="text"
+                                            value={startdate}
+                                            onChange={(e) => setStartDate(e.target.value)}
+                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                            placeholder="john@doe.com"
+                                        />
+                                        <label
+                                            htmlFor="start_date"
+                                            className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                                        >
+                                          Client Name
+                                        </label> 
+                                    
+                                     
+                                </div>
+                                <div className=" relative w-[350px]">
+                                    <input
+                                        id="discription"
+                                        type="text"
+                                        name="discription"
+                                        value={discription}
+                                        onChange={(e) => setDiscription(e.target.value)}
+                                        className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                                        placeholder="Password"
+                                    />
+                                    <label
+                                        htmlFor="discription"
+                                        className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                                    >
+                                       Project ID
+                                    </label>
+                                    {/* {
+                                        formik.errors.discription && (
+                                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                                {formik.errors.discription}{" "}
+                                            </div>
+                                        )
+                                    } */}
+                                </div>
+                            </div>
+                            <div className="flex flex-row space-x-20 pb-[16px]">
+                                <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                                    <div className="relative w-[165px]">
+                                        <input
+                                            id="start_date"
+                                            name="start_date"
+                                            type="date"
                                             value={startdate}
                                             onChange={(e) => setStartDate(e.target.value)}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -238,7 +304,7 @@ const EditProject = () => {
                                         <input
                                             id="end_date"
                                             name="end_date"
-                                            type="text"
+                                            type="date"
                                             value={enddate}
                                             onChange={(e) => setEndDate(e.target.value)}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
@@ -273,7 +339,7 @@ const EditProject = () => {
                                         htmlFor="discription"
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                                     >
-                                        discription
+                                       Project Discription
                                     </label>
                                     {/* {
                                         formik.errors.discription && (

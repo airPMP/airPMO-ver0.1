@@ -12,6 +12,7 @@ const Clients = ({ addNewCliient }) => {
   const [clientdata, setClientData] = useState(null)
   const [filteredData, setFilteredData] = useState(clientdata);
   const [delconfom, seDelConfom] = useState(false)
+  const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
   let urlTitle = useLocation();
   let navigate = useNavigate();
@@ -66,19 +67,23 @@ const Clients = ({ addNewCliient }) => {
     navigate(`/master/edit_client/${e}`)
   }
 
-  const DeleteProfile = (e, value) => {
+  const DeleteProfile = (e) => {
+    setDeleteId(e)
     setOpen(o => !o)
+  }
+
+  const conformDelete = () => {
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
-        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/client/${e}`, {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/client/${deleteid}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         if (data?.status === 200) {
-          console.log("2000 get data")
+
           window.location.reload(false);
         }
         console.log(data)
@@ -86,10 +91,8 @@ const Clients = ({ addNewCliient }) => {
         console.log(error)
       }
     }
-
     feach();
-
-
+    setOpen(o => !o)
   }
 
   const CancelButton = (e) => {
@@ -219,7 +222,7 @@ const Clients = ({ addNewCliient }) => {
                               </svg>
                             </div>
                             <div className="cursor-pointer"
-                              onClick={(e) => setOpen(o => !o)}
+                              onClick={(e) => DeleteProfile(item._id)}
                             >
                               <svg
                                 width="18"
@@ -264,7 +267,7 @@ const Clients = ({ addNewCliient }) => {
                           </div>
                           <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
                             <button
-                              onClick={(e) => DeleteProfile(item._id)}
+                              onClick={(e) => conformDelete(e)}
                               className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
                               Yes
                             </button>

@@ -49,9 +49,10 @@ const EditClientProfile = () => {
         setClintName(data?.data?.client_name)
         setLocation(data?.data?.location)
         setUploadLogoFile(data?.data?.upload_logo_file)
-        setAddNewField(data?.data?.add_new_feild)
+        setAddNewField(data?.data?.address)
         setContactNo(data?.data?.contact_no)
         setDiscription(data?.data?.discription)
+        
       } catch (error) {
         console.log(error)
       }
@@ -70,7 +71,7 @@ const EditClientProfile = () => {
     const token = reactLocalStorage.get("access_token", false);
 
       axios.patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}/`, {
-        add_new_feild: addnewfield,
+        address: addnewfield,
         category: " ",
         client_id: " ",
         client_name: clintnamedata,
@@ -246,14 +247,14 @@ const EditClientProfile = () => {
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="add_new_feild"
+                    htmlFor="address"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add new field
+                   Address
                   </label>
-                  {/* {formik.errors.add_new_feild && (
+                  {/* {formik.errors.address && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.add_new_feild}{" "}
+                      {formik.errors.address}{" "}
                     </div>
                   )} */}
                 </div>
@@ -270,7 +271,7 @@ const EditClientProfile = () => {
                     htmlFor="contact_no"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add new field
+                    Contact number
                   </label>
                   {/* {formik.errors.contact_no && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">

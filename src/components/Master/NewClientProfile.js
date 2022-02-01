@@ -25,8 +25,8 @@ const validate = (values) => {
   if (!values.location) {
     errors.location = "Location Required";
   }
-  if (!values.add_new_feild) {
-    errors.add_new_feild = "Add New Field Required";
+  if (!values.address) {
+    errors.address = "Add New Field Required";
   }
   if (!values.contact_no) {
     errors.contact_no = "Company Name Required";
@@ -58,7 +58,7 @@ const NewClientProfile = () => {
       client_name: "",
       location: "",
       upload_logo_file: "",
-      add_new_feild: "",
+      address: "",
       discription: "",
       contact_no: "",
       // jobtitle: "",
@@ -71,7 +71,7 @@ const NewClientProfile = () => {
       // location: location,
       // upload_logo_file: upload_logo_file, 
       // // jobtitle: jobtitle,
-      // add_new_feild: contact_no,
+      // address: contact_no,
 
       // discription:discription,
       // contact_no:"",
@@ -245,23 +245,23 @@ const NewClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-                    id="add_new_feild"
-                    name="add_new_feild"
+                    id="address"
+                    name="address"
                     type="text"
-                    value={formik.values.add_new_feild}
+                    value={formik.values.address}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="add_new_feild"
+                    htmlFor="address"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add new field
+                     Address
                   </label>
-                  {formik.errors.add_new_feild && (
+                  {formik.errors.address && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.add_new_feild}{" "}
+                      {formik.errors.address}{" "}
                     </div>
                   )}
                 </div>
@@ -279,7 +279,8 @@ const NewClientProfile = () => {
                     htmlFor="contact_no"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add new field
+                    Contact Number
+                     
                   </label>
                   {formik.errors.contact_no && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
