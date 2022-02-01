@@ -18,6 +18,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { ZoneModule } from './zone/zone.module';
 import { SubzoneModule } from './subzone/subzone.module';
 import { SubdividedzoneModule } from './subdividedzone/subdividedzone.module';
+import { ExcelModule } from './excel/excel.module';
 
 
 
@@ -32,7 +33,7 @@ import { SubdividedzoneModule } from './subdividedzone/subdividedzone.module';
     w: 'majority',
     retryWrites: true
   }
-      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, ],
+      ), UsersModule, AuthModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, ExcelModule, ],
 
 
 })
