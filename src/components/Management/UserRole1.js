@@ -11,14 +11,14 @@ const UserRole1 = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === "/UserManagement/UserRole1") {
-            setTitle("User Roles");
+            setTitle("User Mgmt");
         }
     }, [urlTitle.pathname])
 
     const data = [
-        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
+        { "name": "John doe", "role": "Client", "discription": "discription-1", "mobile": "529255077", "action": "action" }
         ,
-        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
+        { "name": "John doe", "role": "Client", "discription": "discription-2", "mobile": "529255077", "action": "action" }
 
     ]
 
@@ -49,13 +49,32 @@ const UserRole1 = () => {
                                     />
                                 </div>
                                 <div className="font-secondaryFont font-medium not-italic text-[28.09px] 
-                    leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px] ">
-                                    Role 1
+                                   leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px] ">
+                                    Users Roles
                                 </div>
                             </div>
-                            <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+                            <div className="flex items-center mr-[51.5px] ">
+                                <div>
+                                    <svg width="31" height="21" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.70916 26.5813C5.34682 26.5806 5.00141 26.4278 4.7572 26.1602C4.50848 25.8947 4.3849 25.5357 4.41749 25.1733L4.73395 21.6936L19.353 7.07967L23.9217 11.647L9.30645 26.2596L5.8267 26.5761C5.78666 26.58 5.74662 26.5813 5.70916 26.5813ZM24.8336 10.7338L20.2662 6.16646L23.0059 3.42683C23.2481 3.18429 23.5769 3.048 23.9197 3.048C24.2625 3.048 24.5913 3.18429 24.8336 3.42683L27.5732 6.16646C27.8157 6.40873 27.952 6.73749 27.952 7.08031C27.952 7.42313 27.8157 7.75189 27.5732 7.99417L24.8349 10.7325L24.8336 10.7338Z" fill="#2E3A59" />
+                                    </svg>
+                                </div>
+                                <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+                                    className=" rounded-[0.625rem] w-[120px]  ">
+                                    <div className="flex  ">
+                                        <svg width="28" height="28" viewBox="0 0 31 31"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z" fill="#2E3A59" />
+                                        </svg>
+
+                                        <span className="text-[15px] pt-1"> New Roles</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {/* <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
                                 className="mt-[73.07px] basic-1/4 flex flex-row  items-center mr-[51.5px] 
-                       bg-[#FFFFFF] rounded-[0.625rem]   "
+                               bg-[#FFFFFF] rounded-[0.625rem]   "
                             >
                                 <div className="pt-[4.64px] pl-[16.6px]">
                                     <svg
@@ -91,7 +110,7 @@ const UserRole1 = () => {
                                         className="outline-none w-[273.87px] h-[36.94px]"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
@@ -99,24 +118,24 @@ const UserRole1 = () => {
                          font-normal not-italic text-[12px " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  " >
-                                    <th className="w-[10%] py-[13px]">Name</th>
-                                    <th className="w-[30%] py-[13px]">Role</th>
-                                    <th className="w-[25%] py-[13px]">Email</th>
-                                    <th className="w-[25%] py-[13px]">Mobile</th>
+                                    {/* <th className="w-[10%] py-[13px]">Name</th> */}
+                                    <th className="w-[10%] py-[13px]">Role</th>
+                                    <th className="w-[25%] py-[13px]">Discription</th>
+                                    {/* <th className="w-[25%] py-[13px]">Mobile</th> */}
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
 
                                 {data?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
-                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}}>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick={() => { navigate("/UserManagement/UserRole1/Details") }}>
+                                            {/* <td className="pt-[15px] pb-[14.83px]">{item.name} </td> */}
                                             <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.email}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.discription}</td>
+                                            {/* <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td> */}
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
-                                                    <div>
+                                                    {/* <div>
                                                         <svg
                                                             width="19"
                                                             height="20"
@@ -129,7 +148,7 @@ const UserRole1 = () => {
                                                                 fill="#0FCC7C"
                                                             />
                                                         </svg>
-                                                    </div>
+                                                    </div> */}
                                                     <div>
                                                         <svg
                                                             width="18"
