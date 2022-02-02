@@ -28,8 +28,17 @@ export class Client {
     orgainization_id: string;
 
     @Prop()
-   contact_no:string;
+    contact_no:string;
 
+    @Prop()
+   address:string;
+
+    @Prop()
+    client_id:string;
+
+    @Prop()
+    sub_category:string;
+    
    @Prop({default:Date})
    createdAt: string;
 
