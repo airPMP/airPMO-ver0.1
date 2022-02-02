@@ -21,6 +21,9 @@ export class Roles_Permission_Guard implements CanActivate {
 
       }
         for(let i=0;i<user.permission.length;i++){ 
+          if("ALL"===user.permission[i]){
+            return true;
+          }
           if(requiredRoles[0]===user.permission[i]){
           return true;
         }
