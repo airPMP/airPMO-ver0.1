@@ -19,7 +19,6 @@ const HRMS = () => {
         { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
         ,
         { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
-
     ]
 
 
@@ -67,14 +66,14 @@ const HRMS = () => {
                                     <div className=" grid grid-cols-2">
                                         <div>
                                             <p className="text-[#A3AED0] text-[24px] font-medium font-sans">
-                                            HRMS
+                                                HRMS
                                             </p>
                                             <div className="text-[#1B2559] text-[18px] font-bold">
                                                 Shining Towers
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="flex float-right mr-[20px]" style={{marginTop:"-15px"}}>
+                                            <div className="flex float-right mr-[20px]" style={{ marginTop: "-15px" }}>
 
                                                 <div className=" mr-[14px] mt-[10px] text-[#8F9BBA]">
                                                     <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">

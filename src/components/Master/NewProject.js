@@ -133,10 +133,12 @@ const NewProject = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
-      // values.client_name = client_name_data
-      // values.sub_category = subcategory
+      const token = reactLocalStorage.get("access_token", false);
 
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values)
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }})
         .then((response) => {
           console.log(response)
           if (response.status === 201) {

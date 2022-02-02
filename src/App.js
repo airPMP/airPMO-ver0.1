@@ -43,6 +43,7 @@ import EditCategories from "./components/Master/edit_categories/[id]";
 import SuperAdmin from "./pages/SuperAdmin";
 import UserEmpolyee from "./pages/UserEmpolyee";
 import AddNewUser from "./components/Management/AddNewUser";
+import EditAccess from "./components/Management/EditAccess";
 
 function App() {
   return (
@@ -108,8 +109,8 @@ function App() {
         <Route path="/UserManagement/UserRole2" element={<UserRole2 />} />
         <Route path="/UserManagement/UserRole3" element={<UserRole3 />} />
         <Route path="/UserManagement/AddNewUser" element={<AddNewUser/>} />
-        <Route path="/UserManagement/UserRole1/Details" element={<UserRole1Details />} />
-
+        <Route path="/UserManagement/UserRole1/Details" element={<UserRole1Details />} /> 
+        <Route path="/UserManagement/EditAccess" element={<EditAccess />} />
         {
           // DataInjestion
         }

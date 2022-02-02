@@ -5,6 +5,7 @@ import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
+import { reactLocalStorage } from "reactjs-localstorage";
 
 
 const validate = (values) => {
@@ -53,8 +54,11 @@ const AddCategories = () => {
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
-       
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/categories/`, values)
+      const token = reactLocalStorage.get("access_token", false);
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/categories/`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }})
         .then((response) => {
           console.log(response)
           if (response.status === 201) {

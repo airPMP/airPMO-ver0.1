@@ -43,7 +43,7 @@ const Login = () => {
             appearance: "success",
             autoDismiss: true,
           })
-          reactLocalStorage.set("access_token", response?.data?.token);
+          reactLocalStorage.set("access_token", response?.data?.access_token);
           navigate('/dashboard')
         }
         else {

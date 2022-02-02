@@ -5,6 +5,7 @@ import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
+import { reactLocalStorage } from "reactjs-localstorage";
 
 
 const validate = (values) => {
@@ -79,13 +80,13 @@ const NewClientProfile = () => {
       // orgainization_id:"",
     },
     validate,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values, { resetForm }) => { 
 
-      // const formData = new FormData();
-      // formData.append('img', fileName[0]);
-      // console.log(`Form data`, values);
-      // values.upload_logo_file = formData
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values)
+      const token = reactLocalStorage.get("access_token", false);
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }})
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
