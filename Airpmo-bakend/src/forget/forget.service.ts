@@ -49,7 +49,7 @@ export class ForgetService {
 
 
   async changePassword(resetuserdto: resetuserdto,req) {
-    console.log(req.user)
+    
     if (resetuserdto.Password !== resetuserdto.Confirm_Password) {
       throw new UnauthorizedException('password  not matcted')
     }
@@ -61,7 +61,7 @@ export class ForgetService {
       const hash = await bcrypt.hash(pass, saltOrRounds)
       const find = req.user
       const users = await this.usersModel.findOne({ "Email": find.Email })
-      console.log(users)
+      
      const updatepass = await this.usersModel.updateOne({Password:users.Password },{ Password:hash })
      
       return {

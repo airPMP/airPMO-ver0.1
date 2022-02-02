@@ -20,7 +20,7 @@ export class ForgetController {
   @Post('forget')
  async forgetPassword(@Body() forgetuserdto:forgetuserdto,) {
    
-     return await this.forgetService.forgetPassword(forgetuserdto);
+  return await this.forgetService.forgetPassword(forgetuserdto);
     
   }
   
@@ -28,9 +28,8 @@ export class ForgetController {
   @UseGuards(AuthGuard('jwt'))
   @Post('updatedpassword')
   async changePassword( @Body()  resetuserdto:resetuserdto ,@Request() req ) {
-    // const a = req.headers.authorization
-    // console.log(req.user)
-    return await this.forgetService.changePassword(resetuserdto,req); 
+    
+  return await this.forgetService.changePassword(resetuserdto,req); 
 
    
  }

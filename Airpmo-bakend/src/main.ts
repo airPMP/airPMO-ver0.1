@@ -1,6 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { ApiBearerAuth, DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {  DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -20,14 +20,13 @@ async function bootstrap() {
       description: 'Enter the JWT token',
       in: 'header',
     },
-    
   )
   .build()
 
 const document = SwaggerModule.createDocument(app, options);
 SwaggerModule.setup('doc', app, document);
 
-  await app.listen(8000);
+  await app.listen(process.env.PORT);
 }
   
 bootstrap();
