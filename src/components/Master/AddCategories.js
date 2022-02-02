@@ -15,13 +15,17 @@ const validate = (values) => {
   // if (!values.category) {
   //   errors.category = "Category Required";
   // }
-  if (!values.name) {
-    errors.name = "Client Name Required";
+  if (!values.category) {
+    errors.category = "Client Name Required";
   }
    
 
-  if (!values.type) {
-    errors.type = "Type Required";
+  if (!values.sub_category) {
+    errors.sub_category = "Type Required";
+  }
+
+  if (!values.discription) {
+    errors.discription = "Discription Type Required";
   }
    
   return errors;
@@ -43,8 +47,9 @@ const AddCategories = () => {
 
   const formik = useFormik({
     initialValues: { 
-      name: "",
-      type: "",   
+      category: "",
+      sub_category: "",
+      discription:""   
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
@@ -102,55 +107,81 @@ const AddCategories = () => {
                  
                 <div className="relative w-[350px]"> 
                   <input
-                    id="name"
-                    name="name"
+                    id="category"
+                    name="category"
                     type="text"
-                    value={formik.values.name}
+                    value={formik.values.category}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="name"
+                    htmlFor="category"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                  Categorie Name
+                  Categorie
                   </label>
-                  {formik.errors.name && (
+                  {formik.errors.category && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.name}{" "}
+                      {formik.errors.category}{" "}
                     </div>
                   )}
                 </div>
                 <div className="relative w-[350px]">
                   <input
-                    id="type"
-                    name="type"
+                    id="sub_category"
+                    name="sub_category"
                     type="text"
-                    value={formik.values.type}
+                    value={formik.values.sub_category}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
                   <label
-                    htmlFor="type"
+                    htmlFor="sub_category"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    type
+                    Sub Category
                   </label>
-                  {formik.errors.type && (
+                  {formik.errors.sub_category && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.type}{" "}
+                      {formik.errors.sub_category}{" "}
                     </div>
                   )}
                 </div>
               </div>
+              <div className="flex flex-row space-x-20 pb-[16px]">
+                 
+                 <div className="relative w-[350px]"> 
+                   <input
+                     id="discription"
+                     name="discription"
+                     type="text"
+                     value={formik.values.discription}
+                     onChange={formik.handleChange}
+                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                     placeholder="john@doe.com"
+                   />
+                   <label
+                     htmlFor="name"
+                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                   >
+                  Discription
+                   </label>
+                   {formik.errors.discription && (
+                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                       {formik.errors.discription}{" "}
+                     </div>
+                   )}
+                 </div>
+                  
+               </div>
               
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="mr-[45px] shadow-[buttonshadow] ">
                   <button
                     onClick={() => {
-                      naviagte("/master/clients");
+                      naviagte("/master/categories");
                     }}
                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
                   >

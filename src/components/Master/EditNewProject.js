@@ -58,7 +58,9 @@ const EditNewProject = () => {
 
   const formik = useFormik({
     initialValues: {
-      client: "",
+      client: "", 
+      min_hours: "",
+      max_hours: "",
       startDate: "",
       endDate: "",
       zonename: "",
@@ -68,6 +70,8 @@ const EditNewProject = () => {
       category: "",
       clientName: "",
       projectName: "",
+      category: "",
+      sub_category: "",
       uploadLogoFile: "",
       jobtitle: "",
       addNewField2: "",

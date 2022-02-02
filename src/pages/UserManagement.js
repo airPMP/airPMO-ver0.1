@@ -17,7 +17,7 @@ const UserManagement = () => {
   useEffect(() => {
 
     if (urlTitle.pathname === "/UserManagement") {
-      setTitle("User Roles");
+      setTitle("User Mgmt");
     }
   }, [urlTitle.pathname])
 
@@ -44,7 +44,7 @@ const UserManagement = () => {
             <SignUpTemplate />
           ) : (
             <>
-              <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
+              {/* <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
                 <SearchBox
                   placeHolderName={"Choose Client"}
                   handleChangeForClient={handleChangeForClient}
@@ -55,13 +55,13 @@ const UserManagement = () => {
                   handleChangeForProject={handleChangeForProject}
                   value={project}
                 />
-              </div>
+              </div> */}
               <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
                 <Link to={`/UserManagement/UserRole1`}>
                   <UserRolesCard
                     title={"Role 1"}
-                    totalNumber={1500}
-                    pathSet={"UserRole1"}
+                    totalNumber={"2 roles"}
+                    pathSet={"User Roles"}
                     iconn={
                       <svg
                         width="58"
@@ -83,8 +83,8 @@ const UserManagement = () => {
                 </Link>
                 <Link to={`/UserManagement/UserRole2`}>
                   <UserRolesCard
-                    title={"Role 2"}
-                    totalNumber={800}
+                    title={"Users"}
+                    totalNumber={"100 users"}
                     iconn={
                       <svg
                         width="58"
@@ -104,7 +104,7 @@ const UserManagement = () => {
                     }
                   />
                 </Link>
-                <Link to={`/UserManagement/UserRole3`}>
+                {/* <Link to={`/UserManagement/UserRole3`}>
                   <UserRolesCard
                     title={"Role 3"}
                     totalNumber={400}
@@ -122,10 +122,9 @@ const UserManagement = () => {
                       </div>
                     }
                   />
-                </Link>
-                <UserRolesCardCreate
-                  title={"Create new role"}
-                  // totalNumber={400}
+                </Link> */}
+                {/* <UserRolesCardCreate
+                  title={"Create new role"} 
                   iconn={
                     <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
 
@@ -136,7 +135,7 @@ const UserManagement = () => {
 
                     </div>
                   }
-                />
+                /> */}
               </div>
             </>
           )}

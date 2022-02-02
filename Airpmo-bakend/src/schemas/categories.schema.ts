@@ -5,11 +5,12 @@ export type CategoriesDocument = Categories & Document;
 
 @Schema()
 export class Categories {
+   
     @Prop()
-    name:string;
+    category:string
 
     @Prop()
-    type:string;
+    sub_category:string
     
     @Prop()
     discription:string;

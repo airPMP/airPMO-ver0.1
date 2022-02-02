@@ -15,6 +15,7 @@ const Categories = () => {
   const [filteredData, setFilteredData] = useState(categoriesdata); 
   const CategorieLengthget = CategorieLengthSet.use()
 
+  const [deleteid, setDeleteId] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate();
   console.log(CategorieLengthget)
@@ -54,7 +55,7 @@ const Categories = () => {
     console.log("functiom iahsdi")
     result = categoriesdata?.filter((data) => {
       if (isNaN(+value)) {
-        return data?.name?.toUpperCase().search(value) !== -1;
+        return data?.category?.toUpperCase().search(value) !== -1;
       }
     });
 
@@ -70,13 +71,18 @@ const Categories = () => {
     navigate(`/master/edit_categories/${e}`)
   }
 
+   
   const DeleteProfile = (e) => {
+    setDeleteId(e)
     setOpen(o => !o)
+  }
+
+  const conformDelete = () => {
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
-        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/Categories/${e}`, {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/Categories/${deleteid}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -90,8 +96,12 @@ const Categories = () => {
         console.log(error)
       }
     }
-    feach(); 
+    feach();
+    setOpen(o => !o)
   }
+
+
+
   const CancelButton = (e) => {
     setOpen(o => !o)
   }
@@ -161,22 +171,43 @@ const Categories = () => {
               </div>
             </div>
           </div>
+          <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
+              <div
+                style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+                className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
+                </svg>
+
+                <div onClick={() => { navigate("/master/categories/add_categories") }}>Add Category</div>
+              </div>
+            </div>
+
 
           <div className="pl-[80px]">
             <table className="table-auto pt-[24px]">
-              <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
+              <thead className="font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
                 <tr className="max-h-[52.84px] w-[901.2px]">
-                  <th className="pr-[80px] py-[13px]">Name</th>
-                  <th className="px-[300px] py-[13px]">Type</th>
-                  <th className=" px-[15px] py-[13px]">Actions</th>
+                  <th className="w-[15%] py-[13px]">category</th>
+                  <th className="w-[10%] py-[13px]">sub category</th>
+                  <th className="w-[30%] py-[13px]">discription</th>
+                  <th className="w-[5%] py-[13px]">Actions</th>
                 </tr>
               </thead>
-              {filteredData?.map((item, i) => {
-                return <tbody className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+               {filteredData?.map((item, i) => {
+                return <tbody className="font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="bg-[#ECF1F0]">
-                    <th className="pr-[70px] py-[13px]">{item.name}</th>
-                    <th className="px-[250px] py-[13px]">{item.type}</th>
-                    <th className=" py-[13px]">
+                    <th className=" w-[15%] py-[13px]">{item.category}</th>
+                    <th className="w-[10%] py-[13px]">{item.sub_category}</th>
+                    <th className="w-[30%] py-[13px]">{item.discription}</th>
+                    <th className="w-[5%] py-[13px]">
                       <div className="flex flex-row space-x-xl">
                         <div className="cursor-pointer" 
                           onClick={(e) => EditProfile(item._id)} >
@@ -194,7 +225,7 @@ const Categories = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer"
-                         onClick={(e) => setOpen(o => !o)}
+                        onClick={(e) => DeleteProfile(item._id)}
                            >
                           <svg
                             width="18"
@@ -238,7 +269,7 @@ const Categories = () => {
                           </div>
                           <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
                             <button
-                             onClick={(e) => DeleteProfile(item._id)}
+                             onClick={(e) => conformDelete(e)}
                               className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
                               Yes
                             </button>
@@ -247,7 +278,7 @@ const Categories = () => {
 
                       </Popup>
                 </tbody>
-              })}
+              })}  
             </table>
           </div>
         </div>

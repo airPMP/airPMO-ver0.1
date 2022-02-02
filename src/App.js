@@ -42,6 +42,7 @@ import AddCategories from "./components/Master/AddCategories";
 import EditCategories from "./components/Master/edit_categories/[id]";
 import SuperAdmin from "./pages/SuperAdmin";
 import UserEmpolyee from "./pages/UserEmpolyee";
+import AddNewUser from "./components/Management/AddNewUser";
 
 function App() {
   return (
@@ -106,6 +107,7 @@ function App() {
         <Route path="/UserManagement/UserRole1" element={<UserRole1 />} />
         <Route path="/UserManagement/UserRole2" element={<UserRole2 />} />
         <Route path="/UserManagement/UserRole3" element={<UserRole3 />} />
+        <Route path="/UserManagement/AddNewUser" element={<AddNewUser/>} />
         <Route path="/UserManagement/UserRole1/Details" element={<UserRole1Details />} />
 
         {

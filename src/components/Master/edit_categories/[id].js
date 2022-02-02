@@ -22,6 +22,7 @@ const EditCategories = () => {
   
   const [namedata, setName] = useState("")
   const [typedata, setType] = useState("")
+  const [discription, setDiscription] = useState("")
    
 
   let useperma = useParams()
@@ -42,8 +43,9 @@ const EditCategories = () => {
           },
         })
 
-        setType(data?.data?.type)
-        setName(data?.data?.name)
+        setType(data?.data?.sub_category)
+        setName(data?.data?.category)
+        setDiscription(data?.data?.discription)
          
       } catch (error) {
         console.log(error)
@@ -63,9 +65,9 @@ const EditCategories = () => {
     const token = reactLocalStorage.get("access_token", false);
 
       axios.patch(`${process.env.REACT_APP_BASE_URL}/api/categories/${useperma.id}/`, {
-        name: namedata,
-        type: typedata,
-        
+        sub_category: namedata,
+        category: typedata,
+        discription
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -141,7 +143,7 @@ const EditCategories = () => {
                     htmlFor="add_new_feild"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add Name
+                    Categorie
                   </label>
                   {/* {formik.errors.add_new_feild && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -162,7 +164,7 @@ const EditCategories = () => {
                     htmlFor="contact_no"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    Add new field
+                    Sub Category
                   </label>
                   {/* {formik.errors.contact_no && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -171,12 +173,37 @@ const EditCategories = () => {
                   )} */}
                 </div>
               </div>
+              <div className="flex flex-row space-x-20 pb-[16px]">
+                <div className="relative w-[350px]">
+                  <input
+
+                    type="text"
+                    value={discription}
+                    onChange={(e) => setDiscription(e.target.value)}
+
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="add_new_feild"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                  >
+                     Discription
+                  </label>
+                  {/* {formik.errors.add_new_feild && (
+                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                      {formik.errors.add_new_feild}{" "}
+                    </div>
+                  )} */}
+                </div>
+                 
+              </div>
               
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="mr-[45px] shadow-[buttonshadow] ">
                   <button
                     onClick={() => {
-                      naviagte("/master/clients");
+                      naviagte("/master/categories");
                     }}
                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
                   >

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate ,Link} from "react-router-dom";
 
 const UserRole1 = () => {
 
@@ -11,7 +11,7 @@ const UserRole1 = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === "/UserManagement/UserRole2") {
-            setTitle("User Roles");
+            setTitle("User Mgmt");
         }
     }, [urlTitle.pathname])
 
@@ -50,7 +50,7 @@ const UserRole1 = () => {
                                 </div>
                                 <div className="font-secondaryFont font-medium not-italic text-[28.09px] 
                     leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px] ">
-                                    Role 2
+                                     Users
                                 </div>
                             </div>
                             <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
@@ -94,15 +94,14 @@ const UserRole1 = () => {
                             </div>
                         </div>
 
-                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
+                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] pb-[20px]" >
                             <table className="table-auto   text-center font-secondaryFont text-[#000000]
-                         font-normal not-italic text-[12px " style={{ width: "100%" }}>
+                              font-normal not-italic text-[12px " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  ">
-                                    <th className="w-[10%] py-[13px]">Name</th>
-                                    <th className="w-[30%] py-[13px]">Role</th>
-                                    <th className="w-[25%] py-[13px]">Email</th>
-                                    <th className="w-[25%] py-[13px]">Mobile</th>
+                                    <th className="w-[10%] py-[13px]">User ID</th>
+                                    <th className="w-[30%] py-[13px]">Designation</th>
+                                    <th className="w-[25%] py-[13px]">Email</th> 
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
@@ -112,8 +111,7 @@ const UserRole1 = () => {
                                         <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}}>
                                             <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.email}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.email}</td> 
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
                                                     <div>
@@ -154,6 +152,23 @@ const UserRole1 = () => {
                                 ))}
 
                             </table>
+                            <div className="flex  float-right ">  
+                                <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+                                    className=" rounded-[0.625rem] w-[120px]  ">
+                                    <div className="flex  ">
+                                        <svg width="31" height="31" viewBox="0 0 31 31"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z" fill="#2E3A59" />
+                                        </svg>
+
+                                        <span className="text-[15px] pt-1"> 
+                                        <Link to={`/UserManagement/AddNewUser`}>
+                                        New User
+                                        </Link></span>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
