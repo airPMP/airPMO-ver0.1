@@ -8,7 +8,6 @@ export class zone {
     @Prop()
     zone_name:string;
 
-    
     @Prop()
     discription:string;
 

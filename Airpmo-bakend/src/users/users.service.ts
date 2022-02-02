@@ -1,19 +1,15 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException, Request, UnauthorizedException, UseFilters } from '@nestjs/common';
-
+import {  Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { users, ussersDocument } from 'src/schemas/users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { loginusersDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersController } from './users.controller';
 import * as bcrypt from 'bcrypt';
-import { User } from './entities/user.entity';
+
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(users.name) private usersModel: Model<ussersDocument>,
-
-  ) { }
+  constructor(@InjectModel(users.name) private usersModel: Model<ussersDocument>){}
 
   async create(createUserDto: CreateUserDto) {
     if (createUserDto.Password) {
@@ -42,13 +38,11 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.usersModel.updateMany({ "_id": id }, { ...updateUserDto })
-      console.log(user)
-      return {
-        "massage": "User Updated"
-      }
+       await this.usersModel.updateOne({ "_id": id },{$set:{...updateUserDto}});
+      let user=await this.usersModel.findOne({id});
+      return user;
     } catch {
-      throw new NotFoundException("user not exist")
+      throw new NotFoundException("user not exist");
     }
   }
 
@@ -65,7 +59,6 @@ export class UsersService {
     }
   }
 
-
   async findOne(id: string) {
     try {
       const user = await this.usersModel.findOne({ "_id": id })
@@ -79,10 +72,8 @@ export class UsersService {
 
   }
 
-
   async updateprofile(updateUserDto: UpdateUserDto, req) {
     const EmailPayload = req.user
-    console.log(EmailPayload.Email)
     const user = await this.usersModel.findOne({ "Email": EmailPayload.Email })
     if (!user) {
       throw new UnauthorizedException("wrong user")
@@ -91,10 +82,11 @@ export class UsersService {
       if (updateUserDto.Password) {
         const saltOrRounds = 10;
         const hash = await bcrypt.hash(updateUserDto.Password, saltOrRounds);
-        updateUserDto.Password = hash
+        updateUserDto.Password = hash;
       }
-      const updatedata = await this.usersModel.updateMany({ "Email": user.Email }, { "Email": updateUserDto.Email, "FirstName": updateUserDto.FirstName, "LastName": updateUserDto.LastName, "PhoneNumber": updateUserDto.PhoneNumber, "CompanyName": updateUserDto.CompanyName, "Comments": updateUserDto.Comments, "Password": updateUserDto.Password, })
-      return user
+       await this.usersModel.updateOne({ "Email": user.Email },{$set:{...updateUserDto}});
+       let users=await this.usersModel.findOne({"Email": user.Email });
+       return users;
     }
 
   }

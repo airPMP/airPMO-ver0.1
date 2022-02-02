@@ -4,9 +4,11 @@ import { ProjectsController } from './projects.controller';
 import { project, projectSchema } from 'src/schemas/projects.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
+
 @Module({
   imports: [MongooseModule.forFeature([{ name:project.name,schema:projectSchema }])],
   controllers: [ProjectsController],
-  providers: [ProjectsService]
+  providers: [ProjectsService,],
+
 })
 export class ProjectsModule {}
