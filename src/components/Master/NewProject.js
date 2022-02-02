@@ -15,25 +15,31 @@ import { reactLocalStorage } from "reactjs-localstorage";
 const validate = (values) => {
 
   const errors = {};
-  // if (!values.category) {
-  //   errors.category = "Category Required";
-  // }
+  if (!values.category) {
+    errors.category = "Category Required";
+  }
+
+  if (!values.sub_category) {
+    errors.sub_category = "Sub Category Required";
+  }
+
   if (!values.client_name) {
     errors.client_name = "Client Name Required";
   }
+
   // if (!values.uploadLogoFile) {
   //   errors.uploadLogoFile = "uploadLogoFile Required";
   // }
 
-  // if (!values.project_name) {
-  //   errors.project_name = "project_name Required";
-  // }
-  // if (!values.addNewField) {
-  //   errors.addNewField = "Add New Field Required";
-  // }
-  // if (!values.addNewField2) {
-  //   errors.addNewField2 = "Company Name Required";
-  // }
+  if (!values.project_name) {
+    errors.project_name = "Project Name Required";
+  }
+  if (!values.start_date) {
+    errors.start_date = "Start Date Required";
+  }
+  if (!values.end_date) {
+    errors.end_date = "End Date Required";
+  }
   // if (!values.discription) {
   //   errors.discription = "discription Required";
   // }
@@ -42,9 +48,11 @@ const validate = (values) => {
 };
 const NewProject = () => {
   const [open, setOpen] = useState(false);
+  const [openzone, setZone] = useState(false);
+
   const [openSub, setOpenSub] = useState(false);
   const [client_name_data, setdeta] = useState("");
-
+  const [sheetdata, setSheetData] = useState(null)
   const closeModal = () => setOpen(false);
   const closeModalSub = () => setOpenSub(false);
   const [title, setTitle] = useState(null); // the lifted state
@@ -52,7 +60,7 @@ const NewProject = () => {
   const [categoriesdata, setCategoriesData] = useState(null)
   const [category, setCategory] = useState(null)
   const [subcategory, setSubCategory] = useState(null)
-
+  const [showeye, setShowEye] = useState(" ");
 
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -118,17 +126,16 @@ const NewProject = () => {
       jobtitle: "",
       addNewField2: "",
       client: "",
+      time_sheet_id: "",
+      spread_sheet_id: "",
+      spread_sheet_key: ""
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
-      values.client_name = client_name_data
-      values.category = category
-      values.sub_category = subcategory
-      // const formData = new FormData();
-      // formData.append('img', fileName[0]);
-      // console.log(`Form data`, values);
-      // values.upload_logo_file = formData
+      // values.client_name = client_name_data
+      // values.sub_category = subcategory
+
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values)
         .then((response) => {
           console.log(response)
@@ -151,6 +158,33 @@ const NewProject = () => {
 
     },
   });
+
+
+  const ShowPasswordButton = (e, sheet2) => {
+
+    if (showeye) {
+      const feach = async () => {
+        try {
+          const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${formik.values.spread_sheet_id}/values/${formik.values.time_sheet_id}?key=${formik.values.spread_sheet_key}`,)
+          setSheetData(data1?.data?.values)
+          console.log(data1)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      feach();
+    }
+    setShowEye(o => !o)
+    setOpen(o => !o)
+
+  }
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+    setShowEye(o => !o)
+  }
+
+
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -179,32 +213,57 @@ const NewProject = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
-                  <div className="relative w-[165px] border-b border-black ">
-                    <select
-                      onChange={(e) => {
-                        setCategory(e.target.value);
-                      }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
-                      {categoriesdata?.map((item, id) => {
-                        return <option key={id}
-                        > {item.category}</option>
-                      })}
-                    </select>
+                  <div>
+                    <div className="relative w-[165px] border-b border-black ">
+                      <select
+                        name="category"
+                        value={formik.values.category}
+                        onChange={formik.handleChange}
+                        className="bg-white  text-[14px] pr-[25%]"
+                      >
+                        <option value="" label="Select category" />
+                        {categoriesdata?.map((item, id) => {
+                          return <>
+                            <option value={item.category} label={item.category} />
+                          </>
+                        })}
+                      </select>
+                    </div>
+                    {
+                      formik.errors.category && (
+                        <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                          {formik.errors.category}{" "}
+                        </div>
+                      )
+                    }
                   </div>
-                  <div className="relative w-[165px] border-b border-black ">
-                    <select
-                      onChange={(e) => {
-                        setSubCategory(e.target.value);
-                      }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
-                      {categoriesdata?.map((item, id) => {
-                        return <option key={id}
-                        > {item.sub_category}</option>
-                      })}
-                    </select>
+                  <div>
+                    <div className="relative w-[165px] border-b border-black ">
+
+                      <select
+                        name="sub_category"
+                        value={formik.values.sub_category}
+                        onChange={formik.handleChange}
+                        className="bg-white  text-[14px] pr-[7%]"
+                      >
+                        <option value="" label="Select Sub category" />
+                        {categoriesdata?.map((item, id) => {
+                          return <>
+                            <option value={item.sub_category} label={item.sub_category} />
+                          </>
+                        })}
+                      </select>
+                    </div>
+                    {
+                      formik.errors.sub_category && (
+                        <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                          {formik.errors.sub_category}{" "}
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
-                <div className="relative w-[350px]">
+                <div className="relative w-[350px] -mt-[12px]">
                   <input
                     id="project_name"
                     name="project_name"
@@ -230,17 +289,32 @@ const NewProject = () => {
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
-                <div className="relative w-[350px]  border-b border-black">
-                  <select
-                    onChange={(e) => {
-                      setdeta(e.target.value);
-                    }} className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
-                    {projectdata?.map((item, id) => {
-                      return <option key={id}
-                      > {item.client_name}</option>
-                    })}
-                  </select>
+                <div className="mt-2">
+                  <div className="relative w-[350px]  border-b border-black">
+
+                    <select
+                      name="client_name"
+                      value={formik.values.client_name}
+                      onChange={formik.handleChange}
+                      className="bg-white pr-[54%] text-[14px]"
+                    >
+                      <option value="" label="Select Client Name" />
+                      {projectdata?.map((item, id) => {
+                        return <>
+                          <option value={item.client_name} label={item.client_name} />
+                        </>
+                      })}
+                    </select>
+
+
+                  </div>
+                  {
+                    formik.errors.client_name && (
+                      <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                        {formik.errors.client_name}{" "}
+                      </div>
+                    )
+                  }
                 </div>
                 <div className=" relative w-[350px]">
                   <input
@@ -422,60 +496,110 @@ const NewProject = () => {
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
-                <div className="relative w-[350px]">
-                  <input
-                    id="subzone_name"
-                    name="subzone_name"
-                    type="text"
-                    value={formik.values.subzone_name}
-                    onChange={formik.handleChange}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="subzone_name"
-                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
-                  >
-                    Time Sheet ID
-                  </label>
-                  {
-                    formik.errors.addNewField && (
-                      <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.addNewField}{" "}
-                      </div>
-                    )
-                  }
-                </div>
+
                 <div className=" relative w-[350px]">
                   <input
-                    id="subzone_discription"
+                    id="spread_sheet_id"
                     type="text"
-                    name="subzone_discription"
-                    value={formik.values.subzone_discription}
+                    name="spread_sheet_id"
+                    value={formik.values.spread_sheet_id}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
                     placeholder="Password"
                   />
                   <label
-                    htmlFor="subzone_discription"
+                    htmlFor="spread_sheet_id"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
                   >
                     Spreadsheet ID
                   </label>
                   {
-                    formik.errors.subzone_discription && (
+                    formik.errors.spread_sheet_id && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.subzone_discription}{" "}
+                        {formik.errors.spread_sheet_id}{" "}
+                      </div>
+                    )
+                  }
+                </div>
+                <div className="relative w-[350px]">
+                  <input
+                    id="spread_sheet_key"
+                    name="spread_sheet_key"
+                    type="text"
+                    value={formik.values.spread_sheet_key}
+                    onChange={formik.handleChange}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="spread_sheet_key"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                  >
+                    Spreadsheet  Key
+                  </label>
+                  {
+                    formik.errors.spread_sheet_key && (
+                      <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                        {formik.errors.spread_sheet_key}{" "}
                       </div>
                     )
                   }
                 </div>
               </div>
+              <div className="flex flex-row space-x-20 pb-[16px]">
+
+                <div className="relative w-[350px]">
+                  <div className="flex">
+                    <input
+                      id="time_sheet_id"
+                      name="time_sheet_id"
+                      type="text"
+                      value={formik.values.time_sheet_id}
+                      onChange={formik.handleChange}
+                      className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
+                      placeholder="john@doe.com"
+                    />
+                    <label
+                      htmlFor="time_sheet_id"
+                      className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-sm"
+                    >
+                      Time Sheet ID
+                    </label>
+                    {
+                      formik.errors.time_sheet_id && (
+                        <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                          {formik.errors.time_sheet_id}{" "}
+                        </div>
+                      )
+                    }
+                    <div>
+                      {showeye ? (<div onClick={(e) => ShowPasswordButton(e)}
+                        className="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                          viewBox="0 0 24 24" stroke="currentColor">
+
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                        </svg>
+                      </div>)
+                        :
+                        (<div onClick={(e) => ShowPasswordButton(e)} className="cursor-pointer">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </div>
+                        )}
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
               <div className="flex flex-row justify-between shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="flex flex-row">
                   <div className="mr-[45px] shadow-[buttonshadow] ">
                     <Popup
-                      open={open}
+                      open={openzone}
                       position="right center"
                       model
                     >
@@ -489,17 +613,80 @@ const NewProject = () => {
                     >
                       <SubZoneList closeModal={closeModalSub} />
                     </Popup>
+
+                    <Popup
+                      open={open}
+                      position="right center"
+                      model
+                    >
+                      <div className="p-7 ">
+                        <div className="flex pb-3">
+
+                          <div style={{ marginLeft: "95%" }}>
+                            <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                              <b>X</b>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mt-3 ex1">
+                          <table className="table-auto   text-center   
+                            text-[#8F9BBA] text-[12px] font-sans w-[100%]
+                         font-normal not-italic ">
+                            {sheetdata?.map((item, i) => {
+                              if (i <= 0) {
+                                return (
+                                  <tr className="max-h-[52.84px] text-center w-[100%]  ">
+                                    <th className="w-[20%] py-[13px]">{item[0]}</th>
+                                    <th className="w-[40%] py-[13px]">{item[1]}</th>
+                                    <th className="w-[40%] py-[13px]  ">{item[2]}</th>
+
+                                  </tr>
+                                )
+                              }
+                              else {
+                                return (
+                                  <tbody className=" mb-[10px]   ">
+                                    <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans  ">
+                                      <td className=" pt-[15px] w-[11%] pb-[14.83px]">{item[0]} </td>
+                                      <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[1]}</td>
+                                      <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[2]}</td>
+
+                                    </tr>
+                                    <tr>
+                                      <td className="p-[10px]"></td>
+                                    </tr>
+                                  </tbody>
+                                )
+                              }
+                            })
+
+                            }
+
+
+                          </table>
+
+                        </div>
+
+                      </div>
+
+                    </Popup>
+
+
                     <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       Add Delay
                     </button>
                   </div>
                   <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button onClick={() => setOpen(o => !o)} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                    <button
+                       onClick={() => setZone(o => !o)} 
+                      className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       View Zones
                     </button>
                   </div>
                   <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button onClick={() => setOpenSub(o => !o)} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                    <button
+                      // onClick={() => setOpenSub(o => !o)}
+                      className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       View Subzones
                     </button>
                   </div>
