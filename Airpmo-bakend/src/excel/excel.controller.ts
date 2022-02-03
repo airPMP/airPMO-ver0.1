@@ -1,39 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
 import { ExcelService } from './excel.service';
-import { CreateExcelDto } from './dto/create-excel.dto';
-import { UpdateExcelDto } from './dto/update-excel.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('excel')
+@ApiTags("Excel Api")
+@Controller('api/')
 export class ExcelController {
   constructor(private readonly excelService: ExcelService) {}
 
-  @Post('upload')
+  @Post('excel')
   @UseInterceptors(FileInterceptor('files'))
- 
   UploadExcelFile(@UploadedFile() files: Express.Multer.File) {
      return this.excelService.processFile(files);
   }
 
-
-  @Get()
+  @Get('excel')
   findAll() {
     return this.excelService.findAll();
   }
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.excelService.findOne(+id);
-//   }
+  @Get('excel/:id')
+  findOne(@Param('id') id: string) {
+    return this.excelService.findOne(id);
+  }
 
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateExcelDto: UpdateExcelDto) {
-//     return this.excelService.update(+id, updateExcelDto);
-//   }
+  // @Patch('excel/:id')
+  // update(@Param('id') id: string, @Body() @Req() req) {
+  //   return this.excelService.update(id, req);
+  // }
 
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.excelService.remove(+id);
-//   }
-// }
+  @Delete('excel/:id')
+  remove(@Param('id') id: string) {
+    return this.excelService.remove(id);
+  }
 }

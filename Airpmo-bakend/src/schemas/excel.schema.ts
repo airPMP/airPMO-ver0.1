@@ -6,20 +6,11 @@ export type excelDocument = excels & Document;
 
 @Schema()
 export class excels {
- 
- 
- @Prop()
-  s_no:string
-  @Prop()
-  first_name:string
-  @Prop()
-  last_name:string
-  @Prop()
-  country:string
-  @Prop()
-  age:string
-  @Prop()
-  id:string
+
+    @Prop()
+    productivitysheet: [{}]
+
+
 }
 
 export const excelSchema = DefinitionsFactory.createForClass(excels);
