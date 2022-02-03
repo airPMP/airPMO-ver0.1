@@ -12,9 +12,9 @@ export class RolesSeeder implements Seeder {
  
   async seed(): Promise<any> {
 
-    let role= await this.RoleModel.insertMany({name:"super admin"});
-    let user= await this.usersModel.findOne();
-    return await this.UserRoleModel.insertMany({role_id:role[0].id,user_id:user.id});
+    let role= await this.RoleModel.insertMany([{name:"Airpmo Super Admin",permission:'ALL'},{name:"super admin",permission:'ALL'}]);
+    let user= await this.usersModel.find();
+    return await this.UserRoleModel.insertMany({role_id:role[0].id,user_id:user[user.length-1].id});
 
   }
  
