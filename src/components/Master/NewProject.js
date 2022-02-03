@@ -61,6 +61,7 @@ const NewProject = () => {
   const [category, setCategory] = useState(null)
   const [subcategory, setSubCategory] = useState(null)
   const [showeye, setShowEye] = useState(" ");
+  const [organization_id_data, setOrganization_Id] = useState();
 
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -103,6 +104,9 @@ const NewProject = () => {
     }
     feach1();
 
+    const organization_Id = reactLocalStorage.get("organizationId", false);
+    setOrganization_Id(organization_Id)
+
   }, [urlTitle.pathname]);
 
 
@@ -128,11 +132,13 @@ const NewProject = () => {
       client: "",
       time_sheet_id: "",
       spread_sheet_id: "",
-      spread_sheet_key: ""
+      spread_sheet_key: "",
+      orgainization_id:''
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
+      values.orgainization_id= organization_id_data
       const token = reactLocalStorage.get("access_token", false);
 
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {

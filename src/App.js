@@ -44,6 +44,7 @@ import SuperAdmin from "./pages/SuperAdmin";
 import UserEmpolyee from "./pages/UserEmpolyee";
 import AddNewUser from "./components/Management/AddNewUser";
 import EditAccess from "./components/Management/EditAccess";
+import SuperAdminId from "./components/SuperAdmin/[id]";
 
 function App() {
   return (
@@ -122,6 +123,7 @@ function App() {
         {/* superAmin pages */}
         <Route path="super_admin" element={<SuperAdmin/>}/>
         <Route path="user_empolyee" element={<UserEmpolyee/>}/>
+        <Route path="/SuperAdmin/:id" element={<SuperAdminId />} />
           {
           /*<Route path="/master/clients" element={<Clients />} />
          <Route path="/master/projects" element={<Projects />} />

@@ -35,6 +35,7 @@ const AddCategories = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
+  const [organization_id_data, setOrganization_Id] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
@@ -43,6 +44,9 @@ const AddCategories = () => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
+    const organization_Id = reactLocalStorage.get("organizationId", false);
+    setOrganization_Id(organization_Id)
+
   }, [urlTitle.pathname]);
  
 
@@ -50,10 +54,12 @@ const AddCategories = () => {
     initialValues: { 
       category: "",
       sub_category: "",
-      discription:""   
+      discription:"" ,
+      orgainization_id:'' 
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
+     values.orgainization_id= organization_id_data
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/categories/`, values, {
         headers: {

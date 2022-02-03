@@ -39,12 +39,19 @@ const Login = () => {
         console.log(response)
         if (response.status === 201) {
 
+          if(response?.data?.roles[0]==="super admin"){
+            navigate('/super_admin')
+          }
+          else{
+            navigate('/dashboard')
+          }
           addToast("Login  Sucessfully", {
             appearance: "success",
             autoDismiss: true,
           })
           reactLocalStorage.set("access_token", response?.data?.access_token);
-          navigate('/dashboard')
+          reactLocalStorage.set("organizationId", response?.data?.user?._id);
+          // navigate('/dashboard')
         }
         else {
 

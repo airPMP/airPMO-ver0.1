@@ -42,6 +42,7 @@ const NewClientProfile = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
+  const [organization_id_data, setOrganization_Id] = useState(null);
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
@@ -50,8 +51,12 @@ const NewClientProfile = () => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
+
+    const organization_Id = reactLocalStorage.get("organizationId", false);
+    setOrganization_Id(organization_Id)
+
   }, [urlTitle.pathname]);
- 
+
 
   const formik = useFormik({
     initialValues: {
@@ -80,13 +85,14 @@ const NewClientProfile = () => {
       // orgainization_id:"",
     },
     validate,
-    onSubmit: (values, { resetForm }) => { 
-
+    onSubmit: (values, { resetForm }) => {
+      values.orgainization_id = organization_id_data
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
-        }})
+        }
+      })
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
@@ -98,7 +104,7 @@ const NewClientProfile = () => {
           }
           resetForm()
         })
-        .catch((error) => { 
+        .catch((error) => {
           addToast(error.response.data.message, {
             appearance: "error",
             autoDismiss: true,
@@ -149,7 +155,7 @@ const NewClientProfile = () => {
                   </select>
                 </div>
                 <div className="relative w-[350px]">
-                {/* <div className="relative w-[350px] border-b border-black pb-[10px]"> */}
+                  {/* <div className="relative w-[350px] border-b border-black pb-[10px]"> */}
                   {/* <select
                     onChange={() => {
                       naviagte("/master/clients/new_client/client_name");
@@ -173,7 +179,7 @@ const NewClientProfile = () => {
                     htmlFor="client_name"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                   Client Name
+                    Client Name
                   </label>
                   {formik.errors.client_name && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -258,7 +264,7 @@ const NewClientProfile = () => {
                     htmlFor="address"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                     Address
+                    Address
                   </label>
                   {formik.errors.address && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -281,7 +287,7 @@ const NewClientProfile = () => {
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     Contact Number
-                     
+
                   </label>
                   {formik.errors.contact_no && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">

@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate } from "react-router-dom";
+import { reactLocalStorage } from "reactjs-localstorage";
+import axios from "axios";
 
 const EditAccess = () => {
 
     const [title, setTitle] = useState(null);
+    const [rolesdata, setRolesData] = useState(null)
+    const [permissiondata, setPermissionData] = useState(null)
+    const [clinreditcreate, setClientEditCreate] = useState(null)
+    const [clientview, setClientView] = useState(null)
+
+
     let navigate = useNavigate();
     let urlTitle = useLocation();
     useEffect(() => {
@@ -13,19 +21,46 @@ const EditAccess = () => {
         if (urlTitle.pathname === "/UserManagement/EditAccess") {
             setTitle("User Mgmt");
         }
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feachRolls = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                setRolesData(data?.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachRolls();
+
+        const feachPermission = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/permission/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                setPermissionData(data?.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachPermission();
+
     }, [urlTitle.pathname])
 
-    const data = [
-        { "name": "John doe", "role": "Client", "discription": "discription-1", "mobile": "529255077", "action": "action" }
-        ,
-        { "name": "John doe", "role": "Client", "discription": "discription-2", "mobile": "529255077", "action": "action" }
-
-    ]
-
+     
+    console.log(rolesdata) 
 
     return (
         <>
-            <div className="flex flex-row justify-start overflow-hidden">
+            <div className="flex flex-row justify-start overflow-hidden  ">
                 <div>
                     <SideBar />
                 </div>
@@ -37,7 +72,7 @@ const EditAccess = () => {
             <div className="flex flex-col">
                 <Header title={title} />
             </div> */}
-                    <div className=" flex flex-col  w-[98%] rounded-[31.529px]
+                    <div className=" flex flex-col  w-[100%] rounded-[31.529px]  
                     mh-[632.01px] mt-[105.49px] ml-[38px]  pb-10
                       bg-[#FFFFFF]   ">
                         <div className="flex flex-row justify-between">
@@ -76,8 +111,10 @@ const EditAccess = () => {
 
                         </div>
 
-                        <div className="grid grid-cols-12    ">
-                            <div className="col-span-2   pl-4 mt-[70px]">
+                        <div 
+                        className="grid grid-cols-12    "
+                        >
+                           <div className="col-span-2   pl-4 mt-[70px]">
                                 <div className=" ml-[20px]">
 
                                     Dashboards
@@ -86,7 +123,8 @@ const EditAccess = () => {
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
-                                        Management
+                                        Client
+                                        <br/>
                                         Dashboards 1
                                     </button>
                                 </div>
@@ -94,7 +132,8 @@ const EditAccess = () => {
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
-                                        Management
+                                        Project
+                                        <br/>
                                         Dashboards 2
                                     </button>
                                 </div>
@@ -102,22 +141,65 @@ const EditAccess = () => {
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
-                                        Management
+                                       Category
+                                       <br/>
                                         Dashboards 3
                                     </button>
                                 </div>
-                            </div>
+                            </div>  
 
                             {/* <div className="col-span-10">
                                 <div className="grid-cols-10">  */}
+                            <div className="editAccess_flow flex   ">
 
-                            <div className="col-span-2    pt-[28.49px]" >
-                                <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
-                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    Operation&nbsp;Manager
-                                </button>
 
-                                <div className="mt-[55px]">
+                                {rolesdata?.map((items, id) => {
+                                    return <div className=" p-3   pt-[28.49px]" >
+
+                                          <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
+                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}> 
+                                            {items.name}
+                                        </button>
+
+                                            <div className="mt-[55px]">
+                                                <div className="flex">
+                                                    <div className="px-[2px]">
+                                                        <button
+                                                        onClick={(e)=>setClientEditCreate("CREATE-CLIENTS","EDIT-CLIENTS")}
+                                                        className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                            Edit/Create
+                                                        </button>
+                                                    </div>
+                                                    <div className="px-[2px]">
+                                                        <button
+                                                        onClick={(e)=>setClientView("GET-CLIENTS")}
+                                                        className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                            View
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="flex mt-3">
+                                                    <div className="px-[2px]">
+                                                        <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                            Comment
+                                                        </button>
+                                                    </div>
+                                                    <div className="px-[2px]">
+                                                        <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                            Approve
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        
+
+
+                                        {/* <div className="mt-[20px]">
                                     <div className="flex">
                                         <div className="px-[2px]">
                                             <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
@@ -179,42 +261,12 @@ const EditAccess = () => {
                                         </div>
 
                                     </div>
-                                </div>
-
-                                <div className="mt-[20px]">
-                                    <div className="flex">
-                                        <div className="px-[2px]">
-                                            <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                Edit/Create
-                                            </button>
-                                        </div>
-                                        <div className="px-[2px]">
-                                            <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="flex mt-3">
-                                        <div className="px-[2px]">
-                                            <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                Comment
-                                            </button>
-                                        </div>
-                                        <div className="px-[2px]">
-                                            <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                Approve
-                                            </button>
-                                        </div>
+                                </div> */}
 
                                     </div>
-                                </div>
-
+                                })}
                             </div>
-                            <div className="col-span-2     pt-[28.49px]" >
+                            {/* <div className="col-span-2     pt-[28.49px]" >
                                 <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     Project&nbsp;Manager
@@ -613,28 +665,28 @@ const EditAccess = () => {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             {/* </div>
                             </div> */}
                         </div>
 
-                        <div className="flex mt-10  ml-[74%]  ">
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button 
-                    // onClick={() => { naviagte("/master/projects") }}
-                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                      Cancel
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
+                        <div className="flex mt-10  ml-[70%]  ">
+                            <div className="mr-[45px] shadow-[buttonshadow] ">
+                                <button
+                                    // onClick={() => { naviagte("/master/projects") }}
+                                    className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    type="submit"
+                                    className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 
 
 
-const SuperAdmin = () => {
+const SuperAdminId = () => {
     const { addToast } = useToasts();
     const [open, setOpen] = useState(false);
     const [name, setNameData] = useState('')
@@ -83,7 +83,6 @@ const SuperAdmin = () => {
                     reactLocalStorage.set("organizationId", response?.data?._id);
                     console.log(response?.data?._id)
                     if (response.status === 201) {
-                        navigate("/UserManagement/EditAccess")
                         Roles()
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
@@ -764,4 +763,4 @@ const SuperAdmin = () => {
     );
 };
 
-export default SuperAdmin;
+export default SuperAdminId;

@@ -54,3 +54,12 @@ top:-20px
     width: 100%;
     overflow-y: scroll;
   }
+
+  .editAccess_flow{
+      
+    padding: inherit;
+    justify-items: center;
+     height: 500px;
+    width:800px;
+    overflow-x: scroll;
+  }
