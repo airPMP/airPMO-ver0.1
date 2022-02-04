@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
 export type ussersDocument = users & Document;
 
 @Schema()
@@ -26,9 +25,10 @@ export class users {
   @Prop()
   Comments: string;
 
-  @Prop()
-  Password: string;
-
+  @Prop({select:false})
+  Password:string
+  
+  
   @Prop()
   organization_id: string;
 

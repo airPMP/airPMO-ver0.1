@@ -9,7 +9,7 @@ import { UserRolesService } from 'src/user-roles/user-roles.service';
 @Injectable()
 export class AuthService {
 
-  constructor(private usersService: UsersService, private jwtService: JwtService,private userroleService: UserRolesService){ }
+  constructor(private usersService: UsersService, private jwtService: JwtService, private userroleService: UserRolesService) { }
 
   async validateUser(loginusersDto: loginusersDto): Promise<any> {
 
@@ -26,46 +26,45 @@ export class AuthService {
         throw new UnauthorizedException("Unauthorized")
       }
       else {
-     
-       let roles= await this.userroleService.userroles(user.id);
+        const userdata = await this.usersService.findOne(user.id)
+        let roles = await this.userroleService.userroles(user.id);
 
-       var per=[];
-       var role_name=[]; 
-       for(let i=0;i<roles.length;i++)
-       {
+        var per = [];
+        var role_name = [];
+        for (let i = 0; i < roles.length; i++) {
 
-        var per=per.concat(roles[i].permission);
-        role_name.push(roles[i].name);
+          var per = per.concat(roles[i].permission);
+          role_name.push(roles[i].name);
 
-       }
-       var permission=this.arrayUnique(per);
-       
-        const payload = { FirstName: user.FirstName, Email: user.Email,roles:role_name,permission:permission};
+        }
+        var permission = this.arrayUnique(per);
+
+        const payload = { FirstName: user.FirstName, Email: user.Email, roles: role_name, permission: permission };
         const token = this.jwtService.sign(payload)
-       
+
         if (!token) {
           throw new UnauthorizedException
         }
         else {
-        
-          return {"access_token":token,"user":user,"roles":role_name,"permissions":permission};
+
+          return { "access_token": token, "user": userdata, "roles": role_name, "permissions": permission };
         }
       }
     }
   }
 
-   arrayUnique(array) {
+  arrayUnique(array) {
     var a = array.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i] == a[j])
-                a.splice(j--, 1);
-        }
+    for (var i = 0; i < a.length; ++i) {
+      for (var j = i + 1; j < a.length; ++j) {
+        if (a[i] == a[j])
+          a.splice(j--, 1);
+      }
     }
 
     return a;
-}
-  
+  }
+
 
 }
 

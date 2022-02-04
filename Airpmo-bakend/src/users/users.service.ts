@@ -27,10 +27,9 @@ export class UsersService {
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-    const user = await this.usersModel.findOne({ "Email": loginusersDto.Email })
+    const user = await this.usersModel.findOne({"Email":loginusersDto.Email}).select('Password').select("Email")
     return user
   }
-
 
   findAll() {
     return this.usersModel.find();
