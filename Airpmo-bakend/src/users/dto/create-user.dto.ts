@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { IsString, IsNotEmpty,  IsOptional, IsEmail, IsNumber, MinLength, MaxLength, IsPhoneNumber  } from 'class-validator';
 
 //This is DTO for User Mode
