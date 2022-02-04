@@ -39,7 +39,7 @@ const Login = () => {
         console.log(response)
         if (response.status === 201) {
 
-          if(response?.data?.roles[0]==="super admin"){
+          if(response?.data?.permissions[0]==="ALL"){
             navigate('/super_admin')
           }
           else{

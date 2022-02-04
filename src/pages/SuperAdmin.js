@@ -34,6 +34,7 @@ const SuperAdmin = () => {
     const [nameErr, setNameDataErr] = useState('')
     const [locationErr, setLocationErr] = useState('')
     const [addressErr, setAddressErr] = useState('')
+    const [rolleiddata, setRolleIdData] = useState(null)
 
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
@@ -250,6 +251,9 @@ const SuperAdmin = () => {
 
                         let storedDesignamtion = []
 
+                        // setRolleIdData(data1?.data?.values) 
+                        
+
                         data1?.data?.values.map((items, id) => {
                             storedDesignamtion.push(items[3])
                         })
@@ -266,6 +270,8 @@ const SuperAdmin = () => {
         setOpen(o => !o)
 
     }
+
+    //   let userdata  =  data1.map((item)=>{})
     const CancelButton = (e) => {
         setOpen(o => !o)
         setShowEye(o => !o)
@@ -273,6 +279,17 @@ const SuperAdmin = () => {
 
     const Forget = () => {
     }
+
+   
+    
+    // const dataqwe  = rolleiddata?.map((item, id) => {
+    //      return{ 
+    //     "id": item[0],
+    //     "firstname":item[1]  ,
+    //     "lastname":item[2]  
+    //     }
+    // }) 
+    // console.log(dataqwe)
 
 
     return (
