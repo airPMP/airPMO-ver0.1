@@ -5,6 +5,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { useEffect } from "react/cjs/react.development";
 
 
 
@@ -45,6 +46,25 @@ const SuperAdmin = () => {
     const Login = () => {
         navigate('/');
     };
+
+    useEffect(() => {
+
+        const feach = async () => {
+            try {
+                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
+
+                let storedDesignamtion = []
+                data1?.data?.values.map((items, id) => {
+                    storedDesignamtion.push(items[3])
+                })
+                setDesignationData(storedDesignamtion)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feach();  
+    }, [])
 
     const SubmitForm = (e) => {
 
@@ -102,17 +122,15 @@ const SuperAdmin = () => {
         }
     }
 
-    const Roles = () => {
+    console.log(designationdata)
 
+    const Roles = () => {
+        const organization_Id = reactLocalStorage.get("organizationId", false);
         const token = reactLocalStorage.get("access_token", false);
+
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
             roles_data: designationdata,
-            name: " ",
-            discription: " ",
-            permission: [],
-            organization_id: organizationid,
-            project_id: "",
-            is_assign_to_all_project: true
+            organization_id: organization_Id,
         }, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -252,7 +270,7 @@ const SuperAdmin = () => {
                         let storedDesignamtion = []
 
                         // setRolleIdData(data1?.data?.values) 
-                        
+
 
                         data1?.data?.values.map((items, id) => {
                             storedDesignamtion.push(items[3])
@@ -280,8 +298,8 @@ const SuperAdmin = () => {
     const Forget = () => {
     }
 
-   
-    
+
+
     // const dataqwe  = rolleiddata?.map((item, id) => {
     //      return{ 
     //     "id": item[0],

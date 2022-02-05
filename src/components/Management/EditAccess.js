@@ -9,14 +9,11 @@ const EditAccess = () => {
 
     const [title, setTitle] = useState(null);
     const [rolesdata, setRolesData] = useState(null)
-    const [permissiondata, setPermissionData] = useState(null)
-    const [clinreditcreate, setClientEditCreate] = useState("#0FCC7C")
-    const [clinreditdata, setClientEditData] = useState(null)
-    const [clientview, setClientView] = useState(null)
-    const [clientviewdata, setClientViewData] = useState(null)
+    const [permissiondata, setPermissionData] = useState(null) 
+    const [clinreditdata, setClientEditData] = useState(true) 
     const [colorid, SetColorId] = useState(null)
-    const [clientid, setClientId] = useState(null)
-    const [activebutton, setActiveButon] = useState(null)
+    const [clientid, setClientId] = useState(null) //don't remove this state its very important
+    const [activebutton, setActiveButon] = useState(null)//don't remove this state its very important
     const [activebuttonsave, setActiveButonSave] = useState([null])
 
     const [data2, setdata2] = useState([])
@@ -26,15 +23,16 @@ const EditAccess = () => {
     let navigate = useNavigate();
     let urlTitle = useLocation();
 
-    useLayoutEffect(()=>{
-        let roleId= rolesdata?.map((items,id)=>{
-            return items._id
-             // let idarray=[] 
-             // idarray.push(items._id)
-             // setActiveButonSave(idarray)
-         })
-         setActiveButonSave(roleId)
-    },[rolesdata])
+    // useLayoutEffect(() => {
+    //     let roleId = rolesdata?.map((items, id) => {
+    //         return items._id
+    //         // let idarray=[] 
+    //         // idarray.push(items._id)
+    //         // setActiveButonSave(idarray)
+    //     })
+    //     setActiveButonSave(roleId)
+    //     setClientEditData(null)
+    // }, [rolesdata])
 
     useEffect(() => {
 
@@ -51,6 +49,7 @@ const EditAccess = () => {
                     },
                 })
 
+                console.log()
                 setRolesData(data?.data)
             } catch (error) {
                 console.log(error)
@@ -73,51 +72,59 @@ const EditAccess = () => {
         }
         feachPermission();
 
-         
+
 
     }, [urlTitle.pathname])
 
 
-    const SavePermission = () => {
-        const token = reactLocalStorage.get("access_token", false);
+    
 
-        rolesdata?.map((item, id) => {
+    const ClientView = (e, id) => {
 
-            const feachPermission = async () => {
-                try {
-                    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/roles/${item._id}`, {
-                        "permission": [
-                            "alldata"
-                        ],
-                    }, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-                    console.log(data)
-                    // setPermissionData(data?.data)
-                } catch (error) {
-                    console.log(error)
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[2] === `VIEW-CLIENTS`) {
+                    return item.permission[2] = ''
+                }
+                else {
+                    return item.permission[2] = `VIEW-CLIENTS`
                 }
             }
-            feachPermission();
+            else {
+                return "nothing"
+            }
+
         })
+        console.log(comedata)
+        setActiveButon(e)
     }
+     
 
-    const ClientView = (e) => {
-        setClientView(o => !o)
-        if (clientview) {
-            setClientViewData("VIEW-CLIENTS")
-        }
-        else {
-            setClientViewData(null)
-        }
-        // ClientEditCreate()
-    }
+    const ClientEditCreate = (e, id) => { 
 
-    const ClientEditCreate = (e) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[0] === `CREATE-CLIENTS`) {
+                    return  item.permission[0] = '', item.permission[1] = ''
+                }
+                else {
+                    return item.permission[0] = `CREATE-CLIENTS`, item.permission[1] = `EDIT-CLIENTS`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        }) 
+
+        console.log(comedata) 
 
         setClientId(e)
+
         // setClientEditCreate(o => !o)
         // if (clinreditcreate === true) {
         //     setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
@@ -125,50 +132,75 @@ const EditAccess = () => {
         // else {
         //     setClientEditData(null)
         // }
-       
 
 
-        let data_1 = []
-        data_1 = rolesdata?.filter((data, id) => {
-            if (isNaN(+e)) {
-                return data?._id?.search(e) !== -1;
-            }
-        })
-        const ClickClientId = data_1.map((items, id) => {
-            return items._id
-        })
 
-        SetColorId(ClickClientId[0])
+        // let data_1 = []
+        // data_1 = rolesdata?.filter((data, id) => {
+        //     if (isNaN(+e)) {
+        //         return data?._id?.search(e) !== -1;
+        //     }
+        // })
+        // const ClickClientId = data_1.map((items, id) => {
+        //     // return items._id
+        //     return items.permission[0]
+        // })
 
-        if (clinreditcreate === "#0FCC7C") {
-            setClientEditCreate('#ffffff')
-            // setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
-        }
-        else if (clinreditcreate === "#ffffff") {
-            setClientEditCreate('#0FCC7C')
-            // setClientEditData(null)
-        }
-        let CleintData = {
-            'id': e,
-            'permission': [clinreditdata, clientviewdata]
-        }
-        setdata2(CleintData)
-        setdata1([...data1, data2])
-        // ClientView()
+        // // console.log(ClickClientId)
 
-        let savedata = data1?.map((items, id) => {
-            return items?.id 
-        })
+        // SetColorId(ClickClientId[0])
 
-        console.log(savedata)
+        // if (clinreditcreate === "#0FCC7C") {
+        //     setClientEditCreate('#ffffff')
+        //     // setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
+        // }
+        // else if (clinreditcreate === "#ffffff") {
+        //     setClientEditCreate('#0FCC7C')
+        //     // setClientEditData(null)
+        // }
+        // let CleintData = {
+        //     'id': e,
+        //     'permission': [clinreditdata, clientviewdata]
+        // }
+        // setdata2(CleintData)
+        // setdata1([...data1, data2])
+
+        // let savedata = data1?.map((items, id) => {
+        //     return items?.id
+        // })
+
+        // console.log(data1)
 
         // setActiveButon(savedata)
         // setActiveButonSave(...activebuttonsave, activebutton)
     }
 
-    console.log(activebutton) 
-    console.log(activebuttonsave)
+    console.log(rolesdata)
+    
+    const SavePermission = () => {
 
+        console.log(rolesdata)
+        const token = reactLocalStorage.get("access_token", false); 
+
+            const feachPermission = async () => {
+                try {
+                    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_roles_permission/`, {
+                        roles_permission: [
+                            rolesdata
+                          ]   
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    console.log(data) 
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            feachPermission();
+         
+    }
 
     return (
         <>
@@ -234,12 +266,9 @@ const EditAccess = () => {
                                         Dashboards 3
                                     </button>
                                 </div>
-                            </div>
+                            </div> 
 
-
-                            <div className="editAccess_flow flex   ">
-
-
+                            <div className="editAccess_flow flex"> 
                                 {rolesdata?.map((items, id) => {
                                     if (id >= 4) {
                                         return <div className=" p-3   pt-[28.49px]" >
@@ -255,9 +284,9 @@ const EditAccess = () => {
                                                         <button
                                                             // bg-[${clinreditcreate}]
                                                             // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
-                                                            onClick={(e) => ClientEditCreate(items._id)}
+                                                            onClick={(e) => ClientEditCreate(e, items._id)}
                                                             className={` 
-                                                            ${items._id === clientid ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                            ${items.permission[0] === `CREATE-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                             style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                             Edit/Create
@@ -265,8 +294,8 @@ const EditAccess = () => {
                                                     </div>
                                                     <div className="px-[2px]">
                                                         <button
-                                                            onClick={(e) => ClientView(e)}
-                                                            className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                            onClick={(e) => ClientView(e, items._id)}
+                                                            className= {`${items.permission[2] === `VIEW-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                             style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                             View
                                                         </button>
