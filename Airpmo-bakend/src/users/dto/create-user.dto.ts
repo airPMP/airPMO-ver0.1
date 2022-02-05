@@ -33,7 +33,6 @@ export class CreateUserDto {
     Comments:string;
  
     @IsString()
-    @IsOptional()
     @ApiProperty()
     Password:string;
 
