@@ -14,12 +14,6 @@ export class Roles_Permission_Guard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const user = request.user;
        
-        for(let i=0;i<user.roles.length;i++){
-       if(user.roles[i]==='super admin'){
-        return true;
-       }
-
-      }
         for(let i=0;i<user.permission.length;i++){ 
           if("ALL"===user.permission[i]){
             return true;

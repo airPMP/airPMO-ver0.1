@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Role, RoleDocument } from 'src/schemas/roles.schema';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { Update_role_Permission } from './dto/update_permission-role.dto';
 
 @Injectable()
 export class RolesService {
@@ -84,6 +85,22 @@ export class RolesService {
     {
      throw new NotFoundException("organization roles not exist")
     }
+  }
+
+  async update_multiple_role_permission(update_role_permission: Update_role_Permission) {
+    try{
+      
+      for (let i=0;i<update_role_permission.roles_permission.length;i++){
+
+        await this.RoleModel.updateOne({_id:update_role_permission.roles_permission[i].id},{$set:{"permission":update_role_permission.roles_permission[i].permission}});
+     
+      }
+      return "updated successfully";
+      }
+    catch
+      {
+     throw new NotFoundException("role not exist")
+      }
   }
 }
 

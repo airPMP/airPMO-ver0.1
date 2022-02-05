@@ -19,7 +19,8 @@ export class UsersService {
     }
     const user = await this.usersModel.findOne({ "Email": createUserDto.Email })
     if (!user) {
-      return await this.usersModel.create(createUserDto)
+     let userdata=await this.usersModel.create(createUserDto)
+     return await this.findOne(userdata.id);
     }
     else {
       throw new UnauthorizedException("User already rigister")
@@ -27,10 +28,9 @@ export class UsersService {
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-    const user = await this.usersModel.findOne({ "Email": loginusersDto.Email })
+    const user = await this.usersModel.findOne({"Email":loginusersDto.Email}).select('Password').select("Email")
     return user
   }
-
 
   findAll() {
     return this.usersModel.find();
