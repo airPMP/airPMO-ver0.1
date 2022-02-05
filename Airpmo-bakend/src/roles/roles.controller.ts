@@ -4,6 +4,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
+import { Update_role_Permission } from './dto/update_permission-role.dto';
 
 @ApiTags('Roles')
 @Controller('api')
@@ -50,5 +51,11 @@ export class RolesController {
   @Get('organization/:organization_id/roles')
   findorganizationroles(@Param('organization_id') organization_id: string) {
     return this.rolesService.findorganizationroles(organization_id);
+  }
+
+  @Auth('EDIT-ROLES')
+  @Patch('update_roles_permission')
+  update_multiple_role_permission(@Body() update_role_permission: Update_role_Permission) {
+    return this.rolesService.update_multiple_role_permission( update_role_permission);
   }
 }
