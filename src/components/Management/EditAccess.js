@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate } from "react-router-dom";
@@ -68,11 +68,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[2] === `VIEW-CLIENTS`) {
+                if (item.permission[2] === `GET-CLIENTS`) {
                     return item.permission[2] = ''
                 }
                 else {
-                    return item.permission[2] = `VIEW-CLIENTS`
+                    return item.permission[2] = `GET-CLIENTS`
                 }
             }
             else {
@@ -147,11 +147,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[3] === `CREATE-PROJECT`) {
+                if (item.permission[3] === `CREATE-PROJECTS`) {
                     return item.permission[3] = '', item.permission[4] = ''
                 }
                 else {
-                    return item.permission[3] = `CREATE-PROJECT`, item.permission[4] = `EDIT-PROJECT`
+                    return item.permission[3] = `CREATE-PROJECTS`, item.permission[4] = `EDIT-PROJECTS`
                 }
             }
             else {
@@ -167,11 +167,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[5] === `VIEW-PROJECT`) {
+                if (item.permission[5] === `GET-PROJECTS`) {
                     return item.permission[5] = ''
                 }
                 else {
-                    return item.permission[5] = `VIEW-PROJECT`
+                    return item.permission[5] = `GET-PROJECTS`
                 }
             }
             else {
@@ -188,11 +188,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[6] === `CREATE-CATEGORY`) {
+                if (item.permission[6] === `CREATE-CATEGORIES`) {
                     return item.permission[6] = '', item.permission[7] = ''
                 }
                 else {
-                    return item.permission[6] = `CREATE-CATEGORY`, item.permission[7] = `EDIT-CATEGORY`
+                    return item.permission[6] = `CREATE-CATEGORIES`, item.permission[7] = `EDIT-CATEGORIES`
                 }
             }
             else {
@@ -208,11 +208,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[8] === `VIEW-CATEGORY`) {
+                if (item.permission[8] === `GET-CATEGORIES`) {
                     return item.permission[8] = ''
                 }
                 else {
-                    return item.permission[8] = `VIEW-CATEGORY`
+                    return item.permission[8] = `GET-CATEGORIES`
                 }
             }
             else {
@@ -357,7 +357,7 @@ const EditAccess = () => {
                                                         <div className="px-[2px]">
                                                             <button
                                                                 onClick={(e) => ClientView(e, items._id)}
-                                                                className={`${items.permission[2] === `VIEW-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                className={`${items.permission[2] === `GET-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                 style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                 View
                                                             </button>
@@ -403,7 +403,7 @@ const EditAccess = () => {
                                                                     // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
                                                                     onClick={(e) => ProjectEditCreate(e, items._id)}
                                                                     className={` 
-                                                            ${items.permission[3] === `CREATE-PROJECT` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                            ${items.permission[3] === `CREATE-PROJECTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     Edit/Create
@@ -412,7 +412,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => ProjectView(e, items._id)}
-                                                                    className={`${items.permission[5] === `VIEW-PROJECT` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission[5] === `GET-PROJECTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>
@@ -457,7 +457,7 @@ const EditAccess = () => {
                                                                 <button
                                                                     onClick={(e) => CategoryEditCreate(e, items._id)}
                                                                     className={` 
-                                                                    ${items.permission[6] === `CREATE-CATEGORY` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                                    ${items.permission[6] === `CREATE-CATEGORIES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                                      text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     Edit/Create
@@ -466,7 +466,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => CategoryView(e, items._id)}
-                                                                    className={`${items.permission[8] === `VIEW-CATEGORY` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission[8] === `GET-CATEGORIES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>

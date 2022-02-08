@@ -32,18 +32,18 @@ const validate = (values) => {
         errors.Password = "Password Required";
     }
 
-    // if (!values.Password) {
-    //     errors.Password = "Phone Number Required";
-    // } else if (
-    //     !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(
-    //         values.Password
-    //     )
-    // ) {
-    //     errors.Password = "Invalid Phone Number";
-    // }
-    if (!values.spread_sheet_user_id) {
-        errors.spread_sheet_user_id = "User Id Required";
+    if (!values.PhoneNumber) {
+        errors.PhoneNumber = "Phone Number Required";
+    } else if (
+        !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(
+            values.PhoneNumber
+        )
+    ) {
+        errors.PhoneNumber = "Invalid Phone Number";
     }
+    // if (!values.spread_sheet_user_id) {
+    //     errors.spread_sheet_user_id = "User Id Required";
+    // }
     // if (!values.Designation) {
     //     errors.Designation = "Designation  Required";
     // }
@@ -69,6 +69,8 @@ const AddNewUser = () => {
     const [spreadsheetid, setSpreadSheetId] = useState(null)
     const [spreadsheetalldata, setSpreadSheetIdAllData] = useState(null)
     const [spreadalldata, setSpreadAllData] = useState(null)
+    const [errspreadalldata, setErrSpreadAllData] = useState(false)
+    const [refracedata, setRefraceData] = useState(false)
 
 
 
@@ -118,29 +120,33 @@ const AddNewUser = () => {
 
                 setClientIdData(ClientIdStore)
 
-
-
             } catch (error) {
                 console.log(error)
             }
         }
         feachSheetId();
 
-        UserDetails()
+
     }, [])
 
     useEffect(() => {
         if (designationdata) {
             setErrDesignation(false)
         }
-    }, [designationdata])
+        if (spreadalldata) {
+            setErrSpreadAllData(false)
+        }
+        // UserDetails()
+        // AssignUserRole()
 
+    }, [designationdata, spreadalldata])
 
-    // useEffect(() => {
-    //     setSpreadSheetId(formik.values.spread_sheet_user_id)
-    //     console.log(spreadsheetid)
-    //     SpreadSheetFun()
-    // }, [spreadsheetid]) 
+    useEffect(() => {
+        if (refracedata) {
+            AssignUserRole()
+        }
+    }, [refracedata])
+
 
     const formik = useFormik({
         initialValues: {
@@ -155,12 +161,11 @@ const AddNewUser = () => {
         validate,
         onSubmit: (values, { resetForm }) => {
 
-            // console.log(values)
             values.FirstName = firstnamedata
             values.LastName = lastnamedata
             values.spread_sheet_user_id = spreadalldata
 
-            if (designationdata) {
+            if (designationdata && spreadalldata) {
                 axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values
                 )
                     .then((response) => {
@@ -170,12 +175,14 @@ const AddNewUser = () => {
                                 appearance: "success",
                                 autoDismiss: true,
                             })
-                            AssignUserRole()
+
+                            UserDetails()
                             AssignRoles()
-                            // navigate('/')
+                            // navigate('/')   
                         }
                         resetForm()
                     })
+
                     .catch((error) => {
                         addToast(error.response.data.message, {
                             appearance: "error",
@@ -185,11 +192,12 @@ const AddNewUser = () => {
             }
             else {
                 setErrDesignation(true)
+                setErrSpreadAllData(true)
 
             }
         },
     });
- 
+
 
     const AssignRoles = () => {
 
@@ -210,7 +218,7 @@ const AddNewUser = () => {
                         appearance: "success",
                         autoDismiss: true,
                     })
-                    AssignUserRole()
+
                     // navigate('/')
                 }
 
@@ -234,27 +242,31 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
+                console.log(data1?.data)
                 setRegisterUserDetails(data1?.data)
                 let lastlengh = data1?.data[data1?.data.length - 1]
                 setUserId_Designation(lastlengh?._id)
-                // setFirstNameData(lastlengh?.FirstName)
-                // setLastNameData(lastlengh?.LastName)
+
+                setRefraceData(o => !o) 
+
 
             } catch (error) {
 
             }
         }
         feachUser();
+
     }
+ 
 
-
-    const AssignUserRole = () => {
-
+    const AssignUserRole = () => { 
+        console.log(userid_designation)
         const organization_Id = reactLocalStorage.get("organizationId", false);
         const token = reactLocalStorage.get("access_token", false);
-        axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
+
+           axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
             user_id: userid_designation,
-            role_id: roleid,
+            role_id: roleid, //this is the designation id comes from the get_roles api 
             organization_id: organization_Id
         }, {
             headers: {
@@ -280,24 +292,18 @@ const AddNewUser = () => {
             })
 
     }
+    console.log(userid_designation)
 
-     
-    let somedata = spreadsheetalldata?.map((item, id) => {
+    const SpreadFun = (e) => {
+        setSpreadAllData(e.target.value)
+        spreadsheetalldata?.map((item, id) => {
+            if (e.target.value === item[0]) {
+                setFirstNameData(item[1])
+                setLastNameData(item[2])
+            }
+        })
 
-        if (spreadalldata === item[0]) {
-            setFirstNameData(item[1])
-            setLastNameData(item[2])
-            // console.log(item[1])
-
-        }   
-    })
- 
-
-   
-
-
-
-
+    }
 
 
     const ChangeDesignation = (e) => {
@@ -351,9 +357,7 @@ const AddNewUser = () => {
                                             <div className="relative w-[300px] border-b border-black ">
                                                 <select
                                                     name="spread_sheet_user_id"
-                                                    // value={formik.values.spread_sheet_user_id}
-                                                    // onChange={formik.handleChange}
-                                                    onChange={(e) => setSpreadAllData(e.target.value)}
+                                                    onChange={(e) => SpreadFun(e)}
                                                     className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                                                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
                                                 >
@@ -365,27 +369,21 @@ const AddNewUser = () => {
                                                     })}
                                                 </select>
                                             </div>
-                                            {/* {
-                                                formik.errors.spread_sheet_user_id && (
-                                                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                                        {formik.errors.spread_sheet_user_id}{" "}
-                                                    </div>
-                                                )
-                                            } */}
+                                            {errspreadalldata && (
+                                                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                                    User Id  Required
+                                                </div>
+                                            )}
+
                                         </div>
 
                                         <div>
                                             <div className="relative w-[300px] border-b border-black ">
                                                 <select
-
-                                                    // value={formik.values.spread_sheet_user_id}
-                                                    // onChange={formik.handleChange} 
                                                     onChange={(e) => ChangeDesignation(e)}
-
                                                     className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                                                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
                                                 >
-
                                                     <option value="" label="Designation" />
                                                     {rolesdata?.map((item, id) => {
                                                         if (id >= 3)
@@ -475,10 +473,7 @@ const AddNewUser = () => {
                                                     {formik.errors.Password}{" "}
                                                 </div>
                                             )}
-                                        </div>
-
-
-
+                                        </div>  
                                     </div>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
                                         <div className="relative w-[300px]">
