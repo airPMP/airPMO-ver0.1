@@ -5,11 +5,10 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
-import { useEffect } from "react/cjs/react.development";
 
 
 
-const SuperAdmin = () => {
+const SuperAdminId = () => {
     const { addToast } = useToasts();
     const [open, setOpen] = useState(false);
     const [name, setNameData] = useState('')
@@ -35,7 +34,6 @@ const SuperAdmin = () => {
     const [nameErr, setNameDataErr] = useState('')
     const [locationErr, setLocationErr] = useState('')
     const [addressErr, setAddressErr] = useState('')
-    const [rolleiddata, setRolleIdData] = useState(null)
 
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
@@ -46,25 +44,6 @@ const SuperAdmin = () => {
     const Login = () => {
         navigate('/');
     };
-
-    useEffect(() => {
-
-        const feach = async () => {
-            try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-
-                let storedDesignamtion = []
-                data1?.data?.values.map((items, id) => {
-                    storedDesignamtion.push(items[3])
-                })
-                setDesignationData(storedDesignamtion)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        feach();  
-    }, [])
 
     const SubmitForm = (e) => {
 
@@ -104,7 +83,6 @@ const SuperAdmin = () => {
                     reactLocalStorage.set("organizationId", response?.data?._id);
                     console.log(response?.data?._id)
                     if (response.status === 201) {
-                        navigate("/UserManagement/EditAccess")
                         Roles()
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
@@ -122,15 +100,17 @@ const SuperAdmin = () => {
         }
     }
 
-    console.log(designationdata)
-
     const Roles = () => {
-        const organization_Id = reactLocalStorage.get("organizationId", false);
-        const token = reactLocalStorage.get("access_token", false);
 
+        const token = reactLocalStorage.get("access_token", false);
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
             roles_data: designationdata,
-            organization_id: organization_Id,
+            name: " ",
+            discription: " ",
+            permission: [],
+            organization_id: organizationid,
+            project_id: "",
+            is_assign_to_all_project: true
         }, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -269,9 +249,6 @@ const SuperAdmin = () => {
 
                         let storedDesignamtion = []
 
-                        // setRolleIdData(data1?.data?.values) 
-
-
                         data1?.data?.values.map((items, id) => {
                             storedDesignamtion.push(items[3])
                         })
@@ -288,8 +265,6 @@ const SuperAdmin = () => {
         setOpen(o => !o)
 
     }
-
-    //   let userdata  =  data1.map((item)=>{})
     const CancelButton = (e) => {
         setOpen(o => !o)
         setShowEye(o => !o)
@@ -297,17 +272,6 @@ const SuperAdmin = () => {
 
     const Forget = () => {
     }
-
-
-
-    // const dataqwe  = rolleiddata?.map((item, id) => {
-    //      return{ 
-    //     "id": item[0],
-    //     "firstname":item[1]  ,
-    //     "lastname":item[2]  
-    //     }
-    // }) 
-    // console.log(dataqwe)
 
 
     return (
@@ -799,4 +763,4 @@ const SuperAdmin = () => {
     );
 };
 
-export default SuperAdmin;
+export default SuperAdminId;

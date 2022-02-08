@@ -39,12 +39,19 @@ const Login = () => {
         console.log(response)
         if (response.status === 201) {
 
+          if(response?.data?.permissions[0]==="ALL"){
+            navigate('/super_admin')
+          }
+          else{
+            navigate('/dashboard')
+          }
           addToast("Login  Sucessfully", {
             appearance: "success",
             autoDismiss: true,
           })
           reactLocalStorage.set("access_token", response?.data?.access_token);
-          navigate('/dashboard')
+          reactLocalStorage.set("organizationId", response?.data?.user?._id);
+          // navigate('/dashboard')
         }
         else {
 
@@ -55,7 +62,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        addToast("login fail", {
+        addToast(error.response.data.message, {
           appearance: "error",
           autoDismiss: true,
         })
@@ -104,7 +111,7 @@ const ShowPasswordButton = () => {
     setshowpassword("password") 
   }
 }
-console.log(showeye)
+ 
 
 return (
   <div className="flex flex-row overflow-hidden w-[100%] h-[100vh]  lg:w-[100vw] xl:w[100vw] sm:w-[100vw] ">

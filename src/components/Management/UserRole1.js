@@ -2,18 +2,43 @@ import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate } from "react-router-dom";
+import { reactLocalStorage } from "reactjs-localstorage";
+import axios from "axios";
 
 const UserRole1 = () => {
 
     const [title, setTitle] = useState(null);
+    const [rolesdata, setRolesData] = useState(null)
+
     let navigate = useNavigate();
     let urlTitle = useLocation();
+
     useEffect(() => {
 
         if (urlTitle.pathname === "/UserManagement/UserRole1") {
             setTitle("User Mgmt");
         }
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feach = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                setRolesData(data?.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feach();
+
+
     }, [urlTitle.pathname])
+
+    console.log(rolesdata)
 
     const data = [
         { "name": "John doe", "role": "Client", "discription": "discription-1", "mobile": "529255077", "action": "action" }
@@ -126,11 +151,11 @@ const UserRole1 = () => {
                                 </tr>
 
 
-                                {data?.map((item, i) => (
+                                {rolesdata?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
                                         <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick={() => { navigate("/UserManagement/UserRole1/Details") }}>
                                             {/* <td className="pt-[15px] pb-[14.83px]">{item.name} </td> */}
-                                            <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.name}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.discription}</td>
                                             {/* <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td> */}
                                             <td className="pt-[15px] pb-[14.83px]">
