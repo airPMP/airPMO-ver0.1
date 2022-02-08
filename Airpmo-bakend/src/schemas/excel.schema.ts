@@ -8,7 +8,16 @@ export type excelDocument = excels & Document;
 export class excels {
 
     @Prop()
-    productivitysheet: [{}]
+    productivitysheet:[{}]
+
+   @Prop()
+   quantity_sheets:[{}]
+
+   @Prop()
+   project_id:[{}]
+  
+  
+  
 
 
 }
