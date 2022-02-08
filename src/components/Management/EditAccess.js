@@ -1,38 +1,23 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { useToasts } from "react-toast-notifications";
 import axios from "axios";
 
 const EditAccess = () => {
 
     const [title, setTitle] = useState(null);
     const [rolesdata, setRolesData] = useState(null)
-    const [permissiondata, setPermissionData] = useState(null) 
-    const [clinreditdata, setClientEditData] = useState(true) 
-    const [colorid, SetColorId] = useState(null)
-    const [clientid, setClientId] = useState(null) //don't remove this state its very important
-    const [activebutton, setActiveButon] = useState(null)//don't remove this state its very important
-    const [activebuttonsave, setActiveButonSave] = useState([null])
-
-    const [data2, setdata2] = useState([])
-    const [data1, setdata1] = useState([])
-
+    const [permissiondata, setPermissionData] = useState(null)
+    const [clientid, setClientId] = useState(null) //don't remove this state its very important  
 
     let navigate = useNavigate();
     let urlTitle = useLocation();
+    const { addToast } = useToasts();
 
-    // useLayoutEffect(() => {
-    //     let roleId = rolesdata?.map((items, id) => {
-    //         return items._id
-    //         // let idarray=[] 
-    //         // idarray.push(items._id)
-    //         // setActiveButonSave(idarray)
-    //     })
-    //     setActiveButonSave(roleId)
-    //     setClientEditData(null)
-    // }, [rolesdata])
+
 
     useEffect(() => {
 
@@ -48,8 +33,6 @@ const EditAccess = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
-                console.log()
                 setRolesData(data?.data)
             } catch (error) {
                 console.log(error)
@@ -77,7 +60,7 @@ const EditAccess = () => {
     }, [urlTitle.pathname])
 
 
-    
+
 
     const ClientView = (e, id) => {
 
@@ -85,11 +68,11 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
-                if (item.permission[2] === `VIEW-CLIENTS`) {
+                if (item.permission[2] === `GET-CLIENTS`) {
                     return item.permission[2] = ''
                 }
                 else {
-                    return item.permission[2] = `VIEW-CLIENTS`
+                    return item.permission[2] = `GET-CLIENTS`
                 }
             }
             else {
@@ -97,19 +80,18 @@ const EditAccess = () => {
             }
 
         })
-        console.log(comedata)
-        setActiveButon(e)
+        setClientId(e)
     }
-     
 
-    const ClientEditCreate = (e, id) => { 
+
+    const ClientEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
 
             if (id === item._id) {
 
                 if (item.permission[0] === `CREATE-CLIENTS`) {
-                    return  item.permission[0] = '', item.permission[1] = ''
+                    return item.permission[0] = '', item.permission[1] = ''
                 }
                 else {
                     return item.permission[0] = `CREATE-CLIENTS`, item.permission[1] = `EDIT-CLIENTS`
@@ -118,23 +100,15 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
-        }) 
-
-        console.log(comedata) 
-
+        })
         setClientId(e)
-
         // setClientEditCreate(o => !o)
         // if (clinreditcreate === true) {
         //     setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
         // }
         // else {
         //     setClientEditData(null)
-        // }
-
-
-
+        // } 
         // let data_1 = []
         // data_1 = rolesdata?.filter((data, id) => {
         //     if (isNaN(+e)) {
@@ -144,12 +118,8 @@ const EditAccess = () => {
         // const ClickClientId = data_1.map((items, id) => {
         //     // return items._id
         //     return items.permission[0]
-        // })
-
-        // // console.log(ClickClientId)
-
-        // SetColorId(ClickClientId[0])
-
+        // })  
+        // SetColorId(ClickClientId[0]) 
         // if (clinreditcreate === "#0FCC7C") {
         //     setClientEditCreate('#ffffff')
         //     // setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
@@ -167,39 +137,131 @@ const EditAccess = () => {
 
         // let savedata = data1?.map((items, id) => {
         //     return items?.id
-        // })
-
-        // console.log(data1)
-
+        // })  
         // setActiveButon(savedata)
         // setActiveButonSave(...activebuttonsave, activebutton)
     }
 
-    console.log(rolesdata)
-    
-    const SavePermission = () => {
+    const ProjectEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
 
-        console.log(rolesdata)
-        const token = reactLocalStorage.get("access_token", false); 
+            if (id === item._id) {
 
-            const feachPermission = async () => {
-                try {
-                    const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_roles_permission/`, {
-                        roles_permission: [
-                            rolesdata
-                          ]   
-                    }, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-                    console.log(data) 
-                } catch (error) {
-                    console.log(error)
+                if (item.permission[3] === `CREATE-PROJECTS`) {
+                    return item.permission[3] = '', item.permission[4] = ''
+                }
+                else {
+                    return item.permission[3] = `CREATE-PROJECTS`, item.permission[4] = `EDIT-PROJECTS`
                 }
             }
-            feachPermission();
-         
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+    }
+
+
+    const ProjectView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[5] === `GET-PROJECTS`) {
+                    return item.permission[5] = ''
+                }
+                else {
+                    return item.permission[5] = `GET-PROJECTS`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+    }
+
+
+    const CategoryEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[6] === `CREATE-CATEGORIES`) {
+                    return item.permission[6] = '', item.permission[7] = ''
+                }
+                else {
+                    return item.permission[6] = `CREATE-CATEGORIES`, item.permission[7] = `EDIT-CATEGORIES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+    }
+
+
+    const CategoryView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[8] === `GET-CATEGORIES`) {
+                    return item.permission[8] = ''
+                }
+                else {
+                    return item.permission[8] = `GET-CATEGORIES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+    }
+
+    console.log(rolesdata)
+
+    const SavePermission = () => { 
+
+        let roles_all_data = rolesdata?.map((item, id) => {
+            return {
+                "id": item?._id,
+                "permission":item?.permission
+            }
+        }) 
+
+
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feachPermission = async () => {
+
+            try {
+                const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_roles_permission/`, {
+                    roles_permission: roles_all_data
+                    
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                console.log(data)
+                if (data?.status === 200) {
+                    addToast("All Permission Assign Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    }) 
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachPermission();
+    
     }
 
     return (
@@ -248,7 +310,7 @@ const EditAccess = () => {
                                         Dashboards 1
                                     </button>
                                 </div>
-                                <div className="pt-4">
+                                <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
@@ -257,7 +319,7 @@ const EditAccess = () => {
                                         Dashboards 2
                                     </button>
                                 </div>
-                                <div className="pt-4">
+                                <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
@@ -266,61 +328,174 @@ const EditAccess = () => {
                                         Dashboards 3
                                     </button>
                                 </div>
-                            </div> 
+                            </div>
+                            <div className="col-span-10 editAccess_flow ">
+                                <div className=" flex">
+                                    {rolesdata?.map((items, id) => {
+                                        if (id >= 4) {
+                                            return <div className=" p-3   pt-[28.49px]" key={id}>
 
-                            <div className="editAccess_flow flex"> 
-                                {rolesdata?.map((items, id) => {
-                                    if (id >= 4) {
-                                        return <div className=" p-3   pt-[28.49px]" >
+                                                <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                    {items.name}
+                                                </button>
 
-                                            <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
-                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                {items.name}
-                                            </button>
-
-                                            <div className="mt-[55px]">
-                                                <div className="flex">
-                                                    <div className="px-[2px]">
-                                                        <button
-                                                            // bg-[${clinreditcreate}]
-                                                            // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
-                                                            onClick={(e) => ClientEditCreate(e, items._id)}
-                                                            className={` 
+                                                <div className="mt-[55px]">
+                                                    <div className="flex">
+                                                        <div className="px-[2px]">
+                                                            <button
+                                                                // bg-[${clinreditcreate}]
+                                                                // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
+                                                                onClick={(e) => ClientEditCreate(e, items._id)}
+                                                                className={` 
                                                             ${items.permission[0] === `CREATE-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
-                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                            Edit/Create
-                                                        </button>
+                                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                Edit/Create
+                                                            </button>
+                                                        </div>
+                                                        <div className="px-[2px]">
+                                                            <button
+                                                                onClick={(e) => ClientView(e, items._id)}
+                                                                className={`${items.permission[2] === `GET-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                View
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div className="px-[2px]">
-                                                        <button
-                                                            onClick={(e) => ClientView(e, items._id)}
-                                                            className= {`${items.permission[2] === `VIEW-CLIENTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
-                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="flex mt-3">
-                                                    <div className="px-[2px]">
-                                                        <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                            Comment
-                                                        </button>
-                                                    </div>
-                                                    <div className="px-[2px]">
-                                                        <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
-                                                            style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                            Approve
-                                                        </button>
-                                                    </div>
+                                                    <div className="flex mt-3">
+                                                        <div className="px-[2px]">
+                                                            <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                Comment
+                                                            </button>
+                                                        </div>
+                                                        <div className="px-[2px]">
+                                                            <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                Approve
+                                                            </button>
+                                                        </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    }
-                                })}
+                                        }
+                                    })}
+                                </div>
+
+                                <div>
+                                    <div className="flex">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 4) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                    {items.name}
+                                                </button> */}
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    // bg-[${clinreditcreate}]
+                                                                    // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
+                                                                    onClick={(e) => ProjectEditCreate(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission[3] === `CREATE-PROJECTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ProjectView(e, items._id)}
+                                                                    className={`${items.permission[5] === `GET-PROJECTS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 4) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                    {items.name}
+                                                </button> */}
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => CategoryEditCreate(e, items._id)}
+                                                                    className={` 
+                                                                    ${items.permission[6] === `CREATE-CATEGORIES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                                     text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => CategoryView(e, items._id)}
+                                                                    className={`${items.permission[8] === `GET-CATEGORIES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
 
                         <div className="flex mt-10  ml-[70%]  ">

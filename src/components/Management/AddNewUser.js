@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
+import { reactLocalStorage } from "reactjs-localstorage";
 
 const validate = (values) => {
 
 
 
     const errors = {};
-    if (!values.FirstName) {
-        errors.FirstName = "First Name Required";
-    }
-    if (!values.LastName) {
-        errors.LastName = "Last Name Required";
-    }
+    // if (!values.FirstName) {
+    //     errors.FirstName = "First Name Required";
+    // }
+    // if (!values.LastName) {
+    //     errors.LastName = "Last Name Required";
+    // }
     if (!values.Email) {
         errors.Email = "Email Required";
     } else if (
@@ -27,72 +28,293 @@ const validate = (values) => {
         errors.Email = "Invalid email format!";
     }
 
-    if (!values.password) {
-        errors.password = "Phone Number Required";
+    if (!values.Password) {
+        errors.Password = "Password Required";
+    }
+
+    if (!values.PhoneNumber) {
+        errors.PhoneNumber = "Phone Number Required";
     } else if (
         !/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(
-            values.password
+            values.PhoneNumber
         )
     ) {
-        errors.password = "Invalid Phone Number";
+        errors.PhoneNumber = "Invalid Phone Number";
     }
-    if (!values.Jobtitle) {
-        errors.Jobtitle = "Job Title Required";
-    }
-    if (!values.CompanyName) {
-        errors.CompanyName = "Company Name Required";
-    }
-    if (!values.Comments) {
-        errors.Comments = "comment Required";
-    }
+    // if (!values.spread_sheet_user_id) {
+    //     errors.spread_sheet_user_id = "User Id Required";
+    // }
+    // if (!values.Designation) {
+    //     errors.Designation = "Designation  Required";
+    // }
+    // if (!values.Comments) {
+    //     errors.Comments = "comment Required";
+    // }
     // console.log(errors);
     return errors;
 };
 
 const AddNewUser = () => {
     const { addToast } = useToasts();
+    const [rolesdata, setRolesData] = useState(null)
+    const [clientiddata, setClientIdData] = useState(null)
+    const [registoruserdetails, setRegisterUserDetails] = useState(null)
+    const [userid_designation, setUserId_Designation] = useState(null)
+    const [designationdata, setDesignationData] = useState(null)
+    const [roleid, setRoleId] = useState(null)
+    const [firstnamedata, setFirstNameData] = useState(null)
+    const [lastnamedata, setLastNameData] = useState(null)
+    const [errdesignation, setErrDesignation] = useState(false)
+    const [assignproject, setAssignProject] = useState(false)
+    const [spreadsheetid, setSpreadSheetId] = useState(null)
+    const [spreadsheetalldata, setSpreadSheetIdAllData] = useState(null)
+    const [spreadalldata, setSpreadAllData] = useState(null)
+    const [errspreadalldata, setErrSpreadAllData] = useState(false)
+    const [refracedata, setRefraceData] = useState(false)
+
+
 
     let navigate = useNavigate();
     const Login = () => {
-        navigate('/');
+        // navigate('/');
     };
+
+    useEffect(() => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feachRolls = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                setRolesData(data?.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachRolls();
+
+        const feachSheetId = async () => {
+            try {
+                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
+
+                let ClientIdStore = []
+                data1?.data?.values.map((items, id) => {
+                    if (id >= 1) {
+                        ClientIdStore.push(items[0])
+                    }
+                })
+
+                setSpreadSheetIdAllData(data1?.data?.values)
+                // SpreadSheetFun()
+                let ClientFirstNameStore = []
+                let ClientLastNameStore = []
+                data1?.data?.values.map((items, id) => {
+                    if (id >= 1) {
+                        ClientFirstNameStore.push(items[1])
+                        ClientLastNameStore.push(items[2])
+                    }
+                })
+
+                setClientIdData(ClientIdStore)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachSheetId();
+
+
+    }, [])
+
+    useEffect(() => {
+        if (designationdata) {
+            setErrDesignation(false)
+        }
+        if (spreadalldata) {
+            setErrSpreadAllData(false)
+        }
+        // UserDetails()
+        // AssignUserRole()
+
+    }, [designationdata, spreadalldata])
+
+    useEffect(() => {
+        if (refracedata) {
+            AssignUserRole()
+        }
+    }, [refracedata])
+
 
     const formik = useFormik({
         initialValues: {
-            FirstName: "",
-            LastName: "",
+            spread_sheet_user_id: "",
+            FirstName: " ",
+            LastName: " ",
             Email: "",
-            password: "",
-            CompanyName: "",
-            Comments: "",
-            Jobtitle: "",
-            Password: ""
+            Password: "",
+            PhoneNumber: "",
+
         },
         validate,
         onSubmit: (values, { resetForm }) => {
-            values.Password = "demo@123"
-            console.log(`Form data`, values);
-            axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values)
-                .then((response) => {
-                    console.log(response)
-                    if (response.status === 201) {
-                        addToast("form submitted Sucessfully", {
-                            appearance: "success",
+
+            values.FirstName = firstnamedata
+            values.LastName = lastnamedata
+            values.spread_sheet_user_id = spreadalldata
+
+            if (designationdata && spreadalldata) {
+                axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values
+                )
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status === 201) {
+                            addToast("User Created Sucessfully", {
+                                appearance: "success",
+                                autoDismiss: true,
+                            })
+
+                            UserDetails()
+                            AssignRoles()
+                            // navigate('/')   
+                        }
+                        resetForm()
+                    })
+
+                    .catch((error) => {
+                        addToast(error.response.data.message, {
+                            appearance: "error",
                             autoDismiss: true,
                         })
-                        navigate('/')
-                    }
-                    resetForm()
-                })
-                .catch((error) => {
-                    console.log(error)
-                    addToast("form submitted fail", {
-                        appearance: "error",
-                        autoDismiss: true,
                     })
-                })
+            }
+            else {
+                setErrDesignation(true)
+                setErrSpreadAllData(true)
+
+            }
         },
     });
+
+
+    const AssignRoles = () => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/roles/${roleid}`, {
+            is_assign_to_all_project: assignproject
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+
+        )
+            .then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    addToast("Role Assign  Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    })
+
+                    // navigate('/')
+                }
+
+            })
+            .catch((error) => {
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            })
+
+    }
+
+    const UserDetails = () => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feachUser = async () => {
+            try {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                console.log(data1?.data)
+                setRegisterUserDetails(data1?.data)
+                let lastlengh = data1?.data[data1?.data.length - 1]
+                setUserId_Designation(lastlengh?._id)
+
+                setRefraceData(o => !o) 
+
+
+            } catch (error) {
+
+            }
+        }
+        feachUser();
+
+    }
+ 
+
+    const AssignUserRole = () => { 
+        console.log(userid_designation)
+        const organization_Id = reactLocalStorage.get("organizationId", false);
+        const token = reactLocalStorage.get("access_token", false);
+
+           axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
+            user_id: userid_designation,
+            role_id: roleid, //this is the designation id comes from the get_roles api 
+            organization_id: organization_Id
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+                console.log(response)
+                if (response.status === 201) {
+                    addToast("Designation Selected Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    })
+                    // navigate('/')
+                }
+
+            })
+            .catch((error) => {
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            })
+
+    }
+    console.log(userid_designation)
+
+    const SpreadFun = (e) => {
+        setSpreadAllData(e.target.value)
+        spreadsheetalldata?.map((item, id) => {
+            if (e.target.value === item[0]) {
+                setFirstNameData(item[1])
+                setLastNameData(item[2])
+            }
+        })
+
+    }
+
+
+    const ChangeDesignation = (e) => {
+        const url_data = e.target.value
+        const designation_data = url_data.split(',')
+        setDesignationData(designation_data[0])
+        setRoleId(designation_data[1])
+
+    }
+
+
 
     return (
         <>
@@ -130,45 +352,55 @@ const AddNewUser = () => {
                             <div className="pl-[120px] pr-[96px] pt-[33.49px]">
                                 <form onSubmit={formik.handleSubmit}>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
-                                        {/* <div className="relative w-[300px]">
-                                            <input
-                                                id="FirstName"
-                                                name="FirstName"
-                                                type="text"
-                                                value={formik.values.FirstName}
-                                                onChange={formik.handleChange}
-                                                className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                                placeholder="john@doe.com"
-                                            />
-                                            <label
-                                                htmlFor="firstName"
-                                                className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                                            >
-                                                First Name 
-                                            </label>
-                                            {formik.errors.FirstName && (
-                                                <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.FirstName}{" "}
+
+                                        <div>
+                                            <div className="relative w-[300px] border-b border-black ">
+                                                <select
+                                                    name="spread_sheet_user_id"
+                                                    onChange={(e) => SpreadFun(e)}
+                                                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                                                >
+                                                    <option value="" label="User Id" />
+                                                    {clientiddata?.map((item, id) => {
+                                                        return <>
+                                                            <option value={item} label={item} key={id} />
+                                                        </>
+                                                    })}
+                                                </select>
+                                            </div>
+                                            {errspreadalldata && (
+                                                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                                    User Id  Required
                                                 </div>
                                             )}
-                                        </div> */}
 
-                                        <div className="relative w-[300px] border-b border-black ">
-                                            <select
-                                                className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                                          37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
-                                            >
-                                                <option>User ID</option>
-                                            </select>
                                         </div>
 
-                                        <div className="relative w-[300px] border-b border-black ">
-                                            <select
-                                                className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                                          37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
-                                            >
-                                                <option>Designation</option>
-                                            </select>
+                                        <div>
+                                            <div className="relative w-[300px] border-b border-black ">
+                                                <select
+                                                    onChange={(e) => ChangeDesignation(e)}
+                                                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                                                >
+                                                    <option value="" label="Designation" />
+                                                    {rolesdata?.map((item, id) => {
+                                                        if (id >= 3)
+                                                            return <>
+                                                                <option value={[item.name, item._id]} index={item._id} label={item.name} key={id}
+                                                                />
+                                                            </>
+                                                    })}
+
+                                                </select>
+                                            </div>
+                                            {errdesignation && (
+                                                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                                    Designation  Required
+                                                </div>
+                                            )
+                                            }
                                         </div>
                                         {/* <div className="relative w-[300px]">
                                             <input
@@ -221,77 +453,79 @@ const AddNewUser = () => {
                                         </div>
                                         <div className="relative w-[300px]">
                                             <input
-                                                id="password"
-                                                name="password"
+                                                id="Password"
+                                                name="Password"
                                                 type="text"
-                                                value={formik.values.password}
+                                                value={formik.values.Password}
                                                 onChange={formik.handleChange}
                                                 className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                                 placeholder="john@doe.com"
                                             />
                                             <label
-                                                htmlFor="password"
+                                                htmlFor="Password"
                                                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
                                                 Password
                                                 {/* <span className="text-red-700">*</span> */}
                                             </label>
-                                            {formik.errors.password && (
+                                            {formik.errors.Password && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.password}{" "}
+                                                    {formik.errors.Password}{" "}
                                                 </div>
                                             )}
-                                        </div>
-
-
-
+                                        </div>  
                                     </div>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
                                         <div className="relative w-[300px]">
                                             <input
-                                                id="Jobtitle"
-                                                name="Jobtitle"
+                                                id="PhoneNumber"
+                                                name="PhoneNumber"
                                                 type="text"
-                                                value={formik.values.Jobtitle}
+                                                value={formik.values.PhoneNumber}
                                                 onChange={formik.handleChange}
                                                 className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                                 placeholder="john@doe.com"
                                             />
                                             <label
-                                                htmlFor="jobtitle"
+                                                htmlFor="PhoneNumber"
                                                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
                                                 Company Contact details
                                                 {/* <span className="text-red-700">*</span> */}
                                             </label>
-                                            {formik.errors.Jobtitle && (
+                                            {formik.errors.PhoneNumber && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.Jobtitle}{" "}
+                                                    {formik.errors.PhoneNumber}{" "}
                                                 </div>
                                             )}
                                         </div>
-                                        <div className=" relative w-[300px]">
-                                            <input
-                                                id="CompanyName"
-                                                type="text"
-                                                name="CompanyName"
-                                                value={formik.values.CompanyName}
-                                                onChange={formik.handleChange}
-                                                className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                                placeholder="Password"
-                                            />
+                                        <div className=" relative w-[300px]" style={{ borderBottom: "1px solid black" }}>
+                                            <div className=" ml-[90%]">
+                                                <input
+                                                    id="AssignProject"
+                                                    type="checkbox"
+                                                    name="AssignProject"
+                                                    // value={assignproject}
+                                                    onChange={(e) => setAssignProject(e.target.checked)}
+                                                    className="peer h-4 mt-3     w-full border-b font-medium 
+                                                font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent 
+                                                focus:outline-none focus:border-[#000000]"
+                                                    placeholder="Password"
+                                                />
+                                            </div>
                                             <label
-                                                htmlFor="companyName"
-                                                className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                                                htmlFor="AssignProject"
+                                                className=" after:content-['*'] after:ml-0.5 after:text-red-500 
+                                                absolute left-0 top-2 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
                                                 Assign to all projects
-                                                {/* <span className="text-red-700">*</span> */}
+
                                             </label>
-                                            {formik.errors.CompanyName && (
-                                                <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.CompanyName}{" "}
-                                                </div>
-                                            )}
+                                            {/* {formik.errors.CompanyName && (
+                                                    <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
+                                                        {formik.errors.CompanyName}{" "}
+                                                    </div>
+                                                )} */}
                                         </div>
                                     </div>
 
