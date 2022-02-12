@@ -68,7 +68,9 @@ const SignUp = () => {
     },
     validate,
     onSubmit: (values, { resetForm }) => {
-      values.Password = "demo@123"
+      <div>
+        {values.Password = "demo@123"}
+      </div>
       console.log(`Form data`, values);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values)
         .then((response) => {
