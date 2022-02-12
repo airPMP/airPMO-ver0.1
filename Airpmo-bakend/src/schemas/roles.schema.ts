@@ -24,6 +24,9 @@ export class Role {
   @Prop()
   is_assign_to_all_project: boolean;
 
+  @Prop()
+  hierarchy: string;
+
   @Prop({ default: Date })
   createdAt: string;
 
