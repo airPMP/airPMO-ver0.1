@@ -67,7 +67,8 @@ export class PermissionsSeeder implements Seeder {
   {name:"EDIT-SUB_DIVIDED_ZONES",description:"edit sub divided zones endpoint access"},
   {name:"GET-SUB_DIVIDED_ZONES",description:"get sub divided zones endpoint access"},
   {name:"DELETE-SUB_DIVIDED_ZONES",description:"remove sub divided zones endpoint access"},
-
+  
+  {name:"CREATE/EDIT-PRODUCTIVE_SHEET",description:"add productive sheet"},
 
   ]
   );
