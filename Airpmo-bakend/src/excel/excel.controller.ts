@@ -14,4 +14,13 @@ export class ExcelController {
   async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req) {
     return await this.excelService.productiveFile(files, req)
   }
+
+
+
+@Post('upload_quantity_file')
+  @UseInterceptors(AnyFilesInterceptor())
+  async quantityFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req) {
+    return await this.excelService.quantityFile(files, req)
+  }
+  
 }
