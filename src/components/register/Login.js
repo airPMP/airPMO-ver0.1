@@ -51,6 +51,7 @@ const Login = () => {
           })
           reactLocalStorage.set("access_token", response?.data?.access_token);
           reactLocalStorage.set("organizationId", response?.data?.user?._id);
+          reactLocalStorage.set("permisions", response?.data?.permissions);
           // navigate('/dashboard')
         }
         else {

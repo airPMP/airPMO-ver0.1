@@ -188,7 +188,7 @@ const Clients = ({ addNewCliient }) => {
                     <td className="pb-[15.39px]">Logo</td>
                     <td className="pl-[140px]">Name</td>
                     <td className="pl-[140px]">Location</td>
-                    <td className="pl-[140px]">Category</td>
+                    {/* <td className="pl-[140px]">Category</td> */}
                     <td className="pl-[140px] ">Actions</td>
                   </tr>
                 </thead>
@@ -203,7 +203,7 @@ const Clients = ({ addNewCliient }) => {
                         </td>
                         <td className="pl-[140px]">{item?.client_name}</td>
                         <td className="pl-[140px]">{item?.location}</td>
-                        <td className="pl-[140px]">{item?.category}</td>
+                        {/* <td className="pl-[140px]">{item?.category}</td> */}
                         <td className=" pl-[140px] pr-[10px]">
                           <div className="flex flex-row space-x-xl">
                             <div className="cursor-pointer"

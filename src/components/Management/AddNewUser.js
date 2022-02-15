@@ -62,8 +62,11 @@ const AddNewUser = () => {
     const [userid_designation, setUserId_Designation] = useState(null)
     const [designationdata, setDesignationData] = useState(null)
     const [roleid, setRoleId] = useState(null)
+    const [rolename, setRoleName] = useState(null)
     const [firstnamedata, setFirstNameData] = useState(null)
     const [lastnamedata, setLastNameData] = useState(null)
+    const [designationedata, setDesignaionData] = useState(null)
+    const [nodesignationedata, setNoDesignaionData] = useState([])
     const [errdesignation, setErrDesignation] = useState(false)
     const [assignproject, setAssignProject] = useState(false)
     const [spreadsheetid, setSpreadSheetId] = useState(null)
@@ -71,25 +74,27 @@ const AddNewUser = () => {
     const [spreadalldata, setSpreadAllData] = useState(null)
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
     const [refracedata, setRefraceData] = useState(false)
-
+    const [designatiotrue, setDesignatioTrue] = useState(false)
 
 
     let navigate = useNavigate();
-    const Login = () => {
-        // navigate('/');
-    };
+
 
     useEffect(() => {
-
         const token = reactLocalStorage.get("access_token", false);
+
         const feachRolls = async () => {
             try {
-                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                setRolesData(data?.data)
+
+                setRolesData(data1?.data)
+                // let lastlengh = data1?.data[data1?.data.length - 1]
+                // setRoleId(lastlengh?._id)
+
             } catch (error) {
                 console.log(error)
             }
@@ -108,13 +113,14 @@ const AddNewUser = () => {
                 })
 
                 setSpreadSheetIdAllData(data1?.data?.values)
-                // SpreadSheetFun()
                 let ClientFirstNameStore = []
                 let ClientLastNameStore = []
+                let ClientDesignaionStore = []
                 data1?.data?.values.map((items, id) => {
                     if (id >= 1) {
                         ClientFirstNameStore.push(items[1])
                         ClientLastNameStore.push(items[2])
+                        ClientDesignaionStore.push(items[3])
                     }
                 })
 
@@ -129,6 +135,7 @@ const AddNewUser = () => {
 
     }, [])
 
+
     useEffect(() => {
         if (designationdata) {
             setErrDesignation(false)
@@ -136,8 +143,6 @@ const AddNewUser = () => {
         if (spreadalldata) {
             setErrSpreadAllData(false)
         }
-        // UserDetails()
-        // AssignUserRole()
 
     }, [designationdata, spreadalldata])
 
@@ -146,6 +151,19 @@ const AddNewUser = () => {
             AssignUserRole()
         }
     }, [refracedata])
+
+    useEffect(() => {
+        if (designationedata) {
+            postRole()
+        }
+    }, [designationedata])
+
+    useEffect(() => { 
+        if (designatiotrue) {
+            RolePostApi()
+            setDesignatioTrue(false)
+        } 
+    }, [designatiotrue])
 
 
     const formik = useFormik({
@@ -165,20 +183,23 @@ const AddNewUser = () => {
             values.LastName = lastnamedata
             values.spread_sheet_user_id = spreadalldata
 
-            if (designationdata && spreadalldata) {
+            // if (designationdata && spreadalldata) {
+            if (spreadalldata) {
                 axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values
                 )
                     .then((response) => {
-                        console.log(response)
+                        setUserId_Designation(response?.data._id)
                         if (response.status === 201) {
+
                             addToast("User Created Sucessfully", {
                                 appearance: "success",
                                 autoDismiss: true,
                             })
 
+
                             UserDetails()
                             AssignRoles()
-                            // navigate('/')   
+
                         }
                         resetForm()
                     })
@@ -198,6 +219,7 @@ const AddNewUser = () => {
         },
     });
 
+    console.log(roleid)
 
     const AssignRoles = () => {
 
@@ -218,12 +240,11 @@ const AddNewUser = () => {
                         appearance: "success",
                         autoDismiss: true,
                     })
-
-                    // navigate('/')
                 }
 
             })
             .catch((error) => {
+                console.log("patch api")
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -242,31 +263,26 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data1?.data)
                 setRegisterUserDetails(data1?.data)
                 let lastlengh = data1?.data[data1?.data.length - 1]
-                setUserId_Designation(lastlengh?._id)
-
-                setRefraceData(o => !o) 
-
-
+                // setUserId_Designation(lastlengh?._id)
+                setRefraceData(o => !o)
             } catch (error) {
 
             }
         }
-        feachUser();
-
+        feachUser(); 
     }
- 
 
-    const AssignUserRole = () => { 
-        console.log(userid_designation)
+     
+
+    const AssignUserRole = () => {
         const organization_Id = reactLocalStorage.get("organizationId", false);
-        const token = reactLocalStorage.get("access_token", false);
-
-           axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
+        const token = reactLocalStorage.get("access_token", false); 
+         
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
             user_id: userid_designation,
-            role_id: roleid, //this is the designation id comes from the get_roles api 
+            role_id: roleid,  
             organization_id: organization_Id
         }, {
             headers: {
@@ -280,7 +296,6 @@ const AddNewUser = () => {
                         appearance: "success",
                         autoDismiss: true,
                     })
-                    // navigate('/')
                 }
 
             })
@@ -292,28 +307,85 @@ const AddNewUser = () => {
             })
 
     }
-    console.log(userid_designation)
 
     const SpreadFun = (e) => {
         setSpreadAllData(e.target.value)
+
         spreadsheetalldata?.map((item, id) => {
             if (e.target.value === item[0]) {
                 setFirstNameData(item[1])
                 setLastNameData(item[2])
+                setDesignaionData(item[3])
             }
         })
 
     }
 
+    
+    const postRole = () => {
+        let value = designationedata.toUpperCase();
+        let result
+        result = rolesdata?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.name?.toUpperCase().search(value) !== -1;
+            }
+        });
+ 
 
-    const ChangeDesignation = (e) => {
-        const url_data = e.target.value
-        const designation_data = url_data.split(',')
-        setDesignationData(designation_data[0])
-        setRoleId(designation_data[1])
+        if (result.length === 0) {
+            console.log("0 lenth")
+            setRoleName(designationedata)
+            setDesignatioTrue(true)
 
+        }
+        else {
+            console.log(result[0]._id)
+            setRoleId(result[0]._id)
+        } 
     }
 
+
+    const RolePostApi = () => {
+        const organization_Id = reactLocalStorage.get("organizationId", false);
+        const token = reactLocalStorage.get("access_token", false);
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+            "name": rolename,
+            "organization_id": organization_Id
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        )
+            .then((response) => {
+                console.log(response?.data._id)
+                setRoleId(response?.data._id)
+                if (response.status === 201) {
+
+                    addToast("Roles Created Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    })
+
+                }
+
+            })
+
+            .catch((error) => {
+                console.log("post api")
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            }) 
+    } 
+
+    const ChangeDesignation = (e) => {
+        // const url_data = e.target.value
+        // const designation_data = url_data.split(',')
+        // setDesignationData(designation_data[0])
+        // setRoleId(designation_data[1]) 
+    }
 
 
     return (
@@ -377,7 +449,7 @@ const AddNewUser = () => {
 
                                         </div>
 
-                                        <div>
+                                        {/* <div>
                                             <div className="relative w-[300px] border-b border-black ">
                                                 <select
                                                     onChange={(e) => ChangeDesignation(e)}
@@ -401,14 +473,17 @@ const AddNewUser = () => {
                                                 </div>
                                             )
                                             }
-                                        </div>
-                                        {/* <div className="relative w-[300px]">
+                                        </div> */}
+
+
+                                        <div className="relative w-[300px]">
+
                                             <input
-                                                id="LastName"
-                                                name="LastName"
+                                                id="Designation"
+                                                name="Designation"
                                                 type="text"
-                                                value={formik.values.LastName}
-                                                onChange={formik.handleChange}
+                                                value={designationedata}
+                                                onChange={(e) => ChangeDesignation(e)}
                                                 className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                                 placeholder="john@doe.com"
                                             />
@@ -416,15 +491,16 @@ const AddNewUser = () => {
                                                 htmlFor="lastName"
                                                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
-                                                Last Name
-                                                
+                                                Designation
+
                                             </label>
-                                            {formik.errors.LastName && (
-                                                <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.LastName}{" "}
+                                            {errdesignation && (
+                                                <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                                    {nodesignationedata}
                                                 </div>
-                                            )}
-                                        </div> */}
+                                            )
+                                            }
+                                        </div>
                                     </div>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
 
@@ -473,7 +549,7 @@ const AddNewUser = () => {
                                                     {formik.errors.Password}{" "}
                                                 </div>
                                             )}
-                                        </div>  
+                                        </div>
                                     </div>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
                                         <div className="relative w-[300px]">
@@ -531,7 +607,7 @@ const AddNewUser = () => {
 
                                     <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px] mr-[-60px]">
                                         <div className="mr-[45px] shadow-[buttonshadow] ">
-                                            <button onClick={() => Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                            <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                                 Cancel
                                             </button>
                                         </div>

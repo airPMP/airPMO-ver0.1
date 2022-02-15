@@ -9,17 +9,21 @@ import Popup from "reactjs-popup";
 
 const Categories = () => {
 
-  const [title, setTitle] = useState(null); 
-  const [open, setOpen] = useState(false); 
-  const [categoriesdata, setCategoriesData] = useState(null) 
-  const [filteredData, setFilteredData] = useState(categoriesdata); 
+  const [title, setTitle] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [categoriesdata, setCategoriesData] = useState(null)
+  const [allpermission, setAllPermission] = useState(null)
+  const [filteredData, setFilteredData] = useState(categoriesdata);
   const CategorieLengthget = CategorieLengthSet.use()
 
   const [deleteid, setDeleteId] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate();
-  console.log(CategorieLengthget)
+
+
   useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
 
     if (urlTitle.pathname === "/master/categories") {
       setTitle("Master");
@@ -33,7 +37,7 @@ const Categories = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-         
+
         setCategoriesData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {
@@ -43,16 +47,36 @@ const Categories = () => {
     feach();
     handleSearch();
 
-       
+
+    getPermision()
 
   }, [urlTitle.pathname])
 
 
-  const handleSearch = (e) => {
+  useEffect(() => {
+    getPermision()
+  }, [allpermission])
 
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data.split(',')
+
+    console.log(database)
+    database.map((items, id) => {
+      console.log(items)
+    })
+
+
+  }
+
+  console.log(allpermission)
+
+
+  const handleSearch = (e) => {
     let value = e?.target?.value?.toUpperCase();
     let result = []
-    console.log("functiom iahsdi")
     result = categoriesdata?.filter((data) => {
       if (isNaN(+value)) {
         return data?.category?.toUpperCase().search(value) !== -1;
@@ -71,7 +95,7 @@ const Categories = () => {
     navigate(`/master/edit_categories/${e}`)
   }
 
-   
+
   const DeleteProfile = (e) => {
     setDeleteId(e)
     setOpen(o => !o)
@@ -172,23 +196,23 @@ const Categories = () => {
             </div>
           </div>
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
-              <div
-                style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+            <div
+              style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+              className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
-                </svg>
+                <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
+              </svg>
 
-                <div onClick={() => { navigate("/master/categories/add_categories") }}>Add Category</div>
-              </div>
+              <div onClick={() => { navigate("/master/categories/add_categories") }}>Add Category</div>
             </div>
+          </div>
 
 
           <div className="pl-[80px]">
@@ -201,7 +225,7 @@ const Categories = () => {
                   <th className="w-[5%] py-[13px]">Actions</th>
                 </tr>
               </thead>
-               {filteredData?.map((item, i) => {
+              {filteredData?.map((item, i) => {
                 return <tbody className="font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="bg-[#ECF1F0]">
                     <th className=" w-[15%] py-[13px]">{item.category}</th>
@@ -209,7 +233,7 @@ const Categories = () => {
                     <th className="w-[30%] py-[13px]">{item.discription}</th>
                     <th className="w-[5%] py-[13px]">
                       <div className="flex flex-row space-x-xl">
-                        <div className="cursor-pointer" 
+                        <div className="cursor-pointer"
                           onClick={(e) => EditProfile(item._id)} >
                           <svg
                             width="19"
@@ -225,8 +249,8 @@ const Categories = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer"
-                        onClick={(e) => DeleteProfile(item._id)}
-                           >
+                          onClick={(e) => DeleteProfile(item._id)}
+                        >
                           <svg
                             width="18"
                             height="21"
@@ -247,38 +271,38 @@ const Categories = () => {
                     <td className="p-[10px]" ></td>
                   </tr>
                   <Popup
-                        open={open}
-                        position="right center"
-                        model
-                      >
-                        <div className="p-7">
-                          <div className="flex pb-3">
-                            <div>
+                    open={open}
+                    position="right center"
+                    model
+                  >
+                    <div className="p-7">
+                      <div className="flex pb-3">
+                        <div>
 
-                            </div>
-                            <div style={{ marginLeft: "90%" }}>
-                              <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
-                                <b>X</b>
-                              </span>
-                            </div>
-                          </div>
-                          <div className="mt-3">
-                            <h3>
-                              Are You sure You Want to Delete 
-                            </h3>
-                          </div>
-                          <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
-                            <button
-                             onClick={(e) => conformDelete(e)}
-                              className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
-                              Yes
-                            </button>
-                          </div>
                         </div>
+                        <div style={{ marginLeft: "90%" }}>
+                          <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                            <b>X</b>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <h3>
+                          Are You sure You Want to Delete
+                        </h3>
+                      </div>
+                      <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                        <button
+                          onClick={(e) => conformDelete(e)}
+                          className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                          Yes
+                        </button>
+                      </div>
+                    </div>
 
-                      </Popup>
+                  </Popup>
                 </tbody>
-              })}  
+              })}
             </table>
           </div>
         </div>
