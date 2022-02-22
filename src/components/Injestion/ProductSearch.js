@@ -1,9 +1,25 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate} from "react-router-dom";
-const ProductSearch = ({ placeHolderName, handleChangeForClient, handleChangeForProject }) => {
+import { useNavigate } from "react-router-dom";
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive } from '../../SimplerR/auth'
+import axios from "axios";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { useToasts } from "react-toast-notifications";
+
+
+const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
+    , sheetData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
     const [openSearchData1, setopenSearchData1] = useState(null);
+    const [searchdata, setSearchData] = useState(null);
+    const [projectsearchdata, setProjectSearchData] = useState(null);
+    const [projectsheetid, setProjectSheetId] = useState(null);
+    const [sheetfiledata, setSheetFileData] = useState(sheetData);
+
+    const productivesheetid = ProductiveSheetId.use()
+    const searchclientset = SearchClientSet.use()
+    const projectnameactive = ProductiveNameActive.use()
+    const { addToast } = useToasts();
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -16,11 +32,100 @@ const ProductSearch = ({ placeHolderName, handleChangeForClient, handleChangeFor
 
     }, [openSearchData1])
 
+
+    useEffect(() => {
+        handleChangeForClientData()
+    }, [valueData])
+
+
+    useEffect(() => {
+        if (searchclientset) {
+            setopenSearchData(true)
+        }
+        else {
+            setopenSearchData(false)
+        }
+
+    }, [searchclientset])
+
+    useEffect(() => {
+        const ProjectIdName = (e, ObjData) => { 
+            setProjectSearchData(ObjData?.project_name)
+        } 
+
+        setopenSearchData(false)
+        ProjectIdName()
+    }, [projectsearchdata])
+
+
+    useEffect(() => {
+        if (sheetData) {
+            SheetUpload()
+        }
+
+    }, [sheetData])
+
     const handleChangeForClientData = (e) => {
-        setopenSearchData1(e.target.value) 
+
+        if (e?.target?.value === undefined || e?.target?.value === "") {
+            setSearchData(valueData)
+        }
+        else {
+            let value = e?.target?.value.toUpperCase();
+            let result = []
+            result = valueData?.filter((data) => {
+                if (isNaN(+value)) {
+                    return data?.project_name.toUpperCase().search(value) !== -1;
+                }
+            });
+            setSearchData(result)
+            setopenSearchData1(e.target.value)
+        }
+
+    }
+ 
+
+    const ProjectIdName = (e, ObjData) => { 
+        setProjectSearchData(ObjData?.project_name) 
+        setProjectSheetId(ObjData?._id)
+        ProductiveSheetId.set(ObjData?._id) 
     }
 
-    console.log(openSearchData)
+
+
+    const SheetUpload = async () => {
+        const formData = new FormData();
+        formData.append("productivity", sheetData);
+        formData.append("projectid", projectsheetid);
+        const token = reactLocalStorage.get("access_token", false);
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            },
+
+        )
+            .then((response) => {
+                setProjectSearchData(response?.data)
+                if (response.status === 201) {
+                    setProjectSearchData(response?.data)
+                    addToast("Upload Sucessfully", {
+                        appearance: "success",
+                        autoDismiss: true,
+                    }) 
+                } 
+            })
+            .catch((error) => {
+                console.log(error)
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            }) 
+    }
+
 
     return (
         <div>
@@ -50,6 +155,7 @@ const ProductSearch = ({ placeHolderName, handleChangeForClient, handleChangeFor
                     <input
                         type="text"
                         placeholder={placeHolderName}
+                        value={projectsearchdata}
                         className="outline-none w-[332px] h-[46px] rounded-[10px]"
                         onChange={(e) => handleChangeForClientData(e)}
 
@@ -58,20 +164,23 @@ const ProductSearch = ({ placeHolderName, handleChangeForClient, handleChangeFor
 
                 </div>
             </div>
-            <div className="float-right -mt-[10px] text-[#4D627A] text-[15px] cursor-pointer font-serif"
+            <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
                 style={{ width: "90%", backgroundColor: "white", boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
-                {openSearchData && <ul className="searchList"  >
-                    <li onClick={()=>{navigate("/DataInjestion")}} >
-                        Demo client 1
-                    </li>
-                    <li>
-                        Demo client 2
-                    </li>
-                    <li>
-                        Demo client 3
-                    </li>
+                {openSearchData && <ul className="searchList productiveSeacrhch"  >
+
+                    {
+                        searchdata?.map((item, id) => {
+                            return <li onClick={(e) => ProjectIdName(e, item)}>
+                                {
+                                    item?.project_name
+                                }
+                            </li>
+                        })
+                    }
+
                 </ul>}
             </div>
+
         </div>
     );
 };

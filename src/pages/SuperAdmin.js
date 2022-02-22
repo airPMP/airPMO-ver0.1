@@ -44,7 +44,7 @@ const SuperAdmin = () => {
 
     let navigate = useNavigate();
     const Login = () => {
-        navigate('/');
+        navigate('/dashboard');
     };
 
     useEffect(() => {
@@ -227,7 +227,8 @@ const SuperAdmin = () => {
                         className="ml-[4.313rem] mt-[48px]  w-[150px] h-[50px]  right-[765px]"
                     />
                 </div>
-                <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center  ml-[171px] mr-[170px] mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
+                <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center 
+                 lg:ml-[171px] md:ml-[100px] lg:mr-[170px] md:mr-[100px]  mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
                     <div className="flex flex-row items-center ">
 
                         <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">

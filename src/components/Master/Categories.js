@@ -13,6 +13,7 @@ const Categories = () => {
   const [open, setOpen] = useState(false);
   const [categoriesdata, setCategoriesData] = useState(null)
   const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
   const [filteredData, setFilteredData] = useState(categoriesdata);
   const CategorieLengthget = CategorieLengthSet.use()
 
@@ -22,8 +23,7 @@ const Categories = () => {
 
 
   useEffect(() => {
-    const permissionData = reactLocalStorage.get("permisions", false);
-    setAllPermission(permissionData)
+
 
     if (urlTitle.pathname === "/master/categories") {
       setTitle("Master");
@@ -54,24 +54,44 @@ const Categories = () => {
 
 
   useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
     getPermision()
   }, [allpermission])
 
 
   const getPermision = async () => {
-
+    
     const url_data = await allpermission
     const database = url_data.split(',')
 
-    console.log(database)
-    database.map((items, id) => {
-      console.log(items)
-    })
+    let value = "EDIT-CATEGORIES".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+ 
 
+    if (result[0] === "EDIT-CATEGORIES") {
+      setEditPermission(result[0]) 
+    }
+    else  {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setEditPermission(result[0]) 
+    } 
 
   }
 
-  console.log(allpermission)
+  
 
 
   const handleSearch = (e) => {
@@ -90,10 +110,7 @@ const Categories = () => {
     }
   }
 
-  const EditProfile = (e) => {
-    console.log(e)
-    navigate(`/master/edit_categories/${e}`)
-  }
+
 
 
   const DeleteProfile = (e) => {
@@ -124,11 +141,25 @@ const Categories = () => {
     setOpen(o => !o)
   }
 
-
-
   const CancelButton = (e) => {
     setOpen(o => !o)
   }
+
+
+
+  const AddCategory = () => { 
+    if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {  
+      navigate("/master/categories/add_categories")
+    }
+  }
+  const EditProfile = (e) => {
+    if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {
+      navigate(`/master/edit_categories/${e}`)
+    }
+
+  }
+
+
 
   return (
 
@@ -198,7 +229,8 @@ const Categories = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+              className={`${editpermission === "EDIT-CATEGORIES"   || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              flex items-center space-x-sm px-2 rounded disabled `}
             >
               <svg
                 width="14"
@@ -210,7 +242,8 @@ const Categories = () => {
                 <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
               </svg>
 
-              <div onClick={() => { navigate("/master/categories/add_categories") }}>Add Category</div>
+              <div className=""
+                onClick={() => AddCategory()}>Add Category</div>
             </div>
           </div>
 
@@ -231,9 +264,10 @@ const Categories = () => {
                     <th className=" w-[15%] py-[13px]">{item.category}</th>
                     <th className="w-[10%] py-[13px]">{item.sub_category}</th>
                     <th className="w-[30%] py-[13px]">{item.discription}</th>
+
                     <th className="w-[5%] py-[13px]">
                       <div className="flex flex-row space-x-xl">
-                        <div className="cursor-pointer"
+                        <div className={`${editpermission === "EDIT-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => EditProfile(item._id)} >
                           <svg
                             width="19"
@@ -267,6 +301,7 @@ const Categories = () => {
                       </div>
                     </th>
                   </tr>
+
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>

@@ -14,6 +14,8 @@ const Clients = ({ addNewCliient }) => {
   const [delconfom, seDelConfom] = useState(false)
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -43,6 +45,43 @@ const Clients = ({ addNewCliient }) => {
 
   }, [urlTitle.pathname])
 
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+  }, [allpermission])
+
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data.split(',')
+
+    let value = "EDIT-CLIENTS".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    if (result[0] === "EDIT-CLIENTS") {
+      setEditPermission(result[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setEditPermission(result[0])
+    }
+
+  }
 
 
   const handleSearch = (e) => {
@@ -62,9 +101,17 @@ const Clients = ({ addNewCliient }) => {
       setFilteredData(clientdata)
     }
   }
+
+  const AddClient = () => {
+    if (editpermission === "EDIT-CLIENTS" || editpermission === "ALL") {
+      navigate("/master/clients/new_client")
+    }
+  }
+
   const EditProfile = (e) => {
-    console.log(e)
-    navigate(`/master/edit_client/${e}`)
+    if (editpermission === "EDIT-CLIENTS" || editpermission === "ALL") {
+      navigate(`/master/edit_client/${e}`)
+    }
   }
 
   const DeleteProfile = (e) => {
@@ -97,7 +144,7 @@ const Clients = ({ addNewCliient }) => {
 
   const CancelButton = (e) => {
     setOpen(o => !o)
-  } 
+  }
 
   return (
     <>
@@ -166,7 +213,8 @@ const Clients = ({ addNewCliient }) => {
             <div className="flex flex-row space-x-sm justify-end items-center mt-[10px] bg-[#FFFFFF]">
               <div
                 style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+                className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                flex items-center space-x-sm px-2 rounded cursor-pointer`}
               >
                 <svg
                   width="14"
@@ -178,35 +226,36 @@ const Clients = ({ addNewCliient }) => {
                   <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
                 </svg>
 
-                <div onClick={() => { navigate("/master/clients/new_client") }}>Add Client</div>
+                <div onClick={() => AddClient()}>Add Client</div>
               </div>
             </div>
             <div className="pl-[80px] mt-[16px]">
-              <table className="table-auto pt-[24px]">
+              <table className="table-auto pt-[24px] w-[100%] ">
                 <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
-                  <tr className="max-h-[52.84px] w-[901.2px]">
-                    <td className="pb-[15.39px]">Logo</td>
-                    <td className="pl-[140px]">Name</td>
-                    <td className="pl-[140px]">Location</td>
-                    {/* <td className="pl-[140px]">Category</td> */}
-                    <td className="pl-[140px] ">Actions</td>
+                  <tr className="h-[52.84px] text-center ">
+                    <td className="w-[15%]">Logo</td>
+                    <td className="w-[20%]">Name</td>
+                    <td className="w-[40%]">Location</td>
+                    <td className="w-[25%] ">Actions</td>
                   </tr>
                 </thead>
                 {
                   filteredData?.map((item, i) => {
                     return <tbody key={i} className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-                      <tr className="bg-[#ECF1F0]">
-                        <td className="pl-[10px]">
-                          <img src={item?.upload_logo_file}
-                            style={{ width: "53px", height: "53px", borderRadius: "50%" }} />
+                      <tr className="bg-[#ECF1F0] text-center">
+                        <td className="w-[15%]  ">
+                          <center>
+                            <img src={item?.upload_logo_file}
+                              style={{ width: "53px", height: "53px", borderRadius: "50%" }} />
+
+                          </center>
 
                         </td>
-                        <td className="pl-[140px]">{item?.client_name}</td>
-                        <td className="pl-[140px]">{item?.location}</td>
-                        {/* <td className="pl-[140px]">{item?.category}</td> */}
-                        <td className=" pl-[140px] pr-[10px]">
-                          <div className="flex flex-row space-x-xl">
-                            <div className="cursor-pointer"
+                        <td className="w-[20%]">{item?.client_name}</td>
+                        <td className="w-[40%]">{item?.location}</td>
+                        <td className="w-[25%]">
+                          <div className="flex flex-row space-x-xl justify-center">
+                            <div className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                               onClick={(e) => EditProfile(item._id)}>
                               <svg
                                 width="19"
@@ -262,7 +311,7 @@ const Clients = ({ addNewCliient }) => {
                           </div>
                           <div className="mt-3">
                             <h3>
-                              Are You sure You Want to Delete 
+                              Are You sure You Want to Delete
                             </h3>
                           </div>
                           <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">

@@ -63,3 +63,26 @@ top:-20px
     width:800px;
     overflow-x: scroll;
   }
+
+   .disabledclass{
+        opacity: 0.2;
+        cursor: not-allowed;
+   }
+
+   .fileSheet{
+    opacity: 0;
+    cursor: pointer !important;
+    height: 40px;
+   }
+   .shhetText{
+       font-size: 14px;
+       margin-left: -94px;
+       cursor: pointer;
+       color: #8F9BBA;
+       margin-top: 3px;
+   }
+
+   .productiveSeacrhch{
+       /* height: 200px; */
+       overflow-y: scroll;
+   }

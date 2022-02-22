@@ -421,17 +421,19 @@ const AddNewUser = () => {
                                 </div>
                             </div>
 
-                            <div className="pl-[120px] pr-[96px] pt-[33.49px]">
+                            <div className="lg:pl-[120px] md:pl-[80px] pr-[96px] pt-[33.49px]">
                                 <form onSubmit={formik.handleSubmit}>
-                                    <div className="flex flex-row space-x-40 pb-[36px]">
+                                    <div className="flex flex-row   lg:space-x-40 md:space-x-20 sm:space-x-10    pb-[36px]">
 
                                         <div>
-                                            <div className="relative w-[300px] border-b border-black ">
+                                            <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px]  border-b border-black ">
                                                 <select
                                                     name="spread_sheet_user_id"
                                                     onChange={(e) => SpreadFun(e)}
-                                                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                                                    className=" font-secondaryFont font-medium not-italic 
+                                                    text-[14px] leading-[
+                                                    37.83px] border-none bg-[#ffffff] w-full 
+                                                    focus:outline-none "
                                                 >
                                                     <option value="" label="User Id" />
                                                     {clientiddata?.map((item, id) => {
@@ -476,7 +478,7 @@ const AddNewUser = () => {
                                         </div> */}
 
 
-                                        <div className="relative w-[300px]">
+                                        <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px] ">
 
                                             <input
                                                 id="Designation"
@@ -502,9 +504,9 @@ const AddNewUser = () => {
                                             }
                                         </div>
                                     </div>
-                                    <div className="flex flex-row space-x-40 pb-[36px]">
+                                    <div className="flex flex-row  lg:space-x-40 md:space-x-20 sm:space-x-10 pb-[36px]">
 
-                                        <div className=" relative w-[300px]">
+                                        <div className=" relative lg:w-[300px] md:w-[230px] sm:w-[140px] ">
                                             <input
                                                 id="Email"
                                                 type="text"
@@ -527,7 +529,7 @@ const AddNewUser = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="relative w-[300px]">
+                                        <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px] ">
                                             <input
                                                 id="Password"
                                                 name="Password"
@@ -551,8 +553,8 @@ const AddNewUser = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="flex flex-row space-x-40 pb-[36px]">
-                                        <div className="relative w-[300px]">
+                                    <div className="flex flex-row  lg:space-x-40 md:space-x-20 sm:space-x-10 pb-[36px]">
+                                        <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px] ">
                                             <input
                                                 id="PhoneNumber"
                                                 name="PhoneNumber"
@@ -575,7 +577,7 @@ const AddNewUser = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <div className=" relative w-[300px]" style={{ borderBottom: "1px solid black" }}>
+                                        <div className=" relative lg:w-[300px] md:w-[230px] sm:w-[140px] " style={{ borderBottom: "1px solid black" }}>
                                             <div className=" ml-[90%]">
                                                 <input
                                                     id="AssignProject"
@@ -605,7 +607,8 @@ const AddNewUser = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px] mr-[-60px]">
+                                    <div className="flex flex-row  ml-[70%] shadow-[buttonshadow] 
+                                     content-center mt-[42px] lg:mr-[-60px]">
                                         <div className="mr-[45px] shadow-[buttonshadow] ">
                                             <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                                 Cancel
@@ -614,7 +617,7 @@ const AddNewUser = () => {
                                         <div>
                                             <button
                                                 type="submit"
-                                                className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                                                className="w-[110px] h-[25px] rounded btnshadow text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                             >
                                                 Save
                                             </button>

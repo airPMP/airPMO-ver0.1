@@ -60,6 +60,7 @@ const AddUserRole = () => {
     const [designationdata, setDesignationData] = useState(null)
     const [errdesignation, setErrDescription] = useState(false)
     const [rolesalldata, setRolesAllData] = useState(null)
+    const [hierarchydata, setHierarchyData] = useState(null)
     const [errrolesalldata, setErrRolesAllData] = useState(false)
 
 
@@ -104,7 +105,14 @@ const AddUserRole = () => {
     }, [designationdata, rolesalldata])
 
 
-    console.log(rolesalldata)
+    const Hierarchy = [
+        { "number": "1", },
+        { "number": "2", },
+        { "number": "3", },
+        { "number": "4", },
+        { "number": "5", }
+    ]
+
 
 
     const formik = useFormik({
@@ -112,7 +120,8 @@ const AddUserRole = () => {
         initialValues: {
             name: "",
             description: "",
-            organization_id: ""
+            organization_id: "",
+            hierarchy: ""
         },
 
         validate,
@@ -121,6 +130,7 @@ const AddUserRole = () => {
             console.log(values.description)
             values.name = rolesalldata
             values.organization_id = organization_Id
+            values.hierarchy = hierarchydata
 
             const token = reactLocalStorage.get("access_token", false);
             // if (designationdata && rolesalldata) {
@@ -161,8 +171,13 @@ const AddUserRole = () => {
     const SpreadFun = (e) => {
         setRolesAllData(e.target.value)
     }
+    const HierarchyFun = (e) => {
+        setHierarchyData(e.target.value)
+        console.log(e.target.value)
 
-    console.log(formik.values.description)
+    }
+
+
 
 
     return (
@@ -247,10 +262,10 @@ const AddUserRole = () => {
                                                     {/* <span className="text-red-700">*</span> */}
                                                 </label>
                                                 {formik.errors.description && (
-                                                <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
-                                                    {formik.errors.description}{" "}
-                                                </div>
-                                            )}
+                                                    <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
+                                                        {formik.errors.description}{" "}
+                                                    </div>
+                                                )}
                                             </div>
                                             {/* {errdesignation && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -269,16 +284,16 @@ const AddUserRole = () => {
                                                 <div className="relative w-[300px] border-b border-black ">
                                                     <select
                                                         // name="spread_sheet_user_id"
-                                                        // onChange={(e) => SpreadFun(e)}
+                                                        onChange={(e) => HierarchyFun(e)}
                                                         className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
+                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none  "
                                                     >
                                                         <option value="" label="Hierarchy" />
-                                                        {/* {clientiddata?.map((item, id) => {
-                                                        return <>
-                                                            <option value={item} label={item} key={id} />
-                                                        </>
-                                                    })} */}
+                                                        {Hierarchy?.map((item, id) => {
+                                                            return <>
+                                                                <option value={item.number} label={item.number} />
+                                                            </>
+                                                        })}
                                                     </select>
                                                 </div>
                                                 {/* {errrolesalldata && (
