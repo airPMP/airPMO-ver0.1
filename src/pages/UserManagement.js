@@ -57,7 +57,7 @@ const UserManagement = () => {
                 />
               </div> */}
               <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
-                <Link to={`/UserManagement/UserRole1`}>
+                <Link to={`/UserManagement/UserRole`}>
                   <UserRolesCard
                     title={"Role 1"}
                     totalNumber={"2 roles"}

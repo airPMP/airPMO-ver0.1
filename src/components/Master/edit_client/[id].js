@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams  } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import SideBar from "../../layout/SideBar";
 import Header from "../../layout/Header";
@@ -8,17 +8,17 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
 
- 
+
 const EditClientProfile = () => {
 
   // const history = useHistory();
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
-  let urlTitle = useLocation(); 
+  let urlTitle = useLocation();
   let navigate = useNavigate();
   const { addToast } = useToasts();
   const [editdata, setEditData] = useState(null)
-  const [truedata,setTrueData]= useState(false)
+  const [truedata, setTrueData] = useState(false)
 
   const [clintnamedata, setClintName] = useState("")
   const [location, setLocation] = useState("")
@@ -26,6 +26,7 @@ const EditClientProfile = () => {
   const [addnewfield, setAddNewField] = useState("")
   const [contactno, setContactNo] = useState("")
   const [discription, setDiscription] = useState("")
+  const [client_id, setClient_Id] = useState("")
 
   let useperma = useParams()
 
@@ -38,8 +39,8 @@ const EditClientProfile = () => {
 
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
-        try {
-          const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, {
+      try {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -52,7 +53,8 @@ const EditClientProfile = () => {
         setAddNewField(data?.data?.address)
         setContactNo(data?.data?.contact_no)
         setDiscription(data?.data?.discription)
-        
+        setClient_Id(data?.data?.client_id)
+
       } catch (error) {
         console.log(error)
       }
@@ -64,31 +66,31 @@ const EditClientProfile = () => {
 
 
 
-  const SaveButton =  (e) => {
+  const SaveButton = (e) => {
 
     e.preventDefault()
 
     const token = reactLocalStorage.get("access_token", false);
 
-      axios.patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}/`, {
-        address: addnewfield,
-        category: " ",
-        client_id: " ",
-        client_name: clintnamedata,
-        contact_no: contactno,
-        createdAt: " ",
-        discription: discription,
-        location: location,
-        orgainization_id: " ",
-        updatedAt: " ",
-        upload_logo_file: uploadlogofile,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response)  => { 
-        if (response.status === 200) { 
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}/`, {
+      address: addnewfield,
+      category: " ",
+      client_id: client_id,
+      client_name: clintnamedata,
+      contact_no: contactno,
+      createdAt: " ",
+      discription: discription,
+      location: location,
+      orgainization_id: " ",
+      updatedAt: " ",
+      upload_logo_file: uploadlogofile,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
           addToast("Profile is Edit Sucessfully", {
             appearance: "success",
             autoDismiss: true,
@@ -115,8 +117,8 @@ const EditClientProfile = () => {
       });
 
   }
-  
-  if(truedata){
+
+  if (truedata) {
     console.log("done deta")
   }
 
@@ -148,14 +150,7 @@ const EditClientProfile = () => {
           <div className="pl-[120px] pr-[26px] pt-[33.49px]">
             <form  >
               <div className="flex flex-row space-x-20 pb-[16px]">
-                <div className="relative w-[350px] border-b border-black ">
-                  <select
-                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
-                  >
-                    <option>Cateogry</option>
-                  </select>
-                </div>
+
                 <div className="relative w-[350px]">
                   {/* <div className="relative w-[350px] border-b border-black pb-[10px]"> */}
                   {/* <select
@@ -183,6 +178,22 @@ const EditClientProfile = () => {
                     Client Name
                   </label>
 
+                </div>
+                <div className="relative w-[350px] ">
+                  <input
+
+                    type="text"
+                    value={client_id}
+                    onChange={(e) => setClient_Id(e.target.value)}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="client_id"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                  >
+                    Client Id
+                  </label>
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">
@@ -250,7 +261,7 @@ const EditClientProfile = () => {
                     htmlFor="address"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                   Address
+                    Address
                   </label>
                   {/* {formik.errors.address && (
                     <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -333,4 +344,3 @@ const EditClientProfile = () => {
 };
 
 export default EditClientProfile;
- 
