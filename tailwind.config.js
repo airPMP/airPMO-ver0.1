@@ -14,6 +14,7 @@ module.exports = {
         lg: '12px',
         xl: '18px',
       },
+       
     
     },
   },

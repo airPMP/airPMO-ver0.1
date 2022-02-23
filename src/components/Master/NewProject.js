@@ -15,17 +15,17 @@ import { reactLocalStorage } from "reactjs-localstorage";
 const validate = (values) => {
 
   const errors = {};
-  if (!values.category) {
-    errors.category = "Category Required";
-  }
+  // if (!values.category) {
+  //   errors.category = "Category Required";
+  // }
 
   if (!values.sub_category) {
     errors.sub_category = "Sub Category Required";
   }
 
-  if (!values.client_name) {
-    errors.client_name = "Client Name Required";
-  }
+  // if (!values.client_name) {
+  //   errors.client_name = "Client Name Required";
+  // }
 
   // if (!values.uploadLogoFile) {
   //   errors.uploadLogoFile = "uploadLogoFile Required";
@@ -46,7 +46,10 @@ const validate = (values) => {
 
   return errors;
 };
+
+
 const NewProject = () => {
+
   const [open, setOpen] = useState(false);
   const [openzone, setZone] = useState(false);
 
@@ -58,8 +61,10 @@ const NewProject = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [projectdata, setProjectData] = useState(null)
   const [categoriesdata, setCategoriesData] = useState(null)
-  const [category, setCategory] = useState(null)
-  const [subcategory, setSubCategory] = useState(null)
+  const [categorydata, setCategoryData] = useState(null)
+  const [categoryid, setCategoryId] = useState(null)
+  const [clientdata, setClientData] = useState(null)
+  const [clientid, setClientId] = useState(null)
   const [showeye, setShowEye] = useState(" ");
   const [organization_id_data, setOrganization_Id] = useState();
 
@@ -117,12 +122,12 @@ const NewProject = () => {
       max_hours: "",
       start_date: "",
       end_date: "",
-      zone_name: "",
-      project_id: "",
+      zone_name: "", 
       project_value: "",
       subzone_name: "",
       subzone_discription: "",
       client_name: "",
+       client_id: "",
       category: "",
       sub_category: "",
       discription: "",
@@ -133,18 +138,25 @@ const NewProject = () => {
       time_sheet_id: "",
       spread_sheet_id: "",
       spread_sheet_key: "",
-      orgainization_id:''
+      orgainization_id: '',
+      categories_id: ""
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
-      values.orgainization_id= organization_id_data
+      values.orgainization_id = organization_id_data
+      values.category=categorydata
+      values.categories_id=categoryid
+      values.client_name= clientdata
+      values.client_id= clientid
+
       const token = reactLocalStorage.get("access_token", false);
 
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
-        }})
+        }
+      })
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
@@ -186,12 +198,28 @@ const NewProject = () => {
     setOpen(o => !o)
 
   }
+
   const CancelButton = (e) => {
     setOpen(o => !o)
     setShowEye(o => !o)
   }
 
+  const CategoryFun = (e) => {
+    const url_data = e.target.value
+    const category_data = url_data.split(',')
+    setCategoryData(category_data[0])
+    setCategoryId(category_data[1])
+  }
 
+  const ClientFun =(e)=>{
+    const url_data = e.target.value
+    const client_data = url_data.split(',')
+    setClientData(client_data[0])
+    setClientId(client_data[1])
+  }
+
+
+  console.log("add project")
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -225,25 +253,26 @@ const NewProject = () => {
                     <div className="relative w-[165px] border-b border-black ">
                       <select
                         name="category"
-                        value={formik.values.category}
-                        onChange={formik.handleChange}
+                        // value={formik.values.category}
+                        // onChange={formik.handleChange}
+                        onChange={(e) => CategoryFun(e)}
                         className="bg-white  text-[14px] pr-[25%]"
                       >
                         <option value="" label="Select category" />
                         {categoriesdata?.map((item, id) => {
                           return <>
-                            <option value={item.category} label={item.category} />
+                            <option value={[item.category, item._id]} label={item.category} />
                           </>
                         })}
                       </select>
                     </div>
-                    {
+                    {/* {
                       formik.errors.category && (
                         <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                           {formik.errors.category}{" "}
                         </div>
                       )
-                    }
+                    } */}
                   </div>
                   <div>
                     <div className="relative w-[165px] border-b border-black ">
@@ -302,27 +331,29 @@ const NewProject = () => {
 
                     <select
                       name="client_name"
-                      value={formik.values.client_name}
-                      onChange={formik.handleChange}
+                      // value={formik.values.client_name}
+                      // onChange={formik.handleChange}
+                      onChange={(e) => ClientFun(e)}
+
                       className="bg-white pr-[54%] text-[14px]"
                     >
                       <option value="" label="Select Client Name" />
                       {projectdata?.map((item, id) => {
                         return <>
-                          <option value={item.client_name} label={item.client_name} />
+                          <option value={[item.client_name,item._id]} label={item.client_name} />
                         </>
                       })}
                     </select>
 
 
                   </div>
-                  {
+                  {/* {
                     formik.errors.client_name && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                         {formik.errors.client_name}{" "}
                       </div>
                     )
-                  }
+                  } */}
                 </div>
                 <div className=" relative w-[350px]">
                   <input
@@ -686,7 +717,7 @@ const NewProject = () => {
                   </div>
                   <div className="mr-[45px] shadow-[buttonshadow] ">
                     <button
-                       onClick={() => setZone(o => !o)} 
+                      onClick={() => setZone(o => !o)}
                       className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       View Zones
                     </button>

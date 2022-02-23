@@ -24,7 +24,7 @@ import TimeLine from "./pages/TimeLine";
 import ClientTimeLine from "./components/Timeline/ClientTimeLine";
 import { Routes, Route } from "react-router-dom";
 import UserManagement from "./pages/UserManagement";
-import UserRole1 from "./components/Management/UserRole1";
+import UserRole1 from "./components/Management/UserRole";
 import UserRole2 from "./components/Management/UserRole2";
 import UserRole3 from "./components/Management/UserRole3";
 import DataInjestion from "./pages/DataInjestion";
@@ -45,6 +45,7 @@ import UserEmpolyee from "./pages/UserEmpolyee";
 import AddNewUser from "./components/Management/AddNewUser";
 import EditAccess from "./components/Management/EditAccess";
 import SuperAdminId from "./components/SuperAdmin/[id]";
+import AddUserRole1 from "./components/Management/AddUserRole1";
 
 function App() {
   return (
@@ -106,10 +107,11 @@ function App() {
           // User Management
         }
         <Route path="UserManagement" element={<UserManagement />} />
-        <Route path="/UserManagement/UserRole1" element={<UserRole1 />} />
+        <Route path="/UserManagement/UserRole" element={<UserRole1 />} />
         <Route path="/UserManagement/UserRole2" element={<UserRole2 />} />
         <Route path="/UserManagement/UserRole3" element={<UserRole3 />} />
         <Route path="/UserManagement/AddNewUser" element={<AddNewUser/>} />
+        <Route path="/UserManagement/AddUserRole" element={<AddUserRole1/>} />
         <Route path="/UserManagement/UserRole1/Details" element={<UserRole1Details />} /> 
         <Route path="/UserManagement/EditAccess" element={<EditAccess />} />
         {

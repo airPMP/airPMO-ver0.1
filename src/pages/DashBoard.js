@@ -20,9 +20,10 @@ const DashBoard = () => {
     if (urlTitle.pathname === "/dashboard") {
       setTitle("Dashboard");
     }
-
-
+    
+  
   }, [urlTitle.pathname])
+  
 
   const handleChangeForClient = (event) => {
     setClient(event.target.value);
