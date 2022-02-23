@@ -45,12 +45,10 @@ const ProductivitySheet = () => {
             setopenSearchData(false)
             SearchClientSet.set(false)
             setProjectSearchData(null)
-             
         }
         else {
             setopenSearchData(true)
             SearchClientSet.set(true)
-             
         }
     }, [openSearchData1])
 
@@ -65,14 +63,20 @@ const ProductivitySheet = () => {
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
-        } 
+        }
+
+        // console.log(filteredsheetdata)
+        // console.log(productivesheetsllsata)
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        } 
+        }
+        console.log(projectnameactive)
+
+
     }, [productivesheetid, projectnameactive])
 
-    
+    console.log(projectnameactive)
 
 
     const clientidname = (e, Objdata) => {
@@ -87,13 +91,13 @@ const ProductivitySheet = () => {
             .then((response) => {
                 console.log(response?.data)
                 setProjectSearchData(response?.data)
-                if (response.status === 200) {
-                    // addToast("Project is Added Sucessfully", {
-                    //     appearance: "success",
-                    //     autoDismiss: true,
-                    // })
+                // if (response.status === 200) {
+                //     addToast("Project is Added Sucessfully", {
+                //         appearance: "success",
+                //         autoDismiss: true,
+                //     })
 
-                }
+                // }
 
             })
             .catch((error) => {
@@ -108,19 +112,21 @@ const ProductivitySheet = () => {
 
 
     const handleChangeForClientData = (e) => {
-        
-        setProjectSearchData(null)
+
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {
             console.log(data)
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
-            } 
-        }); 
+            }
+        });
+
         setSearchData(result)
         setopenSearchData1(e.target.value)
-    } 
+    }
+
+
 
 
     const SheetTableData = () => {
@@ -131,13 +137,11 @@ const ProductivitySheet = () => {
                 Authorization: `Bearer ${token}`,
             }
         })
-            .then((response) => { 
-
-                console.log(response)
-
-
+            .then((response) => {
+                console.log(response?.status)
                 setProductiveSheetAllData(response?.data?.productivitysheet)
-                if (response?.status === 200) { 
+                if (response?.status === 200) {
+                    console.log("true data")
                     ProductiveNameActive.set(true)
                 }
 
@@ -179,7 +183,7 @@ const ProductivitySheet = () => {
         }
     }
 
-    
+    console.log(filteredsheetdata)
 
     return (
         <>
