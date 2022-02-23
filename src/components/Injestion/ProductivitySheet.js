@@ -45,10 +45,12 @@ const ProductivitySheet = () => {
             setopenSearchData(false)
             SearchClientSet.set(false)
             setProjectSearchData(null)
+             
         }
         else {
             setopenSearchData(true)
             SearchClientSet.set(true)
+             
         }
     }, [openSearchData1])
 
@@ -106,7 +108,7 @@ const ProductivitySheet = () => {
 
 
     const handleChangeForClientData = (e) => {
-        console.log(e.target.value)
+        
         setProjectSearchData(null)
         let value = e.target.value.toUpperCase();
         let result = []
@@ -114,14 +116,11 @@ const ProductivitySheet = () => {
             console.log(data)
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
-            }
-        });
-
+            } 
+        }); 
         setSearchData(result)
         setopenSearchData1(e.target.value)
-    }
-
-
+    } 
 
 
     const SheetTableData = () => {
@@ -133,6 +132,10 @@ const ProductivitySheet = () => {
             }
         })
             .then((response) => { 
+
+                console.log(response)
+
+
                 setProductiveSheetAllData(response?.data?.productivitysheet)
                 if (response?.status === 200) { 
                     ProductiveNameActive.set(true)

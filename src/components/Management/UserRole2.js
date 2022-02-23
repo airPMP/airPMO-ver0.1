@@ -39,10 +39,7 @@ const UserRole1 = () => {
     //   .entries(objData)
     //   .reduce((r, [key, array]) => array.map((v, i) => ({ ...r[i], [keys[key]]: v })), []);
 
-    useEffect(() => {
-
-        console.log(userdata)
-        console.log(rolesdata)
+    useEffect(() => { 
 
         userdata?.forEach(item => {
             let userdata = {
@@ -59,7 +56,7 @@ const UserRole1 = () => {
                 },
             })
                 .then((response) => {
-                    console.log(response)
+                    // console.log(response)
                 })
                  
 
