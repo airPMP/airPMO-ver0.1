@@ -10,6 +10,7 @@ import { Update_role_Permission } from './dto/update_permission-role.dto';
 export class RolesService {
   constructor(@InjectModel(Role.name) private RoleModel: Model<RoleDocument>) {}
   async create(createRoleDto: CreateRoleDto) {
+    try{
     if(createRoleDto.roles_data){
     for(let i=0;i<createRoleDto.roles_data.length;i++){
       createRoleDto.name=createRoleDto.roles_data[i];
@@ -20,9 +21,12 @@ export class RolesService {
    }
     else{
       const create =new this.RoleModel(createRoleDto);
-    return await create.save();
+        return await create.save();
     }
+  }catch{
+    throw new NotFoundException("roles not exist")
   }
+}
 
   async findAll() {
     return await this.RoleModel.find();

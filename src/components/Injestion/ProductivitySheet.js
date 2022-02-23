@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
+import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import Header from '../layout/Header'
@@ -7,7 +8,7 @@ import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
 import ProductSearch from './ProductSearch';
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive,UpdateSheetData } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 
 const ProductivitySheet = () => {
 
@@ -21,11 +22,11 @@ const ProductivitySheet = () => {
     const [productivesheetdata, setProductiveSheetData] = useState(null);
     const [productivesheetsllsata, setProductiveSheetAllData] = useState(null);
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
-    const [data2, setdata2] = useState([]);
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
     const projectnameactive = ProductiveNameActive.use()
+    const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
 
     let urlTitle = useLocation();
@@ -63,20 +64,17 @@ const ProductivitySheet = () => {
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
-        }  
+        }
+
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
-        console.log(projectnameactive) 
 
-        if(updatesheetdata){
-            SheetTableData()
-            handleSearch()
+        if (updatesheetdata) {
+            SheetTableData()  
         }
-    }, [productivesheetid, projectnameactive,updatesheetdata])
 
-    console.log(projectnameactive)
-
+    }, [productivesheetid, projectnameactive, updatesheetdata])
 
 
     const clientidname = (e, Objdata) => {
@@ -143,6 +141,7 @@ const ProductivitySheet = () => {
                 if (response?.status === 200) {
                     console.log("true data")
                     ProductiveNameActive.set(true)
+
                 }
 
             })
@@ -181,6 +180,16 @@ const ProductivitySheet = () => {
         if (value === "") {
             setFilteredSheetData(productivesheetsllsata)
         }
+    }
+
+    const SaveSheetButton = () => {
+        handleSearch()
+        EntityShowProductiveEye.set(o => !o)
+    }
+
+
+    const CancelButton = (e) => {
+        EntityShowProductiveEye.set(o => !o)
     }
 
     console.log(filteredsheetdata)
@@ -262,7 +271,7 @@ const ProductivitySheet = () => {
                         </div>
                         <div>
                             <ProductSearch
-                                placeHolderName={"Choose Project"} 
+                                placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
                             />
@@ -409,6 +418,74 @@ const ProductivitySheet = () => {
                     </div>
                 </div>
             </div>
+            <Popup
+                open={entityshoeproductiveeye}
+                position="right center"
+                model
+            >
+                <div className="p-7 ">
+                    <div className="flex pb-3">
+                        <div onClick={(e) => SaveSheetButton(e)}>
+                            <span>
+                                <button
+                                    type="submit"
+                                    className="w-[110px] h-[25px] rounded btnshadow text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                                >
+                                    Save
+                                </button>
+                            </span>
+                        </div>
+                        <div style={{ marginLeft: "70%" }}>
+                            <span onClick={(e) => CancelButton(e)} >
+                                <button
+                                    type="submit"
+                                    className="w-[100px] h-[25px] rounded btnshadow 
+                                text-sm font-secondaryFont text-[14px] font-medium not-italic 
+                                 bg-[red] text-[#000000] "
+                                >
+                                    Cancel
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mt-3 ex1">
+                        <table className="table-auto   text-center   
+                            text-[#8F9BBA] text-[12px] font-sans
+                         font-normal not-italic ">
+                            <tr className="max-h-[52.84px] text-center  ">
+                                <th className="w-[15%] py-[13px]">Activity Code</th>
+                                <th className="w-[25%] py-[13px]">Activity Name</th>
+                                <th className="w-[20%] py-[13px]">Unit of Measure</th>
+                                <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
+
+                            </tr>
+                            {productivesheetsllsata?.map((item, i) => {
+
+                                return (
+                                    <tbody className="  mb-[10px]   ">
+                                        <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
+                                            <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item["Activity name"]}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td className="p-[10px]"></td>
+                                        </tr>
+                                    </tbody>
+                                )
+                            }
+
+                            )}
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </Popup>
         </>
     )
 }

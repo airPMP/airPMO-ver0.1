@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -20,6 +20,8 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
     const searchclientset = SearchClientSet.use()
     const projectnameactive = ProductiveNameActive.use()
     const updatesheetdata = UpdateSheetData.use()
+    const entityshoeproductiveeye = EntityShowProductiveEye.use()
+
     const { addToast } = useToasts();
     let navigate = useNavigate();
 
@@ -112,6 +114,7 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
                 // setProjectSearchData(response?.data)
                 if (response.status === 201) {
                     UpdateSheetData.set(true)
+                    EntityShowProductiveEye.set(o => !o)
                     // setProjectSearchData(response?.data)
                     addToast("Upload Sucessfully", {
                         appearance: "success",
