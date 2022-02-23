@@ -7,7 +7,7 @@ import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
 import ProductSearch from './ProductSearch';
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive,UpdateSheetData } from '../../SimplerR/auth'
 
 const ProductivitySheet = () => {
 
@@ -26,7 +26,7 @@ const ProductivitySheet = () => {
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
     const projectnameactive = ProductiveNameActive.use()
-
+    const updatesheetdata = UpdateSheetData.use()
 
     let urlTitle = useLocation();
     useEffect(() => {
@@ -63,20 +63,20 @@ const ProductivitySheet = () => {
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
-        }
-
-        // console.log(filteredsheetdata)
-        // console.log(productivesheetsllsata)
-
+        }  
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
-        console.log(projectnameactive)
+        console.log(projectnameactive) 
 
-
-    }, [productivesheetid, projectnameactive])
+        if(updatesheetdata){
+            SheetTableData()
+            handleSearch()
+        }
+    }, [productivesheetid, projectnameactive,updatesheetdata])
 
     console.log(projectnameactive)
+
 
 
     const clientidname = (e, Objdata) => {
@@ -138,7 +138,7 @@ const ProductivitySheet = () => {
             }
         })
             .then((response) => {
-                console.log(response?.status)
+                console.log(response?.data)
                 setProductiveSheetAllData(response?.data?.productivitysheet)
                 if (response?.status === 200) {
                     console.log("true data")
@@ -184,6 +184,7 @@ const ProductivitySheet = () => {
     }
 
     console.log(filteredsheetdata)
+    console.log(productivesheetsllsata)
 
     return (
         <>
