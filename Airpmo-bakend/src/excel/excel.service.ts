@@ -87,12 +87,18 @@ export class ExcelService {
     var arrzerovalue = Object.values(qunatityjsondata[0])
     var arronekey = Object.keys(qunatityjsondata[1])
     var arrayonevalue = Object.values(qunatityjsondata[1])
+    var arrtwokey = Object.keys(qunatityjsondata[7])
+    var arraytwovalue = Object.values(qunatityjsondata[7])
+
     var count = 0;
     var tier = [];
     var all_tier_info = []
-    for (let j = 3; j < arronekey.length; j++) {
-      if (arrzerokey[count] === arronekey[j]) {
-        if (count != 0) {
+    for (let j = 0; j < arronekey.length; j++) {
+      if (j <= 2) {
+        tier[arronekey[j]] = arrayonevalue[j]
+      }
+      else if (arrzerokey[count] === arronekey[j]) {
+        if (arrzerokey[count] === arronekey[j]) {
           all_tier_info.push(tier)
           tier = []
         }
@@ -102,40 +108,69 @@ export class ExcelService {
       else {
         tier[arronekey[j]] = arrayonevalue[j]
       }
+
     }
-  console.log(all_tier_info)
-//     var obj3 = []
-//     var obj4 = []
-//     var final_array = []
-//     var final_value1 = []
-  
-//       var arrtwokey = Object.keys(qunatityjsondata[7])
-//       var arraytwovalue = Object.values(qunatityjsondata[7])
-         
-//       for (let index = 0; index < all_tier_info.length; index++) {
-       
-//         var final_key1 = Object.keys(all_tier_info[index])
-//         final_value1 = Object.values(all_tier_info[index])
-//         for (let i = 0; i < final_key1.length; i++) {
-//           for (let j = 0; j < arrtwokey.length; j++) {
-//             if (final_key1[i] === arrtwokey[j]) {
-//               if (i === 0) {
-//                 obj3.push(final_array)
-//                 final_array = []
-//               }
-//               final_array[final_value1[i]] = arraytwovalue[j]
-//             }
-//           }
-//         }
-//       }
- 
-//   console.log(obj3)
-//     var tier3 = {}
-// for (let index = 1; index < obj3.length; index++) {
-//   tier3[arrzerovalue[index - 1]] = obj3[index]
-// }
-// console.log(tier3)
+//  console.log(all_tier_info)
+    var obj3 = []
+    var obj4 = []
+    var final_array = []
+    var final_value1 = []
+
+    var arrtwokey = Object.keys(qunatityjsondata[8])
+    var arraytwovalue = Object.values(qunatityjsondata[8])
+
+    for (let index = 0; index < all_tier_info.length; index++) {
+
+      var final_key1 = Object.keys(all_tier_info[index])
+      final_value1 = Object.values(all_tier_info[index])
+      for (let i = 0; i < final_key1.length; i++) {
+        for (let j = 0; j < arrtwokey.length; j++) {
+          if (final_key1[i] === arrtwokey[j]) {
+            if (i === 0) {
+              obj3.push(final_array)
+              final_array = []
+            }
+            final_array[final_value1[i]] = arraytwovalue[j]
+          }
+        }
+      }
+    }
+        var tier3 = {}
+    for (let index = 1; index < obj3.length; index++) {
+      tier3[arrzerovalue[index - 2]] = obj3[index]
+    }
+    console.log(tier3)
   }
 }
 
 
+// if (arrzerokey[count] === arronekey[j]) {
+      //   if (count != 0) {
+      //     all_tier_info.push(tier)
+      //     tier = []
+      //   }
+      //   tier[arronekey[j]] = arrayonevalue[j]
+      //   count++;
+      // }
+      // else {
+      //   tier[arronekey[j]] = arrayonevalue[j]
+      // }
+
+
+
+      // console.log(tier)
+    // var all_tier_info_key = Object.keys(all_tier_info)
+    // var all_tier_info_key_value = Object.values(all_tier_info)
+    // console.log(all_tier_info_key)
+    // var obj3 = []
+    // var obj4 = []
+    // var final_array = []
+    // var final_value1 = []
+
+    // for (let i = 0; i < all_tier_info_key.length; i++) {
+    //   for (let j = 0; j < arrtwokey.length; j++) {
+    //     if (all_tier_info_key[i] === arrtwokey[j]) {
+    //       final_array[all_tier_info_key_value[i]] = arraytwovalue[j]
+    //       // console.log(all_tier_info_key.length)
+    //     }
+    //   }
