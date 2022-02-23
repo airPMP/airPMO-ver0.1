@@ -63,20 +63,14 @@ const ProductivitySheet = () => {
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
-        }
-
-        // console.log(filteredsheetdata)
-        // console.log(productivesheetsllsata)
+        } 
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        }
-        console.log(projectnameactive)
-
-
+        } 
     }, [productivesheetid, projectnameactive])
 
-    console.log(projectnameactive)
+    
 
 
     const clientidname = (e, Objdata) => {
@@ -91,13 +85,13 @@ const ProductivitySheet = () => {
             .then((response) => {
                 console.log(response?.data)
                 setProjectSearchData(response?.data)
-                // if (response.status === 200) {
-                //     addToast("Project is Added Sucessfully", {
-                //         appearance: "success",
-                //         autoDismiss: true,
-                //     })
+                if (response.status === 200) {
+                    // addToast("Project is Added Sucessfully", {
+                    //     appearance: "success",
+                    //     autoDismiss: true,
+                    // })
 
-                // }
+                }
 
             })
             .catch((error) => {
@@ -112,7 +106,8 @@ const ProductivitySheet = () => {
 
 
     const handleChangeForClientData = (e) => {
-
+        console.log(e.target.value)
+        setProjectSearchData(null)
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {
@@ -137,11 +132,9 @@ const ProductivitySheet = () => {
                 Authorization: `Bearer ${token}`,
             }
         })
-            .then((response) => {
-                console.log(response?.status)
+            .then((response) => { 
                 setProductiveSheetAllData(response?.data?.productivitysheet)
-                if (response?.status === 200) {
-                    console.log("true data")
+                if (response?.status === 200) { 
                     ProductiveNameActive.set(true)
                 }
 
@@ -183,7 +176,7 @@ const ProductivitySheet = () => {
         }
     }
 
-    console.log(filteredsheetdata)
+    
 
     return (
         <>

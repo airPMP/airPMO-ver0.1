@@ -35,6 +35,13 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
     useEffect(() => {
         handleChangeForClientData()
+        // setProjectSearchData 
+        console.log(valueData)
+
+        // if (valueData === null) {
+        //     setProjectSearchData('')
+        // }
+
     }, [valueData])
 
 
@@ -49,9 +56,9 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
     }, [searchclientset])
 
     useEffect(() => {
-        const ProjectIdName = (e, ObjData) => { 
+        const ProjectIdName = (e, ObjData) => {
             setProjectSearchData(ObjData?.project_name)
-        } 
+        }
 
         setopenSearchData(false)
         ProjectIdName()
@@ -83,12 +90,12 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
         }
 
     }
- 
 
-    const ProjectIdName = (e, ObjData) => { 
-        setProjectSearchData(ObjData?.project_name) 
+
+    const ProjectIdName = (e, ObjData) => {
+        setProjectSearchData(ObjData?.project_name)
         setProjectSheetId(ObjData?._id)
-        ProductiveSheetId.set(ObjData?._id) 
+        ProductiveSheetId.set(ObjData?._id)
     }
 
 
@@ -108,28 +115,30 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
         )
             .then((response) => {
+
                 setProjectSearchData(response?.data)
                 if (response.status === 201) {
                     setProjectSearchData(response?.data)
                     addToast("Upload Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
-                    }) 
+                    })
+                    window.location.reload(true);
                 } 
             })
+            
             .catch((error) => {
                 console.log(error)
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
-            }) 
+            })
     }
 
 
     return (
-        <div>
-
+        <div> 
             <div className=" basic-1/4 flex flex-row px-[20px] bg-[#FFFFFF] rounded-[0.625rem] ">
                 <div className="pt-[18px]">
                     <svg
