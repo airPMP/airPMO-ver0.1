@@ -39,13 +39,15 @@ const ProductivitySheet = () => {
     const [ELECTRICIANfix, setELECTRICIANfix] = useState(null)
     const [EXCAVATORfix, setEXCAVATORfix] = useState(null)
     const [FABRICATORfix, setFABRICATORfix] = useState(null)
-    const [FOREMANfix,  setFOREMANfix] = useState(null) 
+    const [FOREMANfix, setFOREMANfix] = useState(null)
     const [GRADERfix, setGRADERfix] = useState(null)
+    const [GENERAL_FOREMANfix, setGENERAL_FOREMANfix] = useState(null)
     const [HAND_ROLLERfix, setHAND_ROLLERfix] = useState(null)
     const [HI_UP_CRANEfix, setHI_UP_CRANEfix] = useState(null)
     const [JUNIOR_SURVEYORfix, setJUNIOR_SURVEYORfix] = useState(null)
     const [LABORfix, setLABORfix] = useState(null)
     const [MASONfix, setMASONfix] = useState(null)
+    const [OPERATORfix, setOPERATORfix] = useState(null)
     const [PIPE_FITTERfix, setPIPE_FITTERfix] = useState(null)
     const [PLATE_COMPACTORfix, setPLATE_COMPACTORfix] = useState(null)
     const [RIGGERfix, setRIGGERfix] = useState(null)
@@ -73,13 +75,15 @@ const ProductivitySheet = () => {
     const [ELECTRICIAN, setELECTRICIAN] = useState(null)
     const [EXCAVATOR, setEXCAVATOR] = useState(null)
     const [FABRICATOR, setFABRICATOR] = useState(null)
-    const [FOREMAN,  setFOREMAN] = useState(null)
+    const [FOREMAN, setFOREMAN] = useState(null)
     const [GRADER, setGRADER] = useState(null)
+    const [GENERAL_FOREMAN, setGENERAL_FOREMAN] = useState(null)
     const [HAND_ROLLER, setHAND_ROLLER] = useState(null)
     const [HI_UP_CRANE, setHI_UP_CRANE] = useState(null)
     const [JUNIOR_SURVEYOR, setJUNIOR_SURVEYOR] = useState(null)
     const [LABOR, setLABOR] = useState(null)
     const [MASON, setMASON] = useState(null)
+    const [OPERATOR, setOPERATOR] = useState(null)
     const [PIPE_FITTER, setPIPE_FITTER] = useState(null)
     const [PLATE_COMPACTOR, setPLATE_COMPACTOR] = useState(null)
     const [RIGGER, setRIGGER] = useState(null)
@@ -147,7 +151,7 @@ const ProductivitySheet = () => {
             SheetTableData()
         }
 
-    }, [productivesheetid, projectnameactive, updatesheetdata]) 
+    }, [productivesheetid, projectnameactive, updatesheetdata])
 
     const clientidname = (e, Objdata) => {
         setClientSearchData(Objdata?.client_name)
@@ -251,41 +255,35 @@ const ProductivitySheet = () => {
         EntityShowProductiveEye.set(o => !o)
     }
 
-    const ActiveNameSheet = (e, data) => { 
-        
+    const ActiveNameSheet = (e, data) => {
+
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
         setActiveNameDataCode(data["Activity code"])
         setActiveNameData(o => !o)
-
         setGANG_PRODUCTIVIVYFix(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setWATER_TANKERfix(data[" WATER TANKER "]) 
-
+        setWATER_TANKERfix(data[" WATER TANKER "])
         set_3T_PICKUPfix(data[" 3T PICKUP "])
         setBACK_HOEfix(data[" BACK HOE "])
         setBOBCATfix(data[" BOBCAT "])
         setBUSfix(data[" BUS "])
-        setCARPENTERfix(data[" CARPENTER "])  
+        setCARPENTERfix(data[" CARPENTER "])
         setCHAINMANfix(data[" CHAINMAN "])
-        setCRANEfix(data[" CRANE "]) 
+        setCRANEfix(data[" CRANE "])
         setDC_PICKUPfix(data[" DC PICKUP "])
         setDOZERfix(data[" DOZER "])
         setDRIVERfix(data[" DRIVER "])
-
-
         setELECTRICIANfix(data[" ELECTRICIAN "])
         setEXCAVATORfix(data[" EXCAVATOR "])
-        setFABRICATORfix(data[" FABRICATOR "]) 
-        setFOREMANfix(data[" FOREMAN "])  
+        setFABRICATORfix(data[" FABRICATOR "])
+        setFOREMANfix(data[" FOREMAN "])
         setGRADERfix(data[" GRADER "])
-          // setGENERAL_FOREMANFix(data[" GENERAL_FOREMAN "])
-        
-        setHAND_ROLLERfix(data[" HAND ROLLER "])
+        setGENERAL_FOREMANfix(data[" GENERAL FOREMAN "])
+        setHAND_ROLLERfix(data[" HAND ROLLER  "])
         setHI_UP_CRANEfix(data[" HI UP CRANE "])
-        setJUNIOR_SURVEYORfix(data[" UNIOR SURVEYOR "])
+        setJUNIOR_SURVEYORfix(data[" JUNIOR SURVEYOR "])
         setLABORfix(data[" LABOR "])
         setMASONfix(data[" MASON "])
-        // setOPERATORfix(data[" OPERATOR "])
-
+        setOPERATORfix(data[" OPERATOR "])
         setPIPE_FITTERfix(data[" PIPE FITTER "])
         setPLATE_COMPACTORfix(data[" PLATE COMPACTOR "])
         setRIGGERfix(data[" RIGGER "])
@@ -298,7 +296,6 @@ const ProductivitySheet = () => {
         setWATER_TANKERfix(data[" WATER TANKER "])
         setWELDERfix(data[" WELDER "])
         setWHEEL_LOADERfix(data[" WHEEL LOADER/SHOVEL "])
-
 
         set_3T_PICKUP(data[" 3T PICKUP "])
         setBACK_HOE(data[" BACK HOE "])
@@ -315,9 +312,10 @@ const ProductivitySheet = () => {
         setFABRICATOR(data[" FABRICATOR "])
         setFOREMAN(data[" FOREMAN "])
         setGRADER(data[" GRADER "])
-        setHAND_ROLLER(data[" HAND ROLLER "])
+        setGENERAL_FOREMAN(data[" GENERAL FOREMAN "])
+        setHAND_ROLLER(data[" HAND ROLLER  "])
         setHI_UP_CRANE(data[" HI UP CRANE "])
-        setJUNIOR_SURVEYOR(data[" UNIOR SURVEYOR "])
+        setJUNIOR_SURVEYOR(data[" JUNIOR SURVEYOR "])
         setLABOR(data[" LABOR "])
         setMASON(data[" MASON "])
         setOPERATOR(data[" OPERATOR "])
@@ -340,11 +338,16 @@ const ProductivitySheet = () => {
     const GangProductData = (e, data) => {
         setGANG_PRODUCTIVIVY(e.target.value)
 
-        console.log(WATER_TANKERfix)
-        console.log(GANG_PRODUCTIVIVYFix)
-        console.log(e.target.value)
 
-        console.log(WATER_TANKERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        // console.log(WATER_TANKERfix / GANG_PRODUCTIVIVYFix * e.target.value) //formula
+        // var n = 1.0005;
+        // n = n.toFixed(3);
+        // console.log(n);
+        // Output:
+
+        // 1.000
+
+
 
         if (_3T_PICKUPfix !== 0) {
             set_3T_PICKUP(_3T_PICKUPfix / GANG_PRODUCTIVIVYFix * e.target.value)
@@ -388,69 +391,74 @@ const ProductivitySheet = () => {
         if (FOREMANfix !== 0) {
             setFOREMAN(FOREMANfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( GRADERfix !== 0) {
-            setGRADER( GRADERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (GRADERfix !== 0) {
+            setGRADER(GRADERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( HAND_ROLLERfix !== 0) {
-            setHAND_ROLLER( HAND_ROLLERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (GENERAL_FOREMANfix !== 0) {
+            setGENERAL_FOREMAN(GENERAL_FOREMANfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( HI_UP_CRANEfix !== 0) {
-            setHI_UP_CRANE( HI_UP_CRANEfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        }
-        if ( JUNIOR_SURVEYORfix !== 0) {
-            setJUNIOR_SURVEYOR( JUNIOR_SURVEYORfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        }
-        if ( LABORfix !== 0) {
-            setLABOR( LABORfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        }
-        if ( MASONfix !== 0) {
-            setMASON( MASONfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        }
-        if ( OPERATORfix !== 0) {
-            setOPERATOR( OPERATORfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        }
-         
 
-        if ( PIPE_FITTERfix !== 0) {
-            setPIPE_FITTER( PIPE_FITTERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (HAND_ROLLERfix !== 0) {
+            setHAND_ROLLER(HAND_ROLLERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( PLATE_COMPACTORfix !== 0) {
-            setPLATE_COMPACTOR( PLATE_COMPACTORfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (HI_UP_CRANEfix !== 0) {
+            setHI_UP_CRANE(HI_UP_CRANEfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( RIGGERfix !== 0) {
-            setRIGGER( RIGGERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (JUNIOR_SURVEYORfix !== 0) {
+            setJUNIOR_SURVEYOR(JUNIOR_SURVEYORfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( ROCK_BREAKERfix !== 0) {
-            setROCK_BREAKER( ROCK_BREAKERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (LABORfix !== 0) {
+            setLABOR(LABORfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( STEEL_FIXERfix !== 0) {
-            setSTEEL_FIXER( STEEL_FIXERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (MASONfix !== 0) {
+            setMASON(MASONfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( SURVEYORfix !== 0) {
-            setSURVEYOR( SURVEYORfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (OPERATORfix !== 0) {
+            setOPERATOR(OPERATORfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( TRAILERfix !== 0) {
-            setTRAILER( TRAILERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+
+
+        if (PIPE_FITTERfix !== 0) {
+            setPIPE_FITTER(PIPE_FITTERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( TRUCKfix !== 0) {
-            setTRUCK( TRUCKfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (PLATE_COMPACTORfix !== 0) {
+            setPLATE_COMPACTOR(PLATE_COMPACTORfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( UNITfix !== 0) {
-            setUNIT( UNITfix / GANG_PRODUCTIVIVYFix * e.target.value)
-        } 
+        if (RIGGERfix !== 0) {
+            setRIGGER(RIGGERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+        if (ROCK_BREAKERfix !== 0) {
+            setROCK_BREAKER(ROCK_BREAKERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+        if (STEEL_FIXERfix !== 0) {
+            setSTEEL_FIXER(STEEL_FIXERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+        if (SURVEYORfix !== 0) {
+            setSURVEYOR(SURVEYORfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+        if (TRAILERfix !== 0) {
+            setTRAILER(TRAILERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+        if (TRUCKfix !== 0) {
+            setTRUCK(TRUCKfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        }
+            // if (UNITfix !== 0) {
+            //     setUNIT(UNITfix / GANG_PRODUCTIVIVYFix * e.target.value)
+            // }
         if (WATER_TANKERfix !== 0) {
             setWATER_TANKER(WATER_TANKERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
 
-        if ( WELDERfix !== 0) {
-            setWELDER( WELDERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (WELDERfix !== 0) {
+            setWELDER(WELDERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-        if ( WHEEL_LOADERfix !== 0) {
-            setWHEEL_LOADER( WHEEL_LOADERfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        if (WHEEL_LOADERfix !== 0) {
+            setWHEEL_LOADER(WHEEL_LOADERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
 
     }
 
+    console.log(FOREMAN)
 
 
     return (
@@ -648,8 +656,8 @@ const ProductivitySheet = () => {
                          font-normal not-italic  " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  ">
-                                    <th className="w-[15%] py-[13px]">Activity Code</th>
-                                    <th className="w-[25%] py-[13px]">Activity Name</th>
+                                    <th className="w-[25%] py-[13px]">Activity&nbsp;Code</th>
+                                    <th className="w-[35%] py-[13px]">Activity&nbsp;Name</th>
                                     <th className="w-[20%] py-[13px]">Unit of Measure</th>
                                     <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
@@ -670,185 +678,205 @@ const ProductivitySheet = () => {
                                         </tr>
                                         {activenamedata && activenamedatacode === item["Activity code"] ?
 
-                                            <tr className="mb-4 "
+                                            <tr className="mb-4"
                                                 style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
 
-                                                <tr className="h-[35px] " >
-                                                    <div style={{ borderBottom: "1px solid black" }}>
+                                                <tr className="h-[35px]   " >
+                                                    <div className="flex" style={{ borderBottom: "1px solid black" }}>
                                                         <input type='number' placeholder="Gang Productivity"
-                                                            className="border-none pt-2"
+                                                            className="border-none pt-2  gang_product_input"
                                                             value={GANG_PRODUCTIVIVY}
                                                             onChange={(e) => GangProductData(e, item)}
 
                                                         />
+                                                        <span className="pl-2 pt-2 text-[15px]" >{UNIT}</span>
                                                     </div>
-                                                </tr>  
-                                                {_3T_PICKUPfix !== 0 || _3T_PICKUPfix !== '' ? <tr className="h-[35px]">
-                                                       {_3T_PICKUP}
+                                                </tr>
+                                                {_3T_PICKUP !== 0 && _3T_PICKUPfix !== undefined ? <tr className="h-[35px]">
+                                                    3T PICKUP - {_3T_PICKUP.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
 
-                                                {BACK_HOEfix !== 0 ? <tr className="h-[35px]">
-                                                       {BACK_HOE}
+                                                {BACK_HOE !== 0  && BACK_HOEfix !== undefined ? <tr className="h-[35px]">
+                                                    BACK HO - {BACK_HOE.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
-                                                {BOBCATfix !== 0 ? <tr className="h-[35px]">
-                                                       {BOBCAT}
+                                                {BOBCAT !== 0  && BOBCATfix !== undefined ? <tr className="h-[35px]">
+                                                    BOBCAT - {BOBCAT.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
-                                                {BUSfix !== 0 ? <tr className="h-[35px]">
-                                                       {BUS}
+                                                {BUS !== 0  && BUSfix !== undefined ? <tr className="h-[35px]">
+                                                    BUS - {BUS.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
-                                                {CARPENTERfix !== 0 ? <tr className="h-[35px]">
-                                                       {CARPENTER}
+                                                {CARPENTER !== 0  && CARPENTERfix !== undefined ? <tr className="h-[35px]">
+                                                    CARPENTER - {CARPENTER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
-                                                {CHAINMANfix !== 0 ? <tr className="h-[35px]">
-                                                       {CHAINMAN}
+                                                {CHAINMAN !== 0  && CHAINMANfix !== undefined ? <tr className="h-[35px]">
+                                                    CHAINMAN - {CHAINMAN.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
 
-                                                {CRANEfix !== 0 ? <tr className="h-[35px]">
-                                                       {CRANE}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-
-                                                 {DC_PICKUPfix !== 0 ? <tr className="h-[35px]">
-                                                       {DC_PICKUP}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {DOZERfix !== 0 ? <tr className="h-[35px]">
-                                                       {DOZER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {DRIVERfix !== 0 ? <tr className="h-[35px]">
-                                                       {DRIVER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {ELECTRICIANfix !== 0 ? <tr className="h-[35px]">
-                                                       {ELECTRICIAN}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {EXCAVATORfix !== 0 ? <tr className="h-[35px]">
-                                                       {EXCAVATOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {FABRICATORfix !== 0 ? <tr className="h-[35px]">
-                                                       {FABRICATOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {GRADERfix !== 0 ? <tr className="h-[35px]">
-                                                       {GRADER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {HAND_ROLLERfix !== 0 ? <tr className="h-[35px]">
-                                                       {HAND_ROLLER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-
-                                                 {HI_UP_CRANEfix !== 0 ? <tr className="h-[35px]">
-                                                       {HI_UP_CRANE}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {JUNIOR_SURVEYORfix !== 0 ? <tr className="h-[35px]">
-                                                       {JUNIOR_SURVEYOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {LABORfix !== 0 ? <tr className="h-[35px]">
-                                                       {LABOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {MASONfix !== 0 ? <tr className="h-[35px]">
-                                                       {MASON}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {PIPE_FITTERfix !== 0 ? <tr className="h-[35px]">
-                                                       {PIPE_FITTER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {PLATE_COMPACTORfix !== 0 ? <tr className="h-[35px]">
-                                                       {PLATE_COMPACTOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {RIGGERfix !== 0 ? <tr className="h-[35px]">
-                                                       {RIGGER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {ROCK_BREAKERfix !== 0 ? <tr className="h-[35px]">
-                                                       {ROCK_BREAKER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {STEEL_FIXERfix !== 0 ? <tr className="h-[35px]">
-                                                       {STEEL_FIXER}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {SURVEYORfix !== 0 ? <tr className="h-[35px]">
-                                                       {SURVEYOR}
-                                                </tr> : <>
-                                                </>}
-                                                 {/* tr rnd */}
-                                                 {TRAILERfix !== 0 ? <tr className="h-[35px]">
-                                                       {TRAILER}
+                                                {CRANE !== 0  && CRANEfix !== undefined ? <tr className="h-[35px]">
+                                                    CRANE - {CRANE.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
                                                 {/* tr rnd */}
-                                                {TRUCKfix !== 0 ? <tr className="h-[35px]">
-                                                       {TRUCK}
+
+                                                {DC_PICKUP !== 0  && DC_PICKUPfix !== undefined ? <tr className="h-[35px]">
+                                                    DC PICKUP - {DC_PICKUP.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                  
-                                                 {/* tr rnd */}
-                                                 {/* {UNITfix !== 0 ? <tr className="h-[35px]">
+                                                {/* tr rnd */}
+                                                {DOZER !== 0  && DOZERfix !== undefined ? <tr className="h-[35px]">
+                                                    DOZER - {DOZER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {DRIVER !== 0  && DRIVERfix !== undefined ? <tr className="h-[35px]">
+                                                    DRIVER - {DRIVER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {ELECTRICIAN !== 0  && ELECTRICIANfix !== undefined ? <tr className="h-[35px]">
+                                                    ELECTRICIAN - {ELECTRICIAN.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {EXCAVATOR !== 0  && EXCAVATORfix !== undefined ? <tr className="h-[35px]">
+                                                    EXCAVATOR - {EXCAVATOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {FABRICATOR !== 0  && FABRICATORfix !== undefined ? <tr className="h-[35px]">
+                                                    FABRICATOR - {FABRICATOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+
+                                                {FOREMAN !== 0 && FOREMANfix !== undefined ? <tr className="h-[35px]">
+                                                    FOREMAN - {FOREMAN.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {GRADER !== 0  && GRADERfix !== undefined ? <tr className="h-[35px]">
+                                                    GRADER - {GRADER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {GENERAL_FOREMAN !== 0  && GENERAL_FOREMANfix !== undefined ? <tr className="h-[35px]">
+                                                    GENERAL FOREMAN - {GENERAL_FOREMAN.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+
+                                                {/* tr rnd */}
+                                                {HAND_ROLLER !== 0  && HAND_ROLLERfix !== undefined ? <tr className="h-[35px]">
+                                                    HAND ROLLER - {HAND_ROLLER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+
+                                                {HI_UP_CRANE !== 0  && HI_UP_CRANEfix !== undefined ? <tr className="h-[35px]">
+                                                    HI UP CRANE - {HI_UP_CRANE.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {JUNIOR_SURVEYOR !== 0  && JUNIOR_SURVEYORfix !== undefined ? <tr className="h-[35px]">
+                                                    JUNIOR SURVEYOR - {JUNIOR_SURVEYOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {LABOR !== 0 && LABORfix !== undefined ? <tr className="h-[35px]">
+                                                    LABOR - {LABOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {MASON !== 0  && MASONfix !== undefined ? <tr className="h-[35px]">
+                                                    MASON - {MASON.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+
+                                                {OPERATOR !== 0  && OPERATORfix !== undefined ? <tr className="h-[35px]">
+                                                    OPERATOR - {OPERATOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {PIPE_FITTER !== 0  && PIPE_FITTERfix !== undefined ? <tr className="h-[35px]">
+                                                    PIPE FITTER - {PIPE_FITTER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {PLATE_COMPACTOR !== 0  && PLATE_COMPACTORfix !== undefined ? <tr className="h-[35px]">
+                                                    PLATE COMPACTOR - {PLATE_COMPACTOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {RIGGER !== 0  && RIGGERfix !== undefined ? <tr className="h-[35px]">
+                                                    RIGGER - {RIGGER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {ROCK_BREAKER !== 0  && ROCK_BREAKERfix !== undefined ? <tr className="h-[35px]">
+                                                    ROCK BREAKER - {ROCK_BREAKER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {STEEL_FIXER !== 0  && STEEL_FIXERfix !== undefined ? <tr className="h-[35px]">
+                                                    STEEL FIXER - {STEEL_FIXER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {SURVEYOR !== 0  && SURVEYORfix !== undefined ? <tr className="h-[35px]">
+                                                    SURVEYOR - {SURVEYOR.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {TRAILER !== 0  && TRAILERfix !== undefined ? <tr className="h-[35px]">
+                                                    TRAILER - {TRAILER.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+                                                {/* tr rnd */}
+                                                {TRUCK !== 0  && TRUCKfix !== undefined ? <tr className="h-[35px]">
+                                                    TRUCK - {TRUCK.toFixed(2)}
+                                                </tr> : <>
+                                                </>}
+
+                                                {/* tr rnd */}
+                                                {/* {UNIT !== 0? <tr className="h-[35px]">
                                                        {UNIT}
                                                 </tr> : <>
                                                 </>} */}
-                                                 {/* tr rnd */}
-                                                 {WATER_TANKERfix !== 0 ? <tr className="h-[35px]">
-                                                       {WATER_TANKER}
+                                                {/* tr rnd */}
+                                                {WATER_TANKER !== 0 && WATER_TANKERfix !== undefined  ? <tr className="h-[35px]">
+                                                    WATER TANKER - {WATER_TANKER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                 {/* tr rnd */}
-                                                 {WELDERfix !== 0 ? <tr className="h-[35px]">
-                                                       {WELDER}
+                                                {/* tr rnd */}
+                                                {WELDER !== 0 && WELDERfix !== undefined ? <tr className="h-[35px]">
+                                                    WELDER - {WELDER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                 {/* tr rnd */}
+                                                {/* tr rnd */}
 
-                                                 {WHEEL_LOADERfix !== 0 ? <tr className="h-[35px]">
-                                                       {WHEEL_LOADER}
+                                                {WHEEL_LOADER !== 0 && WHEEL_LOADERfix !== undefined ? <tr className="h-[35px]">
+                                                    WHEEL LOADER - {WHEEL_LOADER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                 {/* tr rnd */}
-                                                  
+                                                {/* tr rnd */}
+
 
 
                                             </tr> : <>
                                             </>}
+                                            
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>
