@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -19,6 +19,9 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
     const productivesheetid = ProductiveSheetId.use()
     const searchclientset = SearchClientSet.use()
     const projectnameactive = ProductiveNameActive.use()
+    const updatesheetdata = UpdateSheetData.use()
+    const entityshoeproductiveeye = EntityShowProductiveEye.use()
+
     const { addToast } = useToasts();
     let navigate = useNavigate();
 
@@ -35,13 +38,6 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
     useEffect(() => {
         handleChangeForClientData()
-        // setProjectSearchData 
-        console.log(valueData)
-
-        // if (valueData === null) {
-        //     setProjectSearchData('')
-        // }
-
     }, [valueData])
 
 
@@ -115,18 +111,17 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
         )
             .then((response) => {
-
-                setProjectSearchData(response?.data)
+                // setProjectSearchData(response?.data)
                 if (response.status === 201) {
-                    setProjectSearchData(response?.data)
+                    UpdateSheetData.set(true)
+                    EntityShowProductiveEye.set(o => !o)
+                    // setProjectSearchData(response?.data)
                     addToast("Upload Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
-                    window.location.reload(true);
-                } 
+                }
             })
-            
             .catch((error) => {
                 console.log(error)
                 addToast(error.response.data.message, {
@@ -138,7 +133,8 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
 
     return (
-        <div> 
+        <div>
+
             <div className=" basic-1/4 flex flex-row px-[20px] bg-[#FFFFFF] rounded-[0.625rem] ">
                 <div className="pt-[18px]">
                     <svg

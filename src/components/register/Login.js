@@ -63,7 +63,8 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        addToast(error.response.data.message, {
+        console.log(error)
+        addToast(error?.response?.data?.message, {
           appearance: "error",
           autoDismiss: true,
         })

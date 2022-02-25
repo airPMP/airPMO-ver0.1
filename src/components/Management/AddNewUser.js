@@ -89,8 +89,7 @@ const AddNewUser = () => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                })
-
+                }) 
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
@@ -165,6 +164,9 @@ const AddNewUser = () => {
         } 
     }, [designatiotrue])
 
+    const CancelButton =()=>{
+        navigate('/UserManagement/UserRole2')
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -219,7 +221,7 @@ const AddNewUser = () => {
         },
     });
 
-    console.log(roleid)
+    
 
     const AssignRoles = () => {
 
@@ -610,7 +612,7 @@ const AddNewUser = () => {
                                     <div className="flex flex-row  ml-[70%] shadow-[buttonshadow] 
                                      content-center mt-[42px] lg:mr-[-60px]">
                                         <div className="mr-[45px] shadow-[buttonshadow] ">
-                                            <button className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                            <button onClick={() => CancelButton()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                                 Cancel
                                             </button>
                                         </div>

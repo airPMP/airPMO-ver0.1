@@ -47,9 +47,7 @@ const SuperAdmin = () => {
         navigate('/dashboard');
     };
 
-    useEffect(() => {
-
-    }, [])
+    
 
     const SubmitForm = (e) => {
 

@@ -66,9 +66,7 @@ const AddUserRole = () => {
 
     let navigate = useNavigate();
 
-    const Login = () => {
-        // navigate('/');
-    };
+     
 
     useEffect(() => {
 
@@ -113,6 +111,9 @@ const AddUserRole = () => {
         { "number": "5", }
     ]
 
+    const CancelButton =()=>{
+        navigate('/UserManagement/UserRole')
+    }
 
 
     const formik = useFormik({
@@ -308,7 +309,7 @@ const AddUserRole = () => {
 
                                     <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center mt-[42px] mr-[-60px]">
                                         <div className="mr-[45px] shadow-[buttonshadow] ">
-                                            <button onClick={() => Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                            <button onClick={() => CancelButton()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                                 Cancel
                                             </button>
                                         </div>
