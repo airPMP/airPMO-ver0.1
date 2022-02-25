@@ -7,7 +7,7 @@ import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
 import ProductSearch from './ProductSearch';
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive,UpdateSheetData } from '../../SimplerR/auth'
 
 const ProductivitySheet = () => {
 
@@ -26,7 +26,7 @@ const ProductivitySheet = () => {
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
     const projectnameactive = ProductiveNameActive.use()
-
+    const updatesheetdata = UpdateSheetData.use()
 
     let urlTitle = useLocation();
     useEffect(() => {
@@ -63,14 +63,24 @@ const ProductivitySheet = () => {
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
-        } 
+        }
+
+        // console.log(filteredsheetdata)
+        // console.log(productivesheetsllsata)
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        } 
-    }, [productivesheetid, projectnameactive])
+        }
+        console.log(projectnameactive) 
 
-    
+        if(updatesheetdata){
+            SheetTableData()
+            handleSearch()
+        }
+    }, [productivesheetid, projectnameactive,updatesheetdata])
+
+    console.log(projectnameactive)
+
 
 
     const clientidname = (e, Objdata) => {
@@ -85,13 +95,13 @@ const ProductivitySheet = () => {
             .then((response) => {
                 console.log(response?.data)
                 setProjectSearchData(response?.data)
-                if (response.status === 200) {
-                    // addToast("Project is Added Sucessfully", {
-                    //     appearance: "success",
-                    //     autoDismiss: true,
-                    // })
+                // if (response.status === 200) {
+                //     addToast("Project is Added Sucessfully", {
+                //         appearance: "success",
+                //         autoDismiss: true,
+                //     })
 
-                }
+                // }
 
             })
             .catch((error) => {
@@ -106,8 +116,7 @@ const ProductivitySheet = () => {
 
 
     const handleChangeForClientData = (e) => {
-        console.log(e.target.value)
-        setProjectSearchData(null)
+
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {
@@ -132,9 +141,11 @@ const ProductivitySheet = () => {
                 Authorization: `Bearer ${token}`,
             }
         })
-            .then((response) => { 
+            .then((response) => {
+                console.log(response?.data)
                 setProductiveSheetAllData(response?.data?.productivitysheet)
-                if (response?.status === 200) { 
+                if (response?.status === 200) {
+                    console.log("true data")
                     ProductiveNameActive.set(true)
                 }
 
@@ -176,7 +187,8 @@ const ProductivitySheet = () => {
         }
     }
 
-    
+    console.log(filteredsheetdata)
+    console.log(productivesheetsllsata)
 
     return (
         <>
