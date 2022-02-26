@@ -14,11 +14,14 @@ const Header = ({ title, sendPage }) => {
   
   return (
     <>
-      <div className="flex flex-row w-[100vw] max-h-[100px] justify-between  mx-[20px] items-center border-b border-[#000000] lg:w-[75vw] xl:w[75vw] 2xl:w[85vw] sm:w-[75vw]">
-        <div className="  font-secondaryFont font-medium max-w[350px] not-italic text-6xl leading-[94px] tracking-[-5%] text-[#000000]">
+      <div className="flex flex-row w-[100%] max-h-[100px] justify-between  py-6
+       mx-[20px] items-center border-b border-[#000000] lg:w-[100%] md:w-[100%]  sm:w-[100%]">
+        <div className="  font-secondaryFont font-medium    
+        not-italic lg:text-[62px] md:text-[40px]  text-[20px] lg:w-[540px] md:w-[405px]    text-[#000000]">
           {title}
         </div>
-        <div className="  flex flex-row  items-center w-[341px] h-[46px] ml-[140px]  bg-[#FFFFFF] rounded-[0.625rem] ">
+        <div className="  flex flex-row  items-center lg:w-[35%] md:w-[55%] h-[46px] mr-[10px] 
+        ml-[10%]   bg-[#FFFFFF] rounded-[0.625rem] ">
           <div className="pl-[20px]">
             <svg
               width="11"
@@ -46,7 +49,7 @@ const Header = ({ title, sendPage }) => {
             </svg>
           </div>
           <div className="bg-[#FFFFFF] pl-[7px]">
-            <input type="text" placeholder="Search" className="outline-none" />
+            <input type="text" placeholder="Search" className="outline-none w-[40%]" />
           </div>
         </div>
         <div className=" z-50">
@@ -58,9 +61,9 @@ const Header = ({ title, sendPage }) => {
             ""
           )}
         </div>
-        <div className="flex flex-row space-x-12 ">
+        <div className="flex flex-row    ">
           <svg
-            className="cursor-pointer"
+            className="cursor-pointer ml-[20px]"
             width="31"
             height="39"
             viewBox="0 0 46 46"
@@ -77,7 +80,7 @@ const Header = ({ title, sendPage }) => {
             />
           </svg>
           <svg
-            className="cursor-pointer"
+            className="cursor-pointer ml-[20px] mr-[30px]"
             width="31"
             height="39"
             viewBox="0 0 43 44"

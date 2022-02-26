@@ -46,6 +46,8 @@ import AddNewUser from "./components/Management/AddNewUser";
 import EditAccess from "./components/Management/EditAccess";
 import SuperAdminId from "./components/SuperAdmin/[id]";
 import AddUserRole1 from "./components/Management/AddUserRole1";
+import Consultant from "./components/Master/Consultant";
+import AddConsultant from "./components/Master/Add_Consultant";
 
 function App() {
   return (
@@ -98,6 +100,8 @@ function App() {
         <Route path="/master/edit_project/:id" element={<EditProject />} />
         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
         <Route path="/master/Projects/zone_list" element={<ZoneList />} />
+        <Route path="/master/consultant" element={<Consultant/>}/>
+        <Route path="/master/consultant/add_consultant" element={<AddConsultant />} />
         {
           // timeline
         }

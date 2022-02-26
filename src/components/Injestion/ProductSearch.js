@@ -68,7 +68,7 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
     }, [sheetData])
 
-    const handleChangeForClientData = (e) => {
+    const handleChangeForClientData = (e) => { 
 
         if (e?.target?.value === undefined || e?.target?.value === "") {
             setSearchData(valueData)
@@ -83,10 +83,8 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
             });
             setSearchData(result)
             setopenSearchData1(e.target.value)
-        }
-
-    }
-
+        } 
+    } 
 
     const ProjectIdName = (e, ObjData) => {
         setProjectSearchData(ObjData?.project_name)
@@ -110,12 +108,10 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
             },
 
         )
-            .then((response) => {
-                // setProjectSearchData(response?.data)
+            .then((response) => { 
                 if (response.status === 201) {
                     UpdateSheetData.set(true)
-                    EntityShowProductiveEye.set(o => !o)
-                    // setProjectSearchData(response?.data)
+                    EntityShowProductiveEye.set(o => !o) 
                     addToast("Upload Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
@@ -133,8 +129,7 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
 
     return (
-        <div>
-
+        <div> 
             <div className=" basic-1/4 flex flex-row px-[20px] bg-[#FFFFFF] rounded-[0.625rem] ">
                 <div className="pt-[18px]">
                     <svg
@@ -162,10 +157,8 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
                         placeholder={placeHolderName}
                         value={projectsearchdata}
                         className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                        onChange={(e) => handleChangeForClientData(e)}
-
-                    />
-
+                        onChange={(e) => handleChangeForClientData(e)} 
+                    /> 
 
                 </div>
             </div>
