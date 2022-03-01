@@ -13,11 +13,12 @@ const validate = (values) => {
   console.log(values)
 
   const errors = {};
-  // if (!values.category) {
-  //   errors.category = "Category Required";
-  // }
+   
   if (!values.client_name) {
     errors.client_name = "Client Name Required";
+  }
+  if (!values.client_id) {
+    errors.client_id = "client id Required";
   }
   // if (!values.upload_logo_file) {
   //   errors.upload_logo_file = "upload_logo_file Required";
@@ -66,23 +67,10 @@ const NewClientProfile = () => {
       upload_logo_file: "",
       address: "",
       discription: "",
-      contact_no: "",
-      // jobtitle: "",
+      contact_no: "", 
       client_id: "",
-      orgainization_id: "",
-
-
-      // category: category,
-      // client_name: client_name,
-      // location: location,
-      // upload_logo_file: upload_logo_file, 
-      // // jobtitle: jobtitle,
-      // address: contact_no,
-
-      // discription:discription,
-      // contact_no:"",
-      // client_id:"",
-      // orgainization_id:"",
+      orgainization_id: "", 
+      
     },
     validate,
     onSubmit: (values, { resetForm }) => {
@@ -146,26 +134,8 @@ const NewClientProfile = () => {
           <div className="pl-[120px] pr-[26px] pt-[33.49px]">
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[16px]">
-                <div className="relative w-[350px] border-b border-black ">
-                  <select
-                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
-                  >
-                    <option>Cateogry</option>
-                  </select>
-                </div>
-                <div className="relative w-[350px]">
-                  {/* <div className="relative w-[350px] border-b border-black pb-[10px]"> */}
-                  {/* <select
-                    onChange={() => {
-                      naviagte("/master/clients/new_client/client_name");
-                    }}
-                    className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none "
-                  >
-                    <option>Client Name</option>
-                    <option>Demo Name</option>
-                  </select> */}
+
+                <div className="relative w-[350px]"> 
                   <input
                     id="client_name"
                     name="client_name"
@@ -186,6 +156,31 @@ const NewClientProfile = () => {
                       {formik.errors.client_name}{" "}
                     </div>
                   )}
+                </div>
+                <div className="relative w-[350px]">
+                   
+                <input
+                    id="client_id"
+                    name="client_id"
+                    type="text"
+                    value={formik.values.client_id}
+                    onChange={formik.handleChange}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="client_id"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                  >
+                    Client Id
+                  </label>
+                  {formik.errors.client_id && (
+                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                      {formik.errors.client_id}{" "}
+                    </div>
+                  )}
+
+
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">

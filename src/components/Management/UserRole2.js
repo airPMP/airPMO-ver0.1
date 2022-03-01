@@ -1,19 +1,73 @@
 import React, { useState, useEffect } from 'react'
+
+import { reactLocalStorage } from "reactjs-localstorage";
+import axios from "axios";
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
-import { useLocation, useNavigate ,Link} from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { getUserApi, getRoleApi } from '../../AllApi/Api'
 
 const UserRole1 = () => {
 
     const [title, setTitle] = useState(null);
+    const [userdata, setUserData] = useState(null);
+    const [rolesdata, setRolesData] = useState([]);
+
     let navigate = useNavigate();
     let urlTitle = useLocation();
+
+
     useEffect(() => {
 
         if (urlTitle.pathname === "/UserManagement/UserRole2") {
             setTitle("User Mgmt");
         }
+
+        const userData = getUserApi().then((data) => {
+            setUserData(data?.data)
+        })
+
+        const rolesData = getRoleApi().then((data) => {
+            setRolesData(data?.data)
+        })
+
     }, [urlTitle.pathname])
+
+    // const objData = { cname, clocation, datedata, resultgoogleoldreview, resultyelpoldreview },
+    // keys = { cname: 'companyName', clocation: 'location', datedata: 'signupdate', resultgoogleoldreview: 'increase', resultyelpoldreview: 'increasepercent' },
+    // result = Object
+    //   .entries(objData)
+    //   .reduce((r, [key, array]) => array.map((v, i) => ({ ...r[i], [keys[key]]: v })), []);
+
+    useEffect(() => { 
+
+        userdata?.forEach(item => {
+            let userdata = {
+                "id": item._id,
+                "User_id": item.spread_sheet_user_id,
+                'email': item.Email
+            }
+
+            const token = reactLocalStorage.get("access_token", false);
+
+            axios.get(`${process.env.REACT_APP_BASE_URL}/api/role/620b98e24b88a7ea8b6bd8c6/users`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    // console.log(response)
+                })
+                 
+
+
+        })
+
+
+    }, [userdata, rolesdata])
+
+
+
 
     const data = [
         { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
@@ -21,6 +75,7 @@ const UserRole1 = () => {
         { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
 
     ]
+
 
 
     return (
@@ -50,7 +105,7 @@ const UserRole1 = () => {
                                 </div>
                                 <div className="font-secondaryFont font-medium not-italic text-[28.09px] 
                     leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px] ">
-                                     Users
+                                    Users
                                 </div>
                             </div>
                             <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
@@ -100,18 +155,20 @@ const UserRole1 = () => {
 
                                 <tr className="max-h-[52.84px] text-center  ">
                                     <th className="w-[10%] py-[13px]">User ID</th>
-                                    <th className="w-[30%] py-[13px]">Designation</th>
-                                    <th className="w-[25%] py-[13px]">Email</th> 
+                                    <th className="w-[25%] py-[13px]">Designation</th>
+                                    <th className="w-[30%] py-[13px]">Email</th>
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
 
-                                {data?.map((item, i) => (
-                                    <tbody className="  mb-[10px]   ">
-                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}}>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.email}</td> 
+                                {userdata?.map((item, id) => {
+
+
+                                    return <tbody className="  mb-[10px]   ">
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick={() => { navigate("/UserManagement/UserRole1/Details") }}>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.spread_sheet_user_id} </td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.Email}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item.Email}</td>
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
                                                     <div>
@@ -149,10 +206,10 @@ const UserRole1 = () => {
                                             <td className="p-[10px]"></td>
                                         </tr>
                                     </tbody>
-                                ))}
+                                })}
 
                             </table>
-                            <div className="flex  float-right ">  
+                            <div className="flex  float-right ">
                                 <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
                                     className=" rounded-[0.625rem] w-[120px]  ">
                                     <div className="flex  ">
@@ -161,10 +218,10 @@ const UserRole1 = () => {
                                             <path d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z" fill="#2E3A59" />
                                         </svg>
 
-                                        <span className="text-[15px] pt-1"> 
-                                        <Link to={`/UserManagement/AddNewUser`}>
-                                        New User
-                                        </Link></span>
+                                        <span className="text-[15px] pt-1">
+                                            <Link to={`/UserManagement/AddNewUser`}>
+                                                New User
+                                            </Link></span>
                                     </div>
 
                                 </div>

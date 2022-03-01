@@ -20,7 +20,7 @@ export class ExcelService {
         cellNF: false,
       });
     } catch {
-      throw new NotFoundException("file not found")
+      throw new NotFoundException("sheet  not found")
     }
     var arr = workBook.SheetNames
     for (let i = 0; i < arr.length; i++) {
@@ -32,7 +32,7 @@ export class ExcelService {
       var jsonData = await xlsx.utils.sheet_to_json(sheet, { dateNF: 'YYYY-MM-DD', })
     }
     else {
-      throw new NotFoundException("file not found")
+      throw new NotFoundException("sheet  not found")
     }
     var user = await this.excelModel.findOne({ project_id: projectid })
     if (!user) {
@@ -55,7 +55,6 @@ export class ExcelService {
     }
 
   }
-
 
   async quantityFile(files, req) {
 
@@ -183,6 +182,22 @@ export class ExcelService {
     }
 
     return new_obj_array;
+  }
+
+
+  async findOne(projectid: string) {
+
+    try {
+      var user = await this.excelModel.findOne({ project_id: projectid })
+       if(!user){
+         throw new NotFoundException("sheet not found")
+       }
+       else{
+         return user
+       }
+    } catch {
+      throw new NotFoundException("sheet  not found")
+    }
   }
 
 }

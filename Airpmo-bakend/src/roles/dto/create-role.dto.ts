@@ -23,7 +23,7 @@ organization_id: string;
 @ApiProperty() 
   is_assign_to_all_project: boolean;
 
-  @ApiProperty() 
+  @ApiProperty()
   hierarchy: string;
 
 }
