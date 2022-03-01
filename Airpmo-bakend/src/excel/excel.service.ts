@@ -9,6 +9,8 @@ import { IS_OBJECT } from 'class-validator';
 @Injectable()
 export class ExcelService {
   constructor(@InjectModel(excels.name) private excelModel: Model<excelDocument>) { }
+
+
   async productiveFile(files: any, @Req() req) {
     const projectid = req.body.projectid
     try {
@@ -55,8 +57,6 @@ export class ExcelService {
   }
 
 
-
-
   async quantityFile(files, req) {
 
     const projectid = req.body.projectid
@@ -84,16 +84,13 @@ export class ExcelService {
     }
 
     var arrzerokey = Object.keys(qunatityjsondata[0])
-    var arrzerovalue = Object.values(qunatityjsondata[0])
     var arronekey = Object.keys(qunatityjsondata[1])
     var arrayonevalue = Object.values(qunatityjsondata[1])
 
     var count = 0;
     var tier = [];
-    var tier0 = []
-    var tier01 = []
     var all_tier_info = []
-    for (let j = 0; j < arronekey.length; j++) {
+    for (let j = 0; j <= arronekey.length; j++) {
       if (j <= 2) {
         tier[arronekey[j]] = arrayonevalue[j]
       }
@@ -111,126 +108,82 @@ export class ExcelService {
 
     }
 
-    // console.log( all_tier_info)
-
     var obj3 = []
     var final_array = {}
-    var final_array1 = []
-    var final_value1 = []
-
-    var k;
-    for (let h = 7; h < qunatityjsondata.length; h++) {
+    var sub_sub_zone_value = []
+    for (let h = 3; h < qunatityjsondata.length; h++) {
       var arrtwokey = Object.keys(qunatityjsondata[h])
       var arraytwovalue = Object.values(qunatityjsondata[h])
-      // console.log(arrtwokey,arraytwovalue)
       for (let index = 0; index < all_tier_info.length; index++) {
-        var final_key1 = Object.keys(all_tier_info[index])
-        final_value1 = Object.values(all_tier_info[index])
-          
-        for (let i = 0; i < final_key1.length; i++) {
-       
+        var sub_sub_zone_key = Object.keys(all_tier_info[index])
+        sub_sub_zone_value = Object.values(all_tier_info[index])
+
+        for (let i = 0; i < sub_sub_zone_key.length; i++) {
+
           for (let j = 0; j < arrtwokey.length; j++) {
-             
-            if (final_key1[i] === arrtwokey[j]) {
-              // console.log(final_key1[i],arrtwokey[j],i)
-              if (i === 0) {
-                // console.log(i,final_key1[i])
-                // store_key[j] = final_key1[i]
-                // final_array = Object.assign(final_array, store_key)
-                // console.log(final_array)
-                if (Object.keys(final_array).length != 0) {
-                  obj3.push(final_array)
-                  // store_key = []
-                  final_array = {}
 
-                }
-
+            if (sub_sub_zone_key[i] === arrtwokey[j]) {
+              if (Object.keys(final_array).length != 0) {
+                obj3.push(final_array)
+                final_array = {}
               }
-
-              final_array[final_value1[i]] = arraytwovalue[j]
-              let zone_subzone = final_key1[i]
+              final_array[sub_sub_zone_value[i]] = arraytwovalue[j]
+              let zone_subzone = sub_sub_zone_key[i]
               final_array = Object.assign(final_array, { zone_subzone })
+
             }
           }
         }
       }
     }
-    console.log(obj3)
-    return qunatityjsondata
+
     var new_obj_array = []
     var new_object = []
     for (let index = 0; index < obj3.length; index++) {
-      let values = Object.values(obj3[index])
       let key = Object.keys(obj3[index])
       if (key[0] === "Activity ID") {
-        new_obj_array.push(new_object)
-        // console.log(new_obj_array)
-        new_object = []
-        new_object.push(obj3[index])
-        continue;
+        if (Object.keys(new_object).length != 0) {
+          new_obj_array.push(new_object)
+          new_object = []
+          new_object.push(obj3[index])
+          continue;
+        }
       }
       new_object.push(obj3[index])
 
     }
-    // console.log(new_obj_array)
+    let zone_value = Object.values(qunatityjsondata[0]);
+    let zone_key = Object.keys(qunatityjsondata[0]);
 
-    var tier3 = []
-    var obj_keys
-    var obj_values
-    for (let j = 1; j < obj3.length; j++) {
-      obj_keys = Object.keys(obj3[j])
-      obj_values = Object.values(obj3[j])
+    for (let p = 0; p < new_obj_array.length; p++) {
+      for (let i = 3; i < new_obj_array[p].length; i++) {
+        let k;
+        for (let j = 0; j < zone_key.length; j++) {
+          let a = parseInt(new_obj_array[p][i].zone_subzone.split('_')[3])
+          let b = parseInt(zone_key[j].split('_')[3])
+          if (zone_key.length != j + 1) {
+            let c = parseInt(zone_key[j + 1].split('_')[3])
+            if (a >= b && a < c) {
+              if (new_obj_array[p][i].zone_subzone != k) {
+                k = new_obj_array[p][i].zone_subzone;
+                new_obj_array[p][i].zone_subzone = zone_value[j]
 
-      for (let index = 0; index < obj_keys.length; index++) {
-        if (obj_keys[index] === arrzerokey[index])
-          console.log(obj_values[index])
-        tier3[arrzerovalue[index]] = obj_values[index]
+              }
+            }
+          }
+          else {
+            if (a >= b && (a < (b + 1))) {
+              k = new_obj_array[p][i].zone_subzone;
+              new_obj_array[p][i].zone_subzone = zone_value[j]
+            }
+          }
 
+        }
       }
     }
-    // console.log(tier3)
+
+    return new_obj_array;
   }
+
 }
-
-// if (arrzerokey[count] === arronekey[j]) {
-      //   if (count != 0) {
-      //     all_tier_info.push(tier)
-      //     tier = []
-      //   }
-      //   tier[arronekey[j]] = arrayonevalue[j]
-      //   count++;
-      // }
-      // else {
-      //   tier[arronekey[j]] = arrayonevalue[j]
-      // }
-
-
-
-      // console.log(tier)
-    // var all_tier_info_key = Object.keys(all_tier_info)
-    // var all_tier_info_key_value = Object.values(all_tier_info)
-    // console.log(all_tier_info_key)
-    // var obj3 = []
-    // var obj4 = []
-    // var final_array = []
-    // var final_value1 = []
-
-    // for (let i = 0; i < all_tier_info_key.length; i++) {
-    //   for (let j = 0; j < arrtwokey.length; j++) {
-    //     if (all_tier_info_key[i] === arrtwokey[j]) {
-    //       final_array[all_tier_info_key_value[i]] = arraytwovalue[j]
-    //       // console.log(all_tier_info_key.length)
-    //     }
-    //   }
-
-     // let new_object = {
-    //   ...obj3[1],...obj3[2]
-    //  }
-    //  new_object = {
-    //   ...obj3[3],...obj3[4]
-    //  }
-    // var new_object = Object.assign(obj3[1], obj3[2])
-    // var new_object = Object.assign(new_object, obj3[3])
-    // var new_object = Object.assign(new_object, obj3[4])
-    //  console.log(new_object)
 
