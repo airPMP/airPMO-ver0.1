@@ -13,6 +13,12 @@ export class excels {
    @Prop()
    quantity_sheets:[{}]
 
+   @Prop()
+   fire_quantity_sheets:[{}]
+
+   @Prop()
+   light_fitting_quantity_sheets:[{}]
+
    @Prop({default:Date})
    createdAt: string;
 
