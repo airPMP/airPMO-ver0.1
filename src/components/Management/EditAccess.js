@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ const EditAccess = () => {
     const [title, setTitle] = useState(null);
     const [rolesdata, setRolesData] = useState(null)
     const [permissiondata, setPermissionData] = useState(null)
-    const [clientid, setClientId] = useState(null) //don't remove this state its very important  
+    const [clientid, setClientId] = useState('') //don't remove this state its very important  
 
     let navigate = useNavigate();
     let urlTitle = useLocation();
@@ -19,8 +19,8 @@ const EditAccess = () => {
 
 
 
-    useEffect(() => {
-
+    useEffect(() => { 
+        
         if (urlTitle.pathname === "/UserManagement/EditAccess") {
             setTitle("User Mgmt");
         }
@@ -88,8 +88,7 @@ const EditAccess = () => {
 
         let comedata = rolesdata?.map((item, id1) => {
 
-            if (id === item._id) {
-
+            if (id === item._id) { 
                 if (item.permission[0] === `CREATE-CLIENTS`) {
                     return item.permission[0] = '', item.permission[1] = ''
                 }
@@ -167,6 +166,7 @@ const EditAccess = () => {
 
             if (id === item._id) {
 
+                console.log(item)
                 if (item.permission[5] === `GET-PROJECTS`) {
                     return item.permission[5] = ''
                 }
@@ -225,14 +225,14 @@ const EditAccess = () => {
 
     console.log(rolesdata)
 
-    const SavePermission = () => { 
+    const SavePermission = () => {
 
         let roles_all_data = rolesdata?.map((item, id) => {
             return {
                 "id": item?._id,
-                "permission":item?.permission
+                "permission": item?.permission
             }
-        }) 
+        })
 
 
 
@@ -242,7 +242,7 @@ const EditAccess = () => {
             try {
                 const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_roles_permission/`, {
                     roles_permission: roles_all_data
-                    
+
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -253,7 +253,7 @@ const EditAccess = () => {
                     addToast("All Permission Assign Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
-                    }) 
+                    })
                 }
 
             } catch (error) {
@@ -261,7 +261,7 @@ const EditAccess = () => {
             }
         }
         feachPermission();
-    
+
     }
 
     return (
@@ -332,7 +332,7 @@ const EditAccess = () => {
                             <div className="col-span-10 editAccess_flow ">
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
-                                        if (id >= 4) {
+                                        if (id >= 3) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
 
                                                 <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
@@ -387,7 +387,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 4) {
+                                            if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
@@ -443,7 +443,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 4) {
+                                            if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"

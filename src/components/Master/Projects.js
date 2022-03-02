@@ -12,6 +12,8 @@ const Projects = () => {
   const [filteredData, setFilteredData] = useState(projectdata);
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -40,6 +42,47 @@ const Projects = () => {
     handleSearch();
 
   }, [urlTitle.pathname])
+
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+  }, [allpermission])
+
+
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data.split(',')
+
+    let value = "EDIT-PROJECTS".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    if (result[0] === "EDIT-PROJECTS") {
+      setEditPermission(result[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setEditPermission(result[0])
+    }
+
+  }
+
+
 
   const handleSearch = (e) => {
 
@@ -88,9 +131,16 @@ const Projects = () => {
     setOpen(o => !o)
   }
 
+  const AddProject = () => { 
+    if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {  
+      navigate("/master/projects/new_project") 
+    }
+  }
+
   const EditProfile = (e) => {
-    console.log(e)
+    if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {
     navigate(`/master/edit_project/${e}`)
+    }
   }
 
   const CancelButton = (e) => {
@@ -168,7 +218,8 @@ const Projects = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className="flex items-center space-x-sm px-2 rounded cursor-pointer"
+              className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              flex items-center space-x-sm px-2 rounded  `}
             >
               <svg
                 width="14"
@@ -180,33 +231,33 @@ const Projects = () => {
                 <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
               </svg>
 
-              <div onClick={() => { navigate("/master/projects/new_project") }}>Add Project</div>
+              <div onClick={() =>  AddProject()  }>Add Project</div>
             </div>
           </div>
 
           <div className="pl-[80px] mt-[16px]">
-            <table className="table-auto pt-[24px]">
+            <table className="table-auto pt-[24px] w-[100%]">
               <thead className="font-secondaryFont text-[#000000]  font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] pb-[36px] ">
-                <tr className="max-h-[52.84px] w-[100%] ">
-                  <td className="mb-[15.39px]">Name</td>
-                  <td className="pl-[140px] pb-[15.39px]">Client</td>
-                  <td className="pl-[140px]  ">Start Date</td>
-                  <td className="pl-[140px]  ">End Date</td>
-                  <td className="pl-[140px]   ">Actions</td>
+                <tr className="max-h-[52.84px] text-center  ">
+                  <td className="mb-[15.39px]  w-[15%]">Name</td>
+                  <td className="w-[15%] ">Client</td>
+                  <td className="w-[25%]  ">Start Date</td>
+                  <td className="w-[25%]  ">End Date</td>
+                  <td className="w-[20%]   ">Actions</td>
                 </tr>
               </thead>
-              {filteredData?.map((item, i) => {
+               {filteredData?.map((item, i) => {
                 return <tbody className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-                  <tr className="py-[13px]  bg-[#ECF1F0]" >
-                    <td className="pl-[2%] ">
+                  <tr className="h-[52.84px] bg-[#ECF1F0] text-center" >
+                    <td className="w-[15%] ">
                       {item?.project_name}
                     </td>
-                    <td className="pl-[15%] py-[13px]">{item?.client_name}</td>
-                    <td className="pl-[15%]"> {item?.start_date}</td>
-                    <td className="pl-[15%]">{item?.end_date}</td>
-                    <td className=" pl-[15%] pr-[10px]">
-                      <div className="flex flex-row space-x-xl">
-                        <div className="cursor-pointer"
+                    <td className="w-[15%]">{item?.client_name}</td>
+                    <td className="w-[25%]"> {item?.start_date}</td>
+                    <td className="w-[25%]">{item?.end_date}</td>
+                    <td className="w-[20%]  text-center">
+                      <div className="flex flex-row space-x-xl justify-center px-auto ">
+                        <div className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => EditProfile(item._id)}>
                           <svg
                             width="19"
@@ -222,8 +273,7 @@ const Projects = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer"
-                          onClick={(e) => DeleteProfile(item._id)}
-                        // onClick={(e) => setOpen(o => !o)}
+                          onClick={(e) => DeleteProfile(item._id)} 
                         >
                           <svg
                             width="18"
@@ -278,7 +328,7 @@ const Projects = () => {
                   </Popup>
 
                 </tbody>
-              })}
+              })}  
             </table>
 
           </div>

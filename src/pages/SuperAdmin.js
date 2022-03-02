@@ -44,27 +44,10 @@ const SuperAdmin = () => {
 
     let navigate = useNavigate();
     const Login = () => {
-        navigate('/');
+        navigate('/dashboard');
     };
 
-    useEffect(() => {
-
-        const feach = async () => {
-            try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-
-                let storedDesignamtion = []
-                data1?.data?.values.map((items, id) => {
-                    storedDesignamtion.push(items[3])
-                })
-                setDesignationData(storedDesignamtion)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        feach();  
-    }, [])
+    
 
     const SubmitForm = (e) => {
 
@@ -104,8 +87,7 @@ const SuperAdmin = () => {
                     reactLocalStorage.set("organizationId", response?.data?._id);
                     console.log(response?.data?._id)
                     if (response.status === 201) {
-                        navigate("/UserManagement/EditAccess")
-                        Roles()
+                        navigate("/UserManagement/AddNewUser")
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
                             autoDismiss: true,
@@ -122,76 +104,7 @@ const SuperAdmin = () => {
         }
     }
 
-    console.log(designationdata)
-
-    const Roles = () => {
-        const organization_Id = reactLocalStorage.get("organizationId", false);
-        const token = reactLocalStorage.get("access_token", false);
-
-        axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
-            roles_data: designationdata,
-            organization_id: organization_Id,
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then((response) => {
-                console.log(response)
-                if (response.status === 201) {
-
-                    addToast("Roles are Added Sucessfully", {
-                        appearance: "success",
-                        autoDismiss: true,
-                    })
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-                addToast(error.response.data.message, {
-                    appearance: "error",
-                    autoDismiss: true,
-                })
-            })
-
-    }
-
-    // const SuperAdminOrganizatioId = () => {
-
-    //     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/`, {
-    //         roles_data: designationdata,
-    //         name: " ",
-    //         discription: " ",
-    //         permission: [],
-    //         organization_id: organizationid,
-    //         project_id: "",
-    //         is_assign_to_all_project: true
-    //     }, {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //         }
-    //     })
-    //         .then((response) => {
-    //             console.log(response)
-    //             if (response.status === 201) {
-
-    //                 addToast("Roles are Added Sucessfully", {
-    //                     appearance: "success",
-    //                     autoDismiss: true,
-    //                 })
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //             addToast(error.response.data.message, {
-    //                 appearance: "error",
-    //                 autoDismiss: true,
-    //             })
-    //         })
-
-    // }
-
-
+      
     const ShowPasswordButton = (e, sheet2) => {
 
         if (sheet2 === "sheet_2") {
@@ -267,15 +180,10 @@ const SuperAdmin = () => {
                         const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
                         setSheetData(data1?.data?.values)
 
-                        let storedDesignamtion = []
-
-                        // setRolleIdData(data1?.data?.values) 
-
-
+                        let storedDesignamtion = []  
                         data1?.data?.values.map((items, id) => {
                             storedDesignamtion.push(items[3])
-                        })
-                        setDesignationData(storedDesignamtion)
+                        }) 
 
                     } catch (error) {
                         console.log(error)
@@ -288,16 +196,13 @@ const SuperAdmin = () => {
         setOpen(o => !o)
 
     }
-
-    //   let userdata  =  data1.map((item)=>{})
+ 
     const CancelButton = (e) => {
         setOpen(o => !o)
         setShowEye(o => !o)
     }
 
-    const Forget = () => {
-    }
-
+    
 
 
     // const dataqwe  = rolleiddata?.map((item, id) => {
@@ -320,7 +225,8 @@ const SuperAdmin = () => {
                         className="ml-[4.313rem] mt-[48px]  w-[150px] h-[50px]  right-[765px]"
                     />
                 </div>
-                <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center  ml-[171px] mr-[170px] mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
+                <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center 
+                 lg:ml-[171px] md:ml-[100px] lg:mr-[170px] md:mr-[100px]  mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
                     <div className="flex flex-row items-center ">
 
                         <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
