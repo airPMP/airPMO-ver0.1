@@ -2,18 +2,58 @@ import React, { useState, useEffect } from 'react'
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
-import ProductSearch from './ProductSearch';
+import { reactLocalStorage } from "reactjs-localstorage";
+import { useToasts } from "react-toast-notifications";
+import { getClientApi } from '../../AllApi/Api'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import axios from "axios";
+import QuantitySearch from './QuantitySearch';
+
 
 const QuantitySheet = () => {
 
+    const [clientdata, setClientData] = useState(null);
+    const [openSearchData, setopenSearchData] = useState(false);
+    const [openSearchData1, setopenSearchData1] = useState(null);
+    const [searchdata, setSearchData] = useState(null);
+    const [clientsearchdata, setClientSearchData] = useState(null);
+    const [projectsearchdata, setProjectSearchData] = useState(null);
+    const [productivesheetdata, setProductiveSheetData] = useState(null);
+    const [productivesheetsllsata, setProductiveSheetAllData] = useState(null);
+    const [filteredsheetdata, setFilteredSheetData] = useState(null);
+    const [activenamedata, setActiveNameData] = useState(null)
+    const [activenamedatacode, setActiveNameDataCode] = useState(null)
+
+
+
     const [title, setTitle] = useState(null);
     let urlTitle = useLocation();
+    const { addToast } = useToasts();
+    const searchclientset = SearchClientSet.use()
+    const productivesheetid = ProductiveSheetId.use()
+    const projectnameactive = ProductiveNameActive.use()
+    const entityshoeproductiveeye = EntityShowProductiveEye.use()
+    const updatesheetdata = UpdateSheetData.use()
+
+
+
+
     useEffect(() => {
 
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
             setTitle("Data Injestion");
         }
     }, [urlTitle.pathname])
+
+    useEffect(() => {
+        const clientidname = (e, Objdata) => {
+            setClientSearchData(Objdata?.client_name)
+        }
+        setopenSearchData(false)
+        clientidname()
+        //when he click to seach client  then this useState will and run the clientNameFun run -7a
+        //
+    }, [clientsearchdata])
 
     const data = [
         { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
@@ -22,6 +62,165 @@ const QuantitySheet = () => {
 
     ]
 
+    useEffect(() => {
+
+        const userData = getClientApi().then((data) => {
+            setClientData(data?.data) //get client data c-1 -1a
+        })
+
+    }, [])
+    useEffect(() => {
+        if (openSearchData1 === null || openSearchData1 === "") {
+            setopenSearchData(false)
+            SearchClientSet.set(false)
+            setProjectSearchData(null)
+        }
+        else {
+            setopenSearchData(true)
+            SearchClientSet.set(true)
+        }
+    }, [openSearchData1])
+
+    useEffect(() => {
+        const clientidname = (e, Objdata) => {
+            setClientSearchData(Objdata?.client_name)
+        }
+        setopenSearchData(false)
+        clientidname()
+        //when he click to seach client  then this useState will and run the clientNameFun run -7a
+        //
+    }, [clientsearchdata])
+
+    useEffect(() => {
+        if (productivesheetid) {
+            SheetTableData()
+        }
+
+        if (filteredsheetdata === undefined || filteredsheetdata === null) {
+            setFilteredSheetData(productivesheetsllsata)
+        }
+
+        if (updatesheetdata) {
+            SheetTableData()
+        }
+
+    }, [productivesheetid, projectnameactive, updatesheetdata])
+
+    const clientidname = (e, Objdata) => {
+        setClientSearchData(Objdata?.client_name)
+
+        const token = reactLocalStorage.get("access_token", false);
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${Objdata?._id}/project`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+                console.log(response?.data)
+                setProjectSearchData(response?.data)
+                // if (response.status === 200) {
+                //     addToast("Project is Added Sucessfully", {
+                //         appearance: "success",
+                //         autoDismiss: true,
+                //     })
+
+                // }
+
+            })
+            .catch((error) => {
+                console.log(error)
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            })
+    }
+    const handleChangeForClientData = (e) => {
+
+        let value = e.target.value.toUpperCase();
+        let result = []
+        result = clientdata?.filter((data) => {  //get client data c-2 -3a
+            console.log(data)
+            if (isNaN(+value)) {
+                return data?.client_name.toUpperCase().search(value) !== -1;
+            }
+        });
+
+        setSearchData(result) // set Search client data c-1 -4a
+        setopenSearchData1(e.target.value)
+    }
+    const SheetTableData = () => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${productivesheetid}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+                console.log(response?.data)
+                setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets)
+
+                response?.data?.quantity_sheets.map((item, id) => {
+                     item.map((items,idf)=>{
+                         console.log(items.zone_subzone)
+                     })
+                })
+
+
+                if (response?.status === 200) {
+                    console.log("true data")
+                    ProductiveNameActive.set(true)
+
+                }
+
+            })
+            .catch((error) => {
+                console.log(error)
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            })
+    }
+    const SheetFile = (e) => {
+        setProductiveSheetData(e?.target?.files[0])
+    }
+    const handleSearch = (e) => {
+
+        let value = e?.target?.value?.toUpperCase();
+        let result = []
+
+        result = productivesheetsllsata?.filter((data) => {
+            const mainData = data["Activity name"]
+
+            if (isNaN(+value)) {
+                if (mainData !== 0) {
+                    return mainData?.toUpperCase().search(value) !== -1;
+                }
+            }
+        });
+
+        setFilteredSheetData(result)
+        console.log(result)
+
+        if (value === "") {
+            setFilteredSheetData(productivesheetsllsata)
+        }
+    }
+    const SaveSheetButton = () => {
+        handleSearch()
+        EntityShowProductiveEye.set(o => !o)
+
+
+    }
+    const CancelButton = (e) => {
+        EntityShowProductiveEye.set(o => !o)
+
+
+    }
+
+    console.log(productivesheetsllsata)
 
     return (
         <>
@@ -30,29 +229,76 @@ const QuantitySheet = () => {
                     <SideBar />
                 </div>
                 <div className="flex flex-col">
-                    <Header title={title} />
+                    <Header title="Data&nbsp;Injestion" />
 
 
                     <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
 
                         <div className="mr-[70px]"   >
-                            <ProductSearch
-                                placeHolderName={"Choose Client"}
+                            <div>
 
-                            // value={client}
-                            />
+                                <div className=" basic-1/4 flex flex-row px-[20px] 
+                                bg-[#FFFFFF] rounded-[0.625rem] ">
+                                    <div className="pt-[18px]">
+                                        <svg
+                                            width="11"
+                                            height="12"
+                                            viewBox="0 0 11 12"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <circle cx="5" cy="5" r="4.3" stroke="#1B2559" strokeWidth="1.4" />
+                                            <line
+                                                x1="10.0101"
+                                                y1="11"
+                                                x2="8"
+                                                y2="8.98995"
+                                                stroke="#1B2559"
+                                                strokeWidth="1.4"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="bg-[#FFFFFF] pl-[7px]    ">
+                                        <input
+                                            type="text"
+                                            placeholder="Choose Client"
+                                            value={clientsearchdata}
+                                            className="outline-none w-[332px] h-[46px] rounded-[10px]"
+                                            onChange={(e) => handleChangeForClientData(e)} //-2a 
+                                        />
+                                    </div>
+                                </div>
+                                <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
+                                    style={{ width: "90%", backgroundColor: "white", boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+                                    {openSearchData && <ul className="searchList productiveSeacrhch"  >
+
+                                        {
+                                            searchdata.map((item, id) => { // get Search client data c-2 -5a
+
+                                                return <li onClick={(e) => clientidname(e, item)}>
+                                                    {
+                                                        item.client_name
+                                                    }
+                                                </li> //-6a
+                                            })
+                                        }
+
+                                    </ul>}
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <ProductSearch
+                            <QuantitySearch
                                 placeHolderName={"Choose Project"}
-
-                            // value={project}
+                                valueData={projectsearchdata}
+                                sheetData={productivesheetdata}
                             />
                         </div>
                     </div>
 
-                    <div className=" flex flex-col max-w-[899px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
-        bg-[#FFFFFF]   ">
+                    <div className=" flex flex-col  lg:w-[97%] md:w-[90%] mr-[10px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
+                  bg-[#FFFFFF] ">
 
                         <div className="flex flex-row justify-between">
                             <div className="flex">
@@ -67,36 +313,45 @@ const QuantitySheet = () => {
                                     <div className=" grid grid-cols-2">
                                         <div>
                                             <p className="text-[#A3AED0] text-[24px] font-medium font-sans">
-                                            Quantity Sheet
+                                                Quantity Sheet
                                             </p>
                                             <div className="text-[#1B2559] text-[18px] font-bold">
                                                 Shining Towers
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="flex float-right mr-[20px]" style={{marginTop:"-15px"}}>
-
+                                        <div className="ml-[110px]">
+                                            <div className="flex  ml-[50%] " style={{ marginTop: "-15px" }}>
                                                 <div className=" mr-[14px] mt-[10px] text-[#8F9BBA]">
                                                     <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M14 20H0L0 18H14V20ZM7 16L1 10L2.41 8.59L6 12.17V0L8 0V12.17L11.59 8.59L13 10L7 16Z" fill="#8F9BBA" />
                                                     </svg>
 
                                                 </div>
-                                                <div className="text-[14px]    
-                                              text-[#8F9BBA] font-sans font-medium text-center"
+                                                <div className="text-[14px]  cursor-pointer   
+                                                 text-[#8F9BBA] font-sans font-medium text-center"
                                                     style={{
                                                         width: "100px",
                                                         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
                                                     }}>
-                                                    Import Sheet
+                                                    <div>
+                                                        <input type="file"
+                                                            onChange={(e) => SheetFile(e)}
+                                                            placeholder="Import Sheet"
+                                                            name="file_upload"
+                                                            className="w-[90%] fileSheet" />
+                                                    </div>
                                                 </div>
+                                                <div className="shhetText">Import Sheet</div>
                                             </div>
-                                            <div>
-                                                <div className="pl-[13px] -mt-[40px]">
 
-                                                    <div style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                                                        className="mt-[73.07px] basic-1/4 flex flex-row 
-                                                     items-center mr-[55.5px] bg-[#FFFFFF]   rounded-[0.625rem]   "
+
+                                            <div>
+                                                <div className="pl-[13px] -mt-[40px]   rounded-[0.625rem]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                                    <div
+                                                        className="mt-[73.07px]  flex flex-row 
+                                                     items-center mr-[55.5px] bg-[#FFFFFF]       "
                                                     >
                                                         <div className="pt-[4.64px] pl-[16.6px]">
                                                             <svg
@@ -129,13 +384,14 @@ const QuantitySheet = () => {
                                                         pl-[9.64px] mb-[10.44]  ">
                                                             <input
                                                                 type="text"
+                                                                onChange={(e) => handleSearch(e)}
                                                                 placeholder="Search "
                                                                 className="outline-none
                                                                 text-[12px]
-                                                                 w-[273.87px] h-[36.94px]  
+                                                                 w-[173.87px] h-[36.94px]  
                                                             
                                                             "
-                                                            // w-[273.87px] h-[36.94px]
+
                                                             />
                                                         </div>
                                                     </div>
@@ -148,29 +404,39 @@ const QuantitySheet = () => {
                             </div>
                         </div>
 
-                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
+                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] w-[100%]" >
                             <table className="table-auto   text-center   
                             text-[#8F9BBA] text-[12px] font-sans
                          font-normal not-italic  " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  ">
-                                    <th className="w-[15%] py-[13px]">Activity Code</th>
-                                    <th className="w-[15%] py-[13px]">Activity Name</th>
+                                    <th className="w-[25%] py-[13px]">Activity&nbsp;Code</th>
+                                    <th className="w-[35%] py-[13px]">Activity&nbsp;Name</th>
                                     <th className="w-[20%] py-[13px]">Unit of Measure</th>
-                                    <th className="w-[30%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
+                                    <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
                                 </tr>
 
 
-                                {data?.map((item, i) => (
+                                {filteredsheetdata?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
-                                        <tr className="   bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
-                                            <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.email}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.mobile}</td>
+
+
+
+                                        <tr className="max-h-[52.84px] text-center  ">
+                                            <th className="w-[25%] py-[13px]">{item["Activity code"]}</th>
+                                            <th className="w-[35%] py-[13px]"> {item["ActivityDESCRIPTION"]}</th>
+                                            <th className="w-[20%] py-[13px]">Unit of Measure</th>
+                                            <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
                                         </tr>
+
+
+
+
+
+
+
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>

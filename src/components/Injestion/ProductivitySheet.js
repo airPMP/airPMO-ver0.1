@@ -113,7 +113,7 @@ const ProductivitySheet = () => {
     useEffect(() => {
 
         const userData = getClientApi().then((data) => {
-            setClientData(data?.data)
+            setClientData(data?.data) //get client data c-1 -1a
         })
 
     }, [])
@@ -128,13 +128,17 @@ const ProductivitySheet = () => {
             SearchClientSet.set(true)
         }
     }, [openSearchData1])
+
     useEffect(() => {
         const clientidname = (e, Objdata) => {
             setClientSearchData(Objdata?.client_name)
         }
         setopenSearchData(false)
         clientidname()
+        //when he click to seach client  then this useState will and run the clientNameFun run -7a
+        //
     }, [clientsearchdata])
+
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
@@ -183,14 +187,14 @@ const ProductivitySheet = () => {
 
         let value = e.target.value.toUpperCase();
         let result = []
-        result = clientdata?.filter((data) => {
+        result = clientdata?.filter((data) => {  //get client data c-2 -3a
             console.log(data)
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
             }
         });
 
-        setSearchData(result)
+        setSearchData(result) // set Search client data c-1 -4a
         setopenSearchData1(e.target.value)
     }
     const SheetTableData = () => {
@@ -247,16 +251,21 @@ const ProductivitySheet = () => {
     const SaveSheetButton = () => {
         handleSearch()
         EntityShowProductiveEye.set(o => !o)
+
+
     }
     const CancelButton = (e) => {
         EntityShowProductiveEye.set(o => !o)
+
+
     }
 
     const ActiveNameSheet = (e, data) => {
+        setActiveNameData(o => !o)
+
 
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setActiveNameDataCode(data["Activity code"])
-        setActiveNameData(o => !o)
+        setActiveNameDataCode(data["Activity code"]) 
         setGANG_PRODUCTIVIVYFix(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
         setWATER_TANKERfix(data[" WATER TANKER "])
         set_3T_PICKUPfix(data[" 3T PICKUP "])
@@ -502,12 +511,8 @@ const ProductivitySheet = () => {
                                             placeholder="Choose Client"
                                             value={clientsearchdata}
                                             className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                                            onChange={(e) => handleChangeForClientData(e)}
-
-
-                                        />
-
-
+                                            onChange={(e) => handleChangeForClientData(e)} //-2a 
+                                        /> 
                                     </div>
                                 </div>
                                 <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
@@ -515,13 +520,13 @@ const ProductivitySheet = () => {
                                     {openSearchData && <ul className="searchList productiveSeacrhch"  >
 
                                         {
-                                            searchdata.map((item, id) => {
+                                            searchdata.map((item, id) => { // get Search client data c-2 -5a
 
                                                 return <li onClick={(e) => clientidname(e, item)}>
                                                     {
                                                         item.client_name
                                                     }
-                                                </li>
+                                                </li> //-6a
                                             })
                                         }
 
