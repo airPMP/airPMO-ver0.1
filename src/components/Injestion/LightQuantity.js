@@ -7,10 +7,10 @@ import { useToasts } from "react-toast-notifications";
 import { getClientApi } from '../../AllApi/Api'
 import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
-import QuantitySearch from './QuantitySearch';
+import LightQuentitySearch from './LightQuentitySearch';
 
 
-const QuantitySheet = () => {
+const LightQuantity = () => {
 
     const [clientdata, setClientData] = useState(null);
     const [openSearchData, setopenSearchData] = useState(false);
@@ -21,8 +21,13 @@ const QuantitySheet = () => {
     const [productivesheetdata, setProductiveSheetData] = useState(null);
     const [productivesheetsllsata, setProductiveSheetAllData] = useState(null);
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
-    const [data2, setdata2] = useState([])
-    const [data1, setdata1] = useState([])
+    const [activedatashow, setActiveDataShow] = useState(null)
+    const [activedata, setActiveData] = useState(null)
+    const [allactivedata, setAllActiveData] = useState(null)
+    const [zonetotal, setZoneTotal] = useState(null)
+    const [allsubzonevalue, setAllSubZoneValue] = useState([])
+    const [allsubzoneshow, setAllSubZoneShow] = useState(null)
+    const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
 
 
 
@@ -117,7 +122,7 @@ const QuantitySheet = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data)
+                // console.log(response?.data)
                 setProjectSearchData(response?.data)
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
@@ -129,7 +134,7 @@ const QuantitySheet = () => {
 
             })
             .catch((error) => {
-                console.log(error)
+                // console.log(error)
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -141,7 +146,7 @@ const QuantitySheet = () => {
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
-            console.log(data)
+
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
             }
@@ -159,37 +164,21 @@ const QuantitySheet = () => {
             }
         })
             .then((response) => {
-                let productivedatapush = []
-                response?.data?.quantity_sheets.forEach((item, id) => {
-                    let element1 = 0
-                    let activedata = Object.values(item)
-                    for (let index = 3; index < activedata.length; index++) {
-                        const element = activedata[index];
-                        let activedata1 = Object.values(element)
-                        for (let index1 = 0; index1 < activedata1.length - 1; index1++) {
-                            element1 = activedata1[index1] + parseInt(element1)
+                console.log(response?.data)
+                setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets)
 
-                        }
-                    }
-                    item.push({ "total": element1 })
-                    productivedatapush.push(item)
-                })
-                setProductiveSheetAllData(productivedatapush)
-
-                data1.push(data2)
                 if (response?.status === 200) {
-                    console.log("true data")
                     ProductiveNameActive.set(true)
 
                 }
 
             })
             .catch((error) => {
-                // console.log(error)
-                // addToast(error.response.data.message, {
-                //     appearance: "error",
-                //     autoDismiss: true,
-                // })
+                console.log(error)
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
             })
     }
     const SheetFile = (e) => {
@@ -201,7 +190,7 @@ const QuantitySheet = () => {
         let result = []
 
         result = productivesheetsllsata?.filter((data) => {
-            const mainData = data["ActivityDESCRIPTION"]
+            const mainData = data[1].activity_discription
 
             if (isNaN(+value)) {
                 if (mainData !== 0) {
@@ -211,7 +200,6 @@ const QuantitySheet = () => {
         });
 
         setFilteredSheetData(result)
-        console.log(result)
 
         if (value === "") {
             setFilteredSheetData(productivesheetsllsata)
@@ -225,71 +213,21 @@ const QuantitySheet = () => {
     }
     const CancelButton = (e) => {
         EntityShowProductiveEye.set(o => !o)
+
+
+    }
+    const ActiveNameData = (e, itemData) => {
+        console.log(itemData)
+        setZoneTotal(itemData)
+        setActiveDataShow(o => !o)
+        setActiveData(itemData[0].activity_code)
     }
 
-
-    const ActiveNameData = (e, itemData) => {
-
-        let zone
-        let zoneobject
-        let zoneobject1 = []
-
-        const alldata = itemData.slice(3).map((items, i, array) => {
-
-            // console.log(items )
-            zone = items.zone_subzone
-            // console.log(zone)
-            zoneobject = [items]
-
-
-            // console.log(array[i - 1]?.zone_subzone)
-            // console.log(items.zone_subzone)
-            // console.log(items.zone_subzone === array[i - 1]?.zone_subzone)
-            console.log( zoneobject.length)
-            console.log( zoneobject[zoneobject.length - 1])
-            
-            if (items.zone_subzone === array[i - 1]?.zone_subzone) {
-                // console.log(array[i - 1])
-                zoneobject.push(array[i - 1])
-
-            }
-            else {
-                zoneobject1 = [items]
-                zoneobject = [] 
-            }
-
-            // console.log(zoneobject)
-             
-            // if (zoneobject[i] === zoneobject[i - 1]) {
-            //     // Object.assign(zoneobject[i], zoneobject[i - 1])
-                 
-
-            // }
-
-
-            if (Object.keys(zoneobject).length) {
-                // zoneobject1.push(zoneobject)
-                // console.log("if")
-                // console.log(zoneobject)
-
-            }
-            // else {
-            //     console.log("else")
-            //     console.log(zoneobject1)
-
-            //     // zoneobject1.push(zoneobject)
-            // }
-
-            // console.log(Object.keys(zoneobject).length)
-            // return items.zone_subzone
-        })
-
-        // console.log(itemData)
-
-        // console.log(zoneobject1)
-        // console.log(zoneobject1)
-
-
+    const SubZoneDataFun = (e, item) => {
+        console.log(item)
+        setAllSubZoneShow(o => !o)
+        setAllSubZoneUniqe(item.zone)
+        setAllSubZoneValue(item)
     }
 
 
@@ -312,10 +250,11 @@ const QuantitySheet = () => {
                             className={LocationButton.pathname.includes("LightQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Light Quantity
                         </button>
-                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false); }}
+                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false);}}
                             className={LocationButton.pathname.includes("FireQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Fire Quantity
                         </button>
+
 
                     </div>
                     <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
@@ -375,7 +314,7 @@ const QuantitySheet = () => {
                             </div>
                         </div>
                         <div>
-                            <QuantitySearch
+                            <LightQuentitySearch
                                 placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
@@ -383,7 +322,7 @@ const QuantitySheet = () => {
                         </div>
                     </div>
 
-                    <div className=" flex flex-col  lg:w-[97%] md:w-[90%] mr-[10px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
+                    <div className=" flex flex-col  mb-10 pb-5 lg:w-[97%] md:w-[90%] mr-[10px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
                   bg-[#FFFFFF] ">
 
                         <div className="flex flex-row justify-between">
@@ -400,7 +339,7 @@ const QuantitySheet = () => {
                                         <div className="col-span-1">
                                             <p className="text-[#A3AED0] text-[24px] 
                                             font-medium font-sans">
-                                                Quantity Sheet
+                                                Light  Quantity Sheet
                                             </p>
                                             <div className="text-[#1B2559] text-[18px] font-bold">
                                                 Shining Towers
@@ -481,7 +420,6 @@ const QuantitySheet = () => {
                                                                 className="outline-none
                                                                 text-[12px]
                                                                  w-[173.87px] h-[36.94px]  
-                                                            
                                                             "
 
                                                             />
@@ -497,34 +435,101 @@ const QuantitySheet = () => {
                         </div>
 
                         <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] w-[100%]" >
-                            <table className="table-auto   text-center   
-                            text-[#8F9BBA] text-[12px] font-sans
-                         font-normal not-italic  " style={{ width: "100%" }}>
+                            <table className="table-auto   text-center 
+                             text-[#8F9BBA] text-[12px] font-sans
+                               font-normal not-italic w-[100%]"
+                            >
 
                                 <tr className="max-h-[52.84px] text-center  ">
                                     <th className="w-[25%] py-[13px]">Activity&nbsp;Code</th>
                                     <th className="w-[35%] py-[13px]">Activity&nbsp;Name</th>
                                     <th className="w-[20%] py-[13px]">Unit of Measure</th>
                                     <th className="w-[20%] py-[13px]">Quentity</th>
-
                                 </tr>
 
 
-                                {productivesheetsllsata?.map((item, i) => (
+                                {filteredsheetdata?.map((item, i) => (
+
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">
-                                            <th className="w-[25%] py-[13px]">{item[0]["Activity ID"]}</th>
-                                            <th className="w-[35%] py-[13px] cursor-pointer"
-                                                onClick={(e) => ActiveNameData(e, item)}> {item[1]["Acitivity  Description"]}</th>
-                                            <th className="w-[20%] py-[13px]"> - </th>
-                                            <th className="w-[20%] py-[13px]">{item[item.length - 1].total}</th>
-
+                                            <th className=" py-[13px]">{item[0]?.activity_code}</th>
+                                            <th className="  py-[13px] cursor-pointer"
+                                                onClick={(e) => ActiveNameData(e, item)}> {item[1]?.activity_discription}</th>
+                                            <th className="  py-[13px]">Unit of Measure</th>
+                                            <th className="  py-[13px]">{item[2]?.total}</th>
                                         </tr>
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>
-                                    </tbody>
 
+
+
+                                        {activedatashow && activedata === item[0]?.activity_code ?
+                                            <td className="mb-4  text-justify  " colspan="5"
+                                                style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+
+                                                <tr className=" w-[100%] pr-4         h-[35px] "    >
+
+                                                    <div className="p-[10px] ml-[270px] text-[#180c5a] font-semibold  cursor-pointer  "
+                                                        onClick={(e) => SubZoneDataFun(e, item)}>
+                                                        <span className="p-3"> Zone'S</span>
+                                                        <span className="pl-5"> Total</span>
+                                                    </div>
+
+                                                </tr>
+                                                {zonetotal.slice(3).map((item, ids) => {
+
+                                                    return <tr className=" w-[100%] pr-4 h-[35px] "  >
+
+                                                        <div className="p-[10px] ml-[275px]   cursor-pointer"
+                                                            onClick={(e) => SubZoneDataFun(e, item)}>
+                                                            <span className="p-2"> {item.zone}</span>
+                                                            =
+                                                            <span className="p-2"> {item.sub_zone_total}
+                                                            </span>
+                                                        </div>
+
+
+
+                                                        {allsubzoneshow && allsubzoneuniqe === item.zone ?
+                                                            <td className="mb-4 m-2  w-[40%] "
+                                                                style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+                                                                <tr className=" w-[100%] pr-4         h-[35px] "    >
+
+                                                                    <div className="p-[10px]   text-[#180c5a] font-semibold  cursor-pointer  "
+                                                                        onClick={(e) => SubZoneDataFun(e, item)}>
+                                                                        <span className="p-3"> SubZone'S</span>
+                                                                        <span className="pl-5"> Values</span>
+                                                                    </div>
+
+                                                                </tr>
+                                                                {Object.entries(allsubzonevalue).map(([key, value]) => {
+                                                                    return <>
+                                                                        <tr className="h-[35px] ">
+                                                                            <div className="p-[10px]   cursor-pointer">
+                                                                                <span className="p-3">
+                                                                                    {key}</span>
+                                                                                    =
+                                                                                <span className="pl-5">
+                                                                                    {value}</span>
+
+                                                                            </div>
+                                                                        </tr>
+                                                                        <br />
+                                                                    </>
+
+
+                                                                })}
+                                                            </td> : null
+                                                        }
+                                                    </tr>
+
+                                                })}
+                                            </td> : null
+                                        }
+
+
+                                    </tbody>
                                 ))}
 
                             </table>
@@ -536,4 +541,4 @@ const QuantitySheet = () => {
     )
 }
 
-export default QuantitySheet
+export default LightQuantity

@@ -48,6 +48,8 @@ import SuperAdminId from "./components/SuperAdmin/[id]";
 import AddUserRole1 from "./components/Management/AddUserRole1";
 import Consultant from "./components/Master/Consultant";
 import AddConsultant from "./components/Master/Add_Consultant";
+import LightQuantity from "./components/Injestion/LightQuantity";
+import FireQuantity from "./components/Injestion/FireQuantity";
 
 function App() {
   return (
@@ -124,7 +126,9 @@ function App() {
         <Route path="/DataInjestion" element={<DataInjestion />} />
         <Route path="/DataInjestion/ProductivitySheet" element={<ProductivitySheet />} />
         <Route path="/DataInjestion/HRMS" element={<HRMS />} />
-        <Route path="/DataInjestion/QuantitySheet" element={<QuantitySheet />} />
+        <Route path="/DataInjestion/QuantitySheet" element={<QuantitySheet />} /> 
+        <Route path="/DataInjestion/LightQuantity" element={<LightQuantity />} /> 
+        <Route path="/DataInjestion/FireQuantity" element={<FireQuantity />} />
 
         {/* superAmin pages */}
         <Route path="super_admin" element={<SuperAdmin/>}/>

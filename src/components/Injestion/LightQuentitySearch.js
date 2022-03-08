@@ -6,7 +6,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 
 
-const QuantitySearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
+const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
     , sheetData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
@@ -95,10 +95,10 @@ const QuantitySearch = ({ placeHolderName, valueData, handleChangeForClient, han
 
     const SheetUpload = async () => {
         const formData = new FormData();
-        formData.append("quantity_sheet", sheetData);
+        formData.append("light_quantity_sheet", sheetData);
         formData.append("projectid", projectsheetid);
         const token = reactLocalStorage.get("access_token", false);
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_quantity_file`,
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_light_fitting_quantity_file`,
             formData,
             {
                 headers: {
@@ -107,7 +107,7 @@ const QuantitySearch = ({ placeHolderName, valueData, handleChangeForClient, han
             },
 
         )
-            .then((response) => {
+            .then((response) => { 
                 if (response.status === 201) {
                     UpdateSheetData.set(true)
                     EntityShowProductiveEye.set(o => !o)
@@ -182,4 +182,4 @@ const QuantitySearch = ({ placeHolderName, valueData, handleChangeForClient, han
     );
 };
 
-export default QuantitySearch;
+export default LightQuentitySearch;
