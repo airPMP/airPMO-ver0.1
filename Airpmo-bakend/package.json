@@ -58,7 +58,7 @@
     "rxjs": "^7.2.0",
     "seed": "^0.4.4",
     "swagger-ui-express": "^4.3.0",
-    "xlsx": "^0.18.2"
+    "xlsx": "^0.18.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

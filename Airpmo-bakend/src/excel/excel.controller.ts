@@ -1,8 +1,8 @@
-import { Controller, Post, UseInterceptors, Req, UploadedFiles, Get, Param } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Req, UploadedFiles, Get, Param,  } from '@nestjs/common';
 import { ExcelService } from './excel.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('files')
 @Controller('api/')
@@ -11,8 +11,8 @@ export class ExcelController {
   @Auth('CREATE/EDIT-PRODUCTIVE_SHEET')
   @Post('upload_productive_file')
   @UseInterceptors(AnyFilesInterceptor())
-  async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req) {
-    return await this.excelService.productiveFile(files, req)
+  async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req,) {
+    return await this.excelService.productiveFile(files, req, )
   }
 
   @Auth('GET-PRODUCTIVE_SHEET')
@@ -25,7 +25,7 @@ export class ExcelController {
   @Post('upload_quantity_file')
   @UseInterceptors(AnyFilesInterceptor())
   async quantityFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req) {
-    return await this.excelService.quantityFile(files, req)
+    return await this.excelService.quantityFile(files, req,)
   }
 
   @Auth('CREATE/EDIT-FIRE_QUANTITY_SHEET')
