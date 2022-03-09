@@ -51,13 +51,12 @@ const validate = (values) => {
 const NewProject = () => {
 
   const [open, setOpen] = useState(false);
-  const [openzone, setZone] = useState(false);
+  const [openaddzone, setAddZone] = useState(false);
 
-  const [openSub, setOpenSub] = useState(false);
-  const [client_name_data, setdeta] = useState("");
+  const [openviewSub, setViewSub] = useState(false); 
   const [sheetdata, setSheetData] = useState(null)
   const closeModal = () => setOpen(false);
-  const closeModalSub = () => setOpenSub(false);
+  const closeModalSub = () => setViewSub(false);
   const [title, setTitle] = useState(null); // the lifted state
   const [projectdata, setProjectData] = useState(null)
   const [categoriesdata, setCategoriesData] = useState(null)
@@ -636,9 +635,9 @@ const NewProject = () => {
               </div>
               <div className="flex flex-row justify-between shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="flex flex-row">
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
                     <Popup
-                      open={openzone}
+                      open={openaddzone}
                       position="right center"
                       model
                     >
@@ -646,7 +645,7 @@ const NewProject = () => {
                     </Popup>
 
                     <Popup
-                      open={openSub}
+                      open={openviewSub}
                       position="right center"
                       model
                     >
@@ -667,7 +666,7 @@ const NewProject = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="mt-3 ex1">
+                        <div className="mt-3 ex1"> 
                           <table className="table-auto   text-center   
                             text-[#8F9BBA] text-[12px] font-sans w-[100%]
                          font-normal not-italic ">
@@ -711,27 +710,30 @@ const NewProject = () => {
                     </Popup>
 
 
-                    <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                    <button onClick={() => { naviagte("/master/projects/new_project") }}
+                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                      text-[14px] text-center font-medium not-italic items-center 
+                       bg-[#FFFFFF] text-[#2E3A59] ">
                       Add Delay
                     </button>
                   </div>
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
-                      onClick={() => setZone(o => !o)}
-                      className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
-                      View Zones
+                      onClick={() => setAddZone(o => !o)}
+                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                      Add Zones & Subzones
                     </button>
                   </div>
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
-                      // onClick={() => setOpenSub(o => !o)}
-                      className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
-                      View Subzones
+                      onClick={() => setViewSub(o => !o)}
+                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                      View Zones & Subzones
                     </button>
                   </div>
                 </div>
                 <div className="flex flex-row">
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button onClick={() => { naviagte("/master/projects") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                       Cancel
                     </button>

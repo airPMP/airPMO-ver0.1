@@ -6,15 +6,14 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 
 
-const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
+const QuantitySearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
     , sheetData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
     const [openSearchData1, setopenSearchData1] = useState(null);
     const [searchdata, setSearchData] = useState(null);
     const [projectsearchdata, setProjectSearchData] = useState(null);
-    const [projectsheetid, setProjectSheetId] = useState(null);
-    const [sheetfiledata, setSheetFileData] = useState(sheetData);
+    const [projectsheetid, setProjectSheetId] = useState(null); 
 
     const productivesheetid = ProductiveSheetId.use()
     const searchclientset = SearchClientSet.use()
@@ -96,10 +95,10 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
     const SheetUpload = async () => {
         const formData = new FormData();
-        formData.append("productivity", sheetData);
+        formData.append("light_quantity_sheet", sheetData);
         formData.append("projectid", projectsheetid);
         const token = reactLocalStorage.get("access_token", false);
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file`,
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_light_fitting_quantity_file`,
             formData,
             {
                 headers: {
@@ -183,4 +182,4 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
     );
 };
 
-export default ProductSearch;
+export default QuantitySearch;

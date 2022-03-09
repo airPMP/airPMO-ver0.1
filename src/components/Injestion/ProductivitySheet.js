@@ -12,7 +12,7 @@ import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetDa
 
 const ProductivitySheet = () => {
 
-    const [title, setTitle] = useState(null);
+
     const [clientdata, setClientData] = useState(null);
     const [openSearchData, setopenSearchData] = useState(false);
     const [openSearchData1, setopenSearchData1] = useState(null);
@@ -109,17 +109,14 @@ const ProductivitySheet = () => {
     const updatesheetdata = UpdateSheetData.use()
 
 
-    let urlTitle = useLocation();
+
     useEffect(() => {
 
-        if (urlTitle.pathname === "/DataInjestion/ProductivitySheet") {
-            setTitle("Data Injestion");
-        }
         const userData = getClientApi().then((data) => {
-            setClientData(data?.data)
+            setClientData(data?.data) //get client data c-1 -1a
         })
 
-    }, [urlTitle.pathname])
+    }, [])
     useEffect(() => {
         if (openSearchData1 === null || openSearchData1 === "") {
             setopenSearchData(false)
@@ -131,13 +128,17 @@ const ProductivitySheet = () => {
             SearchClientSet.set(true)
         }
     }, [openSearchData1])
+
     useEffect(() => {
         const clientidname = (e, Objdata) => {
             setClientSearchData(Objdata?.client_name)
         }
         setopenSearchData(false)
         clientidname()
+        //when he click to seach client  then this useState will and run the clientNameFun run -7a
+        //
     }, [clientsearchdata])
+
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
@@ -186,14 +187,14 @@ const ProductivitySheet = () => {
 
         let value = e.target.value.toUpperCase();
         let result = []
-        result = clientdata?.filter((data) => {
+        result = clientdata?.filter((data) => {  //get client data c-2 -3a
             console.log(data)
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
             }
         });
 
-        setSearchData(result)
+        setSearchData(result) // set Search client data c-1 -4a
         setopenSearchData1(e.target.value)
     }
     const SheetTableData = () => {
@@ -250,16 +251,21 @@ const ProductivitySheet = () => {
     const SaveSheetButton = () => {
         handleSearch()
         EntityShowProductiveEye.set(o => !o)
+
+
     }
     const CancelButton = (e) => {
         EntityShowProductiveEye.set(o => !o)
+
+
     }
 
     const ActiveNameSheet = (e, data) => {
+        setActiveNameData(o => !o)
+
 
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setActiveNameDataCode(data["Activity code"])
-        setActiveNameData(o => !o)
+        setActiveNameDataCode(data["Activity code"]) 
         setGANG_PRODUCTIVIVYFix(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
         setWATER_TANKERfix(data[" WATER TANKER "])
         set_3T_PICKUPfix(data[" 3T PICKUP "])
@@ -442,9 +448,9 @@ const ProductivitySheet = () => {
         if (TRUCKfix !== 0) {
             setTRUCK(TRUCKfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
-            // if (UNITfix !== 0) {
-            //     setUNIT(UNITfix / GANG_PRODUCTIVIVYFix * e.target.value)
-            // }
+        // if (UNITfix !== 0) {
+        //     setUNIT(UNITfix / GANG_PRODUCTIVIVYFix * e.target.value)
+        // }
         if (WATER_TANKERfix !== 0) {
             setWATER_TANKER(WATER_TANKERfix / GANG_PRODUCTIVIVYFix * e.target.value)
         }
@@ -469,19 +475,16 @@ const ProductivitySheet = () => {
                     <SideBar />
                 </div>
                 <div className="flex flex-col">
-                    <Header title={title} />
+                    <Header title="Data&nbsp;Injestion" />
 
 
                     <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
 
                         <div className="mr-[70px]"   >
-                            {/* <ProductSearch
-                                placeHolderName={"Choose Client"}
-                                value={data}
-                            /> */}
                             <div>
 
-                                <div className=" basic-1/4 flex flex-row px-[20px] bg-[#FFFFFF] rounded-[0.625rem] ">
+                                <div className=" basic-1/4 flex flex-row px-[20px] 
+                                bg-[#FFFFFF] rounded-[0.625rem] ">
                                     <div className="pt-[18px]">
                                         <svg
                                             width="11"
@@ -508,12 +511,8 @@ const ProductivitySheet = () => {
                                             placeholder="Choose Client"
                                             value={clientsearchdata}
                                             className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                                            onChange={(e) => handleChangeForClientData(e)}
-
-
-                                        />
-
-
+                                            onChange={(e) => handleChangeForClientData(e)} //-2a 
+                                        /> 
                                     </div>
                                 </div>
                                 <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
@@ -521,13 +520,13 @@ const ProductivitySheet = () => {
                                     {openSearchData && <ul className="searchList productiveSeacrhch"  >
 
                                         {
-                                            searchdata.map((item, id) => {
+                                            searchdata.map((item, id) => { // get Search client data c-2 -5a
 
                                                 return <li onClick={(e) => clientidname(e, item)}>
                                                     {
                                                         item.client_name
                                                     }
-                                                </li>
+                                                </li> //-6a
                                             })
                                         }
 
@@ -544,8 +543,8 @@ const ProductivitySheet = () => {
                         </div>
                     </div>
 
-                    <div className=" flex flex-col max-w-[899px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
-                  bg-[#FFFFFF]   ">
+                    <div className=" flex flex-col  lg:w-[97%] md:w-[90%] mr-[10px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
+                  bg-[#FFFFFF] ">
 
                         <div className="flex flex-row justify-between">
                             <div className="flex">
@@ -566,8 +565,8 @@ const ProductivitySheet = () => {
                                                 Shining Towers
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="flex float-right mr-[20px]" style={{ marginTop: "-15px" }}>
+                                        <div className="ml-[110px]">
+                                            <div className="flex  ml-[50%] " style={{ marginTop: "-15px" }}>
                                                 <div className=" mr-[14px] mt-[10px] text-[#8F9BBA]">
                                                     <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M14 20H0L0 18H14V20ZM7 16L1 10L2.41 8.59L6 12.17V0L8 0V12.17L11.59 8.59L13 10L7 16Z" fill="#8F9BBA" />
@@ -581,8 +580,6 @@ const ProductivitySheet = () => {
                                                         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
                                                     }}>
                                                     <div>
-
-
                                                         <input type="file"
                                                             onChange={(e) => SheetFile(e)}
                                                             placeholder="Import Sheet"
@@ -592,12 +589,15 @@ const ProductivitySheet = () => {
                                                 </div>
                                                 <div className="shhetText">Import Sheet</div>
                                             </div>
-                                            <div>
-                                                <div className="pl-[13px] -mt-[40px]">
 
-                                                    <div style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                                                        className="mt-[73.07px] basic-1/4 flex flex-row 
-                                                     items-center mr-[55.5px] bg-[#FFFFFF]   rounded-[0.625rem]   "
+
+                                            <div>
+                                                <div className="pl-[13px] -mt-[40px]   rounded-[0.625rem]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                                    <div
+                                                        className="mt-[73.07px]  flex flex-row 
+                                                     items-center mr-[55.5px] bg-[#FFFFFF]       "
                                                     >
                                                         <div className="pt-[4.64px] pl-[16.6px]">
                                                             <svg
@@ -634,10 +634,10 @@ const ProductivitySheet = () => {
                                                                 placeholder="Search "
                                                                 className="outline-none
                                                                 text-[12px]
-                                                                 w-[273.87px] h-[36.94px]  
+                                                                 w-[173.87px] h-[36.94px]  
                                                             
                                                             "
-                                                            // w-[273.87px] h-[36.94px]
+
                                                             />
                                                         </div>
                                                     </div>
@@ -650,7 +650,7 @@ const ProductivitySheet = () => {
                             </div>
                         </div>
 
-                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
+                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] w-[100%]" >
                             <table className="table-auto   text-center   
                             text-[#8F9BBA] text-[12px] font-sans
                          font-normal not-italic  " style={{ width: "100%" }}>
@@ -696,187 +696,178 @@ const ProductivitySheet = () => {
                                                     3T PICKUP - {_3T_PICKUP.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
 
-                                                {BACK_HOE !== 0  && BACK_HOEfix !== undefined ? <tr className="h-[35px]">
+
+                                                {BACK_HOE !== 0 && BACK_HOEfix !== undefined ? <tr className="h-[35px]">
                                                     BACK HO - {BACK_HOE.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {BOBCAT !== 0  && BOBCATfix !== undefined ? <tr className="h-[35px]">
+
+                                                {BOBCAT !== 0 && BOBCATfix !== undefined ? <tr className="h-[35px]">
                                                     BOBCAT - {BOBCAT.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {BUS !== 0  && BUSfix !== undefined ? <tr className="h-[35px]">
+
+                                                {BUS !== 0 && BUSfix !== undefined ? <tr className="h-[35px]">
                                                     BUS - {BUS.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {CARPENTER !== 0  && CARPENTERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {CARPENTER !== 0 && CARPENTERfix !== undefined ? <tr className="h-[35px]">
                                                     CARPENTER - {CARPENTER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {CHAINMAN !== 0  && CHAINMANfix !== undefined ? <tr className="h-[35px]">
+
+                                                {CHAINMAN !== 0 && CHAINMANfix !== undefined ? <tr className="h-[35px]">
                                                     CHAINMAN - {CHAINMAN.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
 
-                                                {CRANE !== 0  && CRANEfix !== undefined ? <tr className="h-[35px]">
+
+                                                {CRANE !== 0 && CRANEfix !== undefined ? <tr className="h-[35px]">
                                                     CRANE - {CRANE.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
 
-                                                {DC_PICKUP !== 0  && DC_PICKUPfix !== undefined ? <tr className="h-[35px]">
+
+                                                {DC_PICKUP !== 0 && DC_PICKUPfix !== undefined ? <tr className="h-[35px]">
                                                     DC PICKUP - {DC_PICKUP.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {DOZER !== 0  && DOZERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {DOZER !== 0 && DOZERfix !== undefined ? <tr className="h-[35px]">
                                                     DOZER - {DOZER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {DRIVER !== 0  && DRIVERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {DRIVER !== 0 && DRIVERfix !== undefined ? <tr className="h-[35px]">
                                                     DRIVER - {DRIVER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {ELECTRICIAN !== 0  && ELECTRICIANfix !== undefined ? <tr className="h-[35px]">
+
+                                                {ELECTRICIAN !== 0 && ELECTRICIANfix !== undefined ? <tr className="h-[35px]">
                                                     ELECTRICIAN - {ELECTRICIAN.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {EXCAVATOR !== 0  && EXCAVATORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {EXCAVATOR !== 0 && EXCAVATORfix !== undefined ? <tr className="h-[35px]">
                                                     EXCAVATOR - {EXCAVATOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {FABRICATOR !== 0  && FABRICATORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {FABRICATOR !== 0 && FABRICATORfix !== undefined ? <tr className="h-[35px]">
                                                     FABRICATOR - {FABRICATOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
+
 
                                                 {FOREMAN !== 0 && FOREMANfix !== undefined ? <tr className="h-[35px]">
                                                     FOREMAN - {FOREMAN.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {GRADER !== 0  && GRADERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {GRADER !== 0 && GRADERfix !== undefined ? <tr className="h-[35px]">
                                                     GRADER - {GRADER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {GENERAL_FOREMAN !== 0  && GENERAL_FOREMANfix !== undefined ? <tr className="h-[35px]">
+
+                                                {GENERAL_FOREMAN !== 0 && GENERAL_FOREMANfix !== undefined ? <tr className="h-[35px]">
                                                     GENERAL FOREMAN - {GENERAL_FOREMAN.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
 
-                                                {/* tr rnd */}
-                                                {HAND_ROLLER !== 0  && HAND_ROLLERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {HAND_ROLLER !== 0 && HAND_ROLLERfix !== undefined ? <tr className="h-[35px]">
                                                     HAND ROLLER - {HAND_ROLLER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
 
-                                                {HI_UP_CRANE !== 0  && HI_UP_CRANEfix !== undefined ? <tr className="h-[35px]">
+
+                                                {HI_UP_CRANE !== 0 && HI_UP_CRANEfix !== undefined ? <tr className="h-[35px]">
                                                     HI UP CRANE - {HI_UP_CRANE.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {JUNIOR_SURVEYOR !== 0  && JUNIOR_SURVEYORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {JUNIOR_SURVEYOR !== 0 && JUNIOR_SURVEYORfix !== undefined ? <tr className="h-[35px]">
                                                     JUNIOR SURVEYOR - {JUNIOR_SURVEYOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
+
                                                 {LABOR !== 0 && LABORfix !== undefined ? <tr className="h-[35px]">
                                                     LABOR - {LABOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {MASON !== 0  && MASONfix !== undefined ? <tr className="h-[35px]">
+
+                                                {MASON !== 0 && MASONfix !== undefined ? <tr className="h-[35px]">
                                                     MASON - {MASON.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
 
-                                                {OPERATOR !== 0  && OPERATORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {OPERATOR !== 0 && OPERATORfix !== undefined ? <tr className="h-[35px]">
                                                     OPERATOR - {OPERATOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {PIPE_FITTER !== 0  && PIPE_FITTERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {PIPE_FITTER !== 0 && PIPE_FITTERfix !== undefined ? <tr className="h-[35px]">
                                                     PIPE FITTER - {PIPE_FITTER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {PLATE_COMPACTOR !== 0  && PLATE_COMPACTORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {PLATE_COMPACTOR !== 0 && PLATE_COMPACTORfix !== undefined ? <tr className="h-[35px]">
                                                     PLATE COMPACTOR - {PLATE_COMPACTOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {RIGGER !== 0  && RIGGERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {RIGGER !== 0 && RIGGERfix !== undefined ? <tr className="h-[35px]">
                                                     RIGGER - {RIGGER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {ROCK_BREAKER !== 0  && ROCK_BREAKERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {ROCK_BREAKER !== 0 && ROCK_BREAKERfix !== undefined ? <tr className="h-[35px]">
                                                     ROCK BREAKER - {ROCK_BREAKER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {STEEL_FIXER !== 0  && STEEL_FIXERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {STEEL_FIXER !== 0 && STEEL_FIXERfix !== undefined ? <tr className="h-[35px]">
                                                     STEEL FIXER - {STEEL_FIXER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {SURVEYOR !== 0  && SURVEYORfix !== undefined ? <tr className="h-[35px]">
+
+                                                {SURVEYOR !== 0 && SURVEYORfix !== undefined ? <tr className="h-[35px]">
                                                     SURVEYOR - {SURVEYOR.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {TRAILER !== 0  && TRAILERfix !== undefined ? <tr className="h-[35px]">
+
+                                                {TRAILER !== 0 && TRAILERfix !== undefined ? <tr className="h-[35px]">
                                                     TRAILER - {TRAILER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-                                                {TRUCK !== 0  && TRUCKfix !== undefined ? <tr className="h-[35px]">
+
+                                                {TRUCK !== 0 && TRUCKfix !== undefined ? <tr className="h-[35px]">
                                                     TRUCK - {TRUCK.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
 
-                                                {/* tr rnd */}
-                                                {/* {UNIT !== 0? <tr className="h-[35px]">
-                                                       {UNIT}
-                                                </tr> : <>
-                                                </>} */}
-                                                {/* tr rnd */}
-                                                {WATER_TANKER !== 0 && WATER_TANKERfix !== undefined  ? <tr className="h-[35px]">
+                                                {WATER_TANKER !== 0 && WATER_TANKERfix !== undefined ? <tr className="h-[35px]">
                                                     WATER TANKER - {WATER_TANKER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
+
                                                 {WELDER !== 0 && WELDERfix !== undefined ? <tr className="h-[35px]">
                                                     WELDER - {WELDER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
+
 
                                                 {WHEEL_LOADER !== 0 && WHEEL_LOADERfix !== undefined ? <tr className="h-[35px]">
                                                     WHEEL LOADER - {WHEEL_LOADER.toFixed(2)}
                                                 </tr> : <>
                                                 </>}
-                                                {/* tr rnd */}
-
-
 
                                             </tr> : <>
                                             </>}
-                                            
+
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>
