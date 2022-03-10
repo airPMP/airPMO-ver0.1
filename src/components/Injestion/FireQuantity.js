@@ -454,7 +454,7 @@ const FireQuantity = () => {
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">
                                             <th className=" py-[13px]">{item["Acitivity ID"]}</th>
-                                            <th className="  py-[13px] cursor-pointer"
+                                            <th className="  py-[13px] cursor-pointer "
                                                 onClick={(e) => ActiveNameData(e, item)}> {item["Activity Description"]}</th>
                                             <th className="  py-[13px]">Unit of Measure</th>
                                             <th className="  py-[13px]">{item.total}</th>
@@ -481,7 +481,7 @@ const FireQuantity = () => {
                                                 {Object.entries(zonetotal).slice(2).map(([key, value]) => {
                                                     return <>
                                                         <tr className=" w-[100%] pr-4 h-[35px]">
-                                                            <div className="p-[10px]   ml-[275px]    cursor-pointer">
+                                                            <div className="p-[10px] whitespace-nowrap  ml-[275px]    cursor-pointer">
                                                                 <span className="p-3">
                                                                     {key}</span>
                                                                 =
@@ -495,21 +495,7 @@ const FireQuantity = () => {
 
 
                                                 })}
-                                                {/* {zonetotal.slice(2).map((item, ids) => {
-
-                                                    return <tr className=" w-[100%] pr-4 h-[35px] "  >
-
-                                                        <div className="p-[10px] ml-[275px]   cursor-pointer"
-                                                            onClick={(e) => SubZoneDataFun(e, item)}>
-                                                            <span className="p-2"> {item.zone}</span>
-                                                            =
-                                                            <span className="p-2"> {item.sub_zone_total}
-                                                            </span>
-                                                        </div> 
-                                                           
-                                                    </tr>
-
-                                                })} */}
+                                                 
                                             </td> : null
                                         }
 

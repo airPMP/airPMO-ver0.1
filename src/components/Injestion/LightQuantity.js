@@ -481,9 +481,9 @@ const LightQuantity = () => {
 
                                                     return <tr className=" w-[100%] pr-4 h-[35px] "  >
 
-                                                        <div className="p-[10px] ml-[275px]   cursor-pointer"
+                                                        <div className="p-[10px] ml-[275px] whitespace-nowrap  cursor-pointer"
                                                             onClick={(e) => SubZoneDataFun(e, item)}>
-                                                            <span className="p-2"> {item.zone}</span>
+                                                            <span className="p-2  "> {item.zone}</span>
                                                             =
                                                             <span className="p-2"> {item.sub_zone_total}
                                                             </span>
