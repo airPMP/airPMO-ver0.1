@@ -73,6 +73,7 @@ export class PermissionsSeeder implements Seeder {
   {name:"CREATE/EDIT-QUANTITY_SHEET",description:"add quantity sheet"},
   {name:"CREATE/EDIT-FIRE_QUANTITY_SHEET",description:"add fire quantity sheet"},
   {name:"CREATE/EDIT-LIGHT_FITTING_QUANTITY_SHEET",description:"add light fitting quantity sheet"},
+  {name:"UPDATE-PRODUCTIVE/WIRING/LIGHT/FIRE_QUANTITY_SHEET",description:"edit quantity sheet"},
   
   ]
   );

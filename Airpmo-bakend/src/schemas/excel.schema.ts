@@ -11,11 +11,16 @@ export class excels {
    @Prop()
    is_publise_productivitysheet:boolean;
    @Prop()
+   is_deleted_productivitysheet:boolean;
+   @Prop()
    productivitysheet:[{}]
 
 
    @Prop()
    is_publise_quantity_sheets:boolean;
+   @Prop()
+   is_deleted_quantity_sheets:boolean;
+   @Prop()
    @Prop()
    quantity_sheets:[{}]
 
@@ -23,18 +28,22 @@ export class excels {
    @Prop()
    is_publise_fire_quantity_sheets:boolean;
    @Prop()
+   is_deleted_fire_quantity_sheets:boolean;
+   @Prop()
    fire_quantity_sheets:[{}]
 
 
    @Prop()
    is_publise_light_fitting_quantity_sheets:boolean;
    @Prop()
+   is_deleted_light_fitting_quantity_sheets:boolean;
+   @Prop()
    light_fitting_quantity_sheets:[]
   
 
+   
    @Prop({default:Date})
    createdAt: string;
-
    @Prop({default:Date})
    updatedAt:string;
     

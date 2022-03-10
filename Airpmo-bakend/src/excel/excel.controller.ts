@@ -1,8 +1,9 @@
-import { Controller, Post, UseInterceptors, Req, UploadedFiles, Get, Param,  } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Req, UploadedFiles, Get, Param, Body, Patch,  } from '@nestjs/common';
 import { ExcelService } from './excel.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/decorator/auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateExcelDto } from './dto/create-excel.dto';
 
 @ApiTags('files')
 @Controller('api/')
@@ -12,7 +13,13 @@ export class ExcelController {
   @Post('upload_productive_file')
   @UseInterceptors(AnyFilesInterceptor())
   async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Req() req,) {
-    return await this.excelService.productiveFile(files, req, )
+    return await this.excelService.productiveFile(files, req)
+  }
+
+  @Auth('UPDATE-PRODUCTIVE/WIRING/LIGHT/FIRE_QUANTITY_SHEET')
+  @Patch('update/productive/wiring/light/fire_sheet')
+  async updateFile( @Req() req,@Body() CreateExcelDto:CreateExcelDto) {
+    return await this.excelService.updateproductiveFile(req,CreateExcelDto)
   }
 
   @Auth('GET-PRODUCTIVE_SHEET')

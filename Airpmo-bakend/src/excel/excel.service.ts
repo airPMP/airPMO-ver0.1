@@ -1,8 +1,9 @@
-import {Injectable, NotFoundException, Req, UnprocessableEntityException } from '@nestjs/common';
+import {Body, Injectable, NotFoundException, Req, UnprocessableEntityException } from '@nestjs/common';
 import * as xlsx from 'xlsx';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { excelDocument, excels } from 'src/schemas/excel.schema';
+import { CreateExcelDto } from './dto/create-excel.dto';
 var lodash = require('lodash');
 
 @Injectable()
@@ -53,6 +54,28 @@ export class ExcelService {
     }
 
   }
+
+
+  //UPDATE PRODUCTIVE FILE
+
+ async updateproductiveFile(@Req() req,@Body() CreateExcelDto:CreateExcelDto){
+  var projectid = req.body.project_id
+  var productivitysheet = await this.excelModel.findOne({ project_id: projectid },)
+  if(productivitysheet ){
+    if (projectid) {
+      var pro = await this.excelModel.updateOne({ "project_id": projectid }, {$set:{...CreateExcelDto}})
+      return "update Sucessfully"
+    }
+    else {
+      throw new UnprocessableEntityException("file not match")
+    }
+  }
+  else{
+    throw new UnprocessableEntityException("!NO data availabe")
+  }
+  
+ }
+
 
 
   //FIND ALL DATA BY PROJECT ID API*
