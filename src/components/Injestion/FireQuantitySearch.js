@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, FireQuantitySheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -15,7 +15,7 @@ const FireQuantitySearch = ({ placeHolderName, valueData, handleChangeForClient,
     const [projectsearchdata, setProjectSearchData] = useState(null);
     const [projectsheetid, setProjectSheetId] = useState(null); 
 
-    const productivesheetid = ProductiveSheetId.use()
+    const firequantitysheetid = FireQuantitySheetId.use()
     const searchclientset = SearchClientSet.use()
     const projectnameactive = ProductiveNameActive.use()
     const updatesheetdata = UpdateSheetData.use()
@@ -88,7 +88,7 @@ const FireQuantitySearch = ({ placeHolderName, valueData, handleChangeForClient,
     const ProjectIdName = (e, ObjData) => {
         setProjectSearchData(ObjData?.project_name)
         setProjectSheetId(ObjData?._id)
-        ProductiveSheetId.set(ObjData?._id)
+        FireQuantitySheetId.set(ObjData?._id)
     }
 
 

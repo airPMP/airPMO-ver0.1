@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, FireQuantitySheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import FireQuantitySearch from './FireQuantitySearch';
 
@@ -35,7 +35,7 @@ const FireQuantity = () => {
     let urlTitle = useLocation();
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
-    const productivesheetid = ProductiveSheetId.use()
+    const firequantitysheetid = FireQuantitySheetId.use()
     const projectnameactive = ProductiveNameActive.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
@@ -97,20 +97,24 @@ const FireQuantity = () => {
         //
     }, [clientsearchdata])
 
+
     useEffect(() => {
-        if (productivesheetid) {
+        if (firequantitysheetid) {
             SheetTableData()
         }
+
+         
+    }, [firequantitysheetid, projectnameactive, updatesheetdata])
+
+    useEffect(() => {
+        
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        }
+        }  
 
-        if (updatesheetdata) {
-            SheetTableData()
-        }
-
-    }, [productivesheetid, projectnameactive, updatesheetdata])
+    }, [productivesheetsllsata])
+    
 
     const clientidname = (e, Objdata) => {
         setClientSearchData(Objdata?.client_name)
@@ -158,15 +162,22 @@ const FireQuantity = () => {
     const SheetTableData = () => {
 
         const token = reactLocalStorage.get("access_token", false);
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${productivesheetid}`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${firequantitysheetid}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         })
             .then((response) => {
-                console.log(response?.data)
-                setProductiveSheetAllData(response?.data?.fire_quantity_sheets)
-
+                console.log(response?.data) 
+                if (response?.data?.fire_quantity_sheets.length !== 0) {
+                    setProductiveSheetAllData(response?.data?.fire_quantity_sheets)
+                }
+                else{
+                    addToast( "sheet not Found", {
+                        appearance: "error",
+                        autoDismiss: true,
+                    })
+                }
 
                 if (response?.status === 200) {
                     ProductiveNameActive.set(true)

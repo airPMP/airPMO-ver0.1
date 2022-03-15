@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, LightQuantitySheetId, ProductiveNameActive,UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import LightQuentitySearch from './LightQuentitySearch';
 
@@ -22,20 +22,18 @@ const LightQuantity = () => {
     const [productivesheetsllsata, setProductiveSheetAllData] = useState(null);
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
     const [activedatashow, setActiveDataShow] = useState(null)
-    const [activedata, setActiveData] = useState(null)
-    const [allactivedata, setAllActiveData] = useState(null)
+    const [activedata, setActiveData] = useState(null) 
     const [zonetotal, setZoneTotal] = useState(null)
     const [allsubzonevalue, setAllSubZoneValue] = useState([])
     const [allsubzoneshow, setAllSubZoneShow] = useState(null)
-    const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
-
+    const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null) 
 
 
     const [title, setTitle] = useState(null);
     let urlTitle = useLocation();
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
-    const productivesheetid = ProductiveSheetId.use()
+    const lightquantitysheetid = LightQuantitySheetId.use()
     const projectnameactive = ProductiveNameActive.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
@@ -49,6 +47,7 @@ const LightQuantity = () => {
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
             setTitle("Data Injestion");
         }
+
     }, [urlTitle.pathname])
 
     useEffect(() => {
@@ -97,20 +96,23 @@ const LightQuantity = () => {
         //
     }, [clientsearchdata])
 
+
     useEffect(() => {
-        if (productivesheetid) {
-            SheetTableData()
-        }
+        if (lightquantitysheetid) {
+            SheetTableData() 
+        }  
+        console.log("data coming")
+    }, [lightquantitysheetid, projectnameactive,updatesheetdata])
+
+
+    useEffect(() => { 
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        }
+        } 
 
-        if (updatesheetdata) {
-            SheetTableData()
-        }
+    }, [productivesheetsllsata])
 
-    }, [productivesheetid, projectnameactive, updatesheetdata])
 
     const clientidname = (e, Objdata) => {
         setClientSearchData(Objdata?.client_name)
@@ -122,7 +124,7 @@ const LightQuantity = () => {
             }
         })
             .then((response) => {
-                // console.log(response?.data)
+                console.log(response?.data)
                 setProjectSearchData(response?.data)
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
@@ -134,7 +136,7 @@ const LightQuantity = () => {
 
             })
             .catch((error) => {
-                // console.log(error)
+                console.log(error)
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -158,14 +160,24 @@ const LightQuantity = () => {
     const SheetTableData = () => {
 
         const token = reactLocalStorage.get("access_token", false);
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${productivesheetid}`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${lightquantitysheetid}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         })
             .then((response) => {
-                console.log(response?.data)
-                setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets)
+                console.log(response)
+
+                if (response?.data?.light_fitting_quantity_sheets.length !== 0) {
+                    setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets) 
+                }
+                else{
+                    addToast( "sheet not Found", {
+                        appearance: "error",
+                        autoDismiss: true,
+                    })
+                }
+                 
 
                 if (response?.status === 200) {
                     ProductiveNameActive.set(true)
@@ -175,6 +187,7 @@ const LightQuantity = () => {
             })
             .catch((error) => {
                 console.log(error)
+                console.log("error light_fitting_quantity_sheets")
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -230,7 +243,7 @@ const LightQuantity = () => {
         setAllSubZoneValue(item)
     }
 
-
+    console.log(productivesheetsllsata)
 
     return (
         <>
@@ -250,7 +263,7 @@ const LightQuantity = () => {
                             className={LocationButton.pathname.includes("LightQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Light Quantity
                         </button>
-                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false);}}
+                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false); }}
                             className={LocationButton.pathname.includes("FireQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Fire Quantity
                         </button>
@@ -509,7 +522,7 @@ const LightQuantity = () => {
                                                                             <div className="p-[10px]   cursor-pointer">
                                                                                 <span className="p-3">
                                                                                     {key}</span>
-                                                                                    =
+                                                                                =
                                                                                 <span className="pl-5">
                                                                                     {value}</span>
 

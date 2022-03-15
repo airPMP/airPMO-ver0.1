@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
-import axios from "axios"; 
+import { SearchClientSet, WiringQuantitySheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import axios from "axios";
 import QuantitySearch from './QuantitySearch';
 
 const QuantitySheet = () => {
@@ -34,7 +34,7 @@ const QuantitySheet = () => {
     let urlTitle = useLocation();
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
-    const productivesheetid = ProductiveSheetId.use()
+    const wiringquantitysheetid = WiringQuantitySheetId.use()
     const projectnameactive = ProductiveNameActive.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
@@ -60,12 +60,7 @@ const QuantitySheet = () => {
         //
     }, [clientsearchdata])
 
-    const data = [
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
-        ,
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
 
-    ]
 
     useEffect(() => {
 
@@ -97,19 +92,22 @@ const QuantitySheet = () => {
     }, [clientsearchdata])
 
     useEffect(() => {
-        if (productivesheetid) {
+        if (wiringquantitysheetid) {
             SheetTableData()
         }
+
+        console.log("sheet is available")
+
+    }, [wiringquantitysheetid, projectnameactive, updatesheetdata])
+
+    useEffect(() => {
+
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
 
-        if (updatesheetdata) {
-            SheetTableData()
-        }
-
-    }, [productivesheetid, projectnameactive, updatesheetdata])
+    }, [productivesheetsllsata])
 
     const clientidname = (e, Objdata) => {
         setClientSearchData(Objdata?.client_name)
@@ -154,17 +152,26 @@ const QuantitySheet = () => {
         setSearchData(result) // set Search client data c-1 -4a
         setopenSearchData1(e.target.value)
     }
+
     const SheetTableData = () => {
 
         const token = reactLocalStorage.get("access_token", false);
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${productivesheetid}`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${wiringquantitysheetid}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         })
             .then((response) => {
                 console.log(response?.data)
-                setProductiveSheetAllData(response?.data?.quantity_sheets)
+                if (response?.data?.quantity_sheets.length !== 0) {
+                    setProductiveSheetAllData(response?.data?.quantity_sheets)
+                }
+                else{
+                    addToast( "sheet not Found", {
+                        appearance: "error",
+                        autoDismiss: true,
+                    })
+                }
 
                 if (response?.status === 200) {
                     ProductiveNameActive.set(true)
@@ -172,8 +179,7 @@ const QuantitySheet = () => {
                 }
 
             })
-            .catch((error) => {
-                console.log(error)
+            .catch((error) => { 
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -229,7 +235,7 @@ const QuantitySheet = () => {
         setAllSubZoneValue(item)
     }
 
- console.log(allsubzonevalue)
+    console.log(allsubzonevalue)
 
     return (
         <>
@@ -249,7 +255,7 @@ const QuantitySheet = () => {
                             className={LocationButton.pathname.includes("LightQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Light Quantity
                         </button>
-                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false);}}
+                        <button onClick={() => { navigate("/DataInjestion/FireQuantity"); window.location.reload(false); }}
                             className={LocationButton.pathname.includes("FireQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Fire Quantity
                         </button>
@@ -455,7 +461,7 @@ const QuantitySheet = () => {
                                             <th className="  py-[13px] cursor-pointer"
                                                 onClick={(e) => ActiveNameData(e, item)}> {item[1]?.acitivity_description}</th>
                                             <th className="  py-[13px]">Unit of Measure</th>
-                                            <th className="  py-[13px]">{item[item.length-1]?.total}</th>
+                                            <th className="  py-[13px]">{item[item.length - 1]?.total}</th>
                                         </tr>
                                         <tr>
                                             <td className="p-[10px]"></td>
@@ -470,15 +476,15 @@ const QuantitySheet = () => {
                                                 <tr className=" w-[100%] pr-4         h-[35px] "    >
 
                                                     <div className="p-[10px] ml-[300px] text-[#180c5a] font-semibold  cursor-pointer  "
-                                                        >
+                                                    >
                                                         <span className="p-5"> Zone'S</span>
-                                                         :
+                                                        :
                                                         <span className="pl-5"> Total</span>
                                                     </div>
 
                                                 </tr>
-                                                {zonetotal.slice(3,-1).map((item, ids) => { 
- 
+                                                {zonetotal.slice(3, -1).map((item, ids) => {
+
                                                     return <tr className=" w-[100%] pr-4 h-[35px] "  >
 
                                                         <div className="p-[10px] ml-[275px] whitespace-nowrap  cursor-pointer"
@@ -491,38 +497,38 @@ const QuantitySheet = () => {
 
 
 
-                                                          {allsubzoneshow && allsubzoneuniqe === item.zones ?
-                                                            <td  className="mb-4 m-2  w-[40%] "
+                                                        {allsubzoneshow && allsubzoneuniqe === item.zones ?
+                                                            <td className="mb-4 m-2  w-[40%] "
                                                                 style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
                                                                 <tr className=" w-[100%] pr-4  h-[35px] "    >
 
                                                                     <div className="p-[10px] 
                                                                       text-[#180c5a] font-semibold  cursor-pointer  "
-                                                                         >
+                                                                    >
                                                                         <span className="p-3"> SubZone'S</span>
                                                                         <span className="pl-5"> Values</span>
                                                                     </div>
 
                                                                 </tr>
-                                                                {Object.entries(allsubzonevalue).slice(1,-1).map(([key, value]) => {
-                                                                    return  <tr className="h-[35px] ">
-                                                                            <div className="p-[10px]  
+                                                                {Object.entries(allsubzonevalue).slice(1, -1).map(([key, value]) => {
+                                                                    return <tr className="h-[35px] ">
+                                                                        <div className="p-[10px]  
                                                                              cursor-pointer">
-                                                                                <span className="p-3">
-                                                                                    {key}</span>
-                                                                                    =
-                                                                                <span className="pl-5">
-                                                                                    {value}</span>
+                                                                            <span className="p-3">
+                                                                                {key}</span>
+                                                                            =
+                                                                            <span className="pl-5">
+                                                                                {value}</span>
 
-                                                                            </div>
-                                                                        </tr>
-                                                                        
-                                                                     
+                                                                        </div>
+                                                                    </tr>
+
+
 
 
                                                                 })}
                                                             </td> : null
-                                                        } 
+                                                        }
                                                     </tr>
 
                                                 })}

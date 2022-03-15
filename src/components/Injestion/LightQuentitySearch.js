@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, LightQuantitySheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -15,7 +15,7 @@ const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient
     const [projectsearchdata, setProjectSearchData] = useState(null);
     const [projectsheetid, setProjectSheetId] = useState(null); 
 
-    const productivesheetid = ProductiveSheetId.use()
+    const lightquantitysheetid = LightQuantitySheetId.use()
     const searchclientset = SearchClientSet.use()
     const projectnameactive = ProductiveNameActive.use()
     const updatesheetdata = UpdateSheetData.use()
@@ -86,9 +86,10 @@ const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient
     }
 
     const ProjectIdName = (e, ObjData) => {
+        console.log(ObjData)
         setProjectSearchData(ObjData?.project_name)
         setProjectSheetId(ObjData?._id)
-        ProductiveSheetId.set(ObjData?._id)
+        LightQuantitySheetId.set(ObjData?._id)
     }
 
 
@@ -108,6 +109,7 @@ const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient
 
         )
             .then((response) => { 
+                console.log(response)
                 if (response.status === 201) {
                     UpdateSheetData.set(true)
                     EntityShowProductiveEye.set(o => !o)
