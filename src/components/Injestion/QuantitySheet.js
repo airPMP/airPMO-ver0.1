@@ -83,14 +83,13 @@ const QuantitySheet = () => {
         }
     }, [openSearchData1])
 
-    
+
 
     useEffect(() => {
         if (wiringquantitysheetid) {
             SheetTableData()
         }
-
-        console.log("sheet is available")
+ 
 
     }, [wiringquantitysheetid, projectnameactive, updatesheetdata])
 
@@ -100,12 +99,12 @@ const QuantitySheet = () => {
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
-        setFilteredSheetData(productivesheetsllsata) 
+        setFilteredSheetData(productivesheetsllsata)
 
-    }, [productivesheetsllsata,sheetupdateddata])
+    }, [productivesheetsllsata, sheetupdateddata])
 
     const clientidname = (e, Objdata) => {
-        
+
         setChooseprojectOpnCls(false)
 
         setClientSearchData(Objdata?.client_name)
@@ -120,7 +119,7 @@ const QuantitySheet = () => {
                 // console.log(response?.data)
                 setProjectSearchData(response?.data)
 
-                if (response?.data.length === 0) { 
+                if (response?.data.length === 0) {
                     setSheetUpdatedData(false)
                 }
                 else {
@@ -173,8 +172,8 @@ const QuantitySheet = () => {
                     setProductiveSheetAllData(response?.data?.quantity_sheets)
                     setSheetUpdatedData(true)
                 }
-                else{
-                    addToast( "sheet not Found", {
+                else {
+                    addToast("sheet not Found", {
                         appearance: "error",
                         autoDismiss: true,
                     })
@@ -187,7 +186,7 @@ const QuantitySheet = () => {
                 }
 
             })
-            .catch((error) => { 
+            .catch((error) => {
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -219,8 +218,8 @@ const QuantitySheet = () => {
             setFilteredSheetData(productivesheetsllsata)
         }
     }
-    
- 
+
+
     const ActiveNameData = (e, itemData) => {
         console.log(itemData)
         setZoneTotal(itemData)
@@ -235,7 +234,7 @@ const QuantitySheet = () => {
         setAllSubZoneValue(item)
     }
 
-   
+
 
     return (
         <>
