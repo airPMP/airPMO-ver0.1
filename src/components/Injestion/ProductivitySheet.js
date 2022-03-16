@@ -101,6 +101,10 @@ const ProductivitySheet = () => {
     const [Activity_code, setActivity_code] = useState(null)
     const [Activity_name, setActivity_name] = useState(null)
 
+
+    const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
+    const [sheetupdateddata, setSheetUpdatedData] = useState(false)
+
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
@@ -139,22 +143,26 @@ const ProductivitySheet = () => {
         //
     }, [clientsearchdata])
 
+
+
     useEffect(() => {
         if (productivesheetid) {
             SheetTableData()
         }
 
+    }, [productivesheetid, projectnameactive, updatesheetdata])
+
+    useEffect(() => {
+
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
+        setFilteredSheetData(productivesheetsllsata)
 
-        if (updatesheetdata) {
-            SheetTableData()
-        }
-
-    }, [productivesheetid, projectnameactive, updatesheetdata])
+    }, [productivesheetsllsata, sheetupdateddata])
 
     const clientidname = (e, Objdata) => {
+        setChooseprojectOpnCls(false)
         setClientSearchData(Objdata?.client_name)
 
         const token = reactLocalStorage.get("access_token", false);
@@ -166,6 +174,13 @@ const ProductivitySheet = () => {
             .then((response) => {
                 console.log(response?.data)
                 setProjectSearchData(response?.data)
+
+                if (response?.data.length === 0) {
+                    setSheetUpdatedData(false)
+                }
+                else {
+                    setSheetUpdatedData(true)
+                }
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
                 //         appearance: "success",
@@ -184,7 +199,7 @@ const ProductivitySheet = () => {
             })
     }
     const handleChangeForClientData = (e) => {
-
+        setChooseprojectOpnCls(true)
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
@@ -207,7 +222,23 @@ const ProductivitySheet = () => {
         })
             .then((response) => {
                 console.log(response?.data)
-                setProductiveSheetAllData(response?.data?.productivitysheet)
+
+
+
+                if (response?.data?.productivitysheet.length !== 0) {
+                    setProductiveSheetAllData(response?.data?.productivitysheet)
+                    setSheetUpdatedData(true)
+                }
+                else {
+                    addToast("sheet not Found", {
+                        appearance: "error",
+                        autoDismiss: true,
+                    })
+
+                    setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
+                }
+
+
                 if (response?.status === 200) {
                     console.log("true data")
                     ProductiveNameActive.set(true)
@@ -221,6 +252,7 @@ const ProductivitySheet = () => {
                     appearance: "error",
                     autoDismiss: true,
                 })
+                setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide
             })
     }
     const SheetFile = (e) => {
@@ -265,7 +297,7 @@ const ProductivitySheet = () => {
 
 
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setActiveNameDataCode(data["Activity code"]) 
+        setActiveNameDataCode(data["Activity code"])
         setGANG_PRODUCTIVIVYFix(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
         setWATER_TANKERfix(data[" WATER TANKER "])
         set_3T_PICKUPfix(data[" 3T PICKUP "])
@@ -512,7 +544,7 @@ const ProductivitySheet = () => {
                                             value={clientsearchdata}
                                             className="outline-none w-[332px] h-[46px] rounded-[10px]"
                                             onChange={(e) => handleChangeForClientData(e)} //-2a 
-                                        /> 
+                                        />
                                     </div>
                                 </div>
                                 <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
@@ -539,6 +571,7 @@ const ProductivitySheet = () => {
                                 placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
+                                chooseprojectopnclsData={chooseprojectopncls}
                             />
                         </div>
                     </div>
@@ -664,7 +697,7 @@ const ProductivitySheet = () => {
                                 </tr>
 
 
-                                {filteredsheetdata?.map((item, i) => (
+                                {sheetupdateddata && filteredsheetdata?.map((item, i) => (
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>

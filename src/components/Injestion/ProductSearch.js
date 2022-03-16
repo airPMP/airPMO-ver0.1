@@ -6,7 +6,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 
 
-const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
+const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     , sheetData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
@@ -14,7 +14,6 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
     const [searchdata, setSearchData] = useState(null);
     const [projectsearchdata, setProjectSearchData] = useState(null);
     const [projectsheetid, setProjectSheetId] = useState(null);
-    const [sheetfiledata, setSheetFileData] = useState(sheetData);
 
     const productivesheetid = ProductiveSheetId.use()
     const searchclientset = SearchClientSet.use()
@@ -51,14 +50,22 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
 
     }, [searchclientset])
 
+
     useEffect(() => {
         const ProjectIdName = (e, ObjData) => {
             setProjectSearchData(ObjData?.project_name)
         }
 
-        setopenSearchData(false)
+
         ProjectIdName()
-    }, [projectsearchdata])
+
+        if (chooseprojectopnclsData) {
+            setopenSearchData(chooseprojectopnclsData)
+            setProjectSearchData("Choose Project")
+        }
+
+
+    }, [projectsearchdata, chooseprojectopnclsData])
 
 
     useEffect(() => {
@@ -90,6 +97,7 @@ const ProductSearch = ({ placeHolderName, valueData, handleChangeForClient, hand
         setProjectSearchData(ObjData?.project_name)
         setProjectSheetId(ObjData?._id)
         ProductiveSheetId.set(ObjData?._id)
+        setopenSearchData(false)
     }
 
 

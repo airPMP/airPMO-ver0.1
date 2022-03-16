@@ -96,13 +96,7 @@ const FireQuantity = () => {
         }
 
     }, [firequantitysheetid, projectnameactive, updatesheetdata])
-
-
-    // useEffect(() => {  
-    //         SheetTableData() 
-    // }, [productivesheetsllsata])
-
-
+ 
     useEffect(() => {
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
