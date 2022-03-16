@@ -98,8 +98,9 @@ const LightQuantity = () => {
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
+        setFilteredSheetData(productivesheetsllsata) 
 
-    }, [productivesheetsllsata])
+    }, [productivesheetsllsata,sheetupdateddata])
 
 
     const clientidname = (e, Objdata) => {
@@ -113,8 +114,16 @@ const LightQuantity = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data)
+                // console.log(response?.data)
                 setProjectSearchData(response?.data)
+
+                if (response?.data.length === 0) { 
+                    setSheetUpdatedData(false)
+                }
+                else {
+                    setSheetUpdatedData(true)
+                }
+
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
                 //         appearance: "success",

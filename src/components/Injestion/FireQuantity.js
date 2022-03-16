@@ -23,7 +23,7 @@ const FireQuantity = () => {
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
     const [activedatashow, setActiveDataShow] = useState(null)
     const [activedata, setActiveData] = useState(null)
-    const [zonetotal, setZoneTotal] = useState(null) 
+    const [zonetotal, setZoneTotal] = useState(null)
     const [allsubzonevalue, setAllSubZoneValue] = useState([])
     const [allsubzoneshow, setAllSubZoneShow] = useState(null)
     const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
@@ -97,13 +97,20 @@ const FireQuantity = () => {
 
     }, [firequantitysheetid, projectnameactive, updatesheetdata])
 
+
+    // useEffect(() => {  
+    //         SheetTableData() 
+    // }, [productivesheetsllsata])
+
+
     useEffect(() => {
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
-            setFilteredSheetData(productivesheetsllsata)
+            setFilteredSheetData(productivesheetsllsata) 
         }
+        setFilteredSheetData(productivesheetsllsata)   
 
-    }, [productivesheetsllsata])
+    }, [productivesheetsllsata, sheetupdateddata])
 
 
     const clientidname = (e, Objdata) => {
@@ -118,8 +125,16 @@ const FireQuantity = () => {
             }
         })
             .then((response) => {
-                // console.log(response?.data)
+
+                console.log(response?.data)
                 setProjectSearchData(response?.data)
+
+                if (response?.data.length === 0) { 
+                    setSheetUpdatedData(false)
+                }
+                else {
+                    setSheetUpdatedData(true)
+                }
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
                 //         appearance: "success",
@@ -164,7 +179,7 @@ const FireQuantity = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data)
+                // console.log(response?.data)
                 if (response?.data?.fire_quantity_sheets.length !== 0) {
                     setProductiveSheetAllData(response?.data?.fire_quantity_sheets)
                     setSheetUpdatedData(true)
@@ -213,6 +228,7 @@ const FireQuantity = () => {
             }
         });
 
+
         setFilteredSheetData(result)
 
         if (value === "") {
@@ -220,18 +236,17 @@ const FireQuantity = () => {
         }
     }
 
-    const ActiveNameData = (e, itemData) => { 
+    const ActiveNameData = (e, itemData) => {
         setZoneTotal(itemData)
         setActiveDataShow(o => !o)
         setActiveData(itemData["Acitivity ID"])
     }
 
-    const SubZoneDataFun = (e, item) => { 
+    const SubZoneDataFun = (e, item) => {
         setAllSubZoneShow(o => !o)
         setAllSubZoneUniqe(item.zone)
         setAllSubZoneValue(item)
     }
-
 
 
     return (
@@ -517,4 +532,3 @@ const FireQuantity = () => {
 
 export default FireQuantity
 
- 

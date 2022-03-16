@@ -100,8 +100,9 @@ const QuantitySheet = () => {
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
+        setFilteredSheetData(productivesheetsllsata) 
 
-    }, [productivesheetsllsata])
+    }, [productivesheetsllsata,sheetupdateddata])
 
     const clientidname = (e, Objdata) => {
         
@@ -118,6 +119,14 @@ const QuantitySheet = () => {
             .then((response) => {
                 // console.log(response?.data)
                 setProjectSearchData(response?.data)
+
+                if (response?.data.length === 0) { 
+                    setSheetUpdatedData(false)
+                }
+                else {
+                    setSheetUpdatedData(true)
+                }
+
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
                 //         appearance: "success",
@@ -210,17 +219,8 @@ const QuantitySheet = () => {
             setFilteredSheetData(productivesheetsllsata)
         }
     }
-    const SaveSheetButton = () => {
-        handleSearch()
-        EntityShowProductiveEye.set(o => !o)
-
-
-    }
-    const CancelButton = (e) => {
-        EntityShowProductiveEye.set(o => !o)
-
-
-    }
+    
+ 
     const ActiveNameData = (e, itemData) => {
         console.log(itemData)
         setZoneTotal(itemData)
@@ -235,7 +235,7 @@ const QuantitySheet = () => {
         setAllSubZoneValue(item)
     }
 
-    console.log(allsubzonevalue)
+   
 
     return (
         <>
