@@ -27,6 +27,8 @@ const QuantitySheet = () => {
     const [allsubzonevalue, setAllSubZoneValue] = useState([])
     const [allsubzoneshow, setAllSubZoneShow] = useState(null)
     const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
+    const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
+    const [sheetupdateddata, setSheetUpdatedData] = useState(false)
 
 
 
@@ -81,15 +83,7 @@ const QuantitySheet = () => {
         }
     }, [openSearchData1])
 
-    useEffect(() => {
-        const clientidname = (e, Objdata) => {
-            setClientSearchData(Objdata?.client_name)
-        }
-        setopenSearchData(false)
-        clientidname()
-        //when he click to seach client  then this useState will and run the clientNameFun run -7a
-        //
-    }, [clientsearchdata])
+    
 
     useEffect(() => {
         if (wiringquantitysheetid) {
@@ -110,6 +104,9 @@ const QuantitySheet = () => {
     }, [productivesheetsllsata])
 
     const clientidname = (e, Objdata) => {
+        
+        setChooseprojectOpnCls(false)
+
         setClientSearchData(Objdata?.client_name)
 
         const token = reactLocalStorage.get("access_token", false);
@@ -139,7 +136,7 @@ const QuantitySheet = () => {
             })
     }
     const handleChangeForClientData = (e) => {
-
+        setChooseprojectOpnCls(true)
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
@@ -165,12 +162,14 @@ const QuantitySheet = () => {
                 console.log(response?.data)
                 if (response?.data?.quantity_sheets.length !== 0) {
                     setProductiveSheetAllData(response?.data?.quantity_sheets)
+                    setSheetUpdatedData(true)
                 }
                 else{
                     addToast( "sheet not Found", {
                         appearance: "error",
                         autoDismiss: true,
                     })
+                    setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
                 }
 
                 if (response?.status === 200) {
@@ -184,6 +183,7 @@ const QuantitySheet = () => {
                     appearance: "error",
                     autoDismiss: true,
                 })
+                setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
             })
     }
     const SheetFile = (e) => {
@@ -323,6 +323,7 @@ const QuantitySheet = () => {
                                 placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
+                                chooseprojectopnclsData={chooseprojectopncls}
                             />
                         </div>
                     </div>
@@ -453,7 +454,7 @@ const QuantitySheet = () => {
                                 </tr>
 
 
-                                {filteredsheetdata?.map((item, i) => (
+                                {sheetupdateddata && filteredsheetdata?.map((item, i) => (
 
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">

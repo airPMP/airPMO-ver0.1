@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, LightQuantitySheetId, ProductiveNameActive,UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, LightQuantitySheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
 import axios from "axios";
 import LightQuentitySearch from './LightQuentitySearch';
 
@@ -22,11 +22,13 @@ const LightQuantity = () => {
     const [productivesheetsllsata, setProductiveSheetAllData] = useState(null);
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
     const [activedatashow, setActiveDataShow] = useState(null)
-    const [activedata, setActiveData] = useState(null) 
+    const [activedata, setActiveData] = useState(null)
     const [zonetotal, setZoneTotal] = useState(null)
     const [allsubzonevalue, setAllSubZoneValue] = useState([])
     const [allsubzoneshow, setAllSubZoneShow] = useState(null)
-    const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null) 
+    const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
+    const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
+    const [sheetupdateddata, setSheetUpdatedData] = useState(false)
 
 
     const [title, setTitle] = useState(null);
@@ -42,30 +44,16 @@ const LightQuantity = () => {
     let navigate = useNavigate();
 
 
-    useEffect(() => {
-
+    useEffect(() => { 
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
             setTitle("Data Injestion");
         }
 
     }, [urlTitle.pathname])
 
-    useEffect(() => {
-        const clientidname = (e, Objdata) => {
-            setClientSearchData(Objdata?.client_name)
-        }
-        setopenSearchData(false)
-        clientidname()
-        //when he click to seach client  then this useState will and run the clientNameFun run -7a
-        //
-    }, [clientsearchdata])
 
-    const data = [
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
-        ,
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
 
-    ]
+
 
     useEffect(() => {
 
@@ -99,22 +87,23 @@ const LightQuantity = () => {
 
     useEffect(() => {
         if (lightquantitysheetid) {
-            SheetTableData() 
-        }  
+            SheetTableData()
+        }
         console.log("data coming")
-    }, [lightquantitysheetid, projectnameactive,updatesheetdata])
+    }, [lightquantitysheetid, projectnameactive, updatesheetdata])
 
 
-    useEffect(() => { 
+    useEffect(() => {
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        } 
+        }
 
     }, [productivesheetsllsata])
 
 
     const clientidname = (e, Objdata) => {
+        setChooseprojectOpnCls(false)
         setClientSearchData(Objdata?.client_name)
 
         const token = reactLocalStorage.get("access_token", false);
@@ -145,6 +134,8 @@ const LightQuantity = () => {
     }
     const handleChangeForClientData = (e) => {
 
+        setChooseprojectOpnCls(true)
+
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
@@ -169,15 +160,17 @@ const LightQuantity = () => {
                 console.log(response)
 
                 if (response?.data?.light_fitting_quantity_sheets.length !== 0) {
-                    setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets) 
+                    setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets)
+                    setSheetUpdatedData(true)
                 }
-                else{
-                    addToast( "sheet not Found", {
+                else {
+                    addToast("sheet not Found", {
                         appearance: "error",
                         autoDismiss: true,
                     })
+                    setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
                 }
-                 
+
 
                 if (response?.status === 200) {
                     ProductiveNameActive.set(true)
@@ -192,6 +185,7 @@ const LightQuantity = () => {
                     appearance: "error",
                     autoDismiss: true,
                 })
+                setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide
             })
     }
     const SheetFile = (e) => {
@@ -217,18 +211,8 @@ const LightQuantity = () => {
         if (value === "") {
             setFilteredSheetData(productivesheetsllsata)
         }
-    }
-    const SaveSheetButton = () => {
-        handleSearch()
-        EntityShowProductiveEye.set(o => !o)
-
-
-    }
-    const CancelButton = (e) => {
-        EntityShowProductiveEye.set(o => !o)
-
-
-    }
+    } 
+ 
     const ActiveNameData = (e, itemData) => {
         console.log(itemData)
         setZoneTotal(itemData)
@@ -243,7 +227,7 @@ const LightQuantity = () => {
         setAllSubZoneValue(item)
     }
 
-    console.log(productivesheetsllsata)
+   
 
     return (
         <>
@@ -331,6 +315,7 @@ const LightQuantity = () => {
                                 placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
+                                chooseprojectopnclsData={chooseprojectopncls}
                             />
                         </div>
                     </div>
@@ -461,7 +446,7 @@ const LightQuantity = () => {
                                 </tr>
 
 
-                                {filteredsheetdata?.map((item, i) => (
+                                {sheetupdateddata && filteredsheetdata?.map((item, i) => (
 
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">

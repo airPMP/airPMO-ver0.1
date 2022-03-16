@@ -6,8 +6,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 
 
-const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient, handleChangeForProject
-    , sheetData }) => {
+const LightQuentitySearch = ({ placeHolderName, valueData,  sheetData,chooseprojectopnclsData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
     const [openSearchData1, setopenSearchData1] = useState(null);
@@ -55,9 +54,17 @@ const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient
             setProjectSearchData(ObjData?.project_name)
         }
 
-        setopenSearchData(false)
+        
         ProjectIdName()
-    }, [projectsearchdata])
+
+
+        if(chooseprojectopnclsData){
+            setopenSearchData(chooseprojectopnclsData)
+            setProjectSearchData("Choose Project")
+        }
+
+
+    }, [projectsearchdata ,chooseprojectopnclsData])
 
 
     useEffect(() => {
@@ -85,11 +92,11 @@ const LightQuentitySearch = ({ placeHolderName, valueData, handleChangeForClient
         }
     }
 
-    const ProjectIdName = (e, ObjData) => {
-        console.log(ObjData)
+    const ProjectIdName = (e, ObjData) => { 
         setProjectSearchData(ObjData?.project_name)
         setProjectSheetId(ObjData?._id)
         LightQuantitySheetId.set(ObjData?._id)
+        setopenSearchData(false)
     }
 
 

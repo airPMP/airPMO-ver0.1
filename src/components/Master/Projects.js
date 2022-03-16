@@ -55,7 +55,7 @@ const Projects = () => {
   const getPermision = async () => {
 
     const url_data = await allpermission
-    const database = url_data.split(',')
+    const database = url_data?.split(',')
 
     let value = "EDIT-PROJECTS".toUpperCase();
     let result = []

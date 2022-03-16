@@ -23,13 +23,12 @@ const FireQuantity = () => {
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
     const [activedatashow, setActiveDataShow] = useState(null)
     const [activedata, setActiveData] = useState(null)
-    const [allactivedata, setAllActiveData] = useState(null)
-    const [zonetotal, setZoneTotal] = useState(null)
+    const [zonetotal, setZoneTotal] = useState(null) 
     const [allsubzonevalue, setAllSubZoneValue] = useState([])
     const [allsubzoneshow, setAllSubZoneShow] = useState(null)
     const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
-
-
+    const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
+    const [sheetupdateddata, setSheetUpdatedData] = useState(false)
 
     const [title, setTitle] = useState(null);
     let urlTitle = useLocation();
@@ -51,6 +50,7 @@ const FireQuantity = () => {
         }
     }, [urlTitle.pathname])
 
+
     useEffect(() => {
         const clientidname = (e, Objdata) => {
             setClientSearchData(Objdata?.client_name)
@@ -61,12 +61,7 @@ const FireQuantity = () => {
         //
     }, [clientsearchdata])
 
-    const data = [
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
-        ,
-        { "name": "Activity Code", "role": "Activity Name", "email": "Unit of Measure", "mobile": "GANG Productivity (Aprvd by PM)", "action": "action" }
 
-    ]
 
     useEffect(() => {
 
@@ -76,26 +71,23 @@ const FireQuantity = () => {
 
     }, [])
     useEffect(() => {
+
         if (openSearchData1 === null || openSearchData1 === "") {
-            setopenSearchData(false)
-            SearchClientSet.set(false)
+
+            setopenSearchData(false)     //this state close the choose  client data dropdown
+            SearchClientSet.set(false)   //this state close the choose project data dropdown
             setProjectSearchData(null)
         }
         else {
-            setopenSearchData(true)
-            SearchClientSet.set(true)
+            setopenSearchData(true)     //this state open the choose  client data dropdown
+            SearchClientSet.set(true)   //this state open the choose project data dropdown
         }
+
+        // openSearchData1  this ths the choose client onChange data  
+
     }, [openSearchData1])
 
-    useEffect(() => {
-        const clientidname = (e, Objdata) => {
-            setClientSearchData(Objdata?.client_name)
-        }
-        setopenSearchData(false)
-        clientidname()
-        //when he click to seach client  then this useState will and run the clientNameFun run -7a
-        //
-    }, [clientsearchdata])
+
 
 
     useEffect(() => {
@@ -103,20 +95,20 @@ const FireQuantity = () => {
             SheetTableData()
         }
 
-         
     }, [firequantitysheetid, projectnameactive, updatesheetdata])
 
     useEffect(() => {
-        
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
-        }  
+        }
 
     }, [productivesheetsllsata])
-    
+
 
     const clientidname = (e, Objdata) => {
+
+        setChooseprojectOpnCls(false)
         setClientSearchData(Objdata?.client_name)
 
         const token = reactLocalStorage.get("access_token", false);
@@ -146,7 +138,7 @@ const FireQuantity = () => {
             })
     }
     const handleChangeForClientData = (e) => {
-
+        setChooseprojectOpnCls(true)
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
@@ -159,6 +151,10 @@ const FireQuantity = () => {
         setSearchData(result) // set Search client data c-1 -4a
         setopenSearchData1(e.target.value)
     }
+
+
+
+
     const SheetTableData = () => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -168,15 +164,18 @@ const FireQuantity = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data) 
+                console.log(response?.data)
                 if (response?.data?.fire_quantity_sheets.length !== 0) {
                     setProductiveSheetAllData(response?.data?.fire_quantity_sheets)
+                    setSheetUpdatedData(true)
                 }
-                else{
-                    addToast( "sheet not Found", {
+                else {
+                    addToast("sheet not Found", {
                         appearance: "error",
                         autoDismiss: true,
                     })
+
+                    setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
                 }
 
                 if (response?.status === 200) {
@@ -191,11 +190,14 @@ const FireQuantity = () => {
                     appearance: "error",
                     autoDismiss: true,
                 })
+                setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide
             })
     }
     const SheetFile = (e) => {
         setProductiveSheetData(e?.target?.files[0])
     }
+
+
     const handleSearch = (e) => {
 
         let value = e?.target?.value?.toUpperCase();
@@ -217,26 +219,14 @@ const FireQuantity = () => {
             setFilteredSheetData(productivesheetsllsata)
         }
     }
-    const SaveSheetButton = () => {
-        handleSearch()
-        EntityShowProductiveEye.set(o => !o)
 
-
-    }
-    const CancelButton = (e) => {
-        EntityShowProductiveEye.set(o => !o)
-
-
-    }
-    const ActiveNameData = (e, itemData) => {
-        console.log(itemData)
+    const ActiveNameData = (e, itemData) => { 
         setZoneTotal(itemData)
         setActiveDataShow(o => !o)
         setActiveData(itemData["Acitivity ID"])
     }
 
-    const SubZoneDataFun = (e, item) => {
-        console.log(item)
+    const SubZoneDataFun = (e, item) => { 
         setAllSubZoneShow(o => !o)
         setAllSubZoneUniqe(item.zone)
         setAllSubZoneValue(item)
@@ -311,7 +301,7 @@ const FireQuantity = () => {
                                     {openSearchData && <ul className="searchList productiveSeacrhch"  >
 
                                         {
-                                            searchdata.map((item, id) => { // get Search client data c-2 -5a
+                                            searchdata?.map((item, id) => { // get Search client data c-2 -5a
 
                                                 return <li onClick={(e) => clientidname(e, item)}>
                                                     {
@@ -330,6 +320,8 @@ const FireQuantity = () => {
                                 placeHolderName={"Choose Project"}
                                 valueData={projectsearchdata}
                                 sheetData={productivesheetdata}
+                                chooseprojectopnclsData={chooseprojectopncls}
+
                             />
                         </div>
                     </div>
@@ -460,7 +452,7 @@ const FireQuantity = () => {
                                 </tr>
 
 
-                                {filteredsheetdata?.map((item, i) => (
+                                {sheetupdateddata && filteredsheetdata?.map((item, i) => (
 
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">
@@ -506,7 +498,7 @@ const FireQuantity = () => {
 
 
                                                 })}
-                                                 
+
                                             </td> : null
                                         }
 
@@ -524,3 +516,5 @@ const FireQuantity = () => {
 }
 
 export default FireQuantity
+
+ 
