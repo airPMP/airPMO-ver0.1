@@ -96,16 +96,18 @@ const FireQuantity = () => {
         }
 
     }, [firequantitysheetid, projectnameactive, updatesheetdata])
- 
+
     useEffect(() => {
 
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
-            setFilteredSheetData(productivesheetsllsata) 
+            setFilteredSheetData(productivesheetsllsata)
         }
-        setFilteredSheetData(productivesheetsllsata)   
+        setFilteredSheetData(productivesheetsllsata)
+        console.log(productivesheetsllsata)
+        UpdateSheetData.set(false)
+    }, [productivesheetsllsata, sheetupdateddata, updatesheetdata])
 
-    }, [productivesheetsllsata, sheetupdateddata])
-
+    console.log(updatesheetdata)
 
     const clientidname = (e, Objdata) => {
 
@@ -123,7 +125,7 @@ const FireQuantity = () => {
                 console.log(response?.data)
                 setProjectSearchData(response?.data)
 
-                if (response?.data.length === 0) { 
+                if (response?.data.length === 0) {
                     setSheetUpdatedData(false)
                 }
                 else {
@@ -189,6 +191,7 @@ const FireQuantity = () => {
 
                 if (response?.status === 200) {
                     ProductiveNameActive.set(true)
+
 
                 }
 

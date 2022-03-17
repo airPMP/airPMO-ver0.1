@@ -100,7 +100,8 @@ const LightQuantity = () => {
         }
         setFilteredSheetData(productivesheetsllsata) 
 
-    }, [productivesheetsllsata,sheetupdateddata])
+        UpdateSheetData.set(false)
+    }, [productivesheetsllsata, sheetupdateddata, updatesheetdata])
 
 
     const clientidname = (e, Objdata) => {

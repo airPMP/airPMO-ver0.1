@@ -12,3 +12,5 @@ export const FireQuantitySheetId = entity(null)
 export const ProductiveNameActive = entity(false)
 export const UpdateSheetData = entity(false)
 export const EntityShowProductiveEye = entity(null)
+
+export const SheetUploadSucessCurrentData = entity(null)
