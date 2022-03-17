@@ -277,7 +277,9 @@ const ViewZones = () => {
 
                     <div className="pl-[80px]">
                         <table className="table-auto pt-[24px]  w-[100%]">
-                            <thead className="font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
+                            <thead className="font-secondaryFont 
+                              text-[#000000] font-normal not-italic text-[12px]
+                               leading-[20px] tracking-[-2%]   ">
                                 <tr className="max-h-[52.84px] ">
                                     <th className="w-[30%] py-[13px] float-left"> Zone</th>
                                     <th className="w-[50%] py-[13px]">Zone Description</th>

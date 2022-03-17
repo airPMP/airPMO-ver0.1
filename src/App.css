@@ -67,6 +67,18 @@ top:-20px
     overflow-x: scroll;
   }
 
+  .scroll_bar_Manpower{
+    height: 500px; 
+    overflow-y: scroll;
+  }
+  .scroll_bar_ManpowerMulti{
+    height: 350px; 
+    overflow-y: scroll;
+  }
+  .secrchplace::placeholder{
+      font-size: 15px;
+  }
+
    .disabledclass{
         opacity: 0.2;
         cursor: not-allowed;
