@@ -45,6 +45,9 @@ top:-20px
 .popup-content{
     width: 63% !important;
 }
+.zone_pops-overlay> div{
+    width:  500px !important;
+}
 .ex1 {
 
     padding: inherit;

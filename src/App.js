@@ -50,6 +50,7 @@ import Consultant from "./components/Master/Consultant";
 import AddConsultant from "./components/Master/Add_Consultant";
 import LightQuantity from "./components/Injestion/LightQuantity";
 import FireQuantity from "./components/Injestion/FireQuantity";
+import ViewZones from "./components/Master/ViewZones";
 
 function App() {
   return (
@@ -104,6 +105,8 @@ function App() {
         <Route path="/master/Projects/zone_list" element={<ZoneList />} />
         <Route path="/master/consultant" element={<Consultant/>}/>
         <Route path="/master/consultant/add_consultant" element={<AddConsultant />} />
+
+        <Route path="/master/Projects/new_project/view_zones" element={<ViewZones />} />
         {
           // timeline
         }

@@ -109,9 +109,7 @@ const Categories = () => {
       setFilteredData(categoriesdata)
     }
   }
-
-
-
+ 
 
   const DeleteProfile = (e) => {
     setDeleteId(e)
@@ -229,7 +227,7 @@ const Categories = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className={`${editpermission === "EDIT-CATEGORIES"   || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              className={`${editpermission === "CREATE-CATEGORIES"   || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
               flex items-center space-x-sm px-2 rounded disabled `}
             >
               <svg

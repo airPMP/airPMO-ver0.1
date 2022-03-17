@@ -130,7 +130,7 @@ const Projects = () => {
     feach();
     setOpen(o => !o)
   }
-
+   
   const AddProject = () => { 
     if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {  
       navigate("/master/projects/new_project") 
@@ -218,7 +218,7 @@ const Projects = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              className={`${editpermission === "EDIT-PROJECTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
               flex items-center space-x-sm px-2 rounded  `}
             >
               <svg
@@ -257,7 +257,7 @@ const Projects = () => {
                     <td className="w-[25%]">{item?.end_date}</td>
                     <td className="w-[20%]  text-center">
                       <div className="flex flex-row space-x-xl justify-center px-auto ">
-                        <div className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                        <div className={`${editpermission === "EDIT-PROJECTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => EditProfile(item._id)}>
                           <svg
                             width="19"

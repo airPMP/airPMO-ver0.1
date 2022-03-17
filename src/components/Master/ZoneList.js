@@ -1,5 +1,8 @@
 
 import { useFormik } from "formik";
+import React, { useState} from 'react'
+import { ViewZoneData } from '../../SimplerR/auth'
+
 
 const validate = (values) => {
   const errors = {};
@@ -31,6 +34,8 @@ const validate = (values) => {
 const ZoneList = ({ closeModal }) => {
 
 
+  const viewzonedata = ViewZoneData.use()
+
   const formik = useFormik({
     initialValues: {
       client: "",
@@ -59,8 +64,9 @@ const ZoneList = ({ closeModal }) => {
       <div className="flex flex-col">
 
 
-        <div className=" flex flex-col  sm:w-[100%] md:w-[100%]  w-[100%] max-h-[40%] bg-[#FFFFFF] pl-[26px] pr-[46.02px]    rounded-[31.53px] ">
-          <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
+        <div className=" flex flex-col      w-[100%] max-h-[40%] bg-[#FFFFFF] pl-[26px] 
+        pr-[46.02px]    rounded-[31.53px] ">
+          {/* <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
             <div className="bg-[#F4F7FE] w-[58.96px] flex items-center justify-center h-[58.96px]   rounded-full">
               <img
                 src="/Group8.png"
@@ -71,15 +77,15 @@ const ZoneList = ({ closeModal }) => {
               />
             </div>
             <div className=" max-w-[100%] max-h-[59.44px]  font-secondaryFont font-medium not-italic text-[18.76px] leading-[37.83px] tracking-[-2%] ">
-            Add Zones & Subzones
+            Add Zones &  Description
             </div>
-          </div>
-          <div className="pl-[120px] pr-[26px] pt-[33.49px]">
+          </div> */}
+          <div className="pl-[40px] pr-[26px] pt-[33.49px]">
             <form onSubmit={formik.handleSubmit}>
 
 
-              <div className="flex flex-row space-x-20 pb-[10px] w-[100%]">
-                <div className="relative w-[280px]">
+              <div className=" flex-row   pb-[10px] w-[100%]">
+                <div className="relative w-[350px] mb-10">
                   <input
                     id="zonename"
                     name="zonename"
@@ -101,7 +107,7 @@ const ZoneList = ({ closeModal }) => {
                     </div>
                   )}
                 </div>
-                <div className=" relative w-[280px]">
+                <div className=" relative w-[350px]">
                   <input
                     id="zonedescription"
                     type="text"
@@ -124,7 +130,7 @@ const ZoneList = ({ closeModal }) => {
                   )}
                 </div>
               </div>
-              <div className="flex flex-row space-x-20 pb-[10px]">
+              {/* <div className="flex flex-row space-x-20 pb-[10px]">
                 <div className="relative w-[280px]">
                   <input
                     id="zonename"
@@ -169,14 +175,17 @@ const ZoneList = ({ closeModal }) => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
               
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[50px]">
 
                 <div className="flex flex-row float-right">
-                  <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button onClick={closeModal} className="w-[100px] btnshadow  h-[25px] rounded   font-secondaryFont text-[12px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                      Cancel
+                  <div className="mr-[25px] shadow-[buttonshadow] " 
+                  onClick={() => ViewZoneData.set(o => !o)}>
+                    <button onClick={closeModal} className="w-[100px] btnshadow 
+                     h-[25px] rounded   font-secondaryFont text-[12px] text-center 
+                     font-medium not-italic items-center  bg-[#ffffff] text-[#000000] ">
+                     Close
                     </button>
                   </div>
                   <div>

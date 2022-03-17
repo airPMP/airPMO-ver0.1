@@ -10,7 +10,7 @@ import SubZoneList from "./SubZoneList";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
-
+import { ViewZoneData } from '../../SimplerR/auth'
 
 const validate = (values) => {
 
@@ -53,7 +53,7 @@ const NewProject = () => {
   const [open, setOpen] = useState(false);
   const [openaddzone, setAddZone] = useState(false);
 
-  const [openviewSub, setViewSub] = useState(false); 
+  const [openviewSub, setViewSub] = useState(false);
   const [sheetdata, setSheetData] = useState(null)
   const closeModal = () => setOpen(false);
   const closeModalSub = () => setViewSub(false);
@@ -70,8 +70,8 @@ const NewProject = () => {
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
-
-
+  const viewzonedata = ViewZoneData.use()
+ 
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/projects/new_project") {
@@ -121,12 +121,12 @@ const NewProject = () => {
       max_hours: "",
       start_date: "",
       end_date: "",
-      zone_name: "", 
+      zone_name: "",
       project_value: "",
       subzone_name: "",
       subzone_discription: "",
       client_name: "",
-       client_id: "",
+      client_id: "",
       category: "",
       sub_category: "",
       discription: "",
@@ -144,10 +144,10 @@ const NewProject = () => {
     onSubmit: async (values, { resetForm }) => {
       console.log(`Form data`, values);
       values.orgainization_id = organization_id_data
-      values.category=categorydata
-      values.categories_id=categoryid
-      values.client_name= clientdata
-      values.client_id= clientid
+      values.category = categorydata
+      values.categories_id = categoryid
+      values.client_name = clientdata
+      values.client_id = clientid
 
       const token = reactLocalStorage.get("access_token", false);
 
@@ -210,7 +210,7 @@ const NewProject = () => {
     setCategoryId(category_data[1])
   }
 
-  const ClientFun =(e)=>{
+  const ClientFun = (e) => {
     const url_data = e.target.value
     const client_data = url_data.split(',')
     setClientData(client_data[0])
@@ -228,7 +228,8 @@ const NewProject = () => {
       <div className="flex flex-col">
         <Header title={title} />
 
-        <div className=" flex flex-col max-w-[1099px] max-h-[632.01px] bg-[#FFFFFF] pl-[26px] pr-[46.02px] mt-[103px] ml-[38px] mr-[51px] rounded-[31.53px] ">
+        <div className=" flex flex-col max-w-[1099px] max-h-[632.01px] bg-[#FFFFFF]
+         pl-[26px]   mt-[103px] ml-[38px] mr-[51px] rounded-[31.53px] ">
           <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
             <div className="bg-[#F4F7FE] w-[88.28px] flex items-center justify-center h-[88.28px]   rounded-full">
               <img
@@ -239,8 +240,37 @@ const NewProject = () => {
                 className="content-center"
               />
             </div>
-            <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-              Create new Project
+            <div className="grid grid-cols-2">
+
+              <div className="col-span-1">
+                <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
+                  Create new Project
+                </div>
+              </div>
+
+              <div className="col-span-1  pl-14">
+
+                <div className="flex ">
+
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
+                    <button
+                      // onClick={() => setViewSub(o => !o)}
+                      className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                      Add Delay
+                    </button>
+                  </div>
+
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
+                    <button onClick={() => ViewZoneData.set(o => !o)}
+                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                      text-[14px] text-center font-medium not-italic items-center 
+                       bg-[#FFFFFF] text-[#2E3A59] ">
+                      Add Zones & Subzone
+                    </button>
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
           <div className="pl-[120px] pr-[26px] pt-[33.49px]">
@@ -339,7 +369,7 @@ const NewProject = () => {
                       <option value="" label="Select Client Name" />
                       {projectdata?.map((item, id) => {
                         return <>
-                          <option value={[item.client_name,item._id]} label={item.client_name} />
+                          <option value={[item.client_name, item._id]} label={item.client_name} />
                         </>
                       })}
                     </select>
@@ -633,7 +663,8 @@ const NewProject = () => {
                 </div>
 
               </div>
-              <div className="flex flex-row justify-between shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
+              <div className="flex flex-row justify-between shadow-[buttonshadow]
+               mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="flex flex-row">
                   <div className="mr-[25px] shadow-[buttonshadow] ">
                     <Popup
@@ -641,15 +672,18 @@ const NewProject = () => {
                       position="right center"
                       model
                     >
-                      <ZoneList closeModal={closeModal} />
+                      <SubZoneList closeModal={closeModalSub} />
+
                     </Popup>
 
                     <Popup
-                      open={openviewSub}
+                      open={viewzonedata}
                       position="right center"
                       model
+                      className="zone_pops"
                     >
-                      <SubZoneList closeModal={closeModalSub} />
+                      <ZoneList   />
+
                     </Popup>
 
                     <Popup
@@ -666,7 +700,7 @@ const NewProject = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="mt-3 ex1"> 
+                        <div className="mt-3 ex1">
                           <table className="table-auto   text-center   
                             text-[#8F9BBA] text-[12px] font-sans w-[100%]
                          font-normal not-italic ">
@@ -710,25 +744,30 @@ const NewProject = () => {
                     </Popup>
 
 
-                    <button onClick={() => { naviagte("/master/projects/new_project") }}
-                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
-                      text-[14px] text-center font-medium not-italic items-center 
-                       bg-[#FFFFFF] text-[#2E3A59] ">
-                      Add Delay
-                    </button>
+
                   </div>
-                  <div className="mr-[25px] shadow-[buttonshadow] ">
+                  {/* <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
                       onClick={() => setAddZone(o => !o)}
                       className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       Add Zones & Subzones
                     </button>
-                  </div>
+                  </div> */}
                   <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
-                      onClick={() => setViewSub(o => !o)}
+                      onClick={() => {
+                        naviagte("/master/Projects/new_project/view_zones");
+                      }}
                       className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                       View Zones & Subzones
+                    </button>
+                  </div>
+                  <div className="mr-[25px] shadow-[buttonshadow] ">
+                    <button onClick={() => { naviagte("/master/projects/new_project") }}
+                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                      text-[14px] text-center font-medium not-italic items-center 
+                       bg-[#FFFFFF] text-[#2E3A59] ">
+                      View Edit Access
                     </button>
                   </div>
                 </div>
