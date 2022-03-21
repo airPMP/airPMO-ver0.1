@@ -24,7 +24,7 @@ export class RolesService {
         return await create.save();
     }
   }catch{
-    throw new NotFoundException("roles not exist")
+    throw new NotFoundException("roles all ready exist")
   }
 }
 
