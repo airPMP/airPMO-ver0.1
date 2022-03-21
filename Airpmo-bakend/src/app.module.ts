@@ -16,6 +16,7 @@ import { SubdividedzoneModule } from './subdividedzone/subdividedzone.module';
 import { UserRolesModule } from './user-roles/user-roles.module';
 import { PermissionModule } from './permission/permission.module';
 import { ExcelModule } from './excel/excel.module';
+import { JobCardsModule } from './job-cards/job-cards.module';
 
 @Module({
   imports: [MongooseModule.forRoot('mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT, {
@@ -24,7 +25,7 @@ import { ExcelModule } from './excel/excel.module';
     dbName:process.env.DATABASE,
     w: 'majority',
     retryWrites: true
-  }), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule],
+  }), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule, JobCardsModule],
 
 })
 export class AppModule {}
