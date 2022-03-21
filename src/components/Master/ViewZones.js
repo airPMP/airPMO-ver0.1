@@ -13,10 +13,14 @@ const ViewZones = () => {
 
     const [title, setTitle] = useState(null);
     const [open, setOpen] = useState(false);
-    const [categoriesdata, setCategoriesData] = useState(null)
+    const [zonedata, setZoneData] = useState(null)
+    const [zone_id, setZone_id] = useState(null)
+    const [subzonedata, setSubZoneData] = useState(null)
+
+
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
-    const [filteredData, setFilteredData] = useState(categoriesdata);
+    const [filteredData, setFilteredData] = useState(zonedata);
     const CategorieLengthget = CategorieLengthSet.use()
 
     const [deleteid, setDeleteId] = useState(null);
@@ -40,13 +44,13 @@ const ViewZones = () => {
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
-                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories/`, {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
 
-                setCategoriesData(data?.data)
+                setZoneData(data?.data)
                 setFilteredData(data?.data)
             } catch (error) {
                 console.log(error)
@@ -105,16 +109,17 @@ const ViewZones = () => {
     const handleSearch = (e) => {
         let value = e?.target?.value?.toUpperCase();
         let result = []
-        result = categoriesdata?.filter((data) => {
+        result = zonedata?.filter((data) => {
+
             if (isNaN(+value)) {
-                return data?.category?.toUpperCase().search(value) !== -1;
+                return data?.zone_name?.toUpperCase().search(value) !== -1;
             }
         });
 
         setFilteredData(result)
 
         if (value === "") {
-            setFilteredData(categoriesdata)
+            setFilteredData(zonedata)
         }
     }
 
@@ -165,26 +170,45 @@ const ViewZones = () => {
 
     }
 
-    const zonedata = [
-        { "zone": "zone-1", "zone_descrption": "This is ..." },
-        { "zone": "zone-2", "zone_descrption": "This is ..." },
-        { "zone": "zone-3", "zone_descrption": "This is ..." },
-        { "zone": "zone-4", "zone_descrption": "This is ..." },
-        { "zone": "zone-5", "zone_descrption": "This is ..." }
-    ]
+     
 
-    const Subzonedata = [
-        { "zone": "sub-zone-1", "zone_descrption": "This is ..." },
-        { "zone": "sub-zone-2", "zone_descrption": "This is ..." },
-        { "zone": "sub-zone-3", "zone_descrption": "This is ..." },
-
-    ]
-
-    const Subzone = (e, zonedata) => {
-        console.log(zonedata)
-        setSubZoneId(zonedata)
+    const Subzone = (e, zone_id) => {
+        console.log(zone_id)
+        setSubZoneId(zone_id)
         setActiveZoneShow(o => !o)
+
+
+        const feach = async () => {
+            const token = reactLocalStorage.get("access_token", false);
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${zone_id}/subzone`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                setSubZoneData(data?.data)
+                if (data?.status === 200) {
+
+                    // window.location.reload(false);
+                }
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feach();
+
+
+
     }
+
+
+    const ViewSubZoneFun = (e, item_data) => {
+        ViewSubZoneData.set(o => !o)
+        setZone_id(item_data._id)
+    }
+
 
 
     return (
@@ -252,7 +276,7 @@ const ViewZones = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
+                    {/* <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
                         <div
                             style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
                             className={`${editpermission === "CREATE-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
@@ -272,7 +296,7 @@ const ViewZones = () => {
                                 onClick={() => ViewZoneData.set(o => !o)}
                             >Add Zone</div>
                         </div>
-                    </div>
+                    </div> */}
 
 
                     <div className="pl-[80px]">
@@ -286,19 +310,21 @@ const ViewZones = () => {
                                     <th className="w-[20%] py-[13px] float-right pr-14  ">Subzone</th>
                                 </tr>
                             </thead>
-                            {zonedata?.map((item, i) => {
+                            {filteredData?.map((item, i) => {
                                 return <tbody className="font-secondaryFont 
-                  text-[#000000] font-normal not-italic text-[12px]    ">
+                                      text-[#000000] font-normal not-italic text-[12px] ">
                                     <tr className="bg-[#ECF1F0] ">
                                         <th className=" w-[30%]  py-[13px] float-left cursor-pointer "
-                                            onClick={(e) => Subzone(e, item.zone)}>{item.zone}</th>
+                                            onClick={(e) => Subzone(e, item._id)}>{item.zone_name}</th>
 
 
-                                        <th className="w-[50%]  py-[13px]">{item.zone_descrption}</th>
+                                        <th className="w-[50%]  py-[13px]">{item.discription}</th>
                                         <th className=" w-[20%] py-[13px]  ">
                                             <div className=" float-right pr-5  space-x-xl">
-                                                <div onClick={() => ViewSubZoneData.set(o => !o)}
-                                                className={`${editpermission === "EDIT-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                                                <div
+                                                    // onClick={() => ViewSubZoneData.set(o => !o)}
+                                                    onClick={(e) => ViewSubZoneFun(e, item)}
+                                                    className={`${editpermission === "EDIT-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                                                 >
                                                     <svg width="24" height="24" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -310,35 +336,35 @@ const ViewZones = () => {
                                             </div>
                                         </th>
                                     </tr>
-                                     
-                                    {activezoneshow && item.zone === subzoneid ? <>
+
+                                    {activezoneshow && item._id === subzoneid ? <>
                                         <tr className="bg-[#ffffff]   " style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                             <td colSpan="1" className="pl-[20px] font-semibold py-5  "  >
-                                              <span  className="pb-2"
-                                              style={{borderBottom:"2px solid black"}}>  
-                                              Subzones
-                                                  </span>
+                                                <span className="pb-2"
+                                                    style={{ borderBottom: "2px solid black" }}>
+                                                    Subzones
+                                                </span>
                                             </td>
                                             <td colSpan="3" className="pl-[120px]  font-semibold py-5">
-                                            <span  className="pb-2"
-                                              style={{borderBottom:"2px solid black"}}>  
-                                             Subzone Description
-                                                  </span>
-                                                 
+                                                <span className="pb-2"
+                                                    style={{ borderBottom: "2px solid black" }}>
+                                                    Subzone Description
+                                                </span>
+
                                             </td>
                                         </tr>
 
-                                        {Subzonedata?.map((item, i) => {
+                                        {subzonedata?.map((item, i) => {
                                             return <tr className="bg-[#ffffff]  " style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                 <td colSpan="1" className="pl-[20px] py-5">
-                                                    {item.zone}
+                                                    {item.subzone_name}
                                                 </td>
                                                 <td colSpan="3" className="pl-[120px] py-5">
-                                                    {item.zone_descrption}
+                                                    {item.discription}
                                                 </td>
                                             </tr>
                                         })}</> : null}
-                                        
+
                                     <tr className="p-[15px]">
                                         <td className="p-[10px]" ></td>
                                     </tr>
@@ -395,7 +421,11 @@ const ViewZones = () => {
                 model
                 className="zone_pops"
             >
-                <SubZoneList />
+                <SubZoneList 
+                
+                zone_id={zone_id}
+                
+                />
 
             </Popup>
         </div>

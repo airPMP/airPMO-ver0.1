@@ -70,8 +70,10 @@ const NewProject = () => {
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
-  const viewzonedata = ViewZoneData.use()
- 
+  const viewzonedata = ViewZoneData.use() 
+  const [zoneerror, setZoneError] = useState(null)
+  const [projectidzone, setProjectIdZone] = useState(null);
+
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/projects/new_project") {
@@ -151,6 +153,8 @@ const NewProject = () => {
 
       const token = reactLocalStorage.get("access_token", false);
 
+
+
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,11 +162,14 @@ const NewProject = () => {
       })
         .then((response) => {
           console.log(response)
+          setProjectIdZone(response?.data?._id)
+          console.log(response?.data?._id)
           if (response.status === 201) {
             addToast("Project is Added Sucessfully", {
               appearance: "success",
               autoDismiss: true,
             })
+            ViewZoneData.set(o => !o)
             // navigate('/')
           }
           resetForm()
@@ -174,6 +181,7 @@ const NewProject = () => {
             autoDismiss: true,
           })
         })
+
 
     },
   });
@@ -267,6 +275,7 @@ const NewProject = () => {
                        bg-[#FFFFFF] text-[#2E3A59] ">
                       Add Zones & Subzone
                     </button>
+                    <div className="text-[red] pl-3 pt-2">{zoneerror}</div>
                   </div>
 
                 </div>
@@ -682,7 +691,9 @@ const NewProject = () => {
                       model
                       className="zone_pops"
                     >
-                      <ZoneList   />
+                      <ZoneList
+                        projectidzone={projectidzone} 
+                        />
 
                     </Popup>
 

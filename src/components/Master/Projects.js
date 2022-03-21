@@ -32,6 +32,7 @@ const Projects = () => {
           },
         })
 
+        console.log(data)
         setProjectData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {
@@ -87,8 +88,7 @@ const Projects = () => {
   const handleSearch = (e) => {
 
     let value = e?.target?.value?.toUpperCase();
-    let result = []
-    console.log("functiom iahsdi")
+    let result = [] 
     result = projectdata?.filter((data) => {
       if (isNaN(+value)) {
         return data?.client_name?.toUpperCase().search(value) !== -1;
