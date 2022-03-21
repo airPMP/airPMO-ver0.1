@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, Req, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, Param, Req, UnprocessableEntityException } from '@nestjs/common';
 import * as xlsx from 'xlsx';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -228,7 +228,7 @@ export class ExcelService {
         new_key = Object.keys(new_obj_array[i][j])
 
         for (let k = 1; k < new_values.length; k++) {
-         
+
           if (j <= 2) {
             var obj = {}
             var activity = new_values[0]
@@ -245,7 +245,7 @@ export class ExcelService {
           }
 
           else if (j >= 3) {
-          
+
             if (new_obj_array[0][3].zone_subzone === new_values[k]) {
               new_ar['zones'] = new_values[k]
               new_ar[new_key[0]] = new_values[0]
@@ -254,24 +254,24 @@ export class ExcelService {
               new_obj_array[0][3].zone_subzone = new_values[k]
 
               if (Object.keys(new_ar).length != 0) {
-                var new_data=Object.values( new_ar)
+                var new_data = Object.values(new_ar)
                 new_data.shift();
                 var total = lodash.sum(new_data)
                 new_ar['sub_zones_total'] = total
                 new_ar1.push(new_ar,)
                 new_ar = {}
-                count=0
+                count = 0
               }
 
               if (new_obj_array[0][3].zone_subzone === new_values[k]) {
                 new_ar['zones'] = new_values[k]
                 new_ar[new_key[0]] = new_values[0]
-              
+
               }
             }
             if (Object.keys(new_obj_array[i]).length - 1 === j) {
               if (Object.keys(new_ar).length != 0) {
-                var new_data=Object.values( new_ar)
+                var new_data = Object.values(new_ar)
                 new_data.shift();
                 var total = lodash.sum(new_data)
                 new_ar['sub_zones_total'] = total
@@ -429,7 +429,7 @@ export class ExcelService {
     }
     if (sheet) {
       var light_fitting_json_Data = await xlsx.utils.sheet_to_json(sheet, { dateNF: 'YYYY-MM-DD', })
-
+  
     }
     else {
       throw new NotFoundException("sheet  not found")
@@ -526,7 +526,6 @@ export class ExcelService {
         }
       }
     }
-
     var find_light_data = await this.excelModel.findOne({ project_id: projectid })
     if (!find_light_data) {
       if (files[0].fieldname === "light_quantity_sheet" && projectid) {
@@ -548,11 +547,6 @@ export class ExcelService {
     }
 
   }
-
-
-
-
-
 
 
 }
