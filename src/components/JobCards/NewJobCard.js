@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { reactLocalStorage } from "reactjs-localstorage";
+// import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
 import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import ManpowerAndMachinery from "./ManpowerAndMachinery";
+import { ProductivitySheetData, ProductiveSheetId } from "../../SimplerR/auth";
+
 const validate = (values) => {
   const errors = {};
   if (!values.activityCode) {
@@ -39,14 +44,51 @@ const validate = (values) => {
 const NewJobCard = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
+  const [activityname, setActivityName] = useState(null)
+  const [zonename, setZoneName] = useState(null)
+  const [subzonename, setSubZoneName] = useState(null)
+  const [productivitysheetobject, seProductivitySheetObject] = useState([])
+
+  const [productivitysheetarray, seProductivitySheetArray] = useState([])
+
   let urlTitle = useLocation();
   let naviagte = useNavigate();
+
+  const productivitysheetdata = ProductivitySheetData.use()
+  const productivesheetid = ProductiveSheetId.use()
+
   useEffect(() => {
 
     if (urlTitle.pathname === "/job_cards/new_job_card") {
       setTitle("Job Cards");
     }
   }, [urlTitle.pathname])
+
+
+
+  useEffect(() => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${productivesheetid}/zone`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setZoneName(response?.data)
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+
+  }, [])
 
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -66,6 +108,50 @@ const NewJobCard = () => {
       // console.log(`Form data`, values);
     },
   });
+
+  const ActivityCode = (e) => {
+
+    console.log(e.target.value)
+    let productArray = []
+    productivitysheetdata?.map((items, id) => {
+
+      if (e.target.value === items["Activity code"]) { 
+        
+        productArray.push(items)
+        seProductivitySheetObject(items)
+        setActivityName(items["Activity name"])
+      }
+
+    })
+    seProductivitySheetArray(productArray)
+  }
+
+  const ZoneNameFun = (e) => {
+    console.log(e.target.value)
+
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${e.target.value}/subzone`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setSubZoneName(response?.data)
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+
+  }
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -92,16 +178,50 @@ const NewJobCard = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[30px] ">
                 <div className="relative w-[350px] border-b border-black   ">
+
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
+                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer "
+                    onClick={(e) => ActivityCode(e)}
+                  >
+
                     <option>Activity Code</option>
+
+                    {productivitysheetdata?.map((items, id) => {
+
+                      return <option className="cursor-pointer" >
+                        {items["Activity code"]}</option>
+                    })}
                   </select>
                 </div>
-                <div className="relative w-[350px] border-b border-black ">
-                  <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] ">
-                    <option>Activity  Name</option>
-                  </select>
+
+
+
+                <div className="relative w-[350px]  ">
+                  <input
+                    id="jcCreation"
+                    name="jcCreation"
+                    type="text"
+                    value={activityname}
+                    // onChange={formik.handleChange}
+                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                    placeholder="john@doe.com"
+                  />
+                  <label
+                    htmlFor="jcCreation"
+                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                  >
+                    Activity  Name
+                    {/* <span className="text-red-700">*</span> */}
+                  </label>
+                  {
+                    //   formik.errors.jcCreation && (
+                    //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                    //     {formik.errors.jcCreation}{" "}
+                    //   </div>
+                    // )
+                  }
+
+
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[30px]">
@@ -110,7 +230,7 @@ const NewJobCard = () => {
                   <input
                     id="jcCreation"
                     name="jcCreation"
-                    type="text"
+                    type="date"
                     value={formik.values.jcCreation}
                     onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -120,7 +240,7 @@ const NewJobCard = () => {
                     htmlFor="jcCreation"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-                    JC Creation
+                    {/* JC Creation */}
                     {/* <span className="text-red-700">*</span> */}
                   </label>
                   {
@@ -135,8 +255,24 @@ const NewJobCard = () => {
                 </div>
 
                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
-                  <div className="w-[165px]">
-                    <input
+                  <div className="w-[165px] border-b border-black">
+
+                    <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
+                      onClick={(e) => ZoneNameFun(e)}
+                    >
+
+                      <option>Zone</option>
+
+                      {zonename?.map((items, id) => {
+
+                        return <option value={items._id} >
+                          {items.zone_name}
+                        </option>
+                      })}
+                    </select>
+
+                    {/* <input
                       id="hseRemarks"
                       name="hseRemarks"
                       type="text"
@@ -149,9 +285,8 @@ const NewJobCard = () => {
                       htmlFor="hseRemarks"
                       className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                     >
-                      Zones
-                      {/* <span className="text-red-700">*</span> */}
-                    </label>
+                      Zones  
+                    </label> */}
                     {
                       //   formik.errors.hseRemarks && (
                       //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -161,13 +296,28 @@ const NewJobCard = () => {
                     }
 
 
-
-
-
-
                   </div>
-                  <div className="relative w-[165px] border-b  ">
-                    <input
+                  <div className="relative w-[165px] border-b  border-black ">
+
+
+                    <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
+            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
+                    // onClick={(e) => ZoneNameFun(e)}
+                    >
+
+                      <option>Subzone</option>
+
+                      {subzonename?.map((items, id) => {
+
+                        return <option value={items._id} >
+                          {items.subzone_name}
+                        </option>
+                      })}
+                    </select>
+
+
+
+                    {/* <input
                       id="hseRemarks"
                       name="hseRemarks"
                       type="text"
@@ -180,9 +330,8 @@ const NewJobCard = () => {
                       htmlFor="hseRemarks"
                       className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                     >
-                      Sub zones
-                      {/* <span className="text-red-700">*</span> */}
-                    </label>
+                      Sub zones 
+                    </label> */}
                     {
                       //   formik.errors.hseRemarks && (
                       //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -196,8 +345,10 @@ const NewJobCard = () => {
               </div>
 
 
-              <div style={{boxShadow:" 0px 4px 4px rgba(0, 0, 0, 0.25)"}}>
-                <ManpowerAndMachinery />
+              <div style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                <ManpowerAndMachinery
+                  productivitysheetobject={productivitysheetobject} 
+                  productivitysheetarray={productivitysheetarray}/>
               </div>
 
               <div className="flex flex-col mb-10 ">

@@ -32,7 +32,6 @@ const Projects = () => {
           },
         })
 
-        console.log(data)
         setProjectData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {

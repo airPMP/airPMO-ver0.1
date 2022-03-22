@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import {
+    SearchClientSet, ProductiveSheetId, ProductiveNameActive,
+    UpdateSheetData, EntityShowProductiveEye, ProductivitySheetData, ProjectObjectData
+}
+    from '../../SimplerR/auth'
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -20,6 +24,9 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     const projectnameactive = ProductiveNameActive.use()
     const updatesheetdata = UpdateSheetData.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
+    const productivitysheetdata = ProductivitySheetData.use()
+    const projectobjectdata = ProjectObjectData.use()
+
 
     const { addToast } = useToasts();
     let navigate = useNavigate();
@@ -54,6 +61,14 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     useEffect(() => {
         const ProjectIdName = (e, ObjData) => {
             setProjectSearchData(ObjData?.project_name)
+
+            if (productivitysheetdata) {  //when data get from jobcard then it rander in new jobcard page
+                navigate("/job_cards/new_job_card")
+                console.log("data  get")
+            }
+            else {
+                console.log("data not  get")
+            }
         }
 
 
@@ -65,7 +80,7 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
         }
 
 
-    }, [projectsearchdata, chooseprojectopnclsData])
+    }, [projectsearchdata, chooseprojectopnclsData, productivitysheetdata])
 
 
     useEffect(() => {
@@ -98,6 +113,10 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
         setProjectSheetId(ObjData?._id)
         ProductiveSheetId.set(ObjData?._id)
         setopenSearchData(false)
+
+        ProjectObjectData.set(ObjData)
+
+
     }
 
 
