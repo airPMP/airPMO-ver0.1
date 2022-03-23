@@ -3,15 +3,51 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
 import SearchBox from "../layout/SearchBox";
+import axios from "axios";
+import { reactLocalStorage } from "reactjs-localstorage";
+
+
 const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
+  const [alljobcarddata, setAllJobCardData] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate();
+
+
   useEffect(() => {
     if (urlTitle.pathname === "/job_cards/All-job-cards") {
       setTitle("Job Cards");
     }
   }, [urlTitle.pathname]);
+
+  useEffect(() => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setAllJobCardData(response?.data)
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+  }, [])
+
+
+
+
+
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -23,7 +59,7 @@ const AllJobCards = () => {
           <SearchBox placeHolderName={"Arab Electrician"} />
           <SearchBox placeHolderName={"Shinning Towers"} />
         </div>
-        <div className="flex flex-col max-w-[939px] max-h-[540px] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
+        <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
             <div className="">
               <svg
@@ -98,44 +134,31 @@ const AllJobCards = () => {
                   <th className="pb-[15.39px]">Status</th>
                 </tr>
               </thead>
-              <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
-                <tr className="mb-[5px] bg-[#ECF1F0]">
-                  <th className="py-[13px]">Activity ID</th>
-                  <th className="">Job Card No.</th>
-                  <th className="">Date(YY/MM/DD)</th>
-                  <th className="">Description</th>
-                  <th className="">Qty</th>
-                  <th className="">Zone</th>
+              {alljobcarddata?.map((item, id) => {
+               return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+                  <tr className="mb-[5px] bg-[#ECF1F0]">
+                    <th className="py-[13px]">{item.activity_code}</th>
+                    <th className="">{item._id}</th>
+                    <th className="">{item.jc_creation}</th>
+                    <th className="">{item.activity_name}</th>
+                    <th className="">{item.quantity_to_be_achieved}</th>
+                    <th className="">{item.zone}</th>
 
-                  <th
-                    className="cursor-pointer"
-                    onClick={() => {
-                      navigate("/job_cards/job-cards-assigned");
-                    }}
-                  >
-                    Status
-                  </th>
-                </tr>
-                <tr className="p-[15px]">
-                  <td className="p-[10px]"></td>
-                </tr>
-                <tr className="bg-[#ECF1F0]">
-                  <th className="py-[13px]">Activity ID</th>
-                  <th className="">Job Card No.</th>
-                  <th className="">Date(YY/MM/DD)</th>
-                  <th className="">Description</th>
-                  <th className="">Qty</th>
-                  <th className="">Zone</th>
-                  <th
-                    className="cursor-pointer"
-                    onClick={() => {
-                      navigate("/job_cards/job-cards-assigned");
-                    }}
-                  >
-                    Status
-                  </th>
-                </tr>
-              </tbody>
+                    <th
+                      className="cursor-pointer"
+                    // onClick={() => {
+                    //   navigate("/job_cards/job-cards-assigned");
+                    // }}
+                    >
+                      Status
+                    </th>
+                  </tr>
+                  <tr className="p-[15px]">
+                    <td className="p-[10px]"></td>
+                  </tr>
+
+                </tbody>
+              })}
             </table>
           </div>
           <div className="flex flex-row justify-end py-[20px] space-x-2 ">

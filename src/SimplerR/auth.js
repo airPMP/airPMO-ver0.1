@@ -19,3 +19,4 @@ export const ViewZoneData = entity(false)
 export const ViewSubZoneData = entity(false)
 
 export const ProductivitySheetData = entity(null)
+export const QuantityTOAchivedData = entity(null) 

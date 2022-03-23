@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     SearchClientSet, ProductiveSheetId, ProductiveNameActive,
-    UpdateSheetData, EntityShowProductiveEye, ProductivitySheetData, ProjectObjectData
+    UpdateSheetData, EntityShowProductiveEye, ProductivitySheetData, ProjectObjectData,  
 }
     from '../../SimplerR/auth'
 import axios from "axios";
@@ -25,8 +25,7 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     const updatesheetdata = UpdateSheetData.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const productivitysheetdata = ProductivitySheetData.use()
-    const projectobjectdata = ProjectObjectData.use()
-
+    const projectobjectdata = ProjectObjectData.use() 
 
     const { addToast } = useToasts();
     let navigate = useNavigate();
@@ -62,13 +61,11 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
         const ProjectIdName = (e, ObjData) => {
             setProjectSearchData(ObjData?.project_name)
 
+
             if (productivitysheetdata) {  //when data get from jobcard then it rander in new jobcard page
-                navigate("/job_cards/new_job_card")
-                console.log("data  get")
-            }
-            else {
-                console.log("data not  get")
-            }
+                    navigate("/job_cards/new_job_card")
+                    console.log("data  get") 
+            } 
         }
 
 
