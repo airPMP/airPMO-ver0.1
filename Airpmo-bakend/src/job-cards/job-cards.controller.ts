@@ -5,6 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateJobCardDto } from './dto/create-job-card.dto';
 import { assignJobCardDto } from './dto/assign-job-card.dto';
 import { Auth } from 'src/decorator/auth.decorator';
+import { createmyjobcardDto } from './dto/my-job-card-dto';
 
 
 @ApiTags('JOB CARDS')
@@ -59,6 +60,13 @@ export class JobCardsController {
   @Get('find_assign_job_card/:id')
   async findassigncard(@Param('id') id: string) {
     return await this.jobCardsService.getassignjobcard(id)
+  }
+
+  
+  @Auth('CREATE_MY_JOB_CARD')
+  @Post('create_my_job_card')
+  async myjobcard(@Body() createmyjobcardDto:createmyjobcardDto){
+    return await this.jobCardsService.createmyjobcard(createmyjobcardDto)
   }
 
 

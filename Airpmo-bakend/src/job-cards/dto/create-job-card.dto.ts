@@ -38,6 +38,10 @@ export class CreateJobCardDto {
 
     @ApiProperty()
     discription: string
+
+    @ApiProperty()
+    min_hours: string;
+
 }
 
 

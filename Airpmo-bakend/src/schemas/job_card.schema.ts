@@ -46,6 +46,9 @@ export class jobcard {
     @Prop()
     discription: string
 
+    @Prop()
+    min_hours: string;
+
     @Prop({ default: Date })
     createdAt: string;
 
