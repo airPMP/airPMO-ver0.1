@@ -14,7 +14,7 @@ export class ZoneService {
     
     return await this.zoneModel.create(createZoneDto)
     }catch{
-      throw new  NotFoundException("all ready exist")
+      throw new  NotFoundException("zone not exist ")
     }
   }
 

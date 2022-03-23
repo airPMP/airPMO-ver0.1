@@ -3,13 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
 import { jobcardassign, jobcardassignDocuments } from 'src/schemas/job_card_assigen.schema';
+import { myjobcard, myjobcardDocument } from 'src/schemas/my_job_card.schema';
 import { assignJobCardDto } from './dto/assign-job-card.dto';
 import { CreateJobCardDto } from './dto/create-job-card.dto';
+import { createmyjobcardDto } from './dto/my-job-card-dto';
 import { UpdateJobCardDto } from './dto/update-job-card.dto';
 
 @Injectable()
 export class JobCardsService {
-  constructor(@InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,@InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>) { }
+  constructor(@InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
+  @InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>,
+  @InjectModel(myjobcard.name) private myjobcardmodal:Model<myjobcardDocument>) { }
   async createjobCard(CreateJobCardDto:CreateJobCardDto) {
     try {
       const job_card = await this.jobcardmodal.create(CreateJobCardDto)
@@ -85,5 +89,9 @@ export class JobCardsService {
       throw new NotFoundException('data not found')
     }
  
+  }
+
+  async createmyjobcard(createmyjobcardDto:createmyjobcardDto){
+    return await this.myjobcardmodal.create(createmyjobcardDto)
   }
 }

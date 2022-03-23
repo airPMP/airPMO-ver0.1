@@ -11,10 +11,10 @@ export class zone {
     @Prop()
     discription:string;
 
-    @Prop({required:true,unique: true })
+    @Prop()
     project_id:string;
     
-    @Prop({required:true,unique: true })
+    @Prop()
     organization_id:string;
 
     @Prop({default:Date})

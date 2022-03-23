@@ -82,6 +82,8 @@ export class PermissionsSeeder implements Seeder {
   
   {name:"ASSIGN-JOB-CARD",description:"create assign job card"},
   {name:"FIND-ASSIGN-JOB-CARD",description:"get assign job card"},
+
+  {name:"CREATE_MY_JOB_CARD",description:"create my job card"},
   ]
   );
   }
