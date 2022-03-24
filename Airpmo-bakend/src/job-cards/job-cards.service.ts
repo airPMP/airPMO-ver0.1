@@ -94,4 +94,15 @@ export class JobCardsService {
   async createmyjobcard(createmyjobcardDto:createmyjobcardDto){
     return await this.myjobcardmodal.create(createmyjobcardDto)
   }
+
+
+  async findmyjobcard(id:string){
+    try {
+      return await this.myjobcardmodal.findOne({_id:id})
+      
+    } catch  {
+      throw new NotFoundException("run time exception")
+    }
+
+  }
 }
