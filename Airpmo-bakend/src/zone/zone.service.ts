@@ -10,8 +10,6 @@ export class ZoneService {
   constructor(@InjectModel(zone.name) private zoneModel: Model<zoneDocument>) { }
   async create(createZoneDto: CreateZoneDto) {
     try{
-
-    
     return await this.zoneModel.create(createZoneDto)
     }catch{
       throw new  NotFoundException("zone not exist ")

@@ -69,5 +69,8 @@ export class JobCardsController {
     return await this.jobCardsService.createmyjobcard(createmyjobcardDto)
   }
 
-
+ @Get('find_my_job_card/:id')
+ async findmyjobcardByid(@Param('id') id:string){
+  return await this.jobCardsService.findmyjobcard(id)
+ }
 }

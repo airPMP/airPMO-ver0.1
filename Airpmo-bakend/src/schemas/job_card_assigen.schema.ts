@@ -8,28 +8,7 @@ export type jobcardassignDocuments = jobcardassign & Document;
 export class jobcardassign {
 
     @Prop()
-    project_id:string
-
-    @Prop()
-    job_card_no:string
-
-
-    @Prop()
-    activity_code: string
-
-
-    @Prop()
-    zone: string
-
-
-    @Prop()
-    quantity_to_be_achieved: string
-
-    @Prop()
-    discription: string
-
-    @Prop()
-    assign_to:string
+    assign_data: [{}]
 
     @Prop({ default: Date })
     createdAt: string;
