@@ -62,6 +62,13 @@ export class JobCardsController {
     return await this.jobCardsService.getassignjobcard(id)
   }
 
+
+  @Auth('FIND-ALL-JOB-CARD')
+  @Get('find_all_assign_job_card')
+  async findallassigncard() {
+    return await this.jobCardsService.findallassigncard()
+  }
+
   
   @Auth('CREATE_MY_JOB_CARD')
   @Post('create_my_job_card')
