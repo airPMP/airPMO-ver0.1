@@ -12,9 +12,9 @@ import { UpdateJobCardDto } from './dto/update-job-card.dto';
 @Injectable()
 export class JobCardsService {
   constructor(@InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
-  @InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>,
-  @InjectModel(myjobcard.name) private myjobcardmodal:Model<myjobcardDocument>) { }
-  async createjobCard(CreateJobCardDto:CreateJobCardDto) {
+    @InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>,
+    @InjectModel(myjobcard.name) private myjobcardmodal: Model<myjobcardDocument>) { }
+  async createjobCard(CreateJobCardDto: CreateJobCardDto) {
     try {
       const job_card = await this.jobcardmodal.create(CreateJobCardDto)
       return job_card
@@ -25,23 +25,23 @@ export class JobCardsService {
   }
 
   async findjobCard(id: string) {
-    try{
+    try {
       const find_Card = await this.jobcardmodal.findOne({ _id: id })
       return find_Card
-    }catch{
+    } catch {
       throw new NotFoundException("Not found data")
     }
-   
+
   }
 
 
   async findjob() {
-    try{
-    const find_all_job_card = await this.jobcardmodal.find()
-    return find_all_job_card
-  }catch{
-    throw new NotFoundException("Not found data")
-  }
+    try {
+      const find_all_job_card = await this.jobcardmodal.find()
+      return find_all_job_card
+    } catch {
+      throw new NotFoundException("Not found data")
+    }
   }
 
 
@@ -61,46 +61,50 @@ export class JobCardsService {
   }
 
 
-  async updatejobcard(id:string,@Body() UpdateJobCardDto:UpdateJobCardDto){
-    try{
-        return await this.jobcardmodal.updateOne({_id:id},{...UpdateJobCardDto})
-    }catch{
+  async updatejobcard(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
+    try {
+      return await this.jobcardmodal.updateOne({ _id: id }, { ...UpdateJobCardDto })
+    } catch {
       throw new NotFoundException("Not found data")
     }
   }
 
 
-  async assignjobcard(assignJobCardDto:assignJobCardDto){
-    try{
-      const job_card_assigen= await this.assignjobcardmodal.create(assignJobCardDto)
+  async assignjobcard(assignJobCardDto: assignJobCardDto) {
+    try {
+      const job_card_assigen = await this.assignjobcardmodal.create(assignJobCardDto)
       return job_card_assigen
-    }catch{
+    } catch {
       throw new NotFoundException('data not found')
     }
- 
+
   }
 
 
-  async getassignjobcard(id:string){
-    try{
-      const get_job_card= await this.assignjobcardmodal.findOne({_id:id})
+  async getassignjobcard(id: string) {
+    try {
+      const get_job_card = await this.assignjobcardmodal.findOne({ _id: id })
       return get_job_card
-    }catch{
+    } catch {
       throw new NotFoundException('data not found')
     }
- 
+
   }
 
-  async createmyjobcard(createmyjobcardDto:createmyjobcardDto){
+  async findallassigncard() {
+    return await this.assignjobcardmodal.find()
+  }
+
+  async createmyjobcard(createmyjobcardDto: createmyjobcardDto) {
     return await this.myjobcardmodal.create(createmyjobcardDto)
   }
 
 
-  async findmyjobcard(id:string){
+  async findmyjobcard(id: string) {
     try {
-      return await this.myjobcardmodal.findOne({_id:id})
-      
-    } catch  {
+      return await this.myjobcardmodal.findOne({ _id: id })
+
+    } catch {
       throw new NotFoundException("run time exception")
     }
 
