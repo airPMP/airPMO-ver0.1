@@ -5,17 +5,18 @@ import SideBar from "../layout/SideBar";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { getUserApi } from "../../AllApi/Api";
+import { useToasts } from "react-toast-notifications";
 
 const JobCardAssigned = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [userdata, setUserData] = useState(null);
-  
+  const [filteredData, setFilteredData] = useState(null);
+  const [userrolesdata, setUserRolesData] = useState(null);
+
   const [selectrefrance, setSelectRefrance] = useState(false);
-
   const [userdetail, setDetail] = useState([]);
-  const [userdetailemail, setDetailEmail] = useState([]);
-
+  const { addToast } = useToasts();
   let navigate = useNavigate();
   let urlTitle = useLocation();
 
@@ -39,6 +40,8 @@ const JobCardAssigned = () => {
       .then((response) => {
         console.log(response?.data)
         setAllJobCardData(response?.data)
+        setFilteredData(response?.data)
+
         if (response.status === 201) {
 
         }
@@ -51,12 +54,12 @@ const JobCardAssigned = () => {
     const userData = getUserApi().then((data) => {
       setUserData(data?.data)
     })
-
+    handleSearch()
 
   }, [])
 
 
-  console.log(userdetail)
+  
 
   useEffect(() => {
 
@@ -64,9 +67,9 @@ const JobCardAssigned = () => {
     let usersName = ""
 
     userdata?.map((items, id) => {
-
       usersName = {
-        "name": `${items.FirstName} ${items.LastName}`
+        "name": `${items.FirstName} ${items.LastName}`,
+        "assignuserid": `${items._id}`
       }
       userdataArray.push(usersName)
     })
@@ -74,25 +77,53 @@ const JobCardAssigned = () => {
     alljobcarddata?.forEach((items) => items.user = userdataArray) //this add user name in to the job card data
 
     setAllJobCardData(alljobcarddata)
+    setFilteredData(alljobcarddata)
 
   }, [alljobcarddata, userdata, selectrefrance])
 
 
- 
+
 
   const UserSelectFun = (e, itemData) => {
+    // const permisions = reactLocalStorage.get("permisions", false); m
 
-    // let allObjectArray=[]
+    const userDetail = e.target.value
+    const database = userDetail.split(',')
+    let userRoleData = ""
     let selectedObject = itemData
-    let selectedValue = e.target.value
-    selectedObject.AssignRole = selectedValue
+    let selectedValue = database[0]
+    selectedObject.assign_role = selectedValue
+    selectedObject.assign_user_id = database[1] 
+    console.log(database[1])
+    console.log(userrolesdata)
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data[0]?.permission)
+        setUserRolesData(response?.data[0]?.permission)
+        selectedObject.assign_user_roles = response?.data[0]?.permission
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+    console.log(userrolesdata)
+    console.log(userRoleData)
 
 
     setDetail([...userdetail, selectedObject]);
-    // console.log(selectedObject)
-    // allObjectArray.push(...selectedObject,selectedObject)
-
-
+    console.log(selectedObject)
+    // allObjectArray.push(...selectedObject,selectedObject) 
     // console.log(allObjectArray)
     // console.log(itemData)
     // console.log(e.target.value)
@@ -102,6 +133,53 @@ const JobCardAssigned = () => {
     setSelectRefrance(true)  //this refrace the select data
   }
 
+
+  console.log(userdetail)
+
+  const SavePostApi = () => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
+      { assign_data: userdetail }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          addToast("your job card is assign Sucessfully", {
+            appearance: "success",
+            autoDismiss: true,
+          })
+        }
+      })
+      .catch((error) => {
+        addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+        })
+      });
+  }
+
+
+  const handleSearch = (e) => {
+
+    let value = e?.target?.value?.toUpperCase();
+    let result = []
+    result = alljobcarddata?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.activity_code?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+    setFilteredData(result)
+
+    if (value === "") {
+      setFilteredData(alljobcarddata)
+    }
+  }
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -165,7 +243,8 @@ const JobCardAssigned = () => {
                   </svg>
                 </div>
                 <div className="bg-[#FFFFFF] pl-[7px]">
-                  <input type="text" placeholder="Search" className="outline-none" />
+                  <input type="text" placeholder="Search" className="outline-none"
+                    onChange={(e) => handleSearch(e)} />
                 </div>
               </div>
             </div>
@@ -183,12 +262,12 @@ const JobCardAssigned = () => {
                   <th className="pb-[15.39px]">Assign To</th>
                 </tr>
               </thead>
-              {alljobcarddata?.map((item, id) => {
-                 
+              {filteredData?.map((item, id) => {
+
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className="py-[13px]">{item.activity_code}</th>
-                    <th className="">{item._id}</th>
+                    <th className=" "   >{item._id}</th>
                     <th className="">{item.jc_creation}</th>
                     <th className="">{item.activity_name}</th>
                     <th className="">{item.quantity_to_be_achieved}</th>
@@ -201,8 +280,9 @@ const JobCardAssigned = () => {
                         <option> Select User</option>
                         {item?.user?.map((items, i) => {
 
-                           
-                          return <option value={items.name}>{items.name}</option>
+
+
+                          return <option value={[items.name, items.assignuserid]}>{items.name}</option>
                         })
                         }
 
@@ -219,7 +299,7 @@ const JobCardAssigned = () => {
           </div>
           <div className="flex flex-row justify-end py-[20px] space-x-2 ">
             <div
-              onClick={() => { navigate("/job_cards/my-job-cards") }}
+              onClick={(e) => SavePostApi(e)}
               className=" cursor-pointer flex justify-center items-center w-[100px] h-[25px]   font-secondaryFont font-medium bg-[#0FCC7C] text-[#000000] rounded-[4px] text-[14px] leading-[37.83px] self-center "
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
             >

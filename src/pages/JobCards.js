@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
@@ -9,7 +9,7 @@ import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { SearchClientSet, ProductiveSheetId, ProductivitySheetData } from '../SimplerR/auth'
-import { getClientApi } from '../AllApi/Api'
+import { getAllJobCardApi, getClientApi, getMyJobCardApi } from '../AllApi/Api'
 import ProductSearch from "../components/Injestion/ProductSearch";
 const JobCards = () => {
 
@@ -28,6 +28,9 @@ const JobCards = () => {
   const productivesheetid = ProductiveSheetId.use()
   const productivitysheetdata = ProductivitySheetData.use()
 
+  const [alljobcardapi, setAllJobCardApi] = useState(null)
+  const [myjobcardapi, setMyJobCardApi] = useState(null)
+
   const { addToast } = useToasts();
 
   let navigate = useNavigate();
@@ -40,12 +43,36 @@ const JobCards = () => {
   }, [urlTitle.pathname]);
 
 
+  useLayoutEffect(() => {
+
+    const userData = getAllJobCardApi().then((data) => {
+      setAllJobCardApi(data?.data.length)  
+       
+    })
+
+    const userData1 = getMyJobCardApi().then((data) => {
+       
+      let result = []
+
+      data?.data?.map((items, id) => {
+          items?.assign_data.map((item, ids) => {
+            result.push(item)
+          })
+
+        })
+        setMyJobCardApi(result.length) 
+      console.log(data?.data) 
+       
+    })
+
+
+  }, [])
+
   useEffect(() => {
 
     const userData = getClientApi().then((data) => {
       setClientData(data?.data) //get client data c-1 -1a
     })
-
   }, [])
 
   useEffect(() => {
@@ -243,7 +270,7 @@ const JobCards = () => {
           <Link to={`/job_cards/All-job-cards`}>
             <Card
               title={"Job Cards"}
-              totalNumber={1500}
+              totalNumber={alljobcardapi}
 
               iconn={
                 <svg
@@ -266,7 +293,7 @@ const JobCards = () => {
           <Link to={`/job_cards/job-cards-assigned`}>
             <Card
               title={"Job Cards Assigned"}
-              totalNumber={800}
+              totalNumber={alljobcardapi}
               iconn={
                 <svg
                   width="58"
@@ -284,26 +311,28 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Card
-            title={"My Job Cards"}
-            totalNumber={400}
-            iconn={
-              <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
-                <svg
-                  width="33"
-                  height="22"
-                  viewBox="0 0 33 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.2385 20.8594C11.7205 21.8836 13.1653 21.9169 13.694 20.9161L22.0787 5.04497L25.3315 11.3002C25.7693 12.1422 26.9092 12.2964 27.555 11.6009L32.0159 6.79692C32.5317 6.24142 32.4995 5.37296 31.944 4.85714C31.3885 4.34133 30.5201 4.37349 30.0042 4.92899L26.8685 8.30592L23.3061 1.45515C22.7954 0.472992 21.3919 0.468421 20.8748 1.44723L12.5514 17.2022L8.23206 8.02365C7.8673 7.24853 6.88944 6.99326 6.19235 7.49118L1.38836 10.9226C0.771513 11.3632 0.62864 12.2204 1.06925 12.8373C1.50985 13.4541 2.36709 13.597 2.98394 13.1564L6.44888 10.6815L11.2385 20.8594Z"
-                    fill="#0FCC7C"
-                  />
-                </svg>
-              </div>
-            }
-          />
+          <Link to={`/job_cards/my-job-cards`}>
+            <Card
+              title={"My Job Cards"}
+              totalNumber={myjobcardapi}
+              iconn={
+                <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
+                  <svg
+                    width="33"
+                    height="22"
+                    viewBox="0 0 33 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.2385 20.8594C11.7205 21.8836 13.1653 21.9169 13.694 20.9161L22.0787 5.04497L25.3315 11.3002C25.7693 12.1422 26.9092 12.2964 27.555 11.6009L32.0159 6.79692C32.5317 6.24142 32.4995 5.37296 31.944 4.85714C31.3885 4.34133 30.5201 4.37349 30.0042 4.92899L26.8685 8.30592L23.3061 1.45515C22.7954 0.472992 21.3919 0.468421 20.8748 1.44723L12.5514 17.2022L8.23206 8.02365C7.8673 7.24853 6.88944 6.99326 6.19235 7.49118L1.38836 10.9226C0.771513 11.3632 0.62864 12.2204 1.06925 12.8373C1.50985 13.4541 2.36709 13.597 2.98394 13.1564L6.44888 10.6815L11.2385 20.8594Z"
+                      fill="#0FCC7C"
+                    />
+                  </svg>
+                </div>
+              }
+            />
+          </Link>
         </div>
       </div>
     </div>

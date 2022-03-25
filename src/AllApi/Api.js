@@ -34,3 +34,28 @@ export const getClientApi = async () => {
     });
 };
 
+
+export const getAllJobCardApi = async () => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const getMyJobCardApi = async () => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_job_card`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+
+
+ 
+

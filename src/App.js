@@ -53,6 +53,7 @@ import FireQuantity from "./components/Injestion/FireQuantity";
 import ViewZones from "./components/Master/ViewZones";
 import NewJobCardMulti from "./components/JobCards/NewJobCardMulti";
 import ManpowerAndMachineryMulti from "./components/JobCards/ManpowerAndMachineryMulti";
+import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
 
 function App() {
   return (
@@ -93,7 +94,9 @@ function App() {
           {/* JobCardAssigned this is arab electricals  drop down */}
         <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} />
 
-        <Route path="/job_cards/new_job_card_multi" element={<NewJobCardMulti />} />
+        {/* <Route path="/job_cards/new_job_card_multi" element={<NewJobCardMulti />} /> */}
+
+        <Route path="/job_cards/CardAssignId/:id" element={<NewJobCardMultiId />} />
          {/* NewJobCardMulti this is Create new Job */}
 
 

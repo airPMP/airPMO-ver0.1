@@ -10,6 +10,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
+  const [filteredData, setFilteredData] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const AllJobCards = () => {
       setTitle("Job Cards");
     }
   }, [urlTitle.pathname]);
+
 
   useEffect(() => {
 
@@ -32,6 +34,8 @@ const AllJobCards = () => {
       .then((response) => {
         console.log(response?.data)
         setAllJobCardData(response?.data)
+        setFilteredData(response?.data)
+
         if (response.status === 201) {
 
         }
@@ -40,10 +44,25 @@ const AllJobCards = () => {
         console.log(error)
 
       })
-
+    handleSearch()
   }, [])
 
+  const handleSearch = (e) => {
 
+    let value = e?.target?.value?.toUpperCase();
+    let result = []
+    result = alljobcarddata?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.activity_code?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+    setFilteredData(result)
+
+    if (value === "") {
+      setFilteredData(alljobcarddata)
+    }
+  }
 
 
 
@@ -114,6 +133,7 @@ const AllJobCards = () => {
                 <div className="bg-[#FFFFFF] pl-[7px]">
                   <input
                     type="text"
+                    onChange={(e) => handleSearch(e)}
                     placeholder="Search"
                     className="outline-none"
                   />
@@ -134,8 +154,8 @@ const AllJobCards = () => {
                   <th className="pb-[15.39px]">Status</th>
                 </tr>
               </thead>
-              {alljobcarddata?.map((item, id) => {
-               return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
+              {filteredData?.map((item, id) => {
+                return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className="py-[13px]">{item.activity_code}</th>
                     <th className="">{item._id}</th>

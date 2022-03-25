@@ -1,4 +1,4 @@
-  
+
 
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -29,10 +29,6 @@ const validate = (values) => {
         errors.client_name = "Client Name Required";
     }
 
-    // if (!values.uploadLogoFile) {
-    //   errors.uploadLogoFile = "uploadLogoFile Required";
-    // }
-
     if (!values.project_name) {
         errors.project_name = "Project Name Required";
     }
@@ -42,9 +38,6 @@ const validate = (values) => {
     if (!values.end_date) {
         errors.end_date = "End Date Required";
     }
-    // if (!values.discription) {
-    //   errors.discription = "discription Required";
-    // }
 
     return errors;
 };
@@ -93,7 +86,7 @@ const EditProject = () => {
 
 
         const feach1 = async () => {
-            
+
             try {
                 const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories/`, {
                     headers: {
