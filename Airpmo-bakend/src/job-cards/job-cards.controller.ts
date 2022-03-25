@@ -62,6 +62,12 @@ export class JobCardsController {
     return await this.jobCardsService.getassignjobcard(id)
   }
 
+  @Auth('FIND-ALL_ASSIGN_USER_BY_ID')
+  @Get('assign_user_data/:id')
+  async assignuserdata(@Param('id') id: string) {
+    return await this.jobCardsService.assignuserdata(id)
+  }
+
 
   @Auth('FIND-ALL-JOB-CARD')
   @Get('find_all_assign_job_card')
@@ -76,6 +82,7 @@ export class JobCardsController {
     return await this.jobCardsService.createmyjobcard(createmyjobcardDto)
   }
 
+  @Auth('FIND_MY_JOB_CARD')
  @Get('find_my_job_card/:id')
  async findmyjobcardByid(@Param('id') id:string){
   return await this.jobCardsService.findmyjobcard(id)

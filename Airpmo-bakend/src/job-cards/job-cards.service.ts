@@ -1,6 +1,7 @@
 import { Body, Injectable, NotAcceptableException, NotFoundException, Param, Post } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
 import { jobcardassign, jobcardassignDocuments } from 'src/schemas/job_card_assigen.schema';
 import { myjobcard, myjobcardDocument } from 'src/schemas/my_job_card.schema';
@@ -81,6 +82,7 @@ export class JobCardsService {
   }
 
 
+
   async getassignjobcard(id: string) {
     try {
       const get_job_card = await this.assignjobcardmodal.findOne({ _id: id })
@@ -90,6 +92,21 @@ export class JobCardsService {
     }
 
   }
+
+  async assignuserdata(id: string) {
+    const findalldata = await this.assignjobcardmodal.find()
+
+    var arr = []
+    findalldata?.map((item, id) => {
+      item?.assign_data?.map((item2, ids) => {
+        arr.push(item2)
+      })
+    })
+
+    const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
+    return variableOne
+  }
+
 
   async findallassigncard() {
     return await this.assignjobcardmodal.find()
