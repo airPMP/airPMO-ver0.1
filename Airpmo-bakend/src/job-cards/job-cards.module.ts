@@ -8,11 +8,15 @@ import { excelSchema } from 'src/schemas/excel.schema';
 import { ExcelModule } from 'src/excel/excel.module';
 import { jobcardassign, jobcardassignSchema } from 'src/schemas/job_card_assigen.schema';
 import { myjobcard, myjobcardschema } from 'src/schemas/my_job_card.schema';
+import { UserRole, UserRoleSchema } from 'src/schemas/user_roles.schema';
+import { Role, RoleSchema } from 'src/schemas/roles.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: jobcard.name, schema: jobcardSchema },
   { name: jobcardassign.name, schema: jobcardassignSchema },
-  { name: myjobcard.name, schema: myjobcardschema }]), ExcelModule],
+  { name: myjobcard.name, schema: myjobcardschema },
+  { name:UserRole.name,schema:UserRoleSchema, },
+  { name:Role.name,schema:RoleSchema }]), ExcelModule],
   controllers: [JobCardsController],
   providers: [JobCardsService]
 

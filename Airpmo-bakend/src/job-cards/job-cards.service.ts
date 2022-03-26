@@ -5,6 +5,9 @@ import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
 import { jobcardassign, jobcardassignDocuments } from 'src/schemas/job_card_assigen.schema';
 import { myjobcard, myjobcardDocument } from 'src/schemas/my_job_card.schema';
+import { Role, RoleDocument } from 'src/schemas/roles.schema';
+import { users, ussersDocument } from 'src/schemas/users.schema';
+import { UserRole, UserRoleDocument } from 'src/schemas/user_roles.schema';
 import { assignJobCardDto } from './dto/assign-job-card.dto';
 import { CreateJobCardDto } from './dto/create-job-card.dto';
 import { createmyjobcardDto } from './dto/my-job-card-dto';
@@ -14,7 +17,9 @@ import { UpdateJobCardDto } from './dto/update-job-card.dto';
 export class JobCardsService {
   constructor(@InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
     @InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>,
-    @InjectModel(myjobcard.name) private myjobcardmodal: Model<myjobcardDocument>) { }
+    @InjectModel(myjobcard.name) private myjobcardmodal: Model<myjobcardDocument>,
+    @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
+    @InjectModel(Role.name) private RoleModel: Model<RoleDocument>) { }
   async createjobCard(CreateJobCardDto: CreateJobCardDto) {
     try {
       const job_card = await this.jobcardmodal.create(CreateJobCardDto)
@@ -94,8 +99,8 @@ export class JobCardsService {
   }
 
   async assignuserdata(id: string) {
-    const findalldata = await this.assignjobcardmodal.find()
 
+    const findalldata = await this.assignjobcardmodal.find()
     var arr = []
     findalldata?.map((item, id) => {
       item?.assign_data?.map((item2, ids) => {
@@ -103,9 +108,24 @@ export class JobCardsService {
       })
     })
 
-    const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
-    return variableOne
+    const finduser = await this.UserRoleModel.find()
+    for (let i = 0; i < finduser.length; i++) {
+      if (finduser[i].user_id === id) {
+        const findroles = await this.RoleModel.findOne({ _id: finduser[i].role_id })
+        var ab = findroles.permission
+        for (let j = 0; j < ab.length; j++) {
+          if (ab[j] === "ALL") {
+            return arr
+          }
+          else {
+            const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
+            return variableOne
+          }
+        }
+      }
+    }
   }
+
 
 
   async findallassigncard() {
