@@ -113,7 +113,7 @@ export class JobCardsService {
       if (finduser[i].user_id === id) {
         const findroles = await this.RoleModel.findOne({ _id: finduser[i].role_id })
         var ab = findroles.permission
-        for (let j = 0; j < ab.length; j++) {
+        for (let j = 0; j <=ab.length; j++) {
           if (ab[j] === "ALL") {
             return arr
           }
