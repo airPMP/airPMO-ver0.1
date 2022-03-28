@@ -1,4 +1,4 @@
-import { Body, Injectable, NotAcceptableException, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Injectable, NotAcceptableException, NotFoundException, Param, Post, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { map } from 'rxjs';
@@ -99,30 +99,33 @@ export class JobCardsService {
   }
 
   async assignuserdata(id: string) {
-
-    const findalldata = await this.assignjobcardmodal.find()
-    var arr = []
-    findalldata?.map((item, id) => {
-      item?.assign_data?.map((item2, ids) => {
-        arr.push(item2)
+    try {
+      const findalldata = await this.assignjobcardmodal.find()
+      var arr = []
+      findalldata?.map((item, id) => {
+        item?.assign_data?.map((item2, ids) => {
+          arr.push(item2)
+        })
       })
-    })
 
-    const finduser = await this.UserRoleModel.find()
-    for (let i = 0; i < finduser.length; i++) {
-      if (finduser[i].user_id === id) {
-        const findroles = await this.RoleModel.findOne({ _id: finduser[i].role_id })
-        var ab = findroles.permission
-        for (let j = 0; j <=ab.length; j++) {
-          if (ab[j] === "ALL") {
-            return arr
-          }
-          else {
-            const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
-            return variableOne
+      const finduser = await this.UserRoleModel.find()
+      for (let i = 0; i < finduser.length; i++) {
+        if (finduser[i].user_id === id) {
+          const findroles = await this.RoleModel.findOne({ _id: finduser[i].role_id })
+          var ab = findroles.permission
+          for (let j = 0; j <= ab.length; j++) {
+            if (ab[j] === "ALL") {
+              return arr
+            }
+            else {
+              const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
+              return variableOne
+            }
           }
         }
       }
+    } catch {
+      throw new UnprocessableEntityException('data not found')
     }
   }
 
