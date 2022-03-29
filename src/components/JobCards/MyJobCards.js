@@ -36,27 +36,66 @@ const MyJobCards = () => {
       .then((response) => {
 
         let result = []
-        console.log(response?.data)
+
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
         // response?.data?.map((items, id) => {
-        //   items?.assign_data.map((item, ids) => {
-        //     result.push(item)
-        //   })
+        //   console.log(items)
 
         // })
         // setFilteredData(result)
-        // setAllJobCardData(result)
-
+        // setAllJobCardData(result) 
         if (response.status === 201) {
-
         }
       })
       .catch((error) => {
         console.log(error)
-
       })
     handleSearch()
+
+
+
+
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_job_card`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+
+        let result = []
+
+        response?.data?.map((items, id) => { 
+          items?.assign_data.map((item, i) => { 
+            if (item?.assign_user_id === "623db7df077fba46d04b295c") {
+              if (item?.assign_user_roles[0] === 'ALL')
+                items?.assign_data.map((item, i) => {
+                  result.push(item)
+                })
+              else if (item?.assign_user_id === "623db7df077fba46d04b295c") {
+
+                if (item?.assign_user_roles[0] !== 'ALL') {
+                  result.push(item)
+                }
+              }
+            }
+
+          })
+        })
+
+        console.log(result)
+        // setFilteredData(result)
+        // setAllJobCardData(result) 
+        if (response.status === 201) {
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+
   }, [])
 
   const handleSearch = (e) => {
@@ -89,8 +128,7 @@ const MyJobCards = () => {
     navigate(`/job_cards/CardAssignId/${itemid}`)
   }
 
-  console.log(alljobcarddata)
-  console.log(filteredData)
+
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -99,8 +137,10 @@ const MyJobCards = () => {
       </div>
       <div className="flex flex-col">
         <Header title={title} />
-        <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " > My Job Cards</div>
-        <div className="flex flex-col max-w-[939px]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
+        <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px]
+         leading-[53.15px] tracking-[-2%] " > My Job Cards</div>
+        <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] 
+        bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
             <div className="">
               <svg

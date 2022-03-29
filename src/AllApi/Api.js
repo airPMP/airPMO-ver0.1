@@ -47,8 +47,8 @@ export const getAllJobCardApi = async () => {
 
 export const getMyJobCardApi = async () => {
     const token = reactLocalStorage.get("access_token", false);
-
-    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_job_card`, {
+    const user_id = reactLocalStorage.get("organizationId", false);
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/assign_user_data/${user_id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

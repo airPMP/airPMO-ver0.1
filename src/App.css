@@ -48,6 +48,10 @@ top:-20px
 .zone_pops-overlay> div{
     width:  500px !important;
 }
+.jobCard_popup-content{
+    width:   45% !important;
+
+}
 .ex1 {
 
     padding: inherit;

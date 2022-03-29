@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 
 
 
-const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, selectDropDown }) => {
+const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddata }) => {
 
 
 
@@ -20,8 +20,9 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
     const [timesheetname, setTimeSheetName] = useState(null);
     const [timesheetremark, setTimeSheetRemark] = useState(null);
     const [timesheethours, setTimeSheetHours] = useState(null);
+    const [assigncarddataarray, AssignCardDataArray] = useState([]);
 
-
+    console.log(assigncarddataarray)
 
 
     useEffect(() => {
@@ -43,13 +44,23 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
 
     }, []);
 
+    useEffect(() => {
+        AssignCardDataArray([assigncarddata])
 
+        if (assigncarddata) {
+            Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
+                console.log(value)
+            })
+        }
+    }, [assigncarddata])
+
+
+    console.log(assigncarddata)
 
     const ManpowerAndMachinery = [
         { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
         { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
         { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
-
     ]
 
     const TimeSelectFun = (e) => {
@@ -60,10 +71,11 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
 
         setOpen(true) ///open popup
     }
-    console.log(timesheetname)
 
     return (
-        <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
+        <div className="max-w-[100%]  scroll_bar_ManpowerMulti  
+        overflow-hidden bg-[#FFFFFF] justify-center items-center 
+         my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
                 <div className="grid grid-cols-2">
                     <div className="col-span-1">
@@ -75,9 +87,9 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                         </div>
                     </div>
                     <div className="col-span-1  ">
-                        <div className=" float-right font-secondaryFont ml-[180.65px]
-                          mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px]
-                           tracking-[-0.02em]">
+                        <div className=" float-right font-secondaryFont 
+                        ml-[80.65px]  mt-[11.51px] text-[#000000]  font-medium not-italic 
+                        text-[28.09px] tracking-[-0.02em]">
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
@@ -127,36 +139,53 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px] ml-[37px] mr-[20px]">
-                <table className=" w-[100%]  pt-[24px] ml-[40px]">
-                    <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
-                        <tr className="bg-[#ECF1F0]">
-                            <th className="py-[20px]">Employee ID</th>
-                            <th className="">Employee Name</th>
-                            <th className="">Designation</th>
-                            <th className="">Total Hours</th>
-                            <th className="">Remarks</th>
-                            <th className="">Action</th>
+            <div className="flex flex-row mt-[30px]  mr-[20px]">
+                <table className=" w-[100%]  pt-[24px] ml-[40px] ">
+                    <thead className="font-secondaryFont text-[#000000] font-normal 
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
+                        <tr className="bg-[#ECF1F0] ">
+                            <th className="py-[20px]">SI No</th>
+                            <th className="py-[20px]">Designation</th>
+                            <th className="py-[20px]">P Resources</th>
+                            <th className="py-[20px]">P Total Hrs</th>
+                            <th className="py-[20px]">Allowable Resources</th>
+                            <th className="py-[20px]">Allowable Total Hrs</th>
+                            <th className="py-[20px]"> Actual Total Hrs</th>
+                            <th className="py-[20px]"> Actual Total Cost</th>
+                            <th className="">SPI</th>
+                            <th className="">CPI</th>
                         </tr>
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
 
-                    {ManpowerAndMachinery?.map((item, i) => {
+                    {assigncarddata && assigncarddataarray?.map( (item,id) => {
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
                         >
-                            <tr className="rounded  bg-[#ECF1F0]">
+                            <tr className="bg-[#ECF1F0] ">
+                                <th className="py-[20px]">{id+1}</th>
+                                <th className="py-[20px]">Designation</th>
 
-                                <th className="text-[#8F9BBA]">{item.designation}</th>
-                                <th className="text-[#8F9BBA]">{item.unit}</th>
-                                <th className="text-[#8F9BBA]">{item.designation}</th>
-                                <th className="text-[#8F9BBA]">{item.no}</th>
-                                <th className="text-[#8F9BBA]">{item.totalhours}</th>
-                                <th className="text-[#8F9BBA]">{item.action}</th>
+                                {assigncarddata && Object.entries(assigncarddata?.manpower_and_machinary[0]).slice(3).map(([key, value]) => {
+                                    return<><tr className="py-[20px]">{value}</tr>
+                                    
+                                    <tr className="p-[15px] ">
+                                <td className="p-[10px]" ></td>
                             </tr>
+                            </>
+                                })}
+                                <th className="py-[20px]">P Total Hrs</th>
+                                <th className="py-[20px]">Allowable Resources</th>
+                                <th className="py-[20px]">Allowable Total Hrs</th>
+                                <th className="py-[20px]"> Actual Total Hrs</th>
+                                <th className="py-[20px]"> Actual Total Cost</th>
+                                <th className="">SPI</th>
+                                <th className="">CPI</th>
+                            </tr>
+
                             <tr className="p-[15px] ">
                                 <td className="p-[10px]" ></td>
                             </tr>
@@ -254,4 +283,4 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
     );
 };
 
-export default ManpowerAndMachineryMulti;
+export default PlannedAllowable;

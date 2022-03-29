@@ -50,19 +50,8 @@ const JobCards = () => {
        
     })
 
-    const userData1 = getMyJobCardApi().then((data) => {
-       
-      let result = []
-
-      data?.data?.map((items, id) => {
-          items?.assign_data.map((item, ids) => {
-            result.push(item)
-          })
-
-        })
-        setMyJobCardApi(result.length) 
-      console.log(data?.data) 
-       
+    const userData1 = getMyJobCardApi().then((data) => {   
+      setMyJobCardApi(data?.data?.length) 
     })
 
 

@@ -38,7 +38,7 @@ const JobCardAssigned = () => {
     })
 
       .then((response) => {
-        console.log(response?.data)
+        // console.log(response?.data)
         setAllJobCardData(response?.data)
         setFilteredData(response?.data)
 
@@ -59,7 +59,7 @@ const JobCardAssigned = () => {
   }, [])
 
 
-  
+
 
   useEffect(() => {
 
@@ -81,6 +81,14 @@ const JobCardAssigned = () => {
 
   }, [alljobcarddata, userdata, selectrefrance])
 
+  // useEffect(() => {
+  //   console.log(userdetail)
+  //   let pp = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
+
+  //   console.log(pp)
+  //   setDetail(pp)
+
+  // }, [ ])
 
 
 
@@ -88,14 +96,11 @@ const JobCardAssigned = () => {
     // const permisions = reactLocalStorage.get("permisions", false); m
 
     const userDetail = e.target.value
-    const database = userDetail.split(',')
-    let userRoleData = ""
+    const database = userDetail.split(',') 
     let selectedObject = itemData
     let selectedValue = database[0]
     selectedObject.assign_role = selectedValue
     selectedObject.assign_user_id = database[1] 
-    console.log(database[1])
-    console.log(userrolesdata)
 
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
@@ -104,8 +109,7 @@ const JobCardAssigned = () => {
       },
     })
 
-      .then((response) => {
-        console.log(response?.data[0]?.permission)
+      .then((response) => { 
         setUserRolesData(response?.data[0]?.permission)
         selectedObject.assign_user_roles = response?.data[0]?.permission
         if (response.status === 201) {
@@ -116,17 +120,14 @@ const JobCardAssigned = () => {
         console.log(error)
 
       })
-
-    console.log(userrolesdata)
-    console.log(userRoleData)
-
-
+  
     setDetail([...userdetail, selectedObject]);
-    console.log(selectedObject)
+    // console.log(selectedObject)
     // allObjectArray.push(...selectedObject,selectedObject) 
     // console.log(allObjectArray)
     // console.log(itemData)
     // console.log(e.target.value)
+
   }
 
   const UserOnFocusSelectFun = (e, itemData) => {
@@ -134,13 +135,21 @@ const JobCardAssigned = () => {
   }
 
 
-  console.log(userdetail)
+
 
   const SavePostApi = () => {
 
+    
+    
+    let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
+
+    // console.log(pp)
+    // console.log(userdetail)
+     
+
     const token = reactLocalStorage.get("access_token", false);
     axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
-      { assign_data: userdetail }, {
+      { assign_data: UserSdata }, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

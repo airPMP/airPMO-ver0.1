@@ -12,6 +12,8 @@ const UserRole1 = () => {
     const [title, setTitle] = useState(null);
     const [userdata, setUserData] = useState(null);
     const [rolesdata, setRolesData] = useState([]);
+    const [userdata1, setUserData1] = useState([]);
+    const [userdetails, setUserDetailsData] = useState([]);
 
     let navigate = useNavigate();
     let urlTitle = useLocation();
@@ -39,42 +41,55 @@ const UserRole1 = () => {
     //   .entries(objData)
     //   .reduce((r, [key, array]) => array.map((v, i) => ({ ...r[i], [keys[key]]: v })), []);
 
-    useEffect(() => { 
+    useEffect(() => {
 
-        userdata?.forEach(item => {
-            let userdata = {
-                "id": item._id,
-                "User_id": item.spread_sheet_user_id,
-                'email': item.Email
-            }
+        if (userdata) {
+            let some = []
+            userdata?.forEach(item => {
+                const token = reactLocalStorage.get("access_token", false);
 
-            const token = reactLocalStorage.get("access_token", false);
+                const feach = async () => {
+                    try {
+                        const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${item?._id}/roles`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            }
+                        })
 
-            axios.get(`${process.env.REACT_APP_BASE_URL}/api/role/620b98e24b88a7ea8b6bd8c6/users`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                        if (data1?.data[0]?.name) {
+                            let dataq = []
+                            item.designation = data1?.data[0]?.name
+                            // console.log(item)
+                            dataq.push(item)
+                            setUserData1(dataq)
+                        }
+
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+
+                feach();
             })
-                .then((response) => {
-                    // console.log(response)
-                })
-                 
+
+             
+        }
+
+    }, [userdata])
+
+    useEffect(() => {
+         
+        if (userdata1) {
+            userdata1.map((item, id) => { 
+                setUserDetailsData([...userdetails, item])
+            })
+        }
+
+    }, [userdata1])
+
+    console.log(userdetails[0]?.designation)
 
 
-        })
-
-
-    }, [userdata, rolesdata])
-
-
-
-
-    const data = [
-        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
-        ,
-        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
-
-    ]
 
 
 
@@ -161,14 +176,14 @@ const UserRole1 = () => {
                                 </tr>
 
 
-                                {userdata?.map((item, id) => {
+                                {userdetails?.map((item, id) => {
 
 
-                                    return <tbody className="  mb-[10px]   ">
+                                    return <tbody className="  mb-[10px]   " key={id}>
                                         <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick={() => { navigate("/UserManagement/UserRole1/Details") }}>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.spread_sheet_user_id} </td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.Email}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item.Email}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item?.spread_sheet_user_id} </td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item?.designation}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item?.Email}</td>
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
                                                     <div>
