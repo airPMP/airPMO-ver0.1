@@ -73,7 +73,20 @@ export class PermissionsSeeder implements Seeder {
   {name:"CREATE/EDIT-QUANTITY_SHEET",description:"add quantity sheet"},
   {name:"CREATE/EDIT-FIRE_QUANTITY_SHEET",description:"add fire quantity sheet"},
   {name:"CREATE/EDIT-LIGHT_FITTING_QUANTITY_SHEET",description:"add light fitting quantity sheet"},
+
+  {name:"CREATE-JOB-CARD",description:"create job card"},
+  {name:"FIND-JOB-CARD",description:"get job card"},
+  {name:"FIND-ALL-JOB-CARD",description:"get all job card"},
+  {name:"DELETE-JOB-CARD",description:"remove job card"},
+  {name:"UPDATE-JOB-CARD",description:"edit job card"},
   
+  {name:"ASSIGN-JOB-CARD",description:"create assign job card"},
+  {name:"FIND-ASSIGN-JOB-CARD",description:"get assign job card"},
+  {name:"FIND-ALL-JOB-CARD",description:"get all assign job card"},
+  {name:"FIND-ALL_ASSIGN_USER_BY_ID",description:"get all assign user"},
+
+  {name:"CREATE_MY_JOB_CARD",description:"create my job card"},
+  {name:"FIND_MY_JOB_CARD",description:"get my job card"},
   ]
   );
   }
