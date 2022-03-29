@@ -106,6 +106,14 @@ top:-20px
     outline: none;
    }
 
-   @media (min-width: 1000px) and (max-width: 1200px) {
+   @media (min-width: 1140px) and (max-width: 1290px) {
+    .responcev_btn{
+width: 120px !important;
+    }
+   }
 
+   @media (min-width: 940px) and (max-width: 1140px) {
+    .responcev_btn{
+width: 100px !important;
+    }
    }
