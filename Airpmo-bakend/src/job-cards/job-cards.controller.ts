@@ -88,4 +88,10 @@ export class JobCardsController {
   async findmyjobcardByid(@Param('id') id: string) {
     return await this.jobCardsService.findmyjobcard(id);
   }
+
+  @Auth('FIND_MY_JOB_CARD_ALL')
+  @Get('find_my_job_card_all')
+  async findmyjobcard() {
+    return await this.jobCardsService.myjobcard();
+  }
 }

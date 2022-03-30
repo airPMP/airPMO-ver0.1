@@ -5,6 +5,9 @@ export type myjobcardemployeeDocument = myjobcardemployee & Document;
 @Schema()
 export class myjobcardemployee {
   @Prop()
+  jc_id: string;
+
+  @Prop()
   name: string;
 
   @Prop()

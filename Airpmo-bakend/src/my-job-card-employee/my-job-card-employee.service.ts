@@ -63,4 +63,23 @@ export class MyJobCardEmployeeService {
   async remove(id: string) {
     return await this.myjobcardemployeemodal.remove({ _id: id });
   }
+
+  async findemployeebyjcid(id: string) {
+    try {
+      var new_arr = [];
+      const employe = await this.myjobcardemployeemodal.find();
+      for (let i = 0; i < employe.length; i++) {
+        if (employe[i].jc_id === id) {
+          new_arr.push(employe[i]);
+        }
+      }
+      if (new_arr.length != 0) {
+        return new_arr;
+      } else {
+        throw new NotFoundException('not record available');
+      }
+    } catch {
+      throw new NotFoundException('employee not found');
+    }
+  }
 }
