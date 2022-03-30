@@ -54,6 +54,18 @@ export class myjobcard {
 
   @Prop()
   discription: string;
+
+  @Prop()
+  spi: string;
+
+  @Prop()
+  cpi: string;
+
+  @Prop({ default: Date })
+  createdAt: string;
+
+  @Prop({ default: Date })
+  updatedAt: string;
 }
 
 export const myjobcardschema = SchemaFactory.createForClass(myjobcard);

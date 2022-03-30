@@ -164,6 +164,7 @@ export class PermissionsSeeder implements Seeder {
 
       { name: 'CREATE_MY_JOB_CARD', description: 'create my job card' },
       { name: 'FIND_MY_JOB_CARD', description: 'get my job card' },
+      { name: 'FIND_MY_JOB_CARD_ALL', description: 'get my all job card' },
 
       {
         name: 'CREATE_EMPLOYEE_IN_MY_JOB_CARD',
@@ -178,6 +179,10 @@ export class PermissionsSeeder implements Seeder {
       {
         name: 'DELETE_EMPLOYEE_IN_MY_JOB_CARD',
         description: 'delete employee',
+      },
+      {
+        name: 'FIND_EMPLOYEE_IN_MY_JOB_CARD_BY_JC_ID',
+        description: 'get employe by jc no',
       },
     ]);
   }

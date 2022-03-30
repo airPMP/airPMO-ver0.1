@@ -1,9 +1,20 @@
-import { Body, Injectable, NotAcceptableException, NotFoundException, Param, Post, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Body,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+  Param,
+  Post,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
-import { jobcardassign, jobcardassignDocuments } from 'src/schemas/job_card_assigen.schema';
+import {
+  jobcardassign,
+  jobcardassignDocuments,
+} from 'src/schemas/job_card_assigen.schema';
 import { myjobcard, myjobcardDocument } from 'src/schemas/my_job_card.schema';
 import { Role, RoleDocument } from 'src/schemas/roles.schema';
 import { users, ussersDocument } from 'src/schemas/users.schema';
@@ -15,138 +26,153 @@ import { UpdateJobCardDto } from './dto/update-job-card.dto';
 
 @Injectable()
 export class JobCardsService {
-  constructor(@InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
-    @InjectModel(jobcardassign.name) private assignjobcardmodal: Model<jobcardassignDocuments>,
-    @InjectModel(myjobcard.name) private myjobcardmodal: Model<myjobcardDocument>,
+  constructor(
+    @InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
+    @InjectModel(jobcardassign.name)
+    private assignjobcardmodal: Model<jobcardassignDocuments>,
+    @InjectModel(myjobcard.name)
+    private myjobcardmodal: Model<myjobcardDocument>,
     @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
-    @InjectModel(Role.name) private RoleModel: Model<RoleDocument>) { }
+    @InjectModel(Role.name) private RoleModel: Model<RoleDocument>,
+  ) {}
+
   async createjobCard(CreateJobCardDto: CreateJobCardDto) {
     try {
-      const job_card = await this.jobcardmodal.create(CreateJobCardDto)
-      return job_card
+      const job_card = await this.jobcardmodal.create(CreateJobCardDto);
+      return job_card;
     } catch {
-      throw new NotFoundException("Not found data")
+      throw new NotFoundException('Not found data');
     }
-
   }
 
   async findjobCard(id: string) {
     try {
-      const find_Card = await this.jobcardmodal.findOne({ _id: id })
-      return find_Card
+      const find_Card = await this.jobcardmodal.findOne({ _id: id });
+      return find_Card;
     } catch {
-      throw new NotFoundException("Not found data")
+      throw new NotFoundException('Not found data');
     }
-
   }
-
 
   async findjob() {
+    var new_aar1 = [];
     try {
-      const find_all_job_card = await this.jobcardmodal.find()
-      return find_all_job_card
+      const find_all_job_card = await this.jobcardmodal.find().lean();
+      const find_all_employee = await this.myjobcardmodal.find().lean();
+
+      for (let i = 0; i < find_all_job_card.length; i++) {
+        for (let j = 0; j < find_all_employee.length; j++) {
+          if (find_all_job_card[0]._id.toString() === find_all_employee[j].jc_number ) {
+            const new_1 = { 'current_quantity_to_achived':  find_all_employee[j].current_quantity_to_be_achieved, };
+            const new_2 = {' spi':  find_all_employee[j].spi, };
+            const new_3 = { 'cpi':  find_all_employee[j].cpi };
+            const obj = Object.assign({}, find_all_job_card[i], new_1, new_2,new_3);
+            new_aar1.push(obj);
+          }
+        }
+      }
+      return new_aar1;
     } catch {
-      throw new NotFoundException("Not found data")
+      throw new NotFoundException('Not found data');
     }
   }
-
 
   async deleteJobcard(@Param('id') id: string) {
     try {
-      const check_card = await this.jobcardmodal.findOne({ _id: id })
+      const check_card = await this.jobcardmodal.findOne({ _id: id });
       if (check_card) {
-        const delete_card = await this.jobcardmodal.deleteOne({ _id: id })
-        return "delete sucessfully"
-      }
-      else {
-        throw new NotFoundException('data not found')
+        const delete_card = await this.jobcardmodal.deleteOne({ _id: id });
+        return 'delete sucessfully';
+      } else {
+        throw new NotFoundException('data not found');
       }
     } catch {
-      throw new NotFoundException('Not found data')
+      throw new NotFoundException('Not found data');
     }
   }
-
 
   async updatejobcard(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
     try {
-      return await this.jobcardmodal.updateOne({ _id: id }, { ...UpdateJobCardDto })
+      return await this.jobcardmodal.updateOne(
+        { _id: id },
+        { ...UpdateJobCardDto },
+      );
     } catch {
-      throw new NotFoundException("Not found data")
+      throw new NotFoundException('Not found data');
     }
   }
-
 
   async assignjobcard(assignJobCardDto: assignJobCardDto) {
     try {
-      const job_card_assigen = await this.assignjobcardmodal.create(assignJobCardDto)
-      return job_card_assigen
+      const job_card_assigen = await this.assignjobcardmodal.create(
+        assignJobCardDto,
+      );
+      return job_card_assigen;
     } catch {
-      throw new NotFoundException('data not found')
+      throw new NotFoundException('data not found');
     }
-
   }
-
-
 
   async getassignjobcard(id: string) {
     try {
-      const get_job_card = await this.assignjobcardmodal.findOne({ _id: id })
-      return get_job_card
+      const get_job_card = await this.assignjobcardmodal.findOne({ _id: id });
+      return get_job_card;
     } catch {
-      throw new NotFoundException('data not found')
+      throw new NotFoundException('data not found');
     }
-
   }
 
   async assignuserdata(id: string) {
     try {
-      const findalldata = await this.assignjobcardmodal.find()
-      var arr = []
+      const findalldata = await this.assignjobcardmodal.find();
+      var arr = [];
       findalldata?.map((item, id) => {
         item?.assign_data?.map((item2, ids) => {
-          arr.push(item2)
-        })
-      })
+          arr.push(item2);
+        });
+      });
 
-      const finduser = await this.UserRoleModel.find()
+      const finduser = await this.UserRoleModel.find();
       for (let i = 0; i < finduser.length; i++) {
         if (finduser[i].user_id === id) {
-          const findroles = await this.RoleModel.findOne({ _id: finduser[i].role_id })
-          var ab = findroles.permission
+          const findroles = await this.RoleModel.findOne({
+            _id: finduser[i].role_id,
+          });
+          var ab = findroles.permission;
           for (let j = 0; j <= ab.length; j++) {
-            if (ab[j] === "ALL") {
-              return arr
-            }
-            else {
-              const variableOne = arr.filter(itemInArray => itemInArray.assign_user_id === id);
-              return variableOne
+            if (ab[j] === 'ALL') {
+              return arr;
+            } else {
+              const variableOne = arr.filter(
+                (itemInArray) => itemInArray.assign_user_id === id,
+              );
+              return variableOne;
             }
           }
         }
       }
     } catch {
-      throw new UnprocessableEntityException('data not found')
+      throw new UnprocessableEntityException('data not found');
     }
   }
 
-
-
   async findallassigncard() {
-    return await this.assignjobcardmodal.find()
+    return await this.assignjobcardmodal.find();
   }
 
   async createmyjobcard(createmyjobcardDto: createmyjobcardDto) {
-    return await this.myjobcardmodal.create(createmyjobcardDto)
+    return await this.myjobcardmodal.create(createmyjobcardDto);
   }
-
 
   async findmyjobcard(id: string) {
     try {
-      return await this.myjobcardmodal.findOne({ _id: id })
-
+      return await this.myjobcardmodal.findOne({ _id: id });
     } catch {
-      throw new NotFoundException("run time exception")
+      throw new NotFoundException('run time exception');
     }
+  }
 
+  async myjobcard() {
+    return await this.myjobcardmodal.find();
   }
 }

@@ -51,4 +51,10 @@ export class createmyjobcardDto {
 
   @ApiProperty()
   discription: string;
+
+  @ApiProperty()
+  spi: string;
+
+  @ApiProperty()
+  cpi: string;
 }

@@ -51,4 +51,10 @@ export class MyJobCardEmployeeController {
   remove(@Param('id') id: string) {
     return this.myJobCardEmployeeService.remove(id);
   }
+
+  @Auth('FIND_EMPLOYEE_IN_MY_JOB_CARD_BY_JC_ID')
+  @Get('find_my_job_card_employee_by_jc_no/:id')
+  findjc(@Param('id') id: string) {
+    return this.myJobCardEmployeeService.findemployeebyjcid(id);
+  }
 }
