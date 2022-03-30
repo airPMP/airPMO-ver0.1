@@ -1,54 +1,54 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class createmyjobcardDto {
-    @ApiProperty()
-    jc_number: string
+  @ApiProperty()
+  jc_number: string;
 
-    @ApiProperty()
-    zone: string
+  @ApiProperty()
+  zone: string;
 
-    @ApiProperty()
-    sub_zone: string
+  @ApiProperty()
+  sub_zone: string;
 
-    @ApiProperty()
-    activity_name: string
+  @ApiProperty()
+  activity_name: string;
 
-    @ApiProperty()
-    date: string
+  @ApiProperty()
+  date: string;
 
-    @ApiProperty()
-    jc_executed: string
+  @ApiProperty()
+  jc_executed: string;
 
-    @ApiProperty()
-    actual_emp: []
+  @ApiProperty()
+  actual_employee: [];
 
-    @ApiProperty()
-    actual_equipments: []
+  @ApiProperty()
+  actual_equipments: [];
 
+  @ApiProperty()
+  plan_vs_allowable_vs_actual: [];
 
-    @ApiProperty()
-    plan_vs_allowable_vs_actual:[]
+  @ApiProperty()
+  quantity_to_be_achieved: string;
 
-    @ApiProperty()
-    quantity_to_be_achieved:string
+  @ApiProperty()
+  current_quantity_to_be_achieved: string;
 
+  @ApiProperty()
+  comments: string;
 
-    @ApiProperty()
-    comments: string
+  @ApiProperty()
+  attach_photo: string;
 
-    @ApiProperty()
-    attach_photo: string
+  @ApiProperty()
+  qc_remarks: string;
 
-    @ApiProperty()
-    qc_remarks: string
+  @ApiProperty()
+  hse_remark: string;
 
-    @ApiProperty()
-    hse_remark: string
+  @ApiProperty()
+  manager_comments: string;
 
-    @ApiProperty()
-    manager_comments: string
-    
-    @ApiProperty()
-    discription: string
-
+  @ApiProperty()
+  discription: string;
 }
