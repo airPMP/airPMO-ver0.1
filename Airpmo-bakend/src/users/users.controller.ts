@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes,ValidationPipe,Request, UseGuards} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,31 +20,30 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Users api')
 @Controller('api')
-
 export class UsersController {
-  constructor(private  readonly UsersService:UsersService){}
+  constructor(private readonly UsersService: UsersService) {}
 
   @Post('users/register')
   @UsePipes(new ValidationPipe({ transform: true }))
-    create(@Body() createUserDto: CreateUserDto) {
-   return this.UsersService.create( createUserDto);
-   }
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.UsersService.create(createUserDto);
+  }
 
   @Auth('GET-USERS')
   @Get('users')
-   findAll() {
+  findAll() {
     return this.UsersService.findAll();
   }
-  
+
   @Auth('GET-USERS')
   @Get('users/:id')
-  findOne(@Param('id') id: string ) {
+  findOne(@Param('id') id: string) {
     return this.UsersService.findOne(id);
   }
 
   @Auth('EDIT-USERS')
   @Patch('users/:id')
-  async update(@Param('id') id:string, @Body() UpdateUserDto:UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
     return this.UsersService.update(id, UpdateUserDto);
   }
 
@@ -41,19 +52,17 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.UsersService.remove(id);
   }
-  
+
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Patch('update/personal/profile')
-  async updateprofile(@Body() UpdateUserDto:UpdateUserDto,@Request() req) {
-    return this.UsersService.updateprofile(UpdateUserDto,req);
+  async updateprofile(@Body() UpdateUserDto: UpdateUserDto, @Request() req) {
+    return this.UsersService.updateprofile(UpdateUserDto, req);
   }
 
   @Auth('GET-USERS')
   @Get('/organization/:oraganization_id/user')
-  findorganization(@Param('oraganization_id') oraganization_id: string ) {
-    return this.UsersService.findorganization(oraganization_id);  
+  findorganization(@Param('oraganization_id') oraganization_id: string) {
+    return this.UsersService.findorganization(oraganization_id);
   }
 }
-
-
