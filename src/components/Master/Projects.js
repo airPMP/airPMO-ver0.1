@@ -137,6 +137,7 @@ const Projects = () => {
   }
 
   const EditProfile = (e) => {
+    console.log(e)
     if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {
     navigate(`/master/edit_project/${e}`)
     }

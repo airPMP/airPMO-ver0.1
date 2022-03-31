@@ -10,6 +10,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
+import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
 
 
 const validate = (values) => {
@@ -52,6 +53,8 @@ const NewJobCardMultiId = () => {
     const [currentdate, setCurrentDate] = useState(null)
 
     const [open, setOpen] = useState(false);
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
+
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
     let naviagte = useNavigate();
@@ -67,7 +70,7 @@ const NewJobCardMultiId = () => {
     }, [urlTitle.pathname])
 
 
-
+ 
 
     useEffect(() => {
 
@@ -96,9 +99,6 @@ const NewJobCardMultiId = () => {
     }, [urlTitle.pathname]);
 
 
-
-
-
     const formik = useFormik({
         initialValues: {
             activityCode: "",
@@ -115,6 +115,42 @@ const NewJobCardMultiId = () => {
             // console.log(`Form data`, values);
         },
     });
+
+    const IssueJc = () => {
+
+
+        const token = reactLocalStorage.get("access_token", false);
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card`,
+            {
+                "jc_number": assigncarddata?._id,
+                "current_quantity_to_be_achieved": currentquantitytoachivedData
+            }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+
+            .then((response) => {
+                console.log(response);
+                if (response.status === 201) {
+                    // addToast("your job card is assign Sucessfully", {
+                    //     appearance: "success",
+                    //     autoDismiss: true,
+                    // })
+                }
+            })
+            .catch((error) => {
+                // addToast(error.response.data.message, {
+                //     appearance: "error",
+                //     autoDismiss: true,
+                // })
+            });
+
+
+
+    }
+
+
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
@@ -277,6 +313,7 @@ const NewJobCardMultiId = () => {
                                     <ManpowerAndMachineryMulti
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
+                                        assigncarddataId ={assigncarddata?._id}
 
                                     />
                                 </div>
@@ -487,6 +524,7 @@ const NewJobCardMultiId = () => {
                                     </div>
                                     <div>
                                         <button
+                                            onClick={(e) => IssueJc(e)}
                                             type="submit"
                                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                         >

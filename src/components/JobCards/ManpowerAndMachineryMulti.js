@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 
 
 
-const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, selectDropDown }) => {
+const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataId }) => {
 
 
 
@@ -16,11 +16,12 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
 
     const [timesheetdata, setTimeSheetData] = useState(null);
-    const [timesheetid, setTimeSheetId] = useState(null);
     const [timesheetname, setTimeSheetName] = useState(null);
     const [timesheetremark, setTimeSheetRemark] = useState(null);
     const [timesheethours, setTimeSheetHours] = useState(null);
-
+    const [employeeid, setEmployeeId] = useState(null);
+    const [employeedesignation, setEmployeeDesignation] = useState(null);
+    const [addtolistdata, setAddToListData] = useState([]);
 
 
 
@@ -53,14 +54,34 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
     ]
 
     const TimeSelectFun = (e) => {
+        console.log(e.target.value)
         let spitData = e.target.value.split(",")
-        setTimeSheetId(spitData[0])
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
+        setEmployeeId(spitData[0])
+        setEmployeeDesignation(spitData[3])
         console.log(spitData)
 
         setOpen(true) ///open popup
     }
-    console.log(timesheetname)
+
+    const AddToList = () => {
+
+        let AddlistObject = {
+            "jc_number": assigncarddataId,
+            "employee_id": employeeid,
+            "designation": employeedesignation,
+            "name": timesheetname,
+            "hours": timesheethours,
+            "remark": timesheetremark
+        }
+        setAddToListData([...addtolistdata, AddlistObject])
+
+        setOpen(false)
+    }
+
+
+    console.log(addtolistdata)
+
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
@@ -201,7 +222,7 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                 >
                     <div className="p-4 jobCard_popup">
                         <div className="text-[24px]">
-                            ID : {timesheetid}
+                            ID : {employeeid}
                         </div>
                         <div className=" grid grid-cols-4 p-4 gap-3">
                             <div className="col-span-3    " style={{ borderBottom: "2px dotted  black" }}>
@@ -214,7 +235,7 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                                     name="FirstName"
                                     type="number"
                                     // value={formik.values.FirstName}
-                                    // onChange={formik.handleChange}
+                                    onChange={(e) => setTimeSheetHours(e.target.value)}
                                     className="  h-10 w-full border-b
                                      font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
                                        focus:outline-none focus:border-[#5e5d5d]"
@@ -227,9 +248,9 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                             <input
                                 id="FirstName"
                                 name="FirstName"
-                                type="number"
+                                type="text"
                                 // value={formik.values.FirstName}
-                                // onChange={formik.handleChange}
+                                onChange={(e) => setTimeSheetRemark(e.target.value)}
                                 className="  h-10 w-full border-b
                                      font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
                                        focus:outline-none focus:border-[#5e5d5d]"
@@ -242,7 +263,8 @@ const ManpowerAndMachineryMulti = ({ closeModal, heading, Quantityachieved, sele
                                 onClick={(e) => setOpen(false)}>
                                 CANCEL
                             </button>
-                            <button className=" text-[#4b75e7] text-[15px]   rounded-[5px] p-2" onClick={(e) => setOpen(false)}>
+                            <button className=" text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
+                                onClick={(e) => AddToList(e)}>
                                 ADD TO LIST
                             </button>
                         </div>

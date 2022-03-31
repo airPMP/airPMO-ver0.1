@@ -3,6 +3,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
+import { CurrentQuantityTOAchivedData } from '../../SimplerR/auth'
 
 
 
@@ -21,6 +22,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [timesheetremark, setTimeSheetRemark] = useState(null);
     const [timesheethours, setTimeSheetHours] = useState(null);
     const [assigncarddataarray, AssignCardDataArray] = useState([]);
+    const [quantityachieved, setQuantityAchieved] = useState(null);
+    const [spidata, setSpiData] = useState(null)
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
     console.log(assigncarddataarray)
 
@@ -45,13 +49,19 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }, []);
 
     useEffect(() => {
+
         AssignCardDataArray([assigncarddata])
 
         if (assigncarddata) {
             Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
                 console.log(value)
             })
+            setQuantityAchieved(assigncarddata?.quantity_to_be_achieved)
+            setSpiData(quantityachieved / assigncarddata?.quantity_to_be_achieved)
+            console.log(quantityachieved)
+            console.log(assigncarddata?.quantity_to_be_achieved)
         }
+
     }, [assigncarddata])
 
 
@@ -72,8 +82,18 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         setOpen(true) ///open popup
     }
 
+
+    const QtyAchieved = (e) => {
+        setQuantityAchieved(e.target.value)
+        setSpiData((e.target.value) / (quantityachieved))
+        CurrentQuantityTOAchivedData.set(e.target.value)
+    }
+
+
+
+
     return (
-        <div className="max-w-[100%]  scroll_bar_ManpowerMulti  
+        <div className="max-w-[100%]     
         overflow-hidden bg-[#FFFFFF] justify-center items-center 
          my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
@@ -140,10 +160,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </div>
             </div>
             <div className="flex flex-row mt-[30px]  mr-[20px]">
-                <table className=" w-[100%]  pt-[24px] ml-[40px] ">
+                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                        <tr className="bg-[#ECF1F0] ">
+                        <tr className="bg-[#ECF1F0]  ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -152,42 +172,83 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]">Allowable Total Hrs</th>
                             <th className="py-[20px]"> Actual Total Hrs</th>
                             <th className="py-[20px]"> Actual Total Cost</th>
-                            <th className="">SPI</th>
-                            <th className="">CPI</th>
+                            <th className="py-[20px]">SPI</th>
+                            <th className="py-[20px]">CPI</th>
                         </tr>
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
 
-                    {assigncarddata && assigncarddataarray?.map( (item,id) => {
+                    {assigncarddata && assigncarddataarray?.map((item, id) => {
+
                         return <tbody
 
-                            className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
+                            className=" max-w-[100%] font-secondaryFont   
+                            text-[#000000] font-normal not-italic text-[12px]
+                             leading-[20px] tracking-[-2%]"
                         >
-                            <tr className="bg-[#ECF1F0] ">
-                                <th className="py-[20px]">{id+1}</th>
-                                <th className="py-[20px]">Designation</th>
+                            {/* <tr className="bg-[#ECF1F0] "> */}
+                            {assigncarddata &&
+                                Object.entries(assigncarddata?.manpower_and_machinary[0]).
+                                    slice(4, -2).map(([key, value]) => {
+                                        return <tr className=" h-[20px] text-center">
+                                            {value !== 0 ?
+                                                <> <td className="py-[20px]">{id + 1}</td>
+                                                    <td className="py-[20px]">{key}</td>
 
-                                {assigncarddata && Object.entries(assigncarddata?.manpower_and_machinary[0]).slice(3).map(([key, value]) => {
-                                    return<><tr className="py-[20px]">{value}</tr>
-                                    
-                                    <tr className="p-[15px] ">
-                                <td className="p-[10px]" ></td>
-                            </tr>
-                            </>
-                                })}
-                                <th className="py-[20px]">P Total Hrs</th>
-                                <th className="py-[20px]">Allowable Resources</th>
-                                <th className="py-[20px]">Allowable Total Hrs</th>
-                                <th className="py-[20px]"> Actual Total Hrs</th>
-                                <th className="py-[20px]"> Actual Total Cost</th>
-                                <th className="">SPI</th>
-                                <th className="">CPI</th>
-                            </tr>
+                                                    <td className="py-[20px]">
+                                                        {(value / assigncarddata?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                            * item?.quantity_to_be_achieved)}
+                                                    </td>
 
-                            <tr className="p-[15px] ">
-                                <td className="p-[10px]" ></td>
+
+                                                    <td className="py-[20px]">
+                                                        {
+                                                            assigncarddata?.manpower_and_machinary[0]
+                                                            ["totaltime"] * (value / assigncarddata?.manpower_and_machinary[0]
+                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                                * item?.quantity_to_be_achieved).toFixed(2)}
+                                                    </td>
+                                                    <td className="py-[20px]">
+                                                        {(value / assigncarddata?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                            * quantityachieved).toFixed(2)}
+                                                    </td>
+                                                    <td className="py-[20px]">
+
+                                                        {
+                                                            (assigncarddata?.manpower_and_machinary[0]
+                                                            ["totaltime"] * (value / assigncarddata?.manpower_and_machinary[0]
+                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                                * quantityachieved)).toFixed(2)}
+
+                                                    </td>
+
+                                                    <td className="py-[20px]"> Actual Total Hrs</td>
+                                                    <td className="py-[20px]"> Actual Total Cost</td>
+                                                    <td className="py-[20px]">{(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)}</td>
+                                                    <td className="py-[20px]">CPI</td>
+
+                                                </>
+                                                : <>
+                                                </>
+                                            }
+                                        </tr>
+                                    })}
+
+                            {/* </tr> */}
+
+                            <tr className="p-[15px] text-center ">
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">  {(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)} </td>
+                                <td className="py-[20px]">    </td>
                             </tr>
 
                         </tbody>
@@ -197,29 +258,28 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
             {Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
                 <div className="mr-[45px] border-b solid border-black ml-[30px]">
-                    <div className="w-[200px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
-                        Quantity to be achieved   :   15  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nos
+                    <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
+                        <div className="flex">
+                            <div>  Quantity to be achieved  [ {assigncarddata?.quantity_to_be_achieved}  ]
+                                :
+                            </div>
+
+                            <div>
+                                {/* <p className=" "  >Qty achieved</p> */}
+                                <input type='number' placeholder="Qty achieved"
+                                    className="border-none pl-2  w-[100px]  gang_product_input"
+                                    value={quantityachieved}
+                                    // value={assigncarddata?.manpower_and_machinary[0][" UNIT "]}
+                                    onChange={(e) => QtyAchieved(e)}
+                                /> <span>{assigncarddata?.manpower_and_machinary[0][" UNIT "]}</span>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-                {/* <div className="flex flex-row  mr-[-30px]">
-                    <div className="mr-[26px] shadow-[buttonshadow] ">
 
-                        <button onClick={closeModal} className="w-[66.79px] btnshadow self-center h-[16.7px] rounded text-sm font-secondaryFont text-[9.35px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                            Cancel
-                        </button>
-
-                    </div>
-                    <div>
-                        <button
-                            type="submit"
-                            className="w-[66.79px] h-[16.7px] rounded btnshadow  self-center text-sm font-secondaryFont text-[9.35px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-                        >
-                            Save
-                        </button>
-                    </div>
-                </div> */}
             </div>}
+
             <div className=" ">
 
                 <Popup

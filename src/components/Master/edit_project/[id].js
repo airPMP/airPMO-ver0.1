@@ -52,7 +52,7 @@ const EditProject = () => {
     const [projectdata, setProjectData] = useState(null)
     const [categoriesdata, setCategoriesData] = useState(null)
     const [category, setCategory] = useState(null)
-    const [subcategory, setSubCategory] = useState(null)
+    const [responcedata, setResponceData] = useState(true)
     const [showeye, setShowEye] = useState(" ");
     const [sheetdata, setSheetData] = useState(null)
 
@@ -101,10 +101,23 @@ const EditProject = () => {
         feach1();
 
 
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`)
-            .then((response) => {
-                console.log(response)
+       
 
+    }, [urlTitle.pathname]);
+
+    useEffect(()=>{
+
+
+        const token = reactLocalStorage.get("access_token", false);
+if(responcedata){
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+
+            .then((response) => {  
+                
 
                 formik.values.category = response?.data?.category
                 formik.values.sub_category = response?.data?.sub_category
@@ -121,6 +134,9 @@ const EditProject = () => {
                 formik.values.spread_sheet_id = response?.data?.spread_sheet_id
                 formik.values.spread_sheet_key = response?.data?.spread_sheet_key
 
+                if(response?.data?.category){
+                    setResponceData( false)//this condition will stop the in finite loop
+                }
                 if (response.status === 201) {
                     addToast("Project is Added Sucessfully", {
                         appearance: "success",
@@ -137,9 +153,11 @@ const EditProject = () => {
                     autoDismiss: true,
                 })
             })
+        }
 
-    }, [urlTitle.pathname]);
+    },[responcedata ])
 
+    console.log(responcedata)
 
     const formik = useFormik({
         initialValues: {
@@ -169,8 +187,12 @@ const EditProject = () => {
         onSubmit: async (values, { resetForm }) => {
             console.log(`Form data`, values);
 
-
-            axios.patch(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, values)
+            const token = reactLocalStorage.get("access_token", false);
+            axios.patch(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, values, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
                 .then((response) => {
                     console.log(response)
 
@@ -218,6 +240,7 @@ const EditProject = () => {
         setOpen(o => !o)
         setShowEye(o => !o)
     }
+  
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">

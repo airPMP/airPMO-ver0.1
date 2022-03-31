@@ -58,7 +58,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
 
   return (
-    <div className="max-w-[734px]     overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
+    <div className="max-w-[100%]     overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
       <div className="flex flex-row justify-Start content-center items-center pl-[17.9px] ">
 
         <div className=" w-[138.92px] font-secondaryFont ml-[18.65px]  mt-[11.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
@@ -66,9 +66,10 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
         </div>
       </div>
       <div className="flex flex-row mt-[30px] ml-[37px] mr-[20px] scroll_bar_Manpower">
-        <table className=" w-[100%]  pt-[24px] ml-[40px]">
-          <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
-            <tr className="bg-[#ECF1F0] h-[60px]">
+        <table className=" w-[100%]  pt-[24px] ml-[40px] ">
+          {/* <thead className="font-secondaryFont text-[#000000] font-normal 
+          not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
+            <tr className="bg-[#ECF1F0]    ">
               <th className="  ">SL No.</th>
               <th className=" ">Designation</th>
               <th className=" ">Unit</th>
@@ -78,19 +79,19 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
             <tr className="p-[15px] ">
               <td className="p-[10px]" ></td>
             </tr>
-          </thead>
+          </thead> */}
           {productivitysheetarray?.map((item, index) => (
             <>
               {
-                Object.entries(productivitysheetobject).slice(4, -1).map(([key, value], i, items) => {
+                Object.entries(productivitysheetobject).slice(4, -2).map(([key, value], i, items) => {
 
 
                   return <> {
                     value !== 0 ? <tbody
-                      className=" max-w-[631px] font-secondaryFont   text-[#000000] 
-                      font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
+                      className=" max-w-[100%] font-secondaryFont   text-[#000000] 
+                      font-normal not-italic text-[12px]   height_bale   "
                     >
-                      <tr className="rounded  bg-[#ECF1F0] h-[20px] ">
+                      <tr className="rounded  bg-[#ECF1F0]    ">
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
                         <th className="">{item[" UNIT "]}</th>

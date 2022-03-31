@@ -101,6 +101,10 @@ top:-20px
        margin-top: 3px;
    }
 
+.height_bale{
+    height: 20px !important;
+}
+
    .productiveSeacrhch{
        /* height: 200px; */
        overflow-y: scroll;
