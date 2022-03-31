@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { setPriority } from 'os';
 import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
 import {
@@ -56,8 +57,29 @@ export class JobCardsService {
 
   async findjob() {
     try {
-      const find_all_job_card = await this.jobcardmodal.find();
-      return find_all_job_card;
+      var new_arr = [];
+      const find_all_job_card = await this.jobcardmodal.find().lean();
+      for (let i = 0; i < find_all_job_card.length; i++) {
+        const id = find_all_job_card[i]._id.toString();
+        var find = await this.myjobcardmodal
+          .findOne({
+            jc_number: find_all_job_card[i]._id.toString(),
+          })
+          .lean();
+        if (find != null) {
+          const new_obj = {
+            current_quantity_to_be_achieved:
+              find.current_quantity_to_be_achieved,
+            cpi: find.cpi,
+            spi: find.spi,
+          };
+          const obj = Object.assign({}, find_all_job_card[i], new_obj);
+          new_arr.push(obj);
+        } else {
+          new_arr.push(find_all_job_card[i]);
+        }
+      }
+      return new_arr;
     } catch {
       throw new NotFoundException('Not found data');
     }

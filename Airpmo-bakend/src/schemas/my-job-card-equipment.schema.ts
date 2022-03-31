@@ -1,17 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type myjobcardemployeeDocument = myjobcardemployee & Document;
+export type myjobcardequipmentDocument = equipment & Document;
 
 @Schema()
-export class myjobcardemployee {
+export class equipment {
   @Prop()
   jc_id: string;
 
   @Prop()
-  employee_id: string;
+  equipment_id: string;
 
   @Prop()
-  employee_name: string;
+  equipment_name: string;
 
   @Prop()
   designation: string;
@@ -29,5 +29,4 @@ export class myjobcardemployee {
   updatedAt: string;
 }
 
-export const myjobcardemployeeschema =
-  SchemaFactory.createForClass(myjobcardemployee);
+export const myjobcardequipmentschema = SchemaFactory.createForClass(equipment);
