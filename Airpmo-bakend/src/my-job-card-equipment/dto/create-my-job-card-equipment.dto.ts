@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateMyJobCardEmployeeDto {
+export class CreateMyJobCardEquipmentDto {
   @ApiProperty()
   jc_id: string;
 
   @ApiProperty()
-  employee_id: string;
+  equipment_id: string;
 
   @ApiProperty()
-  employee_name: string;
+  equipment_name: string;
 
   @ApiProperty()
   designation: string;

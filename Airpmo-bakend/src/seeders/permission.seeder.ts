@@ -184,6 +184,26 @@ export class PermissionsSeeder implements Seeder {
         name: 'FIND_EMPLOYEE_IN_MY_JOB_CARD_BY_JC_ID',
         description: 'get employe by jc no',
       },
+
+
+      {
+        name: 'CREATE_EQUIPMENTS_IN_MY_JOB_CARD',
+        description: 'create equipments',
+      },
+      {
+        name: 'FIND_ALL_EQUIPMENTS_IN_MY_JOB_CARD',
+        description: 'get all equipments',
+      },
+      { name: 'FIND_EQUIPMENT_IN_MY_JOB_CARD', description: 'get equipment' },
+      { name: 'UPDATE_EMPLOYEE_IN_MY_JOB_CARD', description: 'edit equipment' },
+      {
+        name: 'DELETE_EQUIPMENT_IN_MY_JOB_CARD',
+        description: 'delete equipment',
+      },
+      {
+        name: 'FIND_EQUIPMENTS_IN_MY_JOB_CARD_BY_JC_ID',
+        description: 'get equipments by jc no',
+      },
     ]);
   }
 
