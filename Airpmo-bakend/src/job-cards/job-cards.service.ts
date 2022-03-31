@@ -55,23 +55,9 @@ export class JobCardsService {
   }
 
   async findjob() {
-    var new_aar1 = [];
     try {
-      const find_all_job_card = await this.jobcardmodal.find().lean();
-      const find_all_employee = await this.myjobcardmodal.find().lean();
-
-      for (let i = 0; i < find_all_job_card.length; i++) {
-        for (let j = 0; j < find_all_employee.length; j++) {
-          if (find_all_job_card[0]._id.toString() === find_all_employee[j].jc_number ) {
-            const new_1 = { 'current_quantity_to_achived':  find_all_employee[j].current_quantity_to_be_achieved, };
-            const new_2 = {' spi':  find_all_employee[j].spi, };
-            const new_3 = { 'cpi':  find_all_employee[j].cpi };
-            const obj = Object.assign({}, find_all_job_card[i], new_1, new_2,new_3);
-            new_aar1.push(obj);
-          }
-        }
-      }
-      return new_aar1;
+      const find_all_job_card = await this.jobcardmodal.find();
+      return find_all_job_card;
     } catch {
       throw new NotFoundException('Not found data');
     }
