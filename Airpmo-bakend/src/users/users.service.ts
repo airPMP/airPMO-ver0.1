@@ -88,7 +88,6 @@ export class UsersService {
   async findOne(id: string) {
     try {
       const findroles = await this.userRolesService.userroles(id);
-      console.log(findroles);
       const user = await this.usersModel.findOne({ _id: id });
       return user;
     } catch {
