@@ -57,29 +57,8 @@ export class JobCardsService {
 
   async findjob() {
     try {
-      var new_arr = [];
       const find_all_job_card = await this.jobcardmodal.find().lean();
-      for (let i = 0; i < find_all_job_card.length; i++) {
-        const id = find_all_job_card[i]._id.toString();
-        var find = await this.myjobcardmodal
-          .findOne({
-            jc_number: find_all_job_card[i]._id.toString(),
-          })
-          .lean();
-        if (find != null) {
-          const new_obj = {
-            current_quantity_to_be_achieved:
-              find.current_quantity_to_be_achieved,
-            cpi: find.cpi,
-            spi: find.spi,
-          };
-          const obj = Object.assign({}, find_all_job_card[i], new_obj);
-          new_arr.push(obj);
-        } else {
-          new_arr.push(find_all_job_card[i]);
-        }
-      }
-      return new_arr;
+      return find_all_job_card;
     } catch {
       throw new NotFoundException('Not found data');
     }
@@ -132,6 +111,7 @@ export class JobCardsService {
 
   async assignuserdata(id: string) {
     try {
+      var new_arr = [];
       const findalldata = await this.assignjobcardmodal.find();
       var arr = [];
       findalldata?.map((item, id) => {
@@ -139,6 +119,23 @@ export class JobCardsService {
           arr.push(item2);
         });
       });
+
+      for (let i = 0; i < arr.length; i++) {
+        const id = arr[i]._id.toString();
+        var find = await this.myjobcardmodal.findOne({ jc_number: id }).lean();
+        if (find != null) {
+          const new_obj = {
+            current_quantity_to_be_achieved:
+              find.current_quantity_to_be_achieved,
+            cpi: find.cpi,
+            spi: find.spi,
+          };
+          const obj = Object.assign({}, arr[i], new_obj);
+          new_arr.push(obj);
+        } else {
+          new_arr.push(arr[i]);
+        }
+      }
 
       const finduser = await this.UserRoleModel.find();
       for (let i = 0; i < finduser.length; i++) {
@@ -149,9 +146,9 @@ export class JobCardsService {
           var ab = findroles.permission;
           for (let j = 0; j <= ab.length; j++) {
             if (ab[j] === 'ALL') {
-              return arr;
+              return new_arr;
             } else {
-              const variableOne = arr.filter(
+              const variableOne = new_arr.filter(
                 (itemInArray) => itemInArray.assign_user_id === id,
               );
               return variableOne;
