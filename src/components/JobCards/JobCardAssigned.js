@@ -138,7 +138,7 @@ const JobCardAssigned = () => {
      
 
     const token = reactLocalStorage.get("access_token", false);
-    axios.post(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`,
+    axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
       { assign_data: UserSdata }
       , {
       headers: {

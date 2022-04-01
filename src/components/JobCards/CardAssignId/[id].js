@@ -4,13 +4,14 @@ import Popup from "reactjs-popup";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import "reactjs-popup/dist/index.css";
-import { useFormik } from "formik";
-import ManpowerAndMachineryMulti from "../ManpowerAndMachineryMulti";
+import { useFormik } from "formik"; 
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
 import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
+import EmployeComponent from "../EmployeComponent";
+import EquipmentComponent from "../EquipmentComponent";
 
 
 const validate = (values) => {
@@ -310,7 +311,7 @@ const NewJobCardMultiId = () => {
                             </div>
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    <ManpowerAndMachineryMulti
+                                    <EmployeComponent
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
                                         assigncarddataId ={assigncarddata?._id}
@@ -318,9 +319,11 @@ const NewJobCardMultiId = () => {
                                     />
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    <ManpowerAndMachineryMulti
+                                    <EquipmentComponent
                                         heading={"Actual Equipments"}
-                                        selectDropDown={true} />
+                                        selectDropDown={true}
+                                        assigncarddataId ={assigncarddata?._id}
+                                        />
 
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
