@@ -3,6 +3,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
+import { EmployeeChangeData } from "../../SimplerR/auth";
 
 
 
@@ -33,9 +34,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [deleteid, setDeleteId] = useState(null);
 
     const [textData, settextData] = useState([]);
-
-
-
+    const employeechangeData = EmployeeChangeData.use()
+  
 
     const { addToast } = useToasts();
 
@@ -47,6 +47,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
                 // console.log(data1?.data?.values)
                 setTimeSheetData(data1?.data?.values)
+                setFilterEmpoyeeAllData(data1?.data?.values)
             } catch (error) {
                 console.log(error)
             }
@@ -54,18 +55,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         feach();
 
-        const feach1 = async () => {
-            try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_EMPLOYEE}/employee`,)
-                console.log(data1?.data)
-                setFilterEmpoyeeAllData(data1?.data)
-                setEmpoyeeData(data1?.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        feach1();
 
         const feach2 = async () => {
             try {
@@ -78,8 +67,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                 if (data1?.status === "200") {
                     setEmpoyeeUpdate(false)
                 }
-                console.log(data1?.status)
+
                 setEmpoyeeAllData(data1?.data)
+                EmployeeChangeData.set(data1?.data)
 
             } catch (error) {
                 console.log(error)
@@ -90,29 +80,28 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     }, [assigncarddataId, empoyeeupdate]);
 
-    
-
-    
 
 
-    useEffect(() => { 
 
-        if (empoyeedata && empoyeealldata) {
 
-            let deta = empoyeedata?.filter((item) => { 
-                return !empoyeealldata.find((items) => { 
-                    return item.id === items.employee_id
+
+    useEffect(() => {
+
+        if (timesheetdata && empoyeealldata) {
+
+
+            let deta = timesheetdata?.filter((item) => {
+                return !empoyeealldata.find((items) => {
+                    return item[0] === items.employee_id
                 })
             }
 
             )
             setFilterEmpoyeeAllData(deta)
+        }
+    }, [empoyeealldata, timesheetdata])
 
 
-        } 
-    }, [ empoyeealldata, empoyeedata])
-
-    
 
     const TimeSelectFun = (e) => {
 
@@ -218,7 +207,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
     const DeleteProfile = (e, alldata) => {
-        setDeleteId(alldata) 
+        setDeleteId(alldata)
         setCencelDelete(true)
     }
 
@@ -254,9 +243,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     <div className="col-span-1">
                         <div className="  font-secondaryFont ml-[18.65px]  mt-[11.51px] text-[#000000]
                           font-medium not-italic text-[20.09px] tracking-[-0.02em]">
-                            {/* Manpower&#160;&&#160;Machinery */}
                             {heading}
-
                         </div>
                     </div>
                     <div className="col-span-1  ">
@@ -268,8 +255,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
                                     onClick={(e) => TimeSelectFun(e)}>
                                     <option>Employee ID</option>
-                                    {filterempoyeealldata && filterempoyeealldata?.map((item, id) => {
-                                        return <option value={[item.id, item.employee_first_name, item.employee_last_name, item.designation]}>{`${item.id} [${item.designation}]`}</option>
+                                    {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
+
+                                        return <option value={[item[0], item[1], item[2], item[3]]}>
+                                            {`${item[0]} [${item[3]}]`}
+                                        </option>
                                     })}
 
                                 </select>
@@ -328,7 +318,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {empoyeealldata?.map((item, i) => { 
+                    {empoyeealldata?.map((item, i) => {
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
@@ -415,7 +405,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </button>
                     </div>
                 </div> */}
-            </div>} 
+            </div>}
             <div className=" ">
 
                 <Popup

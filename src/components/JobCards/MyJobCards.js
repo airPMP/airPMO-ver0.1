@@ -35,16 +35,8 @@ const MyJobCards = () => {
 
       .then((response) => {
 
-        let result = []
-
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
-        // response?.data?.map((items, id) => {
-        //   console.log(items)
-
-        // })
-        // setFilteredData(result)
-        // setAllJobCardData(result) 
         if (response.status === 201) {
         }
       })
@@ -57,43 +49,7 @@ const MyJobCards = () => {
 
 
 
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_job_card`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-      .then((response) => {
-
-        let result = []
-
-        response?.data?.map((items, id) => { 
-          items?.assign_data.map((item, i) => { 
-            if (item?.assign_user_id === "623db7df077fba46d04b295c") {
-              if (item?.assign_user_roles[0] === 'ALL')
-                items?.assign_data.map((item, i) => {
-                  result.push(item)
-                })
-              else if (item?.assign_user_id === "623db7df077fba46d04b295c") {
-
-                if (item?.assign_user_roles[0] !== 'ALL') {
-                  result.push(item)
-                }
-              }
-            }
-
-          })
-        })
-
-        console.log(result)
-        // setFilteredData(result)
-        // setAllJobCardData(result) 
-        if (response.status === 201) {
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+     
 
 
   }, [])

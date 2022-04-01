@@ -24,3 +24,6 @@ export const QuantityTOAchivedData = entity(null)
 export const CurrentQuantityTOAchivedData = entity(null) 
 
 
+export const EmployeeChangeData = entity(null) 
+
+

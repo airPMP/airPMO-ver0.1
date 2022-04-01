@@ -4,12 +4,12 @@ import Popup from "reactjs-popup";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import "reactjs-popup/dist/index.css";
-import { useFormik } from "formik"; 
+import { useFormik } from "formik";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -48,13 +48,11 @@ const validate = (values) => {
 
 const NewJobCardMultiId = () => {
 
-    const [title, setTitle] = useState(null); // the lifted state
-
+    const [title, setTitle] = useState(null); // the lifted state 
     const [assigncarddata, setAssignCardData] = useState(null); // the lifted state
-    const [currentdate, setCurrentDate] = useState(null)
-
+    const [currentdate, setCurrentDate] = useState(null) 
     const [open, setOpen] = useState(false);
-    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use() 
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
@@ -71,7 +69,7 @@ const NewJobCardMultiId = () => {
     }, [urlTitle.pathname])
 
 
- 
+
 
     useEffect(() => {
 
@@ -198,9 +196,6 @@ const NewJobCardMultiId = () => {
                                         JC Number
 
                                     </label>
-
-
-
                                 </div>
 
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
@@ -314,7 +309,7 @@ const NewJobCardMultiId = () => {
                                     <EmployeComponent
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
-                                        assigncarddataId ={assigncarddata?._id}
+                                        assigncarddataId={assigncarddata?._id}
 
                                     />
                                 </div>
@@ -322,8 +317,8 @@ const NewJobCardMultiId = () => {
                                     <EquipmentComponent
                                         heading={"Actual Equipments"}
                                         selectDropDown={true}
-                                        assigncarddataId ={assigncarddata?._id}
-                                        />
+                                        assigncarddataId={assigncarddata?._id}
+                                    />
 
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>

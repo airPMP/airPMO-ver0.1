@@ -3,7 +3,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData } from '../../SimplerR/auth'
 
 
 
@@ -25,8 +25,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [quantityachieved, setQuantityAchieved] = useState(null);
     const [spidata, setSpiData] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
+    const employeechangeData = EmployeeChangeData.use()
 
-    console.log(assigncarddataarray)
+
+    let detsa = [
+        { "d1": "sam", "d2": ["1", "2"] }
+    ]
 
 
     useEffect(() => {
@@ -35,7 +39,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         const feach = async () => {
             try {
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                // console.log(data1?.data?.values)
+
                 setTimeSheetData(data1?.data?.values)
             } catch (error) {
                 console.log(error)
@@ -58,8 +62,29 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             })
             setQuantityAchieved(assigncarddata?.quantity_to_be_achieved)
             setSpiData(quantityachieved / assigncarddata?.quantity_to_be_achieved)
-            console.log(quantityachieved)
-            console.log(assigncarddata?.quantity_to_be_achieved)
+
+            console.log(employeechangeData)
+            console.log(assigncarddata?.manpower_and_machinary[0])
+
+
+            // Object.entries(assigncarddata?.manpower_and_machinary[0]).
+            //     slice(4, -2).map(([key, value]) => {
+                // employeechangeData
+                detsa?.map((items, id) => {
+
+                    // console.log(items)
+                console.log(Object.values(items)[1][0] )
+
+                // if (key.toLowerCase() === items.designation.toLowerCase()) {
+                //     console.log()
+                //     // console.log(assigncarddata?.manpower_and_machinary[0])
+
+                // }
+            })
+
+            // })
+
+
         }
 
     }, [assigncarddata])
@@ -67,11 +92,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     console.log(assigncarddata)
 
-    const ManpowerAndMachinery = [
-        { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
-        { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
-        { "designation": "Employee ID", "unit": "Employee Name", "no": "Designation", "totalhours": "Total Hours", "action": "action" },
-    ]
+
 
     const TimeSelectFun = (e) => {
         let spitData = e.target.value.split(",")
@@ -224,8 +245,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                                     </td>
 
-                                                    <td className="py-[20px]"> Actual Total Hrs</td>
-                                                    <td className="py-[20px]"> Actual Total Cost</td>
+                                                    <td className="py-[20px]">0</td>
+                                                    <td className="py-[20px]">0</td>
                                                     <td className="py-[20px]">{(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)}</td>
                                                     <td className="py-[20px]">CPI</td>
 

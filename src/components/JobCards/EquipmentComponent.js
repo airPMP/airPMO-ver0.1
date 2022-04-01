@@ -13,7 +13,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
     const [open, setOpen] = useState(false);
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet equipments');
 
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetname, setTimeSheetName] = useState(null);
@@ -47,6 +47,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
                 // console.log(data1?.data?.values)
                 setTimeSheetData(data1?.data?.values)
+                setFilterEmpoyeeAllData(data1?.data?.values)
             } catch (error) {
                 console.log(error)
             }
@@ -54,18 +55,18 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
         feach();
 
-        const feach1 = async () => {
-            try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_EMPLOYEE}/equipments`,)
-                console.log(data1?.data)
-                setFilterEmpoyeeAllData(data1?.data)
-                setEmpoyeeData(data1?.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+        // const feach1 = async () => {
+        //     try {
+        //         const data1 = await axios.get(`${process.env.REACT_APP_BASE_EMPLOYEE}/equipments`,)
+        //         console.log(data1?.data)
+        //         setFilterEmpoyeeAllData(data1?.data)
+        //         setEmpoyeeData(data1?.data)
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // }
 
-        feach1();
+        // feach1();
 
         const feach2 = async () => {
             try {
@@ -90,29 +91,28 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
     }, [assigncarddataId, empoyeeupdate]);
 
-    
-
-    
 
 
-    useEffect(() => { 
 
-        if (empoyeedata && empoyeealldata) {
+ 
 
-            let deta = empoyeedata?.filter((item) => { 
-                return !empoyeealldata.find((items) => { 
-                    return item.id === items.equipment_id
+    useEffect(() => {
+
+        if (timesheetdata && empoyeealldata) {
+            
+
+            let deta = timesheetdata?.filter((item) => { 
+                return !empoyeealldata.find((items) => {
+                    return item[0] === items.equipment_id
                 })
             }
 
             )
             setFilterEmpoyeeAllData(deta)
+        }
+    }, [empoyeealldata, timesheetdata])
 
 
-        } 
-    }, [ empoyeealldata, empoyeedata])
-
-    
 
     const TimeSelectFun = (e) => {
 
@@ -218,7 +218,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
     }
 
     const DeleteProfile = (e, alldata) => {
-        setDeleteId(alldata) 
+        setDeleteId(alldata)
         setCencelDelete(true)
     }
 
@@ -268,8 +268,11 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
                                     onClick={(e) => TimeSelectFun(e)}>
                                     <option>Employee ID</option>
-                                    {filterempoyeealldata && filterempoyeealldata?.map((item, id) => {
-                                        return <option value={[item.id, item.employee_first_name, item.employee_last_name, item.designation]}>{`${item.id} [${item.designation}]`}</option>
+                                    {filterempoyeealldata && filterempoyeealldata?.slice(2).map((item, id) => {
+                                        
+                                        return <option value={[item[0], item[1], item[2], item[3]]}>
+                                            {`${item[0]} [${item[3]}]`}
+                                        </option>
                                     })}
 
                                 </select>
@@ -328,7 +331,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                         </tr>
                     </thead>
 
-                    {empoyeealldata?.map((item, i) => { 
+                    {empoyeealldata?.map((item, i) => {
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
@@ -415,7 +418,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                         </button>
                     </div>
                 </div> */}
-            </div>} 
+            </div>}
             <div className=" ">
 
                 <Popup
