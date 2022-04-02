@@ -21,6 +21,13 @@ export class UsersSeeder implements Seeder {
           '$2b$10$F6o/t/i4A9sNAlQiil50s./KbZpzk1tscg1VqKlhUJVoKxkha/f5e',
       },
       {
+        FirstName: 'super admin',
+        LastName: 'admin',
+        Email: 'superadmin@gmail.com',
+        Password:
+          '$2b$10$F6o/t/i4A9sNAlQiil50s./KbZpzk1tscg1VqKlhUJVoKxkha/f5e',
+      },
+      {
         FirstName: 'riyaz',
         LastName: 'admin',
         Email: 'riyaz@gmail.com',
