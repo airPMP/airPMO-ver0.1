@@ -28,9 +28,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const employeechangeData = EmployeeChangeData.use()
 
 
-    let detsa = [
-        { "d1": "sam", "d2": ["1", "2"] }
-    ]
+
 
 
     useEffect(() => {
@@ -58,31 +56,35 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         if (assigncarddata) {
             Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
-                console.log(value)
+                
+
+                console.log(key)
             })
             setQuantityAchieved(assigncarddata?.quantity_to_be_achieved)
             setSpiData(quantityachieved / assigncarddata?.quantity_to_be_achieved)
 
-            console.log(employeechangeData)
-            console.log(assigncarddata?.manpower_and_machinary[0])
+            // console.log(employeechangeData)
+            // console.log(assigncarddata?.manpower_and_machinary[0]) 
+            // console.log(employeechangeData) 
 
-
-            // Object.entries(assigncarddata?.manpower_and_machinary[0]).
-            //     slice(4, -2).map(([key, value]) => {
-                // employeechangeData
-                detsa?.map((items, id) => {
-
-                    // console.log(items)
-                console.log(Object.values(items)[1][0] )
-
-                // if (key.toLowerCase() === items.designation.toLowerCase()) {
-                //     console.log()
-                //     // console.log(assigncarddata?.manpower_and_machinary[0])
-
-                // }
+            let deks = employeechangeData?.map((item, ids) => {
+                console.log(item?.designation)  
             })
 
-            // })
+            
+            let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => {
+                console.log(Object.keys(item))
+            })
+
+
+            // let deta =  assigncarddata?.manpower_and_machinary?.filter((item) => {
+            //     return !employeechangeData?.find((items) => {
+            //         return    items?.designation.toLowerCase() === Object.values(item).toLowerCase()
+            //     })
+            // } 
+
+            // )
+            // console.log(deta)
 
 
         }
