@@ -14,12 +14,18 @@ const Categories = () => {
   const [categoriesdata, setCategoriesData] = useState(null)
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
   const [filteredData, setFilteredData] = useState(categoriesdata);
   const CategorieLengthget = CategorieLengthSet.use()
 
   const [deleteid, setDeleteId] = useState(null);
   let urlTitle = useLocation();
-  let navigate = useNavigate();
+  let navigate = useNavigate(); 
+ 
+
+console.log(allpermissions)
 
 
   useEffect(() => {
@@ -62,9 +68,12 @@ const Categories = () => {
 
 
   const getPermision = async () => {
-    
+
+
+
     const url_data = await allpermission
     const database = url_data.split(',')
+    console.log(database)
 
     let value = "EDIT-CATEGORIES".toUpperCase();
     let result = []
@@ -73,12 +82,37 @@ const Categories = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
- 
 
-    if (result[0] === "EDIT-CATEGORIES") {
-      setEditPermission(result[0]) 
+    let value1 = "CREATE-CATEGORIES".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-CATEGORIES".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+    if (result[0] === "EDIT-CATEGORIES" ||
+      result1[0] === "CREATE-CATEGORIES" ||
+      result2[0] === "GET-CATEGORIES") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
+      console.log("data1")
     }
-    else  {
+
+
+
+    else {
       let value = "ALL".toUpperCase();
       let result = []
       result = database?.filter((data) => {
@@ -86,12 +120,13 @@ const Categories = () => {
           return data?.toUpperCase().search(value) !== -1;
         }
       });
-      setEditPermission(result[0]) 
-    } 
+      setAllPermissions(result[0])
+
+    }
 
   }
 
-  
+
 
 
   const handleSearch = (e) => {
@@ -109,7 +144,7 @@ const Categories = () => {
       setFilteredData(categoriesdata)
     }
   }
- 
+
 
   const DeleteProfile = (e) => {
     setDeleteId(e)
@@ -141,17 +176,16 @@ const Categories = () => {
 
   const CancelButton = (e) => {
     setOpen(o => !o)
-  }
+  } 
 
 
-
-  const AddCategory = () => { 
-    if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {  
+  const AddCategory = () => {
+    if (createpermission === "CREATE-CATEGORIES" || allpermissions === "ALL") {
       navigate("/master/categories/add_categories")
     }
   }
   const EditProfile = (e) => {
-    if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {
+    if (editpermission === "EDIT-CATEGORIES" || allpermissions === "ALL") {
       navigate(`/master/edit_categories/${e}`)
     }
 
@@ -227,7 +261,7 @@ const Categories = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className={`${editpermission === "CREATE-CATEGORIES"   || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              className={`${createpermission === "CREATE-CATEGORIES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
               flex items-center space-x-sm px-2 rounded disabled `}
             >
               <svg
@@ -265,7 +299,7 @@ const Categories = () => {
 
                     <th className="w-[5%] py-[13px]">
                       <div className="flex flex-row space-x-xl">
-                        <div className={`${editpermission === "EDIT-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                        <div className={`${editpermission === "EDIT-CATEGORIES" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => EditProfile(item._id)} >
                           <svg
                             width="19"

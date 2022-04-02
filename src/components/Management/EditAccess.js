@@ -101,7 +101,7 @@ const EditAccess = () => {
             }
         })
         setClientId(e)
-        
+
     }
 
     const ProjectEditCreate = (e, id) => {
@@ -145,92 +145,6 @@ const EditAccess = () => {
         setClientId(e)
     }
 
-    const ZoneEditCreate = (e,id) => {
-        let comedata = rolesdata?.map((item, id1) => {
-
-            if (id === item._id) {
-
-                if (item.permission[9] === `CREATE-ZONES`) {
-                    return item.permission[9] = '', item.permission[10] = ''
-                }
-                else {
-                    return item.permission[9] = `CREATE-ZONES`, item.permission[10] = `EDIT-ZONES`
-                }
-            }
-            else {
-                return "nothing"
-            }
-        })
-        setClientId(e)
-
-    }
-
-    const ZoneView = (e ,id) => {
-        let comedata = rolesdata?.map((item, id1) => {
-
-            if (id === item._id) {
-
-                if (item.permission[11] === `GET-ZONES`) {
-                    return item.permission[11] = ''
-                }
-                else {
-                    return item.permission[11] = `GET-ZONES`
-                }
-            }
-            else {
-                return "nothing"
-            }
-
-        })
-        setClientId(e)
-
-    }
-
-
-    const SubZoneEditCreate = (e,id) => {
-        let comedata = rolesdata?.map((item, id1) => {
-
-            if (id === item._id) {
-
-                if (item.permission[12] === `CREATE-ZONES`) {
-                    return item.permission[12] = '', item.permission[13] = ''
-                }
-                else {
-                    return item.permission[12] = `CREATE-ZONES`, item.permission[13] = `EDIT-ZONES`
-                }
-            }
-            else {
-                return "nothing"
-            }
-        })
-        setClientId(e)
-
-    }
-
-    const SubZoneView = (e ,id) => {
-        let comedata = rolesdata?.map((item, id1) => {
-
-            if (id === item._id) {
-
-                if (item.permission[14] === `GET-ZONES`) {
-                    return item.permission[14] = ''
-                }
-                else {
-                    return item.permission[14] = `GET-ZONES`
-                }
-            }
-            else {
-                return "nothing"
-            }
-
-        })
-        setClientId(e)
-
-    }
-
-
-
-
 
     const CategoryEditCreate = (e, id) => {
         let comedata = rolesdata?.map((item, id1) => {
@@ -272,6 +186,154 @@ const EditAccess = () => {
         setClientId(e)
     }
 
+
+
+
+
+
+    const ZoneEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[9] === `CREATE-ZONES`) {
+                    return item.permission[9] = '', item.permission[10] = ''
+                }
+                else {
+                    return item.permission[9] = `CREATE-ZONES`, item.permission[10] = `EDIT-ZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+    }
+
+    const ZoneView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[11] === `GET-ZONES`) {
+                    return item.permission[11] = ''
+                }
+                else {
+                    return item.permission[11] = `GET-ZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+    }
+
+
+    const SubZoneEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[12] === `CREATE-SUBZONES`) {
+                    return item.permission[12] = '', item.permission[13] = ''
+                }
+                else {
+                    return item.permission[12] = `CREATE-SUBZONES`, item.permission[13] = `EDIT-SUBZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+    }
+
+    const SubZoneView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[14] === `GET-SUBZONES`) {
+                    return item.permission[14] = ''
+                }
+                else {
+                    return item.permission[14] = `GET-SUBZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+    }
+
+
+
+
+
+     
+//////////////////////////////////////// Start ProductivitySheet //////////////////////
+
+const  ProductivitySheetEditCreate =(e,id)=>{
+
+    let comedata = rolesdata?.map((item, id1) => {
+
+        if (id === item._id) {
+
+            if (item.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET`) {
+                return item.permission[15] = '', item.permission[16] = ''
+            }
+            else {
+                return item.permission[15] = `CREATE/EDIT-PRODUCTIVE_SHEET`, item.permission[16] = `CREATE/EDIT-PRODUCTIVE_SHEET`
+            }
+        }
+        else {
+            return "nothing"
+        }
+    })
+    setClientId(e)
+
+
+
+}
+
+
+
+
+const  ProductivitySheetView =(e,id)=>{
+
+    let comedata = rolesdata?.map((item, id1) => {
+
+        if (id === item._id) {
+
+            if (item.permission[17] === `GET-PRODUCTIVE_SHEET`) {
+                return item.permission[17] = ''
+            }
+            else {
+                return item.permission[17] = `GET-PRODUCTIVE_SHEET`
+            }
+        }
+        else {
+            return "nothing"
+        }
+
+    })
+    setClientId(e)
+
+
+
+}
+
+
+
+////////////////////////////////////////   ProductivitySheet End ////////////////////////////
 
 
     const SavePermission = () => {
@@ -398,6 +460,16 @@ const EditAccess = () => {
                                         Category
                                         <br />
                                         Dashboards 5
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Productivity Sheet
+                                        <br />
+                                        Dashboards 6
                                     </button>
                                 </div>
                             </div>
@@ -573,7 +645,7 @@ const EditAccess = () => {
                                                                 <button
                                                                     onClick={(e) => SubZoneEditCreate(e, items._id)}
                                                                     className={` 
-                                                                    ${items.permission[12] === `CREATE-ZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                                    ${items.permission[12] === `CREATE-SUBZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                                      text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     Edit/Create
@@ -582,7 +654,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => SubZoneView(e, items._id)}
-                                                                    className={`${items.permission[14] === `GET-ZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission[14] === `GET-SUBZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>
@@ -667,6 +739,65 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
+
+
+                                <div>
+                                    <div className="flex mt-6">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
+                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                    {items.name}
+                                                </button> */}
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    // bg-[${clinreditcreate}]
+                                                                    // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
+                                                                    onClick={(e) => ProductivitySheetEditCreate(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ProductivitySheetView(e, items._id)}
+                                                                    className={`${items.permission[17] === `GET-PRODUCTIVE_SHEET` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+
                             </div>
 
 

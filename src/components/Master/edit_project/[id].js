@@ -729,23 +729,23 @@ if(responcedata){
 
                                         </Popup>
 
-                                        <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                                        {/* <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                                             Add Delay
-                                        </button>
+                                        </button> */}
                                     </div>
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        <button
+                                        {/* <button
                                             // onClick={() => setOpen(o => !o)} 
                                             className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                                             View Zones
-                                        </button>
+                                        </button> */}
                                     </div>
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        <button
+                                        {/* <button
                                             // onClick={() => setOpenSub(o => !o)}
                                             className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                                             View Subzones
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                                 <div className="flex flex-row">

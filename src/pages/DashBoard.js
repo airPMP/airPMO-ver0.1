@@ -7,11 +7,17 @@ import Card from "../components/layout/Card";
 import { reactLocalStorage } from "reactjs-localstorage";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import { useToasts } from "react-toast-notifications";
+import { getAllJobCardApi, getMyJobCardApi } from "../AllApi/Api";
 const DashBoard = () => {
   const [title, setTitle] = useState(null);
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [page, setPage] = useState(null);
+
+  const [alljobcardapi, setAllJobCardApi] = useState(null)
+  const [myjobcardapi, setMyJobCardApi] = useState(null)
+
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
   const { addToast } = useToasts();
@@ -24,6 +30,21 @@ const DashBoard = () => {
   
   }, [urlTitle.pathname])
   
+  useEffect(() => {
+
+    const userData = getAllJobCardApi().then((data) => {
+      setAllJobCardApi(data?.data?.length)  
+       
+    })
+
+    const userData1 = getMyJobCardApi().then((data) => {   
+      setMyJobCardApi(data?.data?.length) 
+    })
+
+
+  }, [])
+
+
 
   const handleChangeForClient = (event) => {
     setClient(event.target.value);
@@ -78,7 +99,7 @@ const DashBoard = () => {
               <div className="grid grid-cols-4 gap-4 mt-[62px]  px-[20px] ">
                 <Card
                   title={"Total JC"}
-                  totalNumber={1500}
+                  totalNumber={alljobcardapi}
                   iconn={
                     <svg
                       width="58"
@@ -102,7 +123,7 @@ const DashBoard = () => {
                 />
                 <Card
                   title={"Assigned JC"}
-                  totalNumber={800}
+                  totalNumber={alljobcardapi}
                   iconn={
                     <svg
                       width="58"

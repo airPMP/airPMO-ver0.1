@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate ,Link} from "react-router-dom";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
 import SearchBox from "../layout/SearchBox";
@@ -64,7 +64,7 @@ const AllJobCards = () => {
     }
   }
 
-
+ 
 
 
   return (
@@ -91,6 +91,7 @@ const AllJobCards = () => {
                 <circle cx="38.6122" cy="37.9999" r="37.7143" fill="#F4F7FE" />
               </svg>
             </div>
+
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
@@ -99,10 +100,12 @@ const AllJobCards = () => {
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
                   Shining Towers
                 </div>
+
               </div>
               <div
                 style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                className="flex flex-row px-[10px]   items-center w-[234px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] "
+                className="flex flex-row px-[10px]  
+                 items-center w-[234px] h-[46px] bg-[#FFFFFF] rounded-[0.625rem] "
               >
                 <div>
                   <svg
@@ -138,8 +141,20 @@ const AllJobCards = () => {
                     className="outline-none"
                   />
                 </div>
+
               </div>
+
             </div>
+          </div>
+          <div className=" text-right pr-20">
+          <Link to={`/job_cards/new_job_card`}>
+            <button  
+              className=  "bg-[#8d8b8b] p-2 text-[#f0f0f0] mb-4 rounded-[8px]">
+                Add JobCard
+            </button>
+            </Link>
+
+ 
           </div>
           <div className="ml-[95px]">
             <table className="table-auto pt-[24px] w-[100%]  ">

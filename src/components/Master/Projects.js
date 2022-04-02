@@ -14,6 +14,11 @@ const Projects = () => {
   const [open, setOpen] = useState(false);
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
+
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -66,8 +71,33 @@ const Projects = () => {
     });
 
 
-    if (result[0] === "EDIT-PROJECTS") {
+    let value1 = "CREATE-PROJECTS".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-PROJECTS".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+    if (result[0] === "EDIT-PROJECTS" ||
+      result1[0] === "CREATE-PROJECTS" ||
+      result2[0] === "GET-PROJECTS") {
       setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
     }
     else {
       let value = "ALL".toUpperCase();
@@ -77,7 +107,7 @@ const Projects = () => {
           return data?.toUpperCase().search(value) !== -1;
         }
       });
-      setEditPermission(result[0])
+      setAllPermissions(result[0])
     }
 
   }
@@ -87,7 +117,7 @@ const Projects = () => {
   const handleSearch = (e) => {
 
     let value = e?.target?.value?.toUpperCase();
-    let result = [] 
+    let result = []
     result = projectdata?.filter((data) => {
       if (isNaN(+value)) {
         return data?.client_name?.toUpperCase().search(value) !== -1;
@@ -129,17 +159,17 @@ const Projects = () => {
     feach();
     setOpen(o => !o)
   }
-   
-  const AddProject = () => { 
-    if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {  
-      navigate("/master/projects/new_project") 
+
+  const AddProject = () => {
+    if (createpermission === "CREATE-PROJECTS" || allpermissions === "ALL") {
+      navigate("/master/projects/new_project")
     }
   }
 
   const EditProfile = (e) => {
     console.log(e)
-    if (editpermission === "EDIT-PROJECTS" || editpermission === "ALL") {
-    navigate(`/master/edit_project/${e}`)
+    if (editpermission === "EDIT-PROJECTS" || allpermissions === "ALL") {
+      navigate(`/master/edit_project/${e}`)
     }
   }
 
@@ -218,7 +248,7 @@ const Projects = () => {
           <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
             <div
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-              className={`${editpermission === "EDIT-PROJECTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+              className={`${createpermission === "CREATE-PROJECTS" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
               flex items-center space-x-sm px-2 rounded  `}
             >
               <svg
@@ -231,7 +261,7 @@ const Projects = () => {
                 <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
               </svg>
 
-              <div onClick={() =>  AddProject()  }>Add Project</div>
+              <div onClick={() => AddProject()}>Add Project</div>
             </div>
           </div>
 
@@ -246,7 +276,7 @@ const Projects = () => {
                   <td className="w-[20%]   ">Actions</td>
                 </tr>
               </thead>
-               {filteredData?.map((item, i) => {
+              {filteredData?.map((item, i) => {
                 return <tbody className="font-secondaryFont  text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="h-[52.84px] bg-[#ECF1F0] text-center" >
                     <td className="w-[15%] ">
@@ -257,7 +287,7 @@ const Projects = () => {
                     <td className="w-[25%]">{item?.end_date}</td>
                     <td className="w-[20%]  text-center">
                       <div className="flex flex-row space-x-xl justify-center px-auto ">
-                        <div className={`${editpermission === "EDIT-PROJECTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                        <div className={`${editpermission === "EDIT-PROJECTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => EditProfile(item._id)}>
                           <svg
                             width="19"
@@ -273,7 +303,7 @@ const Projects = () => {
                           </svg>
                         </div>
                         <div className="cursor-pointer"
-                          onClick={(e) => DeleteProfile(item._id)} 
+                          onClick={(e) => DeleteProfile(item._id)}
                         >
                           <svg
                             width="18"
@@ -328,7 +358,7 @@ const Projects = () => {
                   </Popup>
 
                 </tbody>
-              })}  
+              })}
             </table>
 
           </div>

@@ -62,10 +62,10 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
             setProjectSearchData(ObjData?.project_name)
 
 
-            if (productivitysheetdata) {  //when data get from jobcard then it rander in new jobcard page
-                    navigate("/job_cards/new_job_card")
-                    console.log("data  get") 
-            } 
+            // if (productivitysheetdata) {  //when data get from jobcard then it rander in new jobcard page
+            //         navigate("/job_cards/new_job_card")
+            //         console.log("data  get") 
+            // } 
         }
 
 

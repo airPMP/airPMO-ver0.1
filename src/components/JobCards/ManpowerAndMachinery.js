@@ -65,11 +65,12 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
           Manpower&#160;&&#160;Machinery
         </div>
       </div>
-      <div className="flex flex-row mt-[30px] ml-[37px] mr-[20px] scroll_bar_Manpower">
+      {/* scroll_bar_Manpower */}
+      <div className="flex flex-row mt-[30px] ml-[37px] mr-[20px]   scroll_bar_Manpower">
         <table className=" w-[100%]  pt-[24px] ml-[40px] ">
-          {/* <thead className="font-secondaryFont text-[#000000] font-normal 
-          not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
-            <tr className="bg-[#ECF1F0]    ">
+            <thead className="font-secondaryFont text-[#000000] font-normal 
+          not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px]   ">
+            <tr className="bg-[#ECF1F0]  h-[40px]   ">
               <th className="  ">SL No.</th>
               <th className=" ">Designation</th>
               <th className=" ">Unit</th>
@@ -79,7 +80,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
             <tr className="p-[15px] ">
               <td className="p-[10px]" ></td>
             </tr>
-          </thead> */}
+          </thead>  
           {productivitysheetarray?.map((item, index) => (
             <>
               {
@@ -89,9 +90,10 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                   return <> {
                     value !== 0 ? <tbody
                       className=" max-w-[100%] font-secondaryFont   text-[#000000] 
-                      font-normal not-italic text-[12px]   height_bale   "
+                      font-normal not-italic text-[12px]   " 
+                      
                     >
-                      <tr className="rounded  bg-[#ECF1F0]    ">
+                      <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
                         <th className="">{item[" UNIT "]}</th>
@@ -100,8 +102,8 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                         <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
                         ).toFixed(2)}</th>
                       </tr>
-                      <tr className="  h-[10px] ">
-                        <td className=" " ></td>
+                      <tr className="m-0 p-0 h-[20px]"  >
+                        <th  ></th>
                       </tr>
 
                     </tbody>

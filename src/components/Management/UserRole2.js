@@ -35,11 +35,7 @@ const UserRole1 = () => {
 
     }, [urlTitle.pathname])
     // shivam1q1@gmail.com
-    // const objData = { cname, clocation, datedata, resultgoogleoldreview, resultyelpoldreview },
-    // keys = { cname: 'companyName', clocation: 'location', datedata: 'signupdate', resultgoogleoldreview: 'increase', resultyelpoldreview: 'increasepercent' },
-    // result = Object
-    //   .entries(objData)
-    //   .reduce((r, [key, array]) => array.map((v, i) => ({ ...r[i], [keys[key]]: v })), []);
+    
 
     // useEffect(() => {
 
@@ -89,7 +85,7 @@ const UserRole1 = () => {
 
     
 
-
+console.log(userdata)
 
 
 
