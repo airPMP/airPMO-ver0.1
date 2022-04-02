@@ -8,4 +8,7 @@ export class CreatePermissionDto {
     @ApiProperty()
     description: string;
 
+    @ApiProperty()
+    organization_id: string;
+
 }

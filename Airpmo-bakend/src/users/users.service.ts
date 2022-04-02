@@ -49,14 +49,19 @@ export class UsersService {
     var new_obj = {};
     var new_arr = [];
     const users = await this.usersModel.find().lean();
+
     for (let i = 0; i < users.length; i++) {
       const user_designation = await this.userRolesService.userroles(
         users[i]._id.toString(),
       );
-      const desig = user_designation[0].name;
-      const ab = { designation: desig };
-      const obj = Object.assign({}, users[i], ab);
-      new_arr.push(obj);
+      if (user_designation.length !== 0) {
+        const desig = user_designation[0].name;
+        const ab = { designation: desig };
+        const obj = Object.assign({}, users[i], ab);
+        new_arr.push(obj);
+      } else {
+        new_arr.push(users[i]);
+      }
     }
     return new_arr;
   }

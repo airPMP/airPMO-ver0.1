@@ -18,4 +18,7 @@ export class CreateMyJobCardEmployeeDto {
 
   @ApiProperty()
   remarks: string;
+
+  @ApiProperty()
+  organization_id: string;
 }
