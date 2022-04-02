@@ -1,7 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class assignJobCardDto {
+  @ApiProperty()
+  assign_data: [];
 
-    @ApiProperty()
-    assign_data: []
+  @ApiProperty()
+  organization_id: string;
 }

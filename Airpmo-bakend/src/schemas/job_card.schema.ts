@@ -3,59 +3,58 @@ import { Date, Document } from 'mongoose';
 
 export type jobcardDocuments = jobcard & Document;
 
-
 @Schema()
 export class jobcard {
+  @Prop()
+  project_id: string;
 
-    @Prop()
-    project_id:string
+  @Prop()
+  project_name: string;
 
-    @Prop()
-    project_name:string
+  @Prop()
+  activity_code: string;
 
-    @Prop()
-    activity_code: string
+  @Prop()
+  activity_name: string;
 
-    @Prop()
-    activity_name: string
+  @Prop()
+  jc_creation: string;
 
-    @Prop()
-    jc_creation: string
+  @Prop()
+  zone: string;
 
-    @Prop()
-    zone: string
+  @Prop()
+  sub_zone: string;
 
-    @Prop()
-    sub_zone: string
+  @Prop()
+  quantity_to_be_achieved: string;
 
-    @Prop()
-    quantity_to_be_achieved: string
+  @Prop()
+  manpower_and_machinary: [];
 
-    @Prop()
-    manpower_and_machinary:[]
+  @Prop()
+  qc_remark: string;
 
-    @Prop()
-    qc_remark: string
+  @Prop()
+  hse_remark: string;
 
-    @Prop()
-    hse_remark: string
+  @Prop()
+  manager_comments: string;
 
-    @Prop()
-    manager_comments: string
+  @Prop()
+  discription: string;
 
-    @Prop()
-    discription: string
+  @Prop()
+  min_hours: string;
 
-    @Prop()
-    min_hours: string;
+  @Prop()
+  orgainization_id: string;
 
-    @Prop({ default: Date })
-    createdAt: string;
+  @Prop({ default: Date })
+  createdAt: string;
 
-    @Prop({ default: Date })
-    updatedAt: string;
-
+  @Prop({ default: Date })
+  updatedAt: string;
 }
-
 
 export const jobcardSchema = SchemaFactory.createForClass(jobcard);

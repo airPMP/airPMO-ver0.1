@@ -21,4 +21,7 @@ export class CreateExcelDto {
   is_publise_light_fitting_quantity_sheets: boolean;
   @ApiProperty()
   is_deleted_light_fitting_quantity_sheets: boolean;
+
+  @ApiProperty()
+  organization_id: string;
 }

@@ -57,4 +57,7 @@ export class createmyjobcardDto {
 
   @ApiProperty()
   cpi: string;
+
+  @ApiProperty()
+  organization_id: string;
 }

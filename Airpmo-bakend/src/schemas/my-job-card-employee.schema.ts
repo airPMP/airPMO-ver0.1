@@ -22,6 +22,9 @@ export class myjobcardemployee {
   @Prop()
   remarks: string;
 
+  @Prop()
+  orgainization_id: string;
+
   @Prop({ default: Date })
   createdAt: string;
 
