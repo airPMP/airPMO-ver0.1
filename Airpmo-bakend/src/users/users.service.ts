@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -46,24 +47,29 @@ export class UsersService {
   }
 
   async findAll() {
-    var new_obj = {};
-    var new_arr = [];
-    const users = await this.usersModel.find().lean();
+    try {
+      var new_obj = {};
+      var new_arr = [];
+      const users = await this.usersModel.find().lean();
 
-    for (let i = 0; i < users.length; i++) {
-      const user_designation = await this.userRolesService.userroles(
-        users[i]._id.toString(),
-      );
-      if (user_designation.length !== 0) {
-        const desig = user_designation[0].name;
-        const ab = { designation: desig };
-        const obj = Object.assign({}, users[i], ab);
-        new_arr.push(obj);
-      } else {
-        new_arr.push(users[i]);
+      for (let i = 0; i < users.length; i++) {
+        const user_designation = await this.userRolesService.userroles(
+          users[i]._id.toString(),
+        );
+
+        if (user_designation.length != 0 && user_designation[0] != null) {
+          const desig = user_designation[0].name;
+          const ab = { designation: desig };
+          const obj = Object.assign({}, users[i], ab);
+          new_arr.push(obj);
+        } else {
+          new_arr.push(users[i]);
+        }
       }
+      return new_arr;
+    } catch {
+      throw new UnprocessableEntityException('user not found');
     }
-    return new_arr;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
