@@ -39,7 +39,7 @@ export class AuthService {
         }
         var permission = this.arrayUnique(per);
 
-        const payload = { FirstName: user.FirstName, Email: user.Email, roles: role_name, permission: permission };
+        const payload = { FirstName: user.FirstName, Email: user.Email, roles: role_name, permission: permission,organization_id:userdata.organization_id };
         const token = this.jwtService.sign(payload)
 
         if (!token) {

@@ -31,8 +31,8 @@ export class ExcelController {
 
   @Auth('GET-PRODUCTIVE_SHEET')
   @Get('upload_productive_file/:projectid')
-  findone(@Param('projectid') projectid: string) {
-    return this.excelService.findOne(projectid);
+  findone(@Param('projectid') projectid: string, @Req() req) {
+    return this.excelService.findOne(projectid, req);
   }
 
   @Auth('CREATE/EDIT_QUANTITY_SHEET')

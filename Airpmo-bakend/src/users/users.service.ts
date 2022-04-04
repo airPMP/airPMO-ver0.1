@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  Req,
   UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { loginusersDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
+import { Base64, encode } from 'js-base64';
 
 @Injectable()
 export class UsersService {
@@ -46,24 +48,31 @@ export class UsersService {
     return user;
   }
 
-  async findAll() {
+  async findAll(@Req() req) {
+    const payload = req.headers.authorization.split('.')[1];
+    const encodetoken = Base64.decode(payload);
+    var obj = JSON.parse(encodetoken);
+    var organizationkey = obj.organization_id;
+
     try {
       var new_obj = {};
       var new_arr = [];
       const users = await this.usersModel.find().lean();
 
       for (let i = 0; i < users.length; i++) {
-        const user_designation = await this.userRolesService.userroles(
-          users[i]._id.toString(),
-        );
+        if (users[i].organization_id === organizationkey) {
+          const user_designation = await this.userRolesService.userroles(
+            users[i]._id.toString(),
+          );
 
-        if (user_designation.length != 0 && user_designation[0] != null) {
-          const desig = user_designation[0].name;
-          const ab = { designation: desig };
-          const obj = Object.assign({}, users[i], ab);
-          new_arr.push(obj);
-        } else {
-          new_arr.push(users[i]);
+          if (user_designation.length != 0 && user_designation[0] != null) {
+            const desig = user_designation[0].name;
+            const ab = { designation: desig };
+            const obj = Object.assign({}, users[i], ab);
+            new_arr.push(obj);
+          } else {
+            new_arr.push(users[i]);
+          }
         }
       }
       return new_arr;

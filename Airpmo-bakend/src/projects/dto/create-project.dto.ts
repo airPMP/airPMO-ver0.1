@@ -34,7 +34,7 @@ export class CreateProjectDto {
     client_id:string;
 
     @ApiProperty()
-    orgainization_id: string;
+    organization_id: string;
 
     @ApiProperty()
     discription: string;

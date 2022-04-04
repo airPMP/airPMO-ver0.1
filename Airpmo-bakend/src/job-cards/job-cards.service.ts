@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Req,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -24,6 +25,7 @@ import { assignJobCardDto } from './dto/assign-job-card.dto';
 import { CreateJobCardDto } from './dto/create-job-card.dto';
 import { createmyjobcardDto } from './dto/my-job-card-dto';
 import { UpdateJobCardDto } from './dto/update-job-card.dto';
+import { Base64, encode } from 'js-base64';
 
 @Injectable()
 export class JobCardsService {
@@ -46,19 +48,40 @@ export class JobCardsService {
     }
   }
 
-  async findjobCard(id: string) {
+  async findjobCard(id: string, @Req() req) {
     try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       const find_Card = await this.jobcardmodal.findOne({ _id: id });
-      return find_Card;
+      if (find_Card.orgainization_id === organizationkey) {
+        return find_Card;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
     } catch {
       throw new NotFoundException('Not found data');
     }
   }
 
-  async findjob() {
+  async findjob(@Req() req) {
     try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       const find_all_job_card = await this.jobcardmodal.find().lean();
-      return find_all_job_card;
+      for (let index = 0; index < find_all_job_card.length; index++) {
+        if (find_all_job_card[index].orgainization_id === organizationkey) {
+          new_arr.push(find_all_job_card[index]);
+        }
+      }
+      return new_arr;
     } catch {
       throw new NotFoundException('Not found data');
     }
@@ -100,16 +123,27 @@ export class JobCardsService {
     }
   }
 
-  async getassignjobcard(id: string) {
+  async getassignjobcard(id: string, @Req() req) {
     try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       const get_job_card = await this.assignjobcardmodal.findOne({ _id: id });
-      return get_job_card;
+      if (get_job_card.orgainization_id === organizationkey) {
+        return get_job_card;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
     } catch {
       throw new NotFoundException('data not found');
     }
   }
 
-  async assignuserdata(id: string) {
+  async assignuserdata(id: string, @Req() req) {
     try {
       var new_arr = [];
       const findalldata = await this.assignjobcardmodal.find();
@@ -161,23 +195,64 @@ export class JobCardsService {
     }
   }
 
-  async findallassigncard() {
-    return await this.assignjobcardmodal.find();
+  async findallassigncard(@Req() req) {
+    try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      const find_all_asign_card = await this.assignjobcardmodal.find();
+      for (let index = 0; index < find_all_asign_card.length; index++) {
+        if (find_all_asign_card[index].orgainization_id === organizationkey) {
+          new_arr.push(find_all_asign_card[index]);
+        }
+      }
+      return new_arr;
+    } catch {
+      throw new NotFoundException('data not found');
+    }
   }
 
   async createmyjobcard(createmyjobcardDto: createmyjobcardDto) {
     return await this.myjobcardmodal.create(createmyjobcardDto);
   }
 
-  async findmyjobcard(id: string) {
+  async findmyjobcard(id: string, @Req() req) {
     try {
-      return await this.myjobcardmodal.findOne({ _id: id });
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      const find_my_job = await this.myjobcardmodal.findOne({ _id: id });
+      if (find_my_job.orgainization_id === organizationkey) {
+        return find_my_job;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
     } catch {
-      throw new NotFoundException('run time exception');
+      throw new NotFoundException('my job card not found');
     }
   }
 
-  async myjobcard() {
-    return await this.myjobcardmodal.find();
+  async myjobcard(@Req() req) {
+    try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      const get_all_my_job_card = await this.myjobcardmodal.find();
+      for (let index = 0; index < get_all_my_job_card.length; index++) {
+        if (get_all_my_job_card[index].orgainization_id === organizationkey) {
+          new_arr.push(get_all_my_job_card[index]);
+        }
+      }
+      return new_arr;
+    } catch {
+      throw new NotFoundException('my job card not found ');
+    }
   }
 }

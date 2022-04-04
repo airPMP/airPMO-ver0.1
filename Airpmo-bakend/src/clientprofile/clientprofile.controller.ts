@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import {  ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
 import { ClientprofileService } from './clientprofile.service';
@@ -19,14 +19,14 @@ export class ClientprofileController {
 
   @Auth('GET-CLIENTS')
   @Get('client')
-  findAll() {
-    return this.clientprofileService.findAll();
+  findAll(@Req() req) {
+    return this.clientprofileService.findAll(req);
   }
 
   @Auth('GET-CLIENTS')
   @Get('client/:id')
-  findOne(@Param('id') id: string) {
-    return this.clientprofileService.findOne(id);
+  findOne(@Param('id') id: string,@Req() req) {
+    return this.clientprofileService.findOne(id,req);
   }
 
   @Auth('EDIT-CLIENTS')

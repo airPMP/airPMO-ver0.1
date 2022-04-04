@@ -43,5 +43,5 @@ export class CreateJobCardDto {
   min_hours: string;
 
   @ApiProperty()
-  organization_id: string;
+  orgainization_id: string;
 }

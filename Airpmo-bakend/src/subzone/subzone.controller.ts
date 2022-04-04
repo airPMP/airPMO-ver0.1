@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { SubzoneService } from './subzone.service';
 import { CreateSubzoneDto } from './dto/create-subzone.dto';
 import { UpdateSubzoneDto } from './dto/update-subzone.dto';
@@ -19,14 +19,14 @@ export class SubzoneController {
 
   @Auth('GET-SUBZONES')
   @Get("subzone")
-  findAll() {
-    return this.subzoneService.findAll();
+  findAll(@Req() req) {
+    return this.subzoneService.findAll(req);
   }
 
   @Auth('GET-SUBZONES')
   @Get('subzone/:id')
-  findOne(@Param('id') id: string) {
-    return this.subzoneService.findOne(id);
+  findOne(@Param('id') id: string,@Req() req) {
+    return this.subzoneService.findOne(id,req);
   }
 
   @Auth('EDIT-SUBZONES')
@@ -43,8 +43,8 @@ export class SubzoneController {
 
   @Auth('GET-SUBZONES')
   @Get('zone/:zone_id/subzone')
-  findsubzone(@Param('zone_id') zone_id: string) {
-    return this.subzoneService.findsubzone(zone_id);
+  findsubzone(@Param('zone_id') zone_id: string,@Req() req) {
+    return this.subzoneService.findsubzone(zone_id,req);
   }
 
   @Auth('GET-SUBZONES')

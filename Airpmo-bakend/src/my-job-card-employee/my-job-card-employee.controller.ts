@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { MyJobCardEmployeeService } from './my-job-card-employee.service';
 import { CreateMyJobCardEmployeeDto } from './dto/create-my-job-card-employee.dto';
 import { UpdateMyJobCardEmployeeDto } from './dto/update-my-job-card-employee.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
+
 @ApiTags('my_job_card_empyee')
 @Controller('/api')
 export class MyJobCardEmployeeController {
@@ -27,14 +29,14 @@ export class MyJobCardEmployeeController {
 
   @Auth('FIND_ALL_EMPLOYEE_IN_MY_JOB_CARD')
   @Get('find_all_my_job_card_employee')
-  findAll() {
-    return this.myJobCardEmployeeService.findAll();
+  findAll(@Req() req) {
+    return this.myJobCardEmployeeService.findAll(req);
   }
 
   @Auth('FIND_EMPLOYEE_IN_MY_JOB_CARD')
   @Get('find_my_job_card_employee/:id')
-  findOne(@Param('id') id: string) {
-    return this.myJobCardEmployeeService.findOne(id);
+  findOne(@Param('id') id: string,@Req() req) {
+    return this.myJobCardEmployeeService.findOne(id,req);
   }
 
   @Auth('UPDATE_EMPLOYEE_IN_MY_JOB_CARD')
@@ -54,7 +56,7 @@ export class MyJobCardEmployeeController {
 
   @Auth('FIND_EMPLOYEE_IN_MY_JOB_CARD_BY_JC_ID')
   @Get('find_my_job_card_employee_by_jc_no/:id')
-  findjc(@Param('id') id: string) {
-    return this.myJobCardEmployeeService.findemployeebyjcid(id);
+  findjc(@Param('id') id: string, @Req() req) {
+    return this.myJobCardEmployeeService.findemployeebyjcid(id,req);
   }
 }

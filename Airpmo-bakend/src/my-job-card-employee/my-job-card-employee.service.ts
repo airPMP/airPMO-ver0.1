@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Req,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -7,6 +12,7 @@ import {
 } from 'src/schemas/my-job-card-employee.schema';
 import { CreateMyJobCardEmployeeDto } from './dto/create-my-job-card-employee.dto';
 import { UpdateMyJobCardEmployeeDto } from './dto/update-my-job-card-employee.dto';
+import { Base64, encode } from 'js-base64';
 
 @Injectable()
 export class MyJobCardEmployeeService {
@@ -14,6 +20,9 @@ export class MyJobCardEmployeeService {
     @InjectModel(myjobcardemployee.name)
     private myjobcardemployeemodal: Model<myjobcardemployeeDocument>,
   ) {}
+
+
+
 
   async create(createMyJobCardEmployeeDto: CreateMyJobCardEmployeeDto) {
     try {
@@ -26,24 +35,49 @@ export class MyJobCardEmployeeService {
     }
   }
 
-  async findAll() {
+  
+
+  async findAll(@Req() req) {
     try {
-      return await this.myjobcardemployeemodal.find();
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      const all_employee = await this.myjobcardemployeemodal.find();
+      for (let index = 0; index < all_employee.length; index++) {
+        if (all_employee[index].organization_id === organizationkey) {
+          new_arr.push(all_employee[index]);
+        }
+      }
+      return new_arr;
     } catch {
       throw new NotFoundException('employee not found');
     }
   }
 
-  async findOne(id: string) {
+
+  async findOne(id: string, @Req() req) {
     try {
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       const find_one_employee = await this.myjobcardemployeemodal.findOne({
         _id: id,
       });
-      return find_one_employee;
+      if (find_one_employee.organization_id === organizationkey) {
+        return find_one_employee;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
     } catch {
       throw new NotFoundException('employee not found');
     }
   }
+
 
   async update(
     id: string,
@@ -60,16 +94,26 @@ export class MyJobCardEmployeeService {
     }
   }
 
+
   async remove(id: string) {
     return await this.myjobcardemployeemodal.remove({ _id: id });
   }
 
-  async findemployeebyjcid(id: string) {
+
+  async findemployeebyjcid(id: string, @Req() req) {
     try {
       var new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       const employe = await this.myjobcardemployeemodal.find();
+
       for (let i = 0; i < employe.length; i++) {
-        if (employe[i].jc_id === id) {
+        if (
+          employe[i].jc_id === id &&
+          employe[i].organization_id === organizationkey
+        ) {
           new_arr.push(employe[i]);
         }
       }

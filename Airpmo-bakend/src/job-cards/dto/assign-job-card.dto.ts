@@ -5,5 +5,5 @@ export class assignJobCardDto {
   assign_data: [];
 
   @ApiProperty()
-  organization_id: string;
+  orgainization_id: string;
 }

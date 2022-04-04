@@ -12,6 +12,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { excelDocument, excels } from 'src/schemas/excel.schema';
 import { CreateExcelDto } from './dto/create-excel.dto';
+import { Base64, encode } from 'js-base64';
 var lodash = require('lodash');
 
 @Injectable()
@@ -70,8 +71,13 @@ export class ExcelService {
 
   //FIND ALL DATA BY PROJECT ID API*
 
-  async findOne(projectid: string) {
+  async findOne(projectid: string, @Req() req) {
     try {
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
       var user = await this.excelModel.findOne({ project_id: projectid });
       if (!user) {
         throw new NotFoundException('sheet not found');
@@ -534,10 +540,13 @@ export class ExcelService {
     }
   }
 
-  async updateproductiveFile( @Req() req , @Body() CreateExcelDto: CreateExcelDto,) {
+  async updateproductiveFile(
+    @Req() req,
+    @Body() CreateExcelDto: CreateExcelDto,
+  ) {
     try {
       var projectid = req.body.project_id;
-      var data = await this.excelModel.findOne({ project_id: projectid, });
+      var data = await this.excelModel.findOne({ project_id: projectid });
       if (data) {
         if (projectid) {
           var pro = await this.excelModel.updateOne(

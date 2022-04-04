@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Req} from '@nestjs/common';
 import { ZoneService } from './zone.service';
 import { CreateZoneDto } from './dto/create-zone.dto';
 import { UpdateZoneDto } from './dto/update-zone.dto';
@@ -19,14 +19,15 @@ export class ZoneController {
 
   @Auth('GET-ZONES')
   @Get("zone")
-  findAll() {
-    return this.zoneService.findAll();
+  findAll(@Req()req) {
+    
+    return this.zoneService.findAll(req);
   }
 
   @Auth('GET-ZONES')
   @Get('zone/:id')
-  findOne(@Param('id') id: string) {
-    return this.zoneService.findOne(id);
+  findOne(@Param('id') id: string,@Req()req) {
+    return this.zoneService.findOne(id,req);
   }
 
   @Auth('EDIT-ZONES')
@@ -49,7 +50,7 @@ export class ZoneController {
 
   @Auth('GET-ZONES')
   @Get('project/:project_id/zone')
-  findproject(@Param('project_id') project_id: string) {
-    return this.zoneService.findproject(project_id);
+  findproject(@Param('project_id') project_id: string,@Req()req) {
+    return this.zoneService.findproject(project_id,req);
   }
 }

@@ -17,6 +17,7 @@ export class UsersSeeder implements Seeder {
         FirstName: 'Airpmo',
         LastName: 'admin',
         Email: 'admin@gmail.com',
+        organization_id: 1,
         Password:
           '$2b$10$F6o/t/i4A9sNAlQiil50s./KbZpzk1tscg1VqKlhUJVoKxkha/f5e',
       },
@@ -24,6 +25,7 @@ export class UsersSeeder implements Seeder {
         FirstName: 'super admin',
         LastName: 'admin',
         Email: 'superadmin@gmail.com',
+        organization_id: 2,
         Password:
           '$2b$10$F6o/t/i4A9sNAlQiil50s./KbZpzk1tscg1VqKlhUJVoKxkha/f5e',
       },
@@ -31,6 +33,7 @@ export class UsersSeeder implements Seeder {
         FirstName: 'riyaz',
         LastName: 'admin',
         Email: 'riyaz@gmail.com',
+        organization_id: 3,
         Password:
           '$2b$10$EzZLPCKucJGjYPnyTjYVSuem30AWzG8RjMUL6jNI/hRyDDCA7/GKm',
       },
@@ -38,6 +41,7 @@ export class UsersSeeder implements Seeder {
         FirstName: 'neeraj',
         LastName: 'admin',
         Email: 'neeraj@gmail.com',
+        organization_id: 4,
         Password:
           '$2b$10$Vk397eZKYOnWPwaCSdBBAuHkpQMaObjr2UIizNt4DaNWO7x2KWNoS',
       },
@@ -45,6 +49,7 @@ export class UsersSeeder implements Seeder {
         FirstName: 'aditya',
         LastName: 'admin',
         Email: 'aditya@gmail.com',
+        organization_id: 5,
         Password:
           '$2b$10$0cV3puFlwx/RaM6z0p18ie3LogZtixPIBS0o2WZ.GmdIq5OIlJT.W',
       },

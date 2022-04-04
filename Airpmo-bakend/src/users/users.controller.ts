@@ -19,6 +19,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
+import { stringify } from 'querystring';
 @ApiTags('Users api')
 @Controller('api')
 export class UsersController {
@@ -33,7 +34,7 @@ export class UsersController {
   @Auth('GET-USERS')
   @Get('users')
   findAll(@Req() req) {
-    return this.UsersService.findAll();
+    return this.UsersService.findAll(req);
   }
 
   @Auth('GET-USERS')
