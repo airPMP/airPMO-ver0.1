@@ -90,13 +90,13 @@ top:-20px
 
    .fileSheet{
     opacity: 0;
-    cursor: pointer !important;
+    /* cursor: pointer !important; */
     height: 40px;
    }
    .shhetText{
        font-size: 14px;
        margin-left: -94px;
-       cursor: pointer;
+       cursor: pointer !important;
        color: #8F9BBA;
        margin-top: 3px;
    }

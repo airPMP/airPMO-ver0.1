@@ -67,13 +67,25 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             // console.log(assigncarddata?.manpower_and_machinary[0]) 
             // console.log(employeechangeData) 
 
-            let deks = employeechangeData?.map((item, ids) => {
-                console.log(item?.designation)  
-            })
+            //  employeechangeData?.map((item, ids) => {
+            //     console.log(item)  
+            // })
 
             
             let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => {
-                console.log(Object.keys(item))
+                let data=[{}]
+                
+                
+                console.log(Object.entries(item))
+                
+                // Object.entries(item).map((itemss,id)=>{
+                    
+                // })
+                
+
+                data.push( item)
+
+                console.log(item)
             })
 
 

@@ -278,62 +278,119 @@ const EditAccess = () => {
 
 
 
-     
-//////////////////////////////////////// Start ProductivitySheet //////////////////////
 
-const  ProductivitySheetEditCreate =(e,id)=>{
+    //////////////////////////////////////// Start ProductivitySheet //////////////////////
 
-    let comedata = rolesdata?.map((item, id1) => {
+    const ProductivitySheetEditCreate = (e, id) => {
 
-        if (id === item._id) {
+        let comedata = rolesdata?.map((item, id1) => {
 
-            if (item.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET`) {
-                return item.permission[15] = '', item.permission[16] = ''
+            if (id === item._id) {
+
+                if (item.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET`) {
+                    return item.permission[15] = '', item.permission[16] = ''
+                }
+                else {
+                    return item.permission[15] = `CREATE/EDIT-PRODUCTIVE_SHEET`, item.permission[16] = `CREATE/EDIT-PRODUCTIVE_SHEET`
+                }
             }
             else {
-                return item.permission[15] = `CREATE/EDIT-PRODUCTIVE_SHEET`, item.permission[16] = `CREATE/EDIT-PRODUCTIVE_SHEET`
+                return "nothing"
             }
-        }
-        else {
-            return "nothing"
-        }
-    })
-    setClientId(e)
+        })
+        setClientId(e)
 
 
 
-}
+    }
 
 
 
 
-const  ProductivitySheetView =(e,id)=>{
+    const ProductivitySheetView = (e, id) => {
 
-    let comedata = rolesdata?.map((item, id1) => {
+        let comedata = rolesdata?.map((item, id1) => {
 
-        if (id === item._id) {
+            if (id === item._id) {
 
-            if (item.permission[17] === `GET-PRODUCTIVE_SHEET`) {
-                return item.permission[17] = ''
+                if (item.permission[17] === `GET-PRODUCTIVE_SHEET`) {
+                    return item.permission[17] = ''
+                }
+                else {
+                    return item.permission[17] = `GET-PRODUCTIVE_SHEET`
+                }
             }
             else {
-                return item.permission[17] = `GET-PRODUCTIVE_SHEET`
+                return "nothing"
             }
-        }
-        else {
-            return "nothing"
-        }
 
-    })
-    setClientId(e)
+        })
+        setClientId(e)
 
 
 
-}
+    }
+
+
+    ////////////////////////////////////////   ProductivitySheet End ////////////////////////////
+
+
+    ////////////////////////////////////////  JobCard start ////////////////////////////
+
+
+    const JobCardEditCreate = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[18] === `CREATE-JOB-CARD`) {
+                    return item.permission[18] = '', item.permission[19] = ''
+                }
+                else {
+                    return item.permission[18] = `CREATE-JOB-CARD`, item.permission[19] = `CREATE-JOB-CARD`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
 
 
 
-////////////////////////////////////////   ProductivitySheet End ////////////////////////////
+    }
+
+
+
+    const JobCardView = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[20] === `FIND-JOB-CARD`) {
+                    return item.permission[20] = ''
+                }
+                else {
+                    return item.permission[20] = `FIND-JOB-CARD`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+
+
+    }
+
+
+
+
+    ////////////////////////////////////////  JobCard End ////////////////////////////
 
 
     const SavePermission = () => {
@@ -472,6 +529,36 @@ const  ProductivitySheetView =(e,id)=>{
                                         Dashboards 6
                                     </button>
                                 </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Job Cards
+                                        <br />
+                                        Dashboards 7
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Job Cards Assigned
+                                        <br />
+                                        Dashboards 8
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        My Job Cards
+                                        <br />
+                                        Dashboards 9
+                                    </button>
+                                </div>
                             </div>
                             <div className="col-span-10 editAccess_flow ">
                                 <div className=" flex">
@@ -529,7 +616,7 @@ const  ProductivitySheetView =(e,id)=>{
                                 </div>
 
                                 <div>
-                                    <div className="flex mt-6">
+                                    <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
@@ -742,22 +829,15 @@ const  ProductivitySheetView =(e,id)=>{
 
 
                                 <div>
-                                    <div className="flex mt-6">
+                                    <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
-
-                                                    {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
-                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                                    {items.name}
-                                                </button> */}
 
                                                     <div className=" ">
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
-                                                                    // bg-[${clinreditcreate}]
-                                                                    // onClick={(e) => setClientEditCreate(`"CREATE-CLIENTS", "EDIT-CLIENTS"${items._id}`)}
                                                                     onClick={(e) => ProductivitySheetEditCreate(e, items._id)}
                                                                     className={` 
                                                             ${items.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
@@ -796,6 +876,57 @@ const  ProductivitySheetView =(e,id)=>{
                                         })}
                                     </div>
                                 </div>
+
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => JobCardEditCreate(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission[18] === `CREATE-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => JobCardView(e, items._id)}
+                                                                    className={`${items.permission[20] === `FIND-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
 
 
                             </div>

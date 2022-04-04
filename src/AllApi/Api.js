@@ -34,6 +34,29 @@ export const getClientApi = async () => {
     });
 };
 
+export const getProjectApi = async () => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+
+export const getCategorieApi = async () => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+
+
 
 export const getAllJobCardApi = async () => {
     const token = reactLocalStorage.get("access_token", false);

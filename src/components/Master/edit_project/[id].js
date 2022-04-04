@@ -56,6 +56,12 @@ const EditProject = () => {
     const [showeye, setShowEye] = useState(" ");
     const [sheetdata, setSheetData] = useState(null)
 
+    const [allpermission, setAllPermission] = useState(null)
+    const [editpermission, setEditPermission] = useState(null)
+    const [createpermission, setCreatePermission] = useState(null)
+    const [viewpermission, setViewPermission] = useState(null)
+    const [allpermissions, setAllPermissions] = useState(null)
+
     let useperma = useParams()
 
     let urlTitle = useLocation();
@@ -101,61 +107,61 @@ const EditProject = () => {
         feach1();
 
 
-       
+
 
     }, [urlTitle.pathname]);
 
-    useEffect(()=>{
+    useEffect(() => {
 
 
         const token = reactLocalStorage.get("access_token", false);
-if(responcedata){
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
+        if (responcedata) {
+            axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
 
-            .then((response) => {  
-                
+                .then((response) => {
 
-                formik.values.category = response?.data?.category
-                formik.values.sub_category = response?.data?.sub_category
-                formik.values.project_name = response?.data?.project_name
-                formik.values.client_name = response?.data?.client_name
-                formik.values.start_date = response?.data?.start_date
-                formik.values.end_date = response?.data?.end_date
-                formik.values.project_id = response?.data?.project_id
-                formik.values.project_value = response?.data?.project_value
-                formik.values.discription = response?.data?.discription
-                formik.values.min_hours = response?.data?.min_hours
-                formik.values.max_hours = response?.data?.max_hours
-                formik.values.time_sheet_id = response?.data?.time_sheet_id
-                formik.values.spread_sheet_id = response?.data?.spread_sheet_id
-                formik.values.spread_sheet_key = response?.data?.spread_sheet_key
 
-                if(response?.data?.category){
-                    setResponceData( false)//this condition will stop the in finite loop
-                }
-                if (response.status === 201) {
-                    addToast("Project is Added Sucessfully", {
-                        appearance: "success",
+                    formik.values.category = response?.data?.category
+                    formik.values.sub_category = response?.data?.sub_category
+                    formik.values.project_name = response?.data?.project_name
+                    formik.values.client_name = response?.data?.client_name
+                    formik.values.start_date = response?.data?.start_date
+                    formik.values.end_date = response?.data?.end_date
+                    formik.values.project_id = response?.data?.project_id
+                    formik.values.project_value = response?.data?.project_value
+                    formik.values.discription = response?.data?.discription
+                    formik.values.min_hours = response?.data?.min_hours
+                    formik.values.max_hours = response?.data?.max_hours
+                    formik.values.time_sheet_id = response?.data?.time_sheet_id
+                    formik.values.spread_sheet_id = response?.data?.spread_sheet_id
+                    formik.values.spread_sheet_key = response?.data?.spread_sheet_key
+
+                    if (response?.data?.category) {
+                        setResponceData(false)//this condition will stop the in finite loop
+                    }
+                    if (response.status === 201) {
+                        addToast("Project is Added Sucessfully", {
+                            appearance: "success",
+                            autoDismiss: true,
+                        })
+                        // navigate('/')
+                    }
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                    addToast(error.response.data.message, {
+                        appearance: "error",
                         autoDismiss: true,
                     })
-                    // navigate('/')
-                }
-
-            })
-            .catch((error) => {
-                console.log(error)
-                addToast(error.response.data.message, {
-                    appearance: "error",
-                    autoDismiss: true,
                 })
-            })
         }
 
-    },[responcedata ])
+    }, [responcedata])
 
     console.log(responcedata)
 
@@ -240,7 +246,74 @@ if(responcedata){
         setOpen(o => !o)
         setShowEye(o => !o)
     }
-  
+
+
+    useEffect(() => {
+        const permissionData = reactLocalStorage.get("permisions", false);
+        setAllPermission(permissionData)
+
+        getPermision()
+    }, [allpermission])
+
+    const getPermision = async () => {
+
+        const url_data = await allpermission
+        const database = url_data?.split(',')
+
+        let value = "EDIT-ZONES".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value) !== -1;
+            }
+        });
+
+
+        let value1 = "CREATE-ZONES".toUpperCase();
+        let result1 = []
+        result1 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value1) !== -1;
+            }
+        });
+
+        let value2 = "GET-ZONES".toUpperCase();
+        let result2 = []
+        result2 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value2) !== -1;
+            }
+        });
+
+
+
+
+
+
+        if (result[0] === "EDIT-ZONES" ||
+            result1[0] === "CREATE-ZONES" ||
+            result2[0] === "GET-ZONES") {
+            setEditPermission(result[0])
+            setCreatePermission(result1[0])
+            setViewPermission(result2[0])
+        }
+        else {
+            let value = "ALL".toUpperCase();
+            let result = []
+            result = database?.filter((data) => {
+                if (isNaN(+value)) {
+                    return data?.toUpperCase().search(value) !== -1;
+                }
+            });
+            setAllPermissions(result[0])
+        }
+
+    }
+
+
+
+
+
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
@@ -261,9 +334,50 @@ if(responcedata){
                                 className="content-center"
                             />
                         </div>
-                        <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-                            Create new Project
+
+
+
+
+
+
+                        <div className="grid grid-cols-2">
+
+                            <div className="col-span-1">
+                                <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
+                                    Create new Project
+                                </div>
+                            </div>
+
+                            <div className="col-span-1  pl-14">
+
+                                <div className="flex ">
+
+                                    <div className="mr-[25px] shadow-[buttonshadow] ">
+                                        {/* <button
+                                          
+                                            className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                                            Add Delay
+                                        </button> */}
+                                    </div>
+
+                                    <div className="mr-[25px] shadow-[buttonshadow] ">
+                                        <button
+                                            // onClick={() => createpermission || allpermissions ? ViewZoneData.set(o => !o) : null}
+                                            // className={`${createpermission === "CREATE-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                            //     w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                                            //     text-[14px] text-center font-medium not-italic items-center 
+                                            //     bg-[#FFFFFF] text-[#2E3A59] `}
+                                                 >
+                                            {/* Add Zones & Subzone */}
+                                        </button>
+                                         
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+
+
                     </div>
                     <div className="pl-[120px] pr-[26px] pt-[33.49px]">
 
@@ -733,20 +847,37 @@ if(responcedata){
                                             Add Delay
                                         </button> */}
                                     </div>
-                                    <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        {/* <button
-                                            // onClick={() => setOpen(o => !o)} 
-                                            className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
-                                            View Zones
-                                        </button> */}
-                                    </div>
-                                    <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        {/* <button
+
+                                    {/* <div className="mr-[25px] shadow-[buttonshadow] ">
+                                        <button
+                                            onClick={() =>
+                                                viewpermission || allpermissions ?  naviagte(`/master/zones/${useperma.id}`) : null
+                                            }
+                                            className={`${viewpermission === "GET-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                                    w-[160px] btnshadow  h-[25px] rounded text-sm
+                                                    font-secondaryFont text-[14px] text-center font-medium not-italic
+                                                    items-center  bg-[#FFFFFF] text-[#2E3A59] `}
+                                        >
+                                            View Zones & Subzones
+                                        </button>
+                                    </div> */}
+
+                                    {/* <div className="mr-[25px] shadow-[buttonshadow] ">
+                                        <button onClick={() => { naviagte("/UserManagement/EditAccess") }}
+                                            className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                      text-[14px] text-center font-medium not-italic items-center 
+                       bg-[#FFFFFF] text-[#2E3A59] ">
+                                            View Edit Access
+                                        </button>
+                                    </div> */}
+
+                                    {/* <div className="mr-[45px] shadow-[buttonshadow] ">
+                                        <button
                                             // onClick={() => setOpenSub(o => !o)}
                                             className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                                             View Subzones
-                                        </button> */}
-                                    </div>
+                                        </button>
+                                    </div> */}
                                 </div>
                                 <div className="flex flex-row">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">

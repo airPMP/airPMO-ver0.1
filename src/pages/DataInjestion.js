@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
-import ProductSearch from "../components/Injestion/ProductSearch";
+import ProductSearch from "../components/Injestion/ProductSearch"; 
 
 const DataInjestion = () => {
   const [title, setTitle] = useState(null);
   const [page, setPage] = useState(null);
+  
+
+
   let urlTitle = useLocation();
 
   useEffect(() => {
@@ -21,6 +24,12 @@ const DataInjestion = () => {
   const sendPage = (pagename) => {
     setPage(pagename);
   };
+
+   
+
+
+
+
 
   console.log("DashBoard", urlTitle.pathname);
   return (
@@ -40,14 +49,14 @@ const DataInjestion = () => {
                   <ProductSearch
                     placeHolderName={"Choose Client"}
 
-                    // value={client}
+                  // value={client}
                   />
                 </div>
                 <div>
                   <ProductSearch
                     placeHolderName={"Choose Project"}
 
-                    // value={client}
+                  // value={client}
                   />
                 </div>
               </div>
@@ -96,7 +105,7 @@ const DataInjestion = () => {
                       }
                     />
                   </Link>
-                  
+
                 </div>
               </div>
             </>

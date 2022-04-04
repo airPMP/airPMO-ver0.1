@@ -32,6 +32,14 @@ const ProductivitySheet = () => {
     const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
     const [sheetupdateddata, setSheetUpdatedData] = useState(false)
 
+    const [allpermission, setAllPermission] = useState(null)
+    const [editpermission, setEditPermission] = useState(null)
+    const [createpermission, setCreatePermission] = useState(null)
+    const [viewpermission, setViewPermission] = useState(null)
+    const [allpermissions, setAllPermissions] = useState(null)
+
+
+
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
@@ -224,9 +232,9 @@ const ProductivitySheet = () => {
     }
 
     const ActiveNameSheet = (e, data) => {
-        setActiveNameData(o => !o)  
+        setActiveNameData(o => !o)
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setActiveNameDataCode(data["Activity code"]) 
+        setActiveNameDataCode(data["Activity code"])
         setUNIT(data[" UNIT "])
     }
 
@@ -243,6 +251,70 @@ const ProductivitySheet = () => {
         // 1.000 
 
     }
+
+
+    useEffect(() => {
+        const permissionData = reactLocalStorage.get("permisions", false);
+        setAllPermission(permissionData)
+
+        getPermision()
+    }, [allpermission])
+
+    const getPermision = async () => {
+
+        const url_data = await allpermission
+        const database = url_data?.split(',')
+
+        let value = "CREATE/EDIT-PRODUCTIVE_SHEET".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value) !== -1;
+            }
+        });
+
+
+        let value1 = "CREATE/EDIT-PRODUCTIVE_SHEET".toUpperCase();
+        let result1 = []
+        result1 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value1) !== -1;
+            }
+        });
+
+        let value2 = "GET-PRODUCTIVE_SHEET".toUpperCase();
+        let result2 = []
+        result2 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value2) !== -1;
+            }
+        });
+
+
+
+
+
+
+        if (result[0] === "CREATE/EDIT-PRODUCTIVE_SHEET" ||
+            result1[0] === "CREATE/EDIT-PRODUCTIVE_SHEET" ||
+            result2[0] === "GET-PRODUCTIVE_SHEET") {
+            setEditPermission(result[0])
+            setCreatePermission(result1[0])
+            setViewPermission(result2[0])
+        }
+        else {
+            let value = "ALL".toUpperCase();
+            let result = []
+            result = database?.filter((data) => {
+                if (isNaN(+value)) {
+                    return data?.toUpperCase().search(value) !== -1;
+                }
+            });
+            setAllPermissions(result[0])
+        }
+
+    }
+
 
 
 
@@ -285,13 +357,14 @@ const ProductivitySheet = () => {
                                             />
                                         </svg>
                                     </div>
-                                    <div className="bg-[#FFFFFF] pl-[7px]    ">
+                                    <div className="bg-[#FFFFFF] pl-[7px] ">
                                         <input
                                             type="text"
                                             placeholder="Choose Client"
                                             value={clientsearchdata}
-                                            className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                                            onChange={(e) => handleChangeForClientData(e)} //-2a 
+                                            className={`${viewpermission === "GET-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                            outline-none w-[332px] h-[46px] rounded-[10px]`}
+                                            onChange={(e) => viewpermission || allpermissions ? handleChangeForClientData(e) : null} //-2a 
                                         />
                                     </div>
                                 </div>
@@ -362,13 +435,15 @@ const ProductivitySheet = () => {
                                                     }}>
                                                     <div>
                                                         <input type="file"
-                                                            onChange={(e) => SheetFile(e)}
+                                                            onChange={(e) => createpermission || allpermissions ? SheetFile(e) : null}
                                                             placeholder="Import Sheet"
                                                             name="file_upload"
-                                                            className="w-[90%] fileSheet" />
+                                                            className={`${createpermission === "CREATE/EDIT-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                                            w-[90%] fileSheet`} />
                                                     </div>
                                                 </div>
-                                                <div className="shhetText">Import Sheet</div>
+                                                <div className={`${createpermission === "CREATE/EDIT-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer " : "  disabledclass"}
+                                                shhetText`}>Import Sheet</div>
                                             </div>
 
 
@@ -493,10 +568,10 @@ const ProductivitySheet = () => {
                                                             : <>
                                                             </>
                                                     }
-                                                    </> 
-                                                })} 
+                                                    </>
+                                                })}
                                             </tr> : <>
-                                            </>} 
+                                            </>}
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>

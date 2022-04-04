@@ -67,10 +67,18 @@ const NewProject = () => {
   const [showeye, setShowEye] = useState(" ");
   const [organization_id_data, setOrganization_Id] = useState();
 
+
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
+
+
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
-  const viewzonedata = ViewZoneData.use() 
+  const viewzonedata = ViewZoneData.use()
   const [zoneerror, setZoneError] = useState(null)
   const [projectidzone, setProjectIdZone] = useState(null);
 
@@ -169,7 +177,10 @@ const NewProject = () => {
               appearance: "success",
               autoDismiss: true,
             })
-            ViewZoneData.set(o => !o)
+            if (createpermission) {
+              ViewZoneData.set(o => !o)
+            }
+          
             // navigate('/')
           }
           resetForm()
@@ -225,8 +236,71 @@ const NewProject = () => {
     setClientId(client_data[1])
   }
 
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
 
-  console.log("add project")
+    getPermision()
+  }, [allpermission])
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data?.split(',')
+
+    let value = "EDIT-ZONES".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    let value1 = "CREATE-ZONES".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-ZONES".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+    if (result[0] === "EDIT-ZONES" ||
+      result1[0] === "CREATE-ZONES" ||
+      result2[0] === "GET-ZONES") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setAllPermissions(result[0])
+    }
+
+  }
+
+
+
+
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -269,10 +343,11 @@ const NewProject = () => {
                   </div>
 
                   <div className="mr-[25px] shadow-[buttonshadow] ">
-                    <button onClick={() => ViewZoneData.set(o => !o)}
-                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                    <button onClick={() => createpermission || allpermissions ? ViewZoneData.set(o => !o) : null}
+                      className={`${createpermission === "CREATE-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                      w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
                       text-[14px] text-center font-medium not-italic items-center 
-                       bg-[#FFFFFF] text-[#2E3A59] ">
+                       bg-[#FFFFFF] text-[#2E3A59] `} >
                       Add Zones & Subzone
                     </button>
                     <div className="text-[red] pl-3 pt-2">{zoneerror}</div>
@@ -692,8 +767,8 @@ const NewProject = () => {
                       className="zone_pops"
                     >
                       <ZoneList
-                        projectidzone={projectidzone} 
-                        />
+                        projectidzone={projectidzone}
+                      />
 
                     </Popup>
 
@@ -766,15 +841,18 @@ const NewProject = () => {
                   </div> */}
                   <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
-                      onClick={() => {
-                        naviagte("/master/Projects/new_project/view_zones");
-                      }}
-                      className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
+                      onClick={() =>
+                        viewpermission || allpermissions ? naviagte("/master/Projects/new_project/view_zones") : null
+                      }
+                      className={`${viewpermission === "GET-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                      w-[160px] btnshadow  h-[25px] rounded text-sm
+                       font-secondaryFont text-[14px] text-center font-medium not-italic
+                        items-center  bg-[#FFFFFF] text-[#2E3A59] `}>
                       View Zones & Subzones
                     </button>
                   </div>
                   <div className="mr-[25px] shadow-[buttonshadow] ">
-                    <button onClick={() => { naviagte("/master/projects/new_project") }}
+                    <button onClick={() => { naviagte("/UserManagement/EditAccess") }}
                       className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
                       text-[14px] text-center font-medium not-italic items-center 
                        bg-[#FFFFFF] text-[#2E3A59] ">

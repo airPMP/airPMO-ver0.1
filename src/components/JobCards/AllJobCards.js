@@ -11,6 +11,13 @@ const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
+
+  const [allpermission, setAllPermission] = useState(null)
+    const [editpermission, setEditPermission] = useState(null)
+    const [createpermission, setCreatePermission] = useState(null)
+    const [viewpermission, setViewPermission] = useState(null)
+    const [allpermissions, setAllPermissions] = useState(null)
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -63,6 +70,70 @@ const AllJobCards = () => {
       setFilteredData(alljobcarddata)
     }
   }
+
+
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+}, [allpermission])
+
+const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data?.split(',')
+
+    let value = "EDIT-SUBZONES".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+        if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+        }
+    });
+
+
+    let value1 = "CREATE-SUBZONES".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+        if (isNaN(+value)) {
+            return data?.toUpperCase().search(value1) !== -1;
+        }
+    });
+
+    let value2 = "FIND-JOB-CARD".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+        if (isNaN(+value)) {
+            return data?.toUpperCase().search(value2) !== -1;
+        }
+    });
+
+
+
+
+
+
+    if (result[0] === "EDIT-SUBZONES" ||
+        result1[0] === "CREATE-JOB-CARD" ||
+        result2[0] === "FIND-JOB-CARD") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+    }
+    else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value) !== -1;
+            }
+        });
+        setAllPermissions(result[0])
+    }
+
+}
+
 
  
 
