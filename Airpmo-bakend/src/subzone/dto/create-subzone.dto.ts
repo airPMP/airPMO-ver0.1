@@ -11,5 +11,5 @@ export class CreateSubzoneDto {
     zone_id:string;
 
     @ApiProperty()
-   organization_id:string;
+    organization_id: string;
 }

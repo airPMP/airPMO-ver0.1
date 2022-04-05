@@ -35,7 +35,7 @@ export class ClientprofileService {
       var organizationkey = obj.organization_id;
       const find_client = await this.clientModel.find();
       for (let index = 0; index < find_client.length; index++) {
-        if (find_client[index].orgainization_id === organizationkey) {
+        if (find_client[index].organization_id === organizationkey) {
           new_arr.push(find_client[index]);
         }
       }
@@ -53,7 +53,7 @@ export class ClientprofileService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       const client = await this.clientModel.findOne({ _id: id });
-      if (client.orgainization_id === organizationkey) {
+      if (client.organization_id === organizationkey) {
         return client;
       } else {
         throw new UnprocessableEntityException(

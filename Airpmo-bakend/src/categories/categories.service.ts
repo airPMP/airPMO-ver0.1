@@ -30,7 +30,7 @@ export class CategoriesService {
       var organizationkey = obj.organization_id;
       const find_catagories = await this.categoriesModel.find();
       for (let i = 0; i < find_catagories.length; i++) {
-        if (find_catagories[i].orgainization_id === organizationkey) {
+        if (find_catagories[i].organization_id === organizationkey) {
           new_arr.push(find_catagories[i]);
         }
       }
@@ -48,7 +48,7 @@ export class CategoriesService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       const user = await this.categoriesModel.findById({ _id: id });
-      if (user.orgainization_id === organizationkey) {
+      if (user.organization_id=== organizationkey) {
         return user;
       } else {
         throw new UnprocessableEntityException(
@@ -67,7 +67,7 @@ export class CategoriesService {
           category: updateCategoryDto.category,
           sub_category: updateCategoryDto.sub_category,
           discription: updateCategoryDto.discription,
-          orgainization_id: updateCategoryDto.orgainization_id,
+          orgainization_id: updateCategoryDto.organization_id,
         },
       );
       return {

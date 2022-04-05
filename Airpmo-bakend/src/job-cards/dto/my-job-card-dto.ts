@@ -59,6 +59,6 @@ export class createmyjobcardDto {
   cpi: string;
 
   @ApiProperty()
-  orgainization_id: string;
+  organization_id: string;
 
 }

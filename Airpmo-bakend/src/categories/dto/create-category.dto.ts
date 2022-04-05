@@ -16,7 +16,7 @@ export class CreateCategoryDto {
 
       
         @ApiProperty()
-        orgainization_id: string;
+        organization_id: string;
 
         
 

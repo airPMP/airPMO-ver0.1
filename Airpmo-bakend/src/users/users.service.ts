@@ -33,8 +33,7 @@ export class UsersService {
     }
     const user = await this.usersModel.findOne({ Email: createUserDto.Email });
     if (!user) {
-      let userdata = await this.usersModel.create(createUserDto);
-      return await this.findOne(userdata.id);
+     return await this.usersModel.create(createUserDto);
     } else {
       throw new UnauthorizedException('User already rigister');
     }
@@ -107,7 +106,6 @@ export class UsersService {
 
   async findOne(id: string) {
     try {
-      const findroles = await this.userRolesService.userroles(id);
       const user = await this.usersModel.findOne({ _id: id });
       return user;
     } catch {

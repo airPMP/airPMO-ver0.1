@@ -33,7 +33,7 @@ export class CreateClientprofileDto {
 
   
     @ApiProperty()
-    orgainization_id: string;
+    organization_id: string;
 
 
     @ApiProperty()

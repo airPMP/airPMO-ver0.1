@@ -22,6 +22,7 @@ export class ExcelService {
   ) {}
 
   async productiveFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -51,6 +52,7 @@ export class ExcelService {
         var pr = await this.excelModel.create({
           productivitysheet: jsonData,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -73,12 +75,19 @@ export class ExcelService {
 
   async findOne(projectid: string, @Req() req) {
     try {
-      const new_arr = [];
+     
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       var user = await this.excelModel.findOne({ project_id: projectid });
+      if (user.organization_id === organizationkey) {
+        return user;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
       if (!user) {
         throw new NotFoundException('sheet not found');
       } else {
@@ -92,6 +101,7 @@ export class ExcelService {
   //QUANTITY...................SHEET
 
   async quantityFile(files, req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -303,6 +313,7 @@ export class ExcelService {
         var create_quantity = await this.excelModel.create({
           quantity_sheets: new_ar2,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -324,6 +335,7 @@ export class ExcelService {
   //FIRE QUANTITY API*
 
   async firequantityFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -377,11 +389,13 @@ export class ExcelService {
     var find_fire_data = await this.excelModel.findOne({
       project_id: projectid,
     });
+
     if (!find_fire_data) {
       if (files[0].fieldname === 'fire_quantity_sheet' && projectid) {
         var create_fire_quantity = await this.excelModel.create({
           fire_quantity_sheets: fire_all_data,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -403,6 +417,7 @@ export class ExcelService {
   //LIGHT QUANTITY API*
 
   async lightquantityFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -522,6 +537,7 @@ export class ExcelService {
         var create_light_quantity = await this.excelModel.create({
           light_fitting_quantity_sheets: light_fitting_all_data,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {

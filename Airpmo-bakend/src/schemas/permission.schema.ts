@@ -11,8 +11,6 @@ export class Permission {
   @Prop()
   description: string;
 
-  @Prop()
-  organization_id: string;
 
   @Prop({ default: Date })
   createdAt: string;

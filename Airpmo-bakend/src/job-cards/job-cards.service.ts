@@ -56,7 +56,7 @@ export class JobCardsService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       const find_Card = await this.jobcardmodal.findOne({ _id: id });
-      if (find_Card.orgainization_id === organizationkey) {
+      if (find_Card.organization_id === organizationkey) {
         return find_Card;
       } else {
         throw new UnprocessableEntityException(
@@ -77,7 +77,7 @@ export class JobCardsService {
       var organizationkey = obj.organization_id;
       const find_all_job_card = await this.jobcardmodal.find().lean();
       for (let index = 0; index < find_all_job_card.length; index++) {
-        if (find_all_job_card[index].orgainization_id === organizationkey) {
+        if (find_all_job_card[index].organization_id === organizationkey) {
           new_arr.push(find_all_job_card[index]);
         }
       }
@@ -131,7 +131,7 @@ export class JobCardsService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       const get_job_card = await this.assignjobcardmodal.findOne({ _id: id });
-      if (get_job_card.orgainization_id === organizationkey) {
+      if (get_job_card.organization_id === organizationkey) {
         return get_job_card;
       } else {
         throw new UnprocessableEntityException(
@@ -146,16 +146,28 @@ export class JobCardsService {
   async assignuserdata(id: string, @Req() req) {
     try {
       var new_arr = [];
-      const findalldata = await this.assignjobcardmodal.find();
+      var arr1 = [];
       var arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+
+      const findalldata = await this.assignjobcardmodal.find();
       findalldata?.map((item, id) => {
         item?.assign_data?.map((item2, ids) => {
-          arr.push(item2);
+          arr1.push(item2);
         });
       });
 
+      for (let index = 0; index < arr1.length; index++) {
+        if (arr1[index].organization_id === organizationkey) {
+          arr.push(arr1[index]);
+        }
+      }
       for (let i = 0; i < arr.length; i++) {
         const id = arr[i]._id.toString();
+
         var find = await this.myjobcardmodal.findOne({ jc_number: id }).lean();
         if (find != null) {
           const new_obj = {
@@ -170,7 +182,6 @@ export class JobCardsService {
           new_arr.push(arr[i]);
         }
       }
-
       const finduser = await this.UserRoleModel.find();
       for (let i = 0; i < finduser.length; i++) {
         if (finduser[i].user_id === id) {
@@ -204,7 +215,7 @@ export class JobCardsService {
       var organizationkey = obj.organization_id;
       const find_all_asign_card = await this.assignjobcardmodal.find();
       for (let index = 0; index < find_all_asign_card.length; index++) {
-        if (find_all_asign_card[index].orgainization_id === organizationkey) {
+        if (find_all_asign_card[index].organization_id === organizationkey) {
           new_arr.push(find_all_asign_card[index]);
         }
       }
@@ -225,7 +236,7 @@ export class JobCardsService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       const find_my_job = await this.myjobcardmodal.findOne({ _id: id });
-      if (find_my_job.orgainization_id === organizationkey) {
+      if (find_my_job.organization_id === organizationkey) {
         return find_my_job;
       } else {
         throw new UnprocessableEntityException(
@@ -246,7 +257,7 @@ export class JobCardsService {
       var organizationkey = obj.organization_id;
       const get_all_my_job_card = await this.myjobcardmodal.find();
       for (let index = 0; index < get_all_my_job_card.length; index++) {
-        if (get_all_my_job_card[index].orgainization_id === organizationkey) {
+        if (get_all_my_job_card[index].organization_id === organizationkey) {
           new_arr.push(get_all_my_job_card[index]);
         }
       }
