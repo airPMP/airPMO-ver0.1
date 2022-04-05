@@ -21,25 +21,25 @@ export class MyJobCardEquipmentController {
     private readonly myJobCardEquipmentService: MyJobCardEquipmentService,
   ) {}
 
-  @Auth()
+  @Auth('CREATE-MY-JOB-CARD')
   @Post('create_my_job_card_equipments')
   create(@Body() createMyJobCardEquipmentDto: CreateMyJobCardEquipmentDto) {
     return this.myJobCardEquipmentService.create(createMyJobCardEquipmentDto);
   }
 
-  @Auth('FIND_ALL_EQUIPMENTS_IN_MY_JOB_CARD')
+  @Auth('GET-MY-JOB-CARD')
   @Get('find_my_all_job_card_equipments')
   findAll(@Req() req) {
     return this.myJobCardEquipmentService.findAll(req);
   }
 
-  @Auth('FIND_EQUIPMENT_IN_MY_JOB_CARD')
+  @Auth('GET-MY-JOB-CARD')
   @Get('find_my_job_card_equipments/:id')
   findOne(@Param('id') id: string, @Req() req) {
     return this.myJobCardEquipmentService.findOne(id, req);
   }
 
-  @Auth('UPDATE_EMPLOYEE_IN_MY_JOB_CARD')
+  @Auth('EDIT-MY-JOB-CARD')
   @Patch('update_my_job_card_equipments/:id')
   update(
     @Param('id') id: string,
@@ -51,13 +51,13 @@ export class MyJobCardEquipmentController {
     );
   }
 
-  @Auth('DELETE_EQUIPMENT_IN_MY_JOB_CARD')
+  @Auth('DELETE-MY-JOB-CARD')
   @Delete('delete_my_job_card_equipments/:id')
   remove(@Param('id') id: string) {
     return this.myJobCardEquipmentService.remove(id);
   }
 
-  @Auth('FIND_EQUIPMENTS_IN_MY_JOB_CARD_BY_JC_ID')
+  @Auth('GET-MY-JOB-CARD')
   @Get('find_my_job_card_equipments_by_jc_no/:id')
   findjc(@Param('id') id: string,@Req() req) {
     return this.myJobCardEquipmentService.findemployeebyjcid(id,req);

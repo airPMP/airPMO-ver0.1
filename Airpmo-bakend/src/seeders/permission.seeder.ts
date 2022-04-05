@@ -130,80 +130,27 @@ export class PermissionsSeeder implements Seeder {
       },
 
       {
-        name: 'CREATE/EDIT-PRODUCTIVE_SHEET',
-        description: 'add productive sheet',
+        name: 'CREATE-SHEET',
+        description: 'add sheet',
       },
-      { name: 'GET-PRODUCTIVE_SHEET', description: 'get productive sheet' },
-      { name: 'CREATE/EDIT-QUANTITY_SHEET', description: 'add quantity sheet' },
+      { name: 'GET-SHEET', description: 'get  sheet' },
       {
-        name: 'CREATE/EDIT-FIRE_QUANTITY_SHEET',
-        description: 'add fire quantity sheet',
-      },
-      {
-        name: 'CREATE/EDIT-LIGHT_FITTING_QUANTITY_SHEET',
-        description: 'add light fitting quantity sheet',
-      },
-      {
-        name: 'UPDATE-PRODUCTIVE/WIRING/LIGHT/FIRE_QUANTITY_SHEET',
-        description: 'edit quantity sheet',
+        name: 'EDIT-SHEET',
+        description: 'edit  sheet',
       },
 
       { name: 'CREATE-JOB-CARD', description: 'create job card' },
-      { name: 'FIND-JOB-CARD', description: 'get job card' },
-      { name: 'FIND-ALL-JOB-CARD', description: 'get all job card' },
+      { name: 'GET-JOB-CARD', description: 'get job card' },
+      { name: 'EDIT-JOB-CARD', description: 'edit  job card' },
       { name: 'DELETE-JOB-CARD', description: 'remove job card' },
-      { name: 'UPDATE-JOB-CARD', description: 'edit job card' },
 
-      { name: 'ASSIGN-JOB-CARD', description: 'create assign job card' },
-      { name: 'FIND-ASSIGN-JOB-CARD', description: 'get assign job card' },
-      { name: 'FIND-ALL-JOB-CARD', description: 'get all assign job card' },
-      {
-        name: 'FIND-ALL_ASSIGN_USER_BY_ID',
-        description: 'get all assign user',
-      },
+      { name: 'CREATE-ASSIGN-JOB-CARD', description: 'create assign job card' },
+      { name: 'GET-ASSIGN-JOB-CARD', description: 'get assign  job card' },
 
-      { name: 'CREATE_MY_JOB_CARD', description: 'create my job card' },
-      { name: 'FIND_MY_JOB_CARD', description: 'get my job card' },
-      { name: 'FIND_MY_JOB_CARD_ALL', description: 'get my all job card' },
-
-      {
-        name: 'CREATE_EMPLOYEE_IN_MY_JOB_CARD',
-        description: 'create employee',
-      },
-      {
-        name: 'FIND_ALL_EMPLOYEE_IN_MY_JOB_CARD',
-        description: 'get all employee',
-      },
-      { name: 'FIND_EMPLOYEE_IN_MY_JOB_CARD', description: 'get employee' },
-      { name: 'UPDATE_EMPLOYEE_IN_MY_JOB_CARD', description: 'edit employee' },
-      {
-        name: 'DELETE_EMPLOYEE_IN_MY_JOB_CARD',
-        description: 'delete employee',
-      },
-      {
-        name: 'FIND_EMPLOYEE_IN_MY_JOB_CARD_BY_JC_ID',
-        description: 'get employe by jc no',
-      },
-
-
-      {
-        name: 'CREATE_EQUIPMENTS_IN_MY_JOB_CARD',
-        description: 'create equipments',
-      },
-      {
-        name: 'FIND_ALL_EQUIPMENTS_IN_MY_JOB_CARD',
-        description: 'get all equipments',
-      },
-      { name: 'FIND_EQUIPMENT_IN_MY_JOB_CARD', description: 'get equipment' },
-      { name: 'UPDATE_EMPLOYEE_IN_MY_JOB_CARD', description: 'edit equipment' },
-      {
-        name: 'DELETE_EQUIPMENT_IN_MY_JOB_CARD',
-        description: 'delete equipment',
-      },
-      {
-        name: 'FIND_EQUIPMENTS_IN_MY_JOB_CARD_BY_JC_ID',
-        description: 'get equipments by jc no',
-      },
+      { name: 'CREATE-MY-JOB-CARD', description: 'create my  job card' },
+      { name: 'GET-MY-JOB-CARD', description: 'get my job card' },
+      { name: 'EDIT-MY-JOB-CARD', description: 'edit my job card' },
+      { name: 'DELETE-MY-JOB-CARD', description: 'delete my job card' },
     ]);
   }
 

@@ -27,13 +27,13 @@ export class JobCardsController {
     return await this.jobCardsService.createjobCard(CreateJobCardDto);
   }
 
-  @Auth('FIND-JOB-CARD')
+  @Auth('GET-JOB-CARD')
   @Get('find_job_card/:id')
   async findjobCard(@Param('id') id: string, @Req() req) {
     return await this.jobCardsService.findjobCard(id, req);
   }
 
-  @Auth('FIND-ALL-JOB-CARD')
+  @Auth('GET-JOB-CARD')
   @Get('find_all_job_card')
   async findJob(@Req() req) {
     return await this.jobCardsService.findjob(req);
@@ -45,7 +45,7 @@ export class JobCardsController {
     return await this.jobCardsService.deleteJobcard(id);
   }
 
-  @Auth('UPDATE-JOB-CARD')
+  @Auth('EDIT-JOB-CARD')
   @Patch('update_job_card/:id')
   async editjobcard(
     @Param('id') id: string,
@@ -54,43 +54,43 @@ export class JobCardsController {
     return await this.jobCardsService.updatejobcard(id, UpdateJobCardDto);
   }
 
-  @Auth('ASSIGN-JOB-CARD')
+  @Auth('CREATE-ASSIGN-JOB-CARD')
   @Post('assign_job_card')
   async assignjobcard(@Body() assignJobCardDto: assignJobCardDto) {
     return await this.jobCardsService.assignjobcard(assignJobCardDto);
   }
 
-  @Auth('FIND-ASSIGN-JOB-CARD')
+  @Auth('GET-ASSIGN-JOB-CARD')
   @Get('find_assign_job_card/:id')
   async findassigncard(@Param('id') id: string, @Req() req) {
     return await this.jobCardsService.getassignjobcard(id, req);
   }
 
-  @Auth('FIND-ALL_ASSIGN_USER_BY_ID')
+  @Auth('GET-ASSIGN-JOB-CARD')
   @Get('assign_user_data/:id')
   async assignuserdata(@Param('id') id: string, @Req() req) {
     return await this.jobCardsService.assignuserdata(id, req);
   }
 
-  @Auth('FIND-ALL-JOB-CARD')
+  @Auth('GET-ASSIGN-JOB-CARD')
   @Get('find_all_assign_job_card')
   async findallassigncard(@Req() req) {
     return await this.jobCardsService.findallassigncard(req);
   }
 
-  @Auth('CREATE_MY_JOB_CARD')
+  @Auth('CREATE-MY-JOB-CARD')
   @Post('create_my_job_card')
   async myjobcard(@Body() createmyjobcardDto: createmyjobcardDto) {
     return await this.jobCardsService.createmyjobcard(createmyjobcardDto);
   }
 
-  @Auth('FIND_MY_JOB_CARD')
+  @Auth('GET-MY-JOB-CARD')
   @Get('find_my_job_card/:id')
   async findmyjobcardByid(@Param('id') id: string,@Req() req) {
     return await this.jobCardsService.findmyjobcard(id,req);
   }
 
-  @Auth('FIND_MY_JOB_CARD_ALL')
+  @Auth('GET-MY-JOB-CARD')
   @Get('find_my_job_card_all')
   async findmyjobcard(@Req() req) {
     return await this.jobCardsService.myjobcard(req);

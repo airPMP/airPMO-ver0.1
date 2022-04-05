@@ -19,8 +19,8 @@ const EditAccess = () => {
 
 
 
-    useEffect(() => { 
-        
+    useEffect(() => {
+
         if (urlTitle.pathname === "/UserManagement/EditAccess") {
             setTitle("User Mgmt");
         }
@@ -88,7 +88,7 @@ const EditAccess = () => {
 
         let comedata = rolesdata?.map((item, id1) => {
 
-            if (id === item._id) { 
+            if (id === item._id) {
                 if (item.permission[0] === `CREATE-CLIENTS`) {
                     return item.permission[0] = '', item.permission[1] = ''
                 }
@@ -101,44 +101,7 @@ const EditAccess = () => {
             }
         })
         setClientId(e)
-        // setClientEditCreate(o => !o)
-        // if (clinreditcreate === true) {
-        //     setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
-        // }
-        // else {
-        //     setClientEditData(null)
-        // } 
-        // let data_1 = []
-        // data_1 = rolesdata?.filter((data, id) => {
-        //     if (isNaN(+e)) {
-        //         return data?._id?.search(e) !== -1;
-        //     }
-        // })
-        // const ClickClientId = data_1.map((items, id) => {
-        //     // return items._id
-        //     return items.permission[0]
-        // })  
-        // SetColorId(ClickClientId[0]) 
-        // if (clinreditcreate === "#0FCC7C") {
-        //     setClientEditCreate('#ffffff')
-        //     // setClientEditData(`"EDIT-CLIENTS","CREATE-CLIENTS"`)
-        // }
-        // else if (clinreditcreate === "#ffffff") {
-        //     setClientEditCreate('#0FCC7C')
-        //     // setClientEditData(null)
-        // }
-        // let CleintData = {
-        //     'id': e,
-        //     'permission': [clinreditdata, clientviewdata]
-        // }
-        // setdata2(CleintData)
-        // setdata1([...data1, data2])
 
-        // let savedata = data1?.map((items, id) => {
-        //     return items?.id
-        // })  
-        // setActiveButon(savedata)
-        // setActiveButonSave(...activebuttonsave, activebutton)
     }
 
     const ProjectEditCreate = (e, id) => {
@@ -223,7 +186,212 @@ const EditAccess = () => {
         setClientId(e)
     }
 
-    console.log(rolesdata)
+
+
+
+
+
+    const ZoneEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[9] === `CREATE-ZONES`) {
+                    return item.permission[9] = '', item.permission[10] = ''
+                }
+                else {
+                    return item.permission[9] = `CREATE-ZONES`, item.permission[10] = `EDIT-ZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+    }
+
+    const ZoneView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[11] === `GET-ZONES`) {
+                    return item.permission[11] = ''
+                }
+                else {
+                    return item.permission[11] = `GET-ZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+    }
+
+
+    const SubZoneEditCreate = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[12] === `CREATE-SUBZONES`) {
+                    return item.permission[12] = '', item.permission[13] = ''
+                }
+                else {
+                    return item.permission[12] = `CREATE-SUBZONES`, item.permission[13] = `EDIT-SUBZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+    }
+
+    const SubZoneView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[14] === `GET-SUBZONES`) {
+                    return item.permission[14] = ''
+                }
+                else {
+                    return item.permission[14] = `GET-SUBZONES`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+    }
+
+
+
+
+
+
+    //////////////////////////////////////// Start ProductivitySheet //////////////////////
+
+    const ProductivitySheetEditCreate = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET`) {
+                    return item.permission[15] = '', item.permission[16] = ''
+                }
+                else {
+                    return item.permission[15] = `CREATE/EDIT-PRODUCTIVE_SHEET`, item.permission[16] = `CREATE/EDIT-PRODUCTIVE_SHEET`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+
+
+    }
+
+
+
+
+    const ProductivitySheetView = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[17] === `GET-PRODUCTIVE_SHEET`) {
+                    return item.permission[17] = ''
+                }
+                else {
+                    return item.permission[17] = `GET-PRODUCTIVE_SHEET`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+
+
+    }
+
+
+    ////////////////////////////////////////   ProductivitySheet End ////////////////////////////
+
+
+    ////////////////////////////////////////  JobCard start ////////////////////////////
+
+
+    const JobCardEditCreate = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[18] === `CREATE-JOB-CARD`) {
+                    return item.permission[18] = '', item.permission[19] = ''
+                }
+                else {
+                    return item.permission[18] = `CREATE-JOB-CARD`, item.permission[19] = `CREATE-JOB-CARD`
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+
+
+    }
+
+
+
+    const JobCardView = (e, id) => {
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission[20] === `FIND-JOB-CARD`) {
+                    return item.permission[20] = ''
+                }
+                else {
+                    return item.permission[20] = `FIND-JOB-CARD`
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
+
+
+
+    }
+
+
+
+
+    ////////////////////////////////////////  JobCard End ////////////////////////////
+
 
     const SavePermission = () => {
 
@@ -263,6 +431,11 @@ const EditAccess = () => {
         feachPermission();
 
     }
+
+
+
+
+
 
     return (
         <>
@@ -323,9 +496,67 @@ const EditAccess = () => {
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
 
-                                        Category
+                                        Zone
                                         <br />
                                         Dashboards 3
+                                    </button>
+                                </div>
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Sub Zone
+                                        <br />
+                                        Dashboards 4
+                                    </button>
+                                </div>
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Category
+                                        <br />
+                                        Dashboards 5
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Productivity Sheet
+                                        <br />
+                                        Dashboards 6
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Job Cards
+                                        <br />
+                                        Dashboards 7
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        Job Cards Assigned
+                                        <br />
+                                        Dashboards 8
+                                    </button>
+                                </div>
+
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+
+                                        My Job Cards
+                                        <br />
+                                        Dashboards 9
                                     </button>
                                 </div>
                             </div>
@@ -385,7 +616,7 @@ const EditAccess = () => {
                                 </div>
 
                                 <div>
-                                    <div className="flex">
+                                    <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
@@ -446,6 +677,108 @@ const EditAccess = () => {
                                             if (id >= 3) {
                                                 return <div className=" p-3    " key={id}>
 
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ZoneEditCreate(e, items._id)}
+                                                                    className={` 
+                                                                    ${items.permission[9] === `CREATE-ZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                                     text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ZoneView(e, items._id)}
+                                                                    className={`${items.permission[11] === `GET-ZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => SubZoneEditCreate(e, items._id)}
+                                                                    className={` 
+                                                                    ${items.permission[12] === `CREATE-SUBZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                                     text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => SubZoneView(e, items._id)}
+                                                                    className={`${items.permission[14] === `GET-SUBZONES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
                                                     {/* <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                     {items.name}
@@ -493,6 +826,109 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
+
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ProductivitySheetEditCreate(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission[15] === `CREATE/EDIT-PRODUCTIVE_SHEET` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => ProductivitySheetView(e, items._id)}
+                                                                    className={`${items.permission[17] === `GET-PRODUCTIVE_SHEET` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 3) {
+                                                return <div className=" p-3    " key={id}>
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => JobCardEditCreate(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission[18] === `CREATE-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => JobCardView(e, items._id)}
+                                                                    className={`${items.permission[20] === `FIND-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
+
+
                             </div>
 
 

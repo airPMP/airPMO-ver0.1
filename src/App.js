@@ -51,8 +51,8 @@ import AddConsultant from "./components/Master/Add_Consultant";
 import LightQuantity from "./components/Injestion/LightQuantity";
 import FireQuantity from "./components/Injestion/FireQuantity";
 import ViewZones from "./components/Master/ViewZones";
-import NewJobCardMulti from "./components/JobCards/NewJobCardMulti";
-import ManpowerAndMachineryMulti from "./components/JobCards/ManpowerAndMachineryMulti";
+// import NewJobCardMulti from "./components/JobCards/NewJobCardMulti"; 
+import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
 
 function App() {
   return (
@@ -91,9 +91,11 @@ function App() {
          {/* AllJobCards this is arab electricals before status conform */}
         <Route path="/job_cards/job-cards-assigned" element={<JobCardAssigned />} />
           {/* JobCardAssigned this is arab electricals  drop down */}
-        <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} />
+        {/* <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} /> */}
 
-        <Route path="/job_cards/new_job_card_multi" element={<NewJobCardMulti />} />
+        {/* <Route path="/job_cards/new_job_card_multi" element={<NewJobCardMulti />} /> */}
+
+        <Route path="/job_cards/CardAssignId/:id" element={<NewJobCardMultiId />} />
          {/* NewJobCardMulti this is Create new Job */}
 
 

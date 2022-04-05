@@ -14,8 +14,13 @@ const Clients = ({ addNewCliient }) => {
   const [delconfom, seDelConfom] = useState(false)
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
+
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -67,8 +72,35 @@ const Clients = ({ addNewCliient }) => {
     });
 
 
-    if (result[0] === "EDIT-CLIENTS") {
+    let value1 = "CREATE-CLIENTS".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-CLIENTS".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+
+
+    if (result[0] === "EDIT-CLIENTS" ||
+      result1[0] === "CREATE-CLIENTS" ||
+      result2[0] === "GET-CLIENTS") {
       setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
     }
     else {
       let value = "ALL".toUpperCase();
@@ -78,7 +110,7 @@ const Clients = ({ addNewCliient }) => {
           return data?.toUpperCase().search(value) !== -1;
         }
       });
-      setEditPermission(result[0])
+      setAllPermissions(result[0])
     }
 
   }
@@ -103,13 +135,13 @@ const Clients = ({ addNewCliient }) => {
   }
 
   const AddClient = () => {
-    if (editpermission === "EDIT-CLIENTS" || editpermission === "ALL") {
+    if (createpermission === "CREATE-CLIENTS" || allpermissions === "ALL") {
       navigate("/master/clients/new_client")
     }
   }
 
   const EditProfile = (e) => {
-    if (editpermission === "EDIT-CLIENTS" || editpermission === "ALL") {
+    if (editpermission === "EDIT-CLIENTS" || allpermissions === "ALL") {
       navigate(`/master/edit_client/${e}`)
     }
   }
@@ -213,7 +245,7 @@ const Clients = ({ addNewCliient }) => {
             <div className="flex flex-row space-x-sm justify-end items-center mt-[10px] bg-[#FFFFFF]">
               <div
                 style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                className={`${createpermission === "CREATE-CLIENTS" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                 flex items-center space-x-sm px-2 rounded cursor-pointer`}
               >
                 <svg
@@ -255,7 +287,7 @@ const Clients = ({ addNewCliient }) => {
                         <td className="w-[40%]">{item?.location}</td>
                         <td className="w-[25%]">
                           <div className="flex flex-row space-x-xl justify-center">
-                            <div className={`${editpermission === "EDIT-CLIENTS" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                            <div className={`${editpermission === "EDIT-CLIENTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                               onClick={(e) => EditProfile(item._id)}>
                               <svg
                                 width="19"

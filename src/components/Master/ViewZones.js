@@ -18,9 +18,16 @@ const ViewZones = () => {
     const [subzonedata, setSubZoneData] = useState(null)
 
 
+
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
+    const [createpermission, setCreatePermission] = useState(null)
+    const [viewpermission, setViewPermission] = useState(null)
+    const [allpermissions, setAllPermissions] = useState(null)
+
+
     const [filteredData, setFilteredData] = useState(zonedata);
+
     const CategorieLengthget = CategorieLengthSet.use()
 
     const [deleteid, setDeleteId] = useState(null);
@@ -65,6 +72,7 @@ const ViewZones = () => {
     }, [urlTitle.pathname])
 
 
+
     useEffect(() => {
         const permissionData = reactLocalStorage.get("permisions", false);
         setAllPermission(permissionData)
@@ -72,13 +80,12 @@ const ViewZones = () => {
         getPermision()
     }, [allpermission])
 
-
     const getPermision = async () => {
 
         const url_data = await allpermission
-        const database = url_data.split(',')
+        const database = url_data?.split(',')
 
-        let value = "EDIT-CATEGORIES".toUpperCase();
+        let value = "EDIT-SUBZONES".toUpperCase();
         let result = []
         result = database?.filter((data) => {
             if (isNaN(+value)) {
@@ -87,8 +94,33 @@ const ViewZones = () => {
         });
 
 
-        if (result[0] === "EDIT-CATEGORIES") {
+        let value1 = "CREATE-SUBZONES".toUpperCase();
+        let result1 = []
+        result1 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value1) !== -1;
+            }
+        });
+
+        let value2 = "GET-SUBZONES".toUpperCase();
+        let result2 = []
+        result2 = database?.filter((data) => {
+            if (isNaN(+value)) {
+                return data?.toUpperCase().search(value2) !== -1;
+            }
+        });
+
+
+
+
+
+
+        if (result[0] === "EDIT-SUBZONES" ||
+            result1[0] === "CREATE-SUBZONES" ||
+            result2[0] === "GET-SUBZONES") {
             setEditPermission(result[0])
+            setCreatePermission(result1[0])
+            setViewPermission(result2[0])
         }
         else {
             let value = "ALL".toUpperCase();
@@ -98,10 +130,14 @@ const ViewZones = () => {
                     return data?.toUpperCase().search(value) !== -1;
                 }
             });
-            setEditPermission(result[0])
+            setAllPermissions(result[0])
         }
 
     }
+
+
+
+
 
 
 
@@ -157,20 +193,6 @@ const ViewZones = () => {
     }
 
 
-
-    const AddCategory = () => {
-        if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {
-            navigate("/master/categories/add_categories")
-        }
-    }
-    const EditProfile = (e) => {
-        if (editpermission === "EDIT-CATEGORIES" || editpermission === "ALL") {
-            navigate(`/master/edit_categories/${e}`)
-        }
-
-    }
-
-     
 
     const Subzone = (e, zone_id) => {
         console.log(zone_id)
@@ -276,27 +298,7 @@ const ViewZones = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="flex flex-row space-x-sm justify-end items-center mt-[5px] bg-[#FFFFFF]">
-                        <div
-                            style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                            className={`${editpermission === "CREATE-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "  disabledclass"}
-              flex items-center space-x-sm px-2 rounded disabled `}
-                        >
-                            <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 14 14"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
-                            </svg>
 
-                            <div className=""
-                                onClick={() => ViewZoneData.set(o => !o)}
-                            >Add Zone</div>
-                        </div>
-                    </div> */}
 
 
                     <div className="pl-[80px]">
@@ -315,16 +317,16 @@ const ViewZones = () => {
                                       text-[#000000] font-normal not-italic text-[12px] ">
                                     <tr className="bg-[#ECF1F0] ">
                                         <th className=" w-[30%]  py-[13px] float-left cursor-pointer "
-                                            onClick={(e) => Subzone(e, item._id)}>{item.zone_name}</th>
+                                            onClick={(e) => viewpermission || allpermissions ? Subzone(e, item._id) : null}>{item.zone_name}</th>
 
 
                                         <th className="w-[50%]  py-[13px]">{item.discription}</th>
-                                        <th className=" w-[20%] py-[13px]  ">
+                                        <th className=" w-[20%] py-[13px]">
                                             <div className=" float-right pr-5  space-x-xl">
                                                 <div
                                                     // onClick={() => ViewSubZoneData.set(o => !o)}
-                                                    onClick={(e) => ViewSubZoneFun(e, item)}
-                                                    className={`${editpermission === "EDIT-CATEGORIES" || editpermission === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                                                    onClick={(e) => createpermission || allpermissions ? ViewSubZoneFun(e, item) : null}
+                                                    className={`${createpermission === "CREATE-SUBZONES" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                                                 >
                                                     <svg width="24" height="24" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -421,10 +423,10 @@ const ViewZones = () => {
                 model
                 className="zone_pops"
             >
-                <SubZoneList 
-                
-                zone_id={zone_id}
-                
+                <SubZoneList
+
+                    zone_id={zone_id}
+
                 />
 
             </Popup>

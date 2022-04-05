@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
 import { CategorieLengthSet } from '../SimplerR/auth'
+import { getCategorieApi, getClientApi, getProjectApi } from "../AllApi/Api";
 
 const Master = () => {
 
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
   const CategorieLengthget = CategorieLengthSet.use()
+
+  const [clientapi, setClientApi] = useState(null);
+  const [projectapi, setProjectApi] = useState(null);
+  const [categoriesapi, setCategoriesApi] = useState(null);
+
+  
 
   useEffect(() => {
     if (urlTitle.pathname === "/master") {
@@ -19,6 +26,26 @@ const Master = () => {
   }, [urlTitle.pathname]);
 
   console.log(CategorieLengthget);
+
+
+  useLayoutEffect(() => {
+
+    const userData = getClientApi().then((data) => {
+      setClientApi(data?.data.length)
+
+    })
+
+    const userData1 = getProjectApi().then((data) => {
+      setProjectApi(data?.data.length)
+
+    })
+
+    const userData2 = getCategorieApi().then((data) => {
+      setCategoriesApi(data?.data?.length)
+    })
+
+
+  }, [])
 
   return (
     <>
@@ -33,7 +60,8 @@ const Master = () => {
             <Link to={`/master/projects`}>
               <InjestionCardOnline
                 title={"Projects"}
-                totalNumber={400}
+                
+                totalNumber={projectapi}
                 iconn={
                   <svg
                     width="54.64px"
@@ -54,7 +82,9 @@ const Master = () => {
             <Link to={`/master/clients`}>
               <InjestionCardOffine
                 title={"Clients"}
-                totalNumber={800}
+                
+                 
+                totalNumber={clientapi}
                 iconn={
                   <svg
                     width="
@@ -75,7 +105,7 @@ const Master = () => {
             <Link to={`/master/categories`}>
               <InjestionCardOnline
                 title={"Categories"}
-                totalNumber={500}
+                totalNumber={categoriesapi}
                 iconn={
                   <svg
                     width="45.64px"
