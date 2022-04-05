@@ -19,7 +19,7 @@ import { CreateExcelDto } from './dto/create-excel.dto';
 @Controller('api/')
 export class ExcelController {
   constructor(private readonly excelService: ExcelService) {}
-  @Auth('CREATE/EDIT-PRODUCTIVE_SHEET')
+  @Auth('CREATE-_SHEET')
   @Post('upload_productive_file')
   @UseInterceptors(AnyFilesInterceptor())
   async uploadFile(
@@ -29,13 +29,13 @@ export class ExcelController {
     return await this.excelService.productiveFile(files, req);
   }
 
-  @Auth('GET-PRODUCTIVE_SHEET')
+  @Auth('GET-SHEET')
   @Get('upload_productive_file/:projectid')
   findone(@Param('projectid') projectid: string) {
     return this.excelService.findOne(projectid);
   }
 
-  @Auth('CREATE/EDIT_QUANTITY_SHEET')
+  @Auth('CREATE-_SHEET')
   @Post('upload_quantity_file')
   @UseInterceptors(AnyFilesInterceptor())
   async quantityFile(
@@ -45,7 +45,7 @@ export class ExcelController {
     return await this.excelService.quantityFile(files, req);
   }
 
-  @Auth('CREATE/EDIT-FIRE_QUANTITY_SHEET')
+  @Auth('CREATE-_SHEET')
   @Post('upload_fire_quantity_file')
   @UseInterceptors(AnyFilesInterceptor())
   async firequantityFile(
@@ -55,7 +55,7 @@ export class ExcelController {
     return await this.excelService.firequantityFile(files, req);
   }
 
-  @Auth('CREATE/EDIT-LIGHT_FITTING_QUANTITY_SHEET')
+  @Auth('CREATE-_SHEET')
   @Post('upload_light_fitting_quantity_file')
   @UseInterceptors(AnyFilesInterceptor())
   async lightquantityFile(
@@ -65,7 +65,7 @@ export class ExcelController {
     return await this.excelService.lightquantityFile(files, req);
   }
 
-  @Auth('UPDATE-PRODUCTIVE/WIRING/LIGHT/FIRE_QUANTITY_SHEET')
+  @Auth('EDIT-SHEET')
   @Patch('update/productive/wiring/light/fire_sheet')
   async updateFile(@Req() req, @Body() CreateExcelDto: CreateExcelDto) {
     return await this.excelService.updateproductiveFile(req, CreateExcelDto);
