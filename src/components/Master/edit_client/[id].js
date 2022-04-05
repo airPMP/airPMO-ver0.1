@@ -81,7 +81,7 @@ const EditClientProfile = () => {
       createdAt: " ",
       discription: discription,
       location: location,
-      orgainization_id: " ",
+      organization_id: " ",
       updatedAt: " ",
       upload_logo_file: uploadlogofile,
     }, {

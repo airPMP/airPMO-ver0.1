@@ -265,7 +265,7 @@ const ProductivitySheet = () => {
         const url_data = await allpermission
         const database = url_data?.split(',')
 
-        let value = "CREATE/EDIT-PRODUCTIVE_SHEET".toUpperCase();
+        let value = "EDIT-SHEET".toUpperCase();
         let result = []
         result = database?.filter((data) => {
             if (isNaN(+value)) {
@@ -274,7 +274,7 @@ const ProductivitySheet = () => {
         });
 
 
-        let value1 = "CREATE/EDIT-PRODUCTIVE_SHEET".toUpperCase();
+        let value1 = "CREATE-SHEET".toUpperCase();
         let result1 = []
         result1 = database?.filter((data) => {
             if (isNaN(+value)) {
@@ -282,7 +282,7 @@ const ProductivitySheet = () => {
             }
         });
 
-        let value2 = "GET-PRODUCTIVE_SHEET".toUpperCase();
+        let value2 = "GET-SHEET".toUpperCase();
         let result2 = []
         result2 = database?.filter((data) => {
             if (isNaN(+value)) {
@@ -295,9 +295,9 @@ const ProductivitySheet = () => {
 
 
 
-        if (result[0] === "CREATE/EDIT-PRODUCTIVE_SHEET" ||
-            result1[0] === "CREATE/EDIT-PRODUCTIVE_SHEET" ||
-            result2[0] === "GET-PRODUCTIVE_SHEET") {
+        if (result[0] === "EDIT-SHEET" ||
+            result1[0] === "CREATE-SHEET" ||
+            result2[0] === "GET-SHEET") {
             setEditPermission(result[0])
             setCreatePermission(result1[0])
             setViewPermission(result2[0])
@@ -362,7 +362,7 @@ const ProductivitySheet = () => {
                                             type="text"
                                             placeholder="Choose Client"
                                             value={clientsearchdata}
-                                            className={`${viewpermission === "GET-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                            className={`${viewpermission === "GET-SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                                             outline-none w-[332px] h-[46px] rounded-[10px]`}
                                             onChange={(e) => viewpermission || allpermissions ? handleChangeForClientData(e) : null} //-2a 
                                         />
@@ -438,11 +438,11 @@ const ProductivitySheet = () => {
                                                             onChange={(e) => createpermission || allpermissions ? SheetFile(e) : null}
                                                             placeholder="Import Sheet"
                                                             name="file_upload"
-                                                            className={`${createpermission === "CREATE/EDIT-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                                            className={`${createpermission === "CREATE-SHEET" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                                                             w-[90%] fileSheet`} />
                                                     </div>
                                                 </div>
-                                                <div className={`${createpermission === "CREATE/EDIT-PRODUCTIVE_SHEET" || allpermissions === "ALL" ? "cursor-pointer " : "  disabledclass"}
+                                                <div className={`${createpermission === "CREATE-SHEET" || allpermissions === "ALL" ? "cursor-pointer " : "  disabledclass"}
                                                 shhetText`}>Import Sheet</div>
                                             </div>
 

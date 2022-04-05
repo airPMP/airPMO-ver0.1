@@ -17,8 +17,8 @@ const MyJobCards = () => {
 
   useEffect(() => {
 
-    if (urlTitle.pathname === "/job_cards/my-job-cards") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task/my-daily-task") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname])
 
@@ -81,7 +81,7 @@ const MyJobCards = () => {
 
   const CardAssignIdPage = (e, itemid) => {
     console.log(itemid)
-    navigate(`/job_cards/CardAssignId/${itemid}`)
+    navigate(`/daily_task/CardAssignId/${itemid}`)
   }
 
 
@@ -94,7 +94,7 @@ const MyJobCards = () => {
       <div className="flex flex-col">
         <Header title={title} />
         <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px]
-         leading-[53.15px] tracking-[-2%] " > My Job Cards</div>
+         leading-[53.15px] tracking-[-2%] " > My Daily Task</div>
         <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] 
         bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
@@ -160,7 +160,7 @@ const MyJobCards = () => {
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="whitespace-nowrap  pb-[15.39px] ">Activity ID</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Job Card No.</th>
+                  <th className="whitespace-nowrap pb-[15.39px]">Daily Task No.</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Date(YY/MM/DD)</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Description</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Qty</th>

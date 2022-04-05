@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate ,Link} from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
 import SearchBox from "../layout/SearchBox";
@@ -13,18 +13,18 @@ const AllJobCards = () => {
   const [filteredData, setFilteredData] = useState(null);
 
   const [allpermission, setAllPermission] = useState(null)
-    const [editpermission, setEditPermission] = useState(null)
-    const [createpermission, setCreatePermission] = useState(null)
-    const [viewpermission, setViewPermission] = useState(null)
-    const [allpermissions, setAllPermissions] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
 
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
 
   useEffect(() => {
-    if (urlTitle.pathname === "/job_cards/All-job-cards") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task/All-daily-task") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname]);
 
@@ -77,36 +77,36 @@ const AllJobCards = () => {
     setAllPermission(permissionData)
 
     getPermision()
-}, [allpermission])
+  }, [allpermission])
 
-const getPermision = async () => {
+  const getPermision = async () => {
 
     const url_data = await allpermission
     const database = url_data?.split(',')
 
-    let value = "EDIT-SUBZONES".toUpperCase();
+    let value = "EDIT-JOB-CARD".toUpperCase();
     let result = []
     result = database?.filter((data) => {
-        if (isNaN(+value)) {
-            return data?.toUpperCase().search(value) !== -1;
-        }
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
     });
 
 
-    let value1 = "CREATE-SUBZONES".toUpperCase();
+    let value1 = "CREATE-JOB-CARD".toUpperCase();
     let result1 = []
     result1 = database?.filter((data) => {
-        if (isNaN(+value)) {
-            return data?.toUpperCase().search(value1) !== -1;
-        }
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
     });
 
-    let value2 = "FIND-JOB-CARD".toUpperCase();
+    let value2 = "GET-JOB-CARD".toUpperCase();
     let result2 = []
     result2 = database?.filter((data) => {
-        if (isNaN(+value)) {
-            return data?.toUpperCase().search(value2) !== -1;
-        }
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
     });
 
 
@@ -114,28 +114,28 @@ const getPermision = async () => {
 
 
 
-    if (result[0] === "EDIT-SUBZONES" ||
-        result1[0] === "CREATE-JOB-CARD" ||
-        result2[0] === "FIND-JOB-CARD") {
-        setEditPermission(result[0])
-        setCreatePermission(result1[0])
-        setViewPermission(result2[0])
+    if (result[0] === "EDIT-JOB-CARD" ||
+      result1[0] === "CREATE-JOB-CARD" ||
+      result2[0] === "GET-JOB-CARD") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
     }
     else {
-        let value = "ALL".toUpperCase();
-        let result = []
-        result = database?.filter((data) => {
-            if (isNaN(+value)) {
-                return data?.toUpperCase().search(value) !== -1;
-            }
-        });
-        setAllPermissions(result[0])
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setAllPermissions(result[0])
     }
 
-}
+  }
 
 
- 
+
 
 
   return (
@@ -218,21 +218,22 @@ const getPermision = async () => {
             </div>
           </div>
           <div className=" text-right pr-20">
-          <Link to={`/job_cards/new_job_card`}>
-            <button  
-              className=  "bg-[#8d8b8b] p-2 text-[#f0f0f0] mb-4 rounded-[8px]">
-                Add JobCard
-            </button>
+            <Link to={`${createpermission || allpermissions ? `/daily_task/new_daily_task` : `/daily_task/All-daily-task`}`}>
+              <button
+                className={`${createpermission === "CREATE-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                bg-[#8d8b8b] p-2 text-[#f0f0f0] mb-4 rounded-[8px]`}>
+                Add  DailyTask
+              </button>
             </Link>
 
- 
+
           </div>
           <div className="ml-[95px]">
             <table className="table-auto pt-[24px] w-[100%]  ">
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="pb-[15.39px]">Activity ID</th>
-                  <th className="pb-[15.39px]">Job Card No.</th>
+                  <th className="pb-[15.39px]"> Daily Task No.</th>
                   <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
                   <th className="pb-[15.39px]">Description</th>
                   <th className="pb-[15.39px]">Qty</th>

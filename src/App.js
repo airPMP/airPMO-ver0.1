@@ -53,6 +53,7 @@ import FireQuantity from "./components/Injestion/FireQuantity";
 import ViewZones from "./components/Master/ViewZones";
 // import NewJobCardMulti from "./components/JobCards/NewJobCardMulti"; 
 import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
+import ZoneById from "./components/Master/zones/[id]";
 
 function App() {
   return (
@@ -80,22 +81,22 @@ function App() {
         {
           // JobCards Routes
         }
-        <Route path="job_cards" element={<JobCards />} />
-        {/* <Route path="/job_cards/new_job_card" element={<NewJobCard />} /> */}
+        <Route path="daily_task" element={<JobCards />} />
+        {/* <Route path="/daily_task/new_daily_task" element={<NewJobCard />} /> */}
         <Route path="/manpower" element={<ManpowerAndMachinery />} />
-        <Route path="/job_cards/my-job-cards" element={<MyJobCards />} /> 
+        <Route path="/daily_task/my-daily-task" element={<MyJobCards />} /> 
         {/* MyJobCards this is arab electricals after status conform */}
-        <Route path="/job_cards/new_job_card" element={<NewJobCard />} />
+        <Route path="/daily_task/new_daily_task" element={<NewJobCard />} />
          {/* NewJobCard this is Create new Job */}
-        <Route path="/job_cards/All-job-cards" element={<AllJobCards />} />
+        <Route path="/daily_task/All-daily-task" element={<AllJobCards />} />
          {/* AllJobCards this is arab electricals before status conform */}
-        <Route path="/job_cards/job-cards-assigned" element={<JobCardAssigned />} />
+        <Route path="/daily_task/daily-task-assigned" element={<JobCardAssigned />} />
           {/* JobCardAssigned this is arab electricals  drop down */}
         {/* <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} /> */}
 
-        {/* <Route path="/job_cards/new_job_card_multi" element={<NewJobCardMulti />} /> */}
+        {/* <Route path="/daily_task/new_daily_task_multi" element={<NewJobCardMulti />} /> */}
 
-        <Route path="/job_cards/CardAssignId/:id" element={<NewJobCardMultiId />} />
+        <Route path="/daily_task/CardAssignId/:id" element={<NewJobCardMultiId />} />
          {/* NewJobCardMulti this is Create new Job */}
 
 
@@ -115,6 +116,7 @@ function App() {
         <Route path="/master/edit_project/:id" element={<EditProject />} />
         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
         <Route path="/master/Projects/zone_list" element={<ZoneList />} />
+        <Route path="/master/zones/:id" element={<ZoneById />} />
         <Route path="/master/consultant" element={<Consultant/>}/>
         <Route path="/master/consultant/add_consultant" element={<AddConsultant />} />
 
@@ -154,7 +156,7 @@ function App() {
          <Route path="/master/projects" element={<Projects />} />
          <Route path="/master/categories" element={<Categories />} />
          <Route path="dashboard" element={<DashBoard />} />
-         <Route path="job_cards" element={<JobCards />} />
+         <Route path="daily_task" element={<JobCards />} />
          <Route path="master" element={<Master />} />
          <Route
            path="/master/clients/new_client"

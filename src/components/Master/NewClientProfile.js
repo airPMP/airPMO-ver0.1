@@ -69,12 +69,12 @@ const NewClientProfile = () => {
       discription: "",
       contact_no: "", 
       client_id: "",
-      orgainization_id: "", 
+      organization_id: "", 
       
     },
     validate,
     onSubmit: (values, { resetForm }) => {
-      values.orgainization_id = organization_id_data
+      values.organization_id = organization_id_data
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {
         headers: {

@@ -56,7 +56,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         if (assigncarddata) {
             Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
-                
+
 
                 console.log(key)
             })
@@ -71,21 +71,47 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             //     console.log(item)  
             // })
 
-            
+
             let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => {
-                let data=[{}]
-                
-                
+
+
+
                 console.log(Object.entries(item))
-                
-                // Object.entries(item).map((itemss,id)=>{
-                    
+
+                // let datqqa = Object.entries(item).filter((itemss, id) => {
+                //     // console.log(itemss[0])
+                //     return !employeechangeData.find((items) => {
+                //         console.log()
+                //         return itemss[0] === items.designation.toUpperCase()
+                //     })
                 // })
-                
 
-                data.push( item)
+                Object.entries(item).map((items, ids) => {
+                    employeechangeData?.map((item1, id) => {
 
-                console.log(item)
+                        if (items[0] === ` ${item1.designation.toUpperCase()} `) {
+                            console.log(item1)
+                            items.push(item1.hour)
+                        }
+                        else {
+                            console.log(item1)
+                            items.push([
+                                item1.designation,
+                                ,
+                                item1.hour]
+                            )
+                        }
+                    })
+                    console.log(items)
+
+                })
+
+                // console.log(datqqa)
+
+                // employeechangeData.map((itemss, id) => {
+
+                // })
+
             })
 
 

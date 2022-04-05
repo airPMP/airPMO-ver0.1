@@ -14,6 +14,16 @@ const JobCardAssigned = () => {
   const [filteredData, setFilteredData] = useState(null);
   const [userrolesdata, setUserRolesData] = useState(null);
 
+
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
+
+
+
+
   const [selectrefrance, setSelectRefrance] = useState(false);
   const [userdetail, setDetail] = useState([]);
   const { addToast } = useToasts();
@@ -22,8 +32,8 @@ const JobCardAssigned = () => {
 
   useEffect(() => {
 
-    if (urlTitle.pathname === "/job_cards/job-cards-assigned") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task/daily-task-assigned") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname])
 
@@ -81,16 +91,16 @@ const JobCardAssigned = () => {
 
   }, [alljobcarddata, userdata, selectrefrance])
 
-    
 
-  const UserSelectFun = (e, itemData) => { 
+
+  const UserSelectFun = (e, itemData) => {
 
     const userDetail = e.target.value
-    const database = userDetail.split(',') 
+    const database = userDetail.split(',')
     let selectedObject = itemData
     let selectedValue = database[0]
     selectedObject.assign_role = selectedValue
-    selectedObject.assign_user_id = database[1] 
+    selectedObject.assign_user_id = database[1]
 
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
@@ -99,7 +109,7 @@ const JobCardAssigned = () => {
       },
     })
 
-      .then((response) => { 
+      .then((response) => {
         setUserRolesData(response?.data[0]?.permission)
         selectedObject.assign_user_roles = response?.data[0]?.permission
         if (response.status === 201) {
@@ -110,7 +120,7 @@ const JobCardAssigned = () => {
         console.log(error)
 
       })
-  
+
     setDetail([...userdetail, selectedObject]);
     // console.log(selectedObject)
     // allObjectArray.push(...selectedObject,selectedObject) 
@@ -129,27 +139,26 @@ const JobCardAssigned = () => {
 
   const SavePostApi = () => {
 
-    
-    
+
+
     let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
 
-    // console.log(pp)
-    // console.log(userdetail)
-     
+
+
 
     const token = reactLocalStorage.get("access_token", false);
     axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
       { assign_data: UserSdata }
       , {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
 
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          addToast("your job card is assign Sucessfully", {
+          addToast("your daily task is assign Sucessfully", {
             appearance: "success",
             autoDismiss: true,
           })
@@ -181,6 +190,78 @@ const JobCardAssigned = () => {
     }
   }
 
+
+
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+  }, [allpermission])
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data?.split(',')
+
+    let value = "CREATE-ASSIGN-JOB-CARD".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    let value1 = "CREATE-ASSIGN-JOB-CARD".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-ASSIGN-JOB-CARD".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+    if (result[0] === "CREATE-ASSIGN-JOB-CARD" ||
+      result1[0] === "CREATE-ASSIGN-JOB-CARD" ||
+      result2[0] === "GET-ASSIGN-JOB-CARD") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setAllPermissions(result[0])
+    }
+
+  }
+
+
+
+
+
+
+
+
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -189,7 +270,7 @@ const JobCardAssigned = () => {
       <div className="flex flex-col">
         <Header title={title} />
 
-        <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >Job Cards Assigned</div>
+        <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >Daily Task Assigned</div>
         <div className="flex flex-col w-[100%] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
             <div className="">
@@ -254,7 +335,7 @@ const JobCardAssigned = () => {
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="pb-[15.39px]">Activity ID</th>
-                  <th className="pb-[15.39px]">Job Card No.</th>
+                  <th className="pb-[15.39px]">Daily Task No.</th>
                   <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
                   <th className="pb-[15.39px]">Description</th>
                   <th className="pb-[15.39px]">Qty</th>
@@ -299,11 +380,14 @@ const JobCardAssigned = () => {
           </div>
           <div className="flex flex-row justify-end py-[20px] space-x-2 ">
             <div
-              onClick={(e) => SavePostApi(e)}
-              className=" cursor-pointer flex justify-center items-center w-[100px] h-[25px]   font-secondaryFont font-medium bg-[#0FCC7C] text-[#000000] rounded-[4px] text-[14px] leading-[37.83px] self-center "
+              onClick={(e) => editpermission || allpermissions ? SavePostApi(e) : null}
+              className={`${editpermission === "EDIT-CLIENTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} cursor-pointer flex justify-center items-center w-[100px] 
+              h-[25px]   font-secondaryFont font-medium bg-[#0FCC7C] text-[#000000]
+               rounded-[4px] text-[14px] leading-[37.83px] self-center` }
               style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
             >
-              <span>Save</span>
+              <span
+              >Save</span>
             </div>
           </div>
         </div>
