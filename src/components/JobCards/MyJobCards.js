@@ -9,7 +9,7 @@ import { useToasts } from "react-toast-notifications";
 const MyJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
-  const [filteredData, setFilteredData] = useState(null);
+  const [filteredData, setFilteredData] = useState([null]);
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -26,7 +26,7 @@ const MyJobCards = () => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
-    const user_id = reactLocalStorage.get("organizationId", false);
+    const user_id = reactLocalStorage.get("user_id", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/assign_user_data/${user_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,7 +34,7 @@ const MyJobCards = () => {
     })
 
       .then((response) => {
-
+        console.log(response?.data)
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
         if (response.status === 201) {
@@ -46,10 +46,6 @@ const MyJobCards = () => {
     handleSearch()
 
 
-
-
-
-     
 
 
   }, [])
@@ -85,6 +81,7 @@ const MyJobCards = () => {
   }
 
 
+  console.log(filteredData)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -171,19 +168,19 @@ const MyJobCards = () => {
                   <th className="whitespace-nowrap pb-[15.39px]">Status</th>
                 </tr>
               </thead>
-              {filteredData?.map((item, ids) => {
+              {filteredData && filteredData?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
-                    <th className=" py-[13px]">{item.activity_code}</th>
+                    <th className=" py-[13px]">{item?.activity_code}</th>
                     <th className=" cursor-pointer" onClick={(e) => CardAssignIdPage(e, item._id)} >{item?._id}</th>
-                    <th className=" ">{item.jc_creation}</th>
-                    <th className=" ">{item.activity_name}</th>
-                    <th className=" ">{item.quantity_to_be_achieved}</th>
-                    <th className=" ">{item.zone}</th>
-                    <th className=" "> {item.assign ? item.assign : "no"}</th>
-                    <th className=" "> {item.spi ? item.spi : "0"}</th>
-                    <th className=" ">{item.cpi ? item.cpi : "0"}</th>
-                    <th className=" ">{item.status ? item.status : "No Status"}</th>
+                    <th className=" ">{item?.jc_creation}</th>
+                    <th className=" ">{item?.activity_name}</th>
+                    <th className=" ">{item?.quantity_to_be_achieved}</th>
+                    <th className=" ">{item?.zone}</th>
+                    <th className=" "> {item?.assign ? item.assign : "no"}</th>
+                    <th className=" "> {item?.spi ? item.spi : "0"}</th>
+                    <th className=" ">{item?.cpi ? item.cpi : "0"}</th>
+                    <th className=" ">{item?.status ? item.status : "No Status"}</th>
 
                     {/* <th className="">
                       <select className=" outline-none bg-[#ECF1F0] cursor-pointer"

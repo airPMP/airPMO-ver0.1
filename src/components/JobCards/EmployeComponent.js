@@ -35,7 +35,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     const [textData, settextData] = useState([]);
     const employeechangeData = EmployeeChangeData.use()
-  
+
 
     const { addToast } = useToasts();
 
@@ -117,24 +117,36 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     const AddToList = () => {
 
+
+        let organizationId = ""
+
+        const token = reactLocalStorage.get("access_token", false);
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+
+        if (organization_Id !== "undefined" && organization_Id !== null) {
+            organizationId = organization_Id
+        }
+
+
         let AddlistObject = {
             "jc_id": assigncarddataId,
             "employee_id": employeeid,
             "designation": employeedesignation,
             "employee_name": timesheetname,
             "hour": timesheethours,
-            "remarks": timesheetremark
+            "remarks": timesheetremark,
+            "organization_id": organizationId
         }
 
 
-        const token = reactLocalStorage.get("access_token", false);
+
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_employee`, AddlistObject, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         })
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.status === 201) {
                     addToast(" Employee is add Sucessfully", {
                         appearance: "success",
@@ -186,7 +198,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
         })
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.status === 200) {
                     addToast(" Employee is edit Sucessfully", {
                         appearance: "success",
@@ -226,7 +238,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                     window.location.reload(false);
                 }
-                console.log(data)
+               
             } catch (error) {
                 console.log(error)
             }

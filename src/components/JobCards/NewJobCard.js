@@ -57,8 +57,8 @@ const NewJobCard = () => {
 
   useEffect(() => {
 
-    if (urlTitle.pathname === "/job_cards/new_job_card") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task/new_daily_task") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname])
 
@@ -109,9 +109,17 @@ const NewJobCard = () => {
       hse_remark: "",
       manager_comments: "",
       discription: "",
+      organization_id: "",
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
+
+      const organization_Id = reactLocalStorage.get("organization_id", false);
+
+      if (organization_Id !== "undefined" && organization_Id !== null) {
+        values.organization_id = organization_Id
+    }
+
 
       values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
@@ -137,7 +145,7 @@ const NewJobCard = () => {
               autoDismiss: true,
             }) 
             
-            naviagte("/job_cards")
+            naviagte("/daily_task")
 
           }
           resetForm()
@@ -459,7 +467,7 @@ const NewJobCard = () => {
                 </div>
                 <div className="flex flex-row mr-[-50px]">
                   <div className="mr-[45px] shadow-[buttonshadow] ">
-                    <button onClick={() => { naviagte("/job_cards") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                    <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                       Cancel
                     </button>
                   </div>

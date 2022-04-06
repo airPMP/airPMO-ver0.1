@@ -99,7 +99,7 @@ const DashBoard = () => {
               <div className="grid grid-cols-4 gap-4 mt-[62px]  px-[20px] ">
                 <Card
                   title={"Total JC"}
-                  totalNumber={alljobcardapi}
+                  totalNumber={alljobcardapi?alljobcardapi:"0"}
                   iconn={
                     <svg
                       width="58"
@@ -123,7 +123,7 @@ const DashBoard = () => {
                 />
                 <Card
                   title={"Assigned JC"}
-                  totalNumber={alljobcardapi}
+                  totalNumber={alljobcardapi?alljobcardapi:"0"}
                   iconn={
                     <svg
                       width="58"

@@ -59,7 +59,7 @@ const NewJobCardMultiId = () => {
     let naviagte = useNavigate();
     let useperma = useParams()
 
-    console.log(useperma)
+    
 
     useEffect(() => {
 
@@ -81,7 +81,7 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data)
+                
                 setAssignCardData(data?.data)
 
             } catch (error) {
@@ -129,8 +129,7 @@ const NewJobCardMultiId = () => {
             }
         })
 
-            .then((response) => {
-                console.log(response);
+            .then((response) => { 
                 if (response.status === 201) {
                     // addToast("your job card is assign Sucessfully", {
                     //     appearance: "success",

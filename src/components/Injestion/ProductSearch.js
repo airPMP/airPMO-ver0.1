@@ -119,9 +119,18 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
 
 
     const SheetUpload = async () => {
+        let organizationId =""
+
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+
+        if (organization_Id !== "undefined" && organization_Id !== null) { 
+            organizationId = organization_Id
+          } 
+
         const formData = new FormData();
         formData.append("productivity", sheetData);
-        formData.append("projectid", projectsheetid);
+        formData.append("projectid", projectsheetid);   
+        formData.append("organization_id", organizationId);
         const token = reactLocalStorage.get("access_token", false);
         await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file`,
             formData,

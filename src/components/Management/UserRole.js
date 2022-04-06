@@ -223,7 +223,7 @@ const UserRole1 = () => {
 
                                 {rolesdata?.map((item, i) => {
 
-                                    if (i >= 2) {
+                                    
                                         return <tbody className="  mb-[10px]   ">
                                             <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  "  >
                                                 {/* <td className="pt-[15px] pb-[14.83px]">{item.name} </td> */}
@@ -267,7 +267,7 @@ const UserRole1 = () => {
                                                 <td className="p-[10px]"></td>
                                             </tr>
                                         </tbody>
-                                    }
+                                     
                                 })}
 
                             </table>

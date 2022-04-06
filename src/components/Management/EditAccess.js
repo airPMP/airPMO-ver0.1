@@ -796,7 +796,7 @@ const EditAccess = () => {
                             <div className="col-span-10 editAccess_flow ">
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
-                                        if (id >= 3) {
+                                        if (id >= 0) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
 
                                                 <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
@@ -855,7 +855,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
 
@@ -907,7 +907,7 @@ const EditAccess = () => {
 
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
-                                        if (id >= 3) {
+                                        if (id >= 0) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
 
 
@@ -965,7 +965,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
 
@@ -1017,7 +1017,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1066,7 +1066,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1119,7 +1119,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
 
@@ -1171,7 +1171,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1221,7 +1221,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1271,7 +1271,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1321,7 +1321,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 3) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">

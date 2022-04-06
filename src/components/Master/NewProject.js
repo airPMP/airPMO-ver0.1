@@ -118,7 +118,7 @@ const NewProject = () => {
     }
     feach1();
 
-    const organization_Id = reactLocalStorage.get("organizationId", false);
+    const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganization_Id(organization_Id)
 
   }, [urlTitle.pathname]);
@@ -151,9 +151,12 @@ const NewProject = () => {
       categories_id: ""
     },
     validate,
-    onSubmit: async (values, { resetForm }) => {
-      console.log(`Form data`, values);
-      values.organization_id = organization_id_data
+    onSubmit: async (values, { resetForm }) => { 
+
+      if (organization_id_data !== "undefined" && organization_id_data !== null) { 
+        values.organization_id = organization_id_data
+      }
+ 
       values.category = categorydata
       values.categories_id = categoryid
       values.client_name = clientdata

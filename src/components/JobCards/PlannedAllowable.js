@@ -58,7 +58,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
 
 
-                console.log(key)
+                // console.log(key)
             })
             setQuantityAchieved(assigncarddata?.quantity_to_be_achieved)
             setSpiData(quantityachieved / assigncarddata?.quantity_to_be_achieved)
@@ -76,7 +76,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
 
-                console.log(Object.entries(item))
+                // console.log(Object.entries(item))
 
                 // let datqqa = Object.entries(item).filter((itemss, id) => {
                 //     // console.log(itemss[0])
@@ -86,31 +86,54 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 //     })
                 // })
 
+                let data = []
+                data = Object.entries(item)
+
                 Object.entries(item).map((items, ids) => {
                     employeechangeData?.map((item1, id) => {
 
                         if (items[0] === ` ${item1.designation.toUpperCase()} `) {
-                            console.log(item1)
+                            // console.log(item1)
+
+                            // items.push(item1.hour)
+                            console.log(items[2])
+                            let num = Number(items[2])
+                            console.log(item1.hour)
+                            let cal = parseInt(Number(items[2]) + Number(item1.hour))
+
+                            console.log(cal) 
+                            
+
                             items.push(item1.hour)
+                            items.push(cal) 
+
+
+
+
+
+
                         }
                         else {
-                            console.log(item1)
-                            items.push([
-                                item1.designation,
-                                ,
-                                item1.hour]
-                            )
+
+                            // console.log(item1)
+
+                            // data.push([
+                            //     item1.designation,
+                            //     ,
+                            //     item1.hour]
+                            // )
                         }
                     })
+                    // console.log(data)
+
                     console.log(items)
+                    
+
+
 
                 })
 
-                // console.log(datqqa)
 
-                // employeechangeData.map((itemss, id) => {
-
-                // })
 
             })
 
@@ -130,7 +153,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }, [assigncarddata])
 
 
-    console.log(assigncarddata)
+
 
 
 
@@ -138,7 +161,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         let spitData = e.target.value.split(",")
         setTimeSheetId(spitData[0])
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
-        console.log(spitData)
 
         setOpen(true) ///open popup
     }

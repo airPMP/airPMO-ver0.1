@@ -95,12 +95,22 @@ const JobCardAssigned = () => {
 
   const UserSelectFun = (e, itemData) => {
 
+    let organizationId = ""
+
+    const organization_Id = reactLocalStorage.get("organization_id", false);
+
+    if (organization_Id !== "undefined" && organization_Id !== null) {
+      organizationId = organization_Id
+    }
+
     const userDetail = e.target.value
     const database = userDetail.split(',')
     let selectedObject = itemData
     let selectedValue = database[0]
     selectedObject.assign_role = selectedValue
     selectedObject.assign_user_id = database[1]
+
+    selectedObject.organization_id = organizationId
 
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
@@ -145,10 +155,22 @@ const JobCardAssigned = () => {
 
 
 
+    console.log(UserSdata)
+
+    let organizationId = ""
 
     const token = reactLocalStorage.get("access_token", false);
+    const organization_Id = reactLocalStorage.get("organization_id", false);
+
+    if (organization_Id !== "undefined" && organization_Id !== null) {
+      organizationId = organization_Id
+    }
+
     axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
-      { assign_data: UserSdata }
+      {
+        assign_data: UserSdata,
+        organization_id: organizationId
+      }
       , {
         headers: {
           Authorization: `Bearer ${token}`,

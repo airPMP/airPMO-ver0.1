@@ -61,7 +61,7 @@ const Master = () => {
               <InjestionCardOnline
                 title={"Projects"}
                 
-                totalNumber={projectapi}
+                totalNumber={projectapi?projectapi:"0"}
                 iconn={
                   <svg
                     width="54.64px"
@@ -84,7 +84,7 @@ const Master = () => {
                 title={"Clients"}
                 
                  
-                totalNumber={clientapi}
+                totalNumber={clientapi?clientapi:"0"}
                 iconn={
                   <svg
                     width="
@@ -105,7 +105,7 @@ const Master = () => {
             <Link to={`/master/categories`}>
               <InjestionCardOnline
                 title={"Categories"}
-                totalNumber={categoriesapi}
+                totalNumber={categoriesapi?categoriesapi:"0"}
                 iconn={
                   <svg
                     width="45.64px"

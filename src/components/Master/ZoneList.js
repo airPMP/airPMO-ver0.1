@@ -36,8 +36,10 @@ const ZoneList = ({ closeModal, projectidzone }) => {
     validate,
     onSubmit: async (values, { resetForm }) => {
       const token = reactLocalStorage.get("access_token", false);
-      const organization_Id = reactLocalStorage.get("organizationId", false);
-      values.organization_id = organization_Id
+      const organization_Id = reactLocalStorage.get("organization_id", false);
+      if (organization_Id !== "undefined" && organization_Id !== null) { 
+        values.organization_id = organization_Id
+      } 
       values.project_id = projectidzone || useperma.id
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/zone/`, values, {
         headers: {

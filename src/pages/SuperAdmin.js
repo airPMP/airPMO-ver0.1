@@ -47,7 +47,7 @@ const SuperAdmin = () => {
         navigate('/dashboard');
     };
 
-    
+
 
     const SubmitForm = (e) => {
 
@@ -84,10 +84,12 @@ const SuperAdmin = () => {
                 }
             })
                 .then((response) => {
-                    reactLocalStorage.set("organizationId", response?.data?._id);
+                    console.log(response)
+                    reactLocalStorage.set("organization_id",response?.data?._id);
+                    setOrganizationId(response?.data?._id) 
                     console.log(response?.data?._id)
-                    if (response.status === 201) {
-                        navigate("/UserManagement/AddNewUser")
+                    if (response.status === 201) { 
+                        // navigate("/UserManagement/AddNewUser")
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
                             autoDismiss: true,
@@ -104,7 +106,7 @@ const SuperAdmin = () => {
         }
     }
 
-      
+
     const ShowPasswordButton = (e, sheet2) => {
 
         if (sheet2 === "sheet_2") {
@@ -180,10 +182,10 @@ const SuperAdmin = () => {
                         const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
                         setSheetData(data1?.data?.values)
 
-                        let storedDesignamtion = []  
+                        let storedDesignamtion = []
                         data1?.data?.values.map((items, id) => {
                             storedDesignamtion.push(items[3])
-                        }) 
+                        })
 
                     } catch (error) {
                         console.log(error)
@@ -196,13 +198,56 @@ const SuperAdmin = () => {
         setOpen(o => !o)
 
     }
- 
+
     const CancelButton = (e) => {
         setOpen(o => !o)
         setShowEye(o => !o)
     }
 
-    
+
+    useEffect(()=>{
+if(organizationid){
+    userApi()
+}
+
+    },[organizationid])
+
+    const userApi = () => {
+
+
+        console.log(organizationid)
+        const token = reactLocalStorage.get("access_token", false);
+        const user_id = reactLocalStorage.get("user_id", false);
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/${user_id}`, {
+            organization_id: organizationid,
+            
+
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+                console.log(response)
+                
+               
+                if (response.status === 201) { 
+                    // addToast("form submitted Sucessfully", {
+                    //     appearance: "success",
+                    //     autoDismiss: true,
+                    // })
+                }
+            })
+            .catch((error) => { 
+                addToast(error.response.data.message, {
+                    appearance: "error",
+                    autoDismiss: true,
+                })
+            })
+
+        
+    }
+
 
 
     // const dataqwe  = rolleiddata?.map((item, id) => {
