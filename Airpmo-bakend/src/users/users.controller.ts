@@ -24,7 +24,7 @@ import { stringify } from 'querystring';
 @Controller('api')
 export class UsersController {
   constructor(private readonly UsersService: UsersService) {}
-
+  @Auth('CREATE-USERS')
   @Post('users/register')
   @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createUserDto: CreateUserDto) {

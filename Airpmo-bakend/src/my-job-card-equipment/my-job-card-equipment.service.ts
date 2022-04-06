@@ -34,12 +34,14 @@ export class MyJobCardEquipmentService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const all_my_job_card_eqipments =
         await this.myjobcardequipmentmodal.find();
       for (let index = 0; index < all_my_job_card_eqipments.length; index++) {
-        if (
-          all_my_job_card_eqipments[index].organization_id === organizationkey
-        ) {
+        if (all_my_job_card_eqipments[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(all_my_job_card_eqipments[index]);
         }
       }
@@ -57,10 +59,14 @@ export class MyJobCardEquipmentService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_one_equipment = await this.myjobcardequipmentmodal.findOne({
         _id: id,
       });
-      if (find_one_equipment.organization_id === organizationkey) {
+      if (find_one_equipment.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return find_one_equipment;
       } else {
         throw new UnprocessableEntityException(
@@ -107,9 +113,13 @@ export class MyJobCardEquipmentService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const equipment = await this.myjobcardequipmentmodal.find();
       for (let i = 0; i < equipment.length; i++) {
-        if (equipment[i].jc_id === id&& equipment[i].organization_id===organizationkey) {
+        if (equipment[i].jc_id === id&& equipment[i].organization_id===organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(equipment[i]);
         }
       }

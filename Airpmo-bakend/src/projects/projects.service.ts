@@ -27,9 +27,13 @@ export class ProjectsService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const all_project = await this.projectModel.find();
     for (let index = 0; index < all_project.length; index++) {
-      if (all_project[index].organization_id === organizationkey) {
+      if (all_project[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(all_project[index]);
       }
     }
@@ -42,8 +46,12 @@ export class ProjectsService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_project = await this.projectModel.findOne({ _id: id });
-      if (find_project.organization_id === organizationkey) {
+      if (find_project.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return find_project;
       } else {
         throw new UnprocessableEntityException(
@@ -99,11 +107,15 @@ export class ProjectsService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const catagoriesdata = await this.projectModel.find({
         categories_id: catagories_id,
       });
       for (let index = 0; index < catagoriesdata.length; index++) {
-        if (catagoriesdata[index].organization_id === organizationkey) {
+        if (catagoriesdata[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(catagoriesdata[index]);
         }
       }
@@ -119,9 +131,13 @@ export class ProjectsService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const projectdata = await this.projectModel.find({ client_id: client_id });
     for (let index = 0; index < projectdata.length; index++) {
-      if (projectdata[index].organization_id === organizationkey) {
+      if (projectdata[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(projectdata[index]);
       }
     }

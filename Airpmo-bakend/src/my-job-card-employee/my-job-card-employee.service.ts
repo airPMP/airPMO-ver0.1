@@ -44,9 +44,13 @@ export class MyJobCardEmployeeService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const all_employee = await this.myjobcardemployeemodal.find();
       for (let index = 0; index < all_employee.length; index++) {
-        if (all_employee[index].organization_id === organizationkey) {
+        if (all_employee[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(all_employee[index]);
         }
       }
@@ -63,10 +67,14 @@ export class MyJobCardEmployeeService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_one_employee = await this.myjobcardemployeemodal.findOne({
         _id: id,
       });
-      if (find_one_employee.organization_id === organizationkey) {
+      if (find_one_employee.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return find_one_employee;
       } else {
         throw new UnprocessableEntityException(
@@ -107,13 +115,15 @@ export class MyJobCardEmployeeService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const employe = await this.myjobcardemployeemodal.find();
 
       for (let i = 0; i < employe.length; i++) {
         if (
-          employe[i].jc_id === id &&
-          employe[i].organization_id === organizationkey
-        ) {
+          employe[i].jc_id === id &&employe[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin" ) {
           new_arr.push(employe[i]);
         }
       }

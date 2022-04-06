@@ -15,6 +15,7 @@ export class PermissionsSeeder implements Seeder {
     return await this.PermissionModel.insertMany([
       { name: 'ALL', description: 'all endpoint access' },
 
+      { name: 'CREATE-USERS', description: 'create user endpoint access' },
       { name: 'GET-USERS', description: 'get user endpoint access' },
       { name: 'EDIT-USERS', description: 'edit user endpoint access' },
       { name: 'DELETE-USERS', description: 'remove user endpoint access' },

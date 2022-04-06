@@ -31,9 +31,13 @@ export class SubdividedzoneService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const all_sub_divided_zone = await this.subdividedzonemodel.find();
       for (let index = 0; index < all_sub_divided_zone.length; index++) {
-        if (all_sub_divided_zone[index].organization_id === organizationkey) {
+        if (all_sub_divided_zone[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(all_sub_divided_zone[index]);
         }
       }
@@ -49,8 +53,12 @@ export class SubdividedzoneService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const subdividedzon = await this.subdividedzonemodel.findOne({ _id: id });
-      if (subdividedzon.organization_id === organizationkey) {
+      if (subdividedzon.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return subdividedzon;
       } else {
         throw new UnprocessableEntityException(
@@ -84,11 +92,15 @@ export class SubdividedzoneService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const subdividedzone = await this.subdividedzonemodel.find({
       subzone_id: subzone_id,
     });
     for (let index = 0; index <  subdividedzone .length; index++) {
-      if (subdividedzone [index].organization_id === organizationkey) {
+      if (subdividedzone [index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push( subdividedzone [index]);
       }
     }

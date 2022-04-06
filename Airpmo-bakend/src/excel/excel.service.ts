@@ -80,8 +80,12 @@ export class ExcelService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       var user = await this.excelModel.findOne({ project_id: projectid });
-      if (user.organization_id === organizationkey) {
+      if (user.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return user;
       } else {
         throw new UnprocessableEntityException(

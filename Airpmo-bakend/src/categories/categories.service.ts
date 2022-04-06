@@ -28,9 +28,13 @@ export class CategoriesService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_catagories = await this.categoriesModel.find();
       for (let i = 0; i < find_catagories.length; i++) {
-        if (find_catagories[i].organization_id === organizationkey) {
+        if (find_catagories[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(find_catagories[i]);
         }
       }
@@ -47,8 +51,9 @@ export class CategoriesService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
       const user = await this.categoriesModel.findById({ _id: id });
-      if (user.organization_id=== organizationkey) {
+      if (user.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return user;
       } else {
         throw new UnprocessableEntityException(

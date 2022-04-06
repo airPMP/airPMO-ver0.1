@@ -33,7 +33,7 @@ export class UsersService {
     }
     const user = await this.usersModel.findOne({ Email: createUserDto.Email });
     if (!user) {
-     return await this.usersModel.create(createUserDto);
+      return await this.usersModel.create(createUserDto);
     } else {
       throw new UnauthorizedException('User already rigister');
     }
@@ -48,18 +48,19 @@ export class UsersService {
   }
 
   async findAll(@Req() req) {
-    const payload = req.headers.authorization.split('.')[1];
-    const encodetoken = Base64.decode(payload);
-    var obj = JSON.parse(encodetoken);
-    var organizationkey = obj.organization_id;
-
     try {
-      var new_obj = {};
       var new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      const airmpo_designation = obj.roles[0];
+      var organizationkey = obj.organization_id;
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const users = await this.usersModel.find().lean();
-
       for (let i = 0; i < users.length; i++) {
-        if (users[i].organization_id === organizationkey) {
+        if (users[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           const user_designation = await this.userRolesService.userroles(
             users[i]._id.toString(),
           );

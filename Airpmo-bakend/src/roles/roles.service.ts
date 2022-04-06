@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, Req } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Req,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Role, RoleDocument } from 'src/schemas/roles.schema';
@@ -11,21 +16,14 @@ import { Base64, encode } from 'js-base64';
 export class RolesService {
   constructor(@InjectModel(Role.name) private RoleModel: Model<RoleDocument>) {}
   async create(createRoleDto: CreateRoleDto) {
-    if (createRoleDto.roles_data) {
-      for (let i = 0; i < createRoleDto.roles_data.length; i++) {
-        createRoleDto.name = createRoleDto.roles_data[i];
-        const create = new this.RoleModel(createRoleDto);
-        await create.save();
-      }
-      return await this.RoleModel.find();
+    const find = await this.RoleModel.find({
+      organization_id: createRoleDto.organization_id,
+      name: createRoleDto.name,
+    });
+    if (find.length === 0) {
+      return await this.RoleModel.create(createRoleDto);
     } else {
-      const find = await this.RoleModel.findOne({ name: createRoleDto.name });
-      if (find) {
-        throw new NotFoundException('roles all ready register ');
-      } else {
-        const create = new this.RoleModel(createRoleDto);
-        return await create.save();
-      }
+      throw new NotFoundException('roles all ready exist');
     }
   }
 
@@ -35,9 +33,16 @@ export class RolesService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const all_roles = await this.RoleModel.find();
     for (let index = 0; index < all_roles.length; index++) {
-      if (all_roles[index].organization_id === organizationkey) {
+      if (
+        all_roles[index].organization_id === organizationkey ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
         new_arr.push(all_roles[index]);
       }
     }
@@ -76,17 +81,24 @@ export class RolesService {
     }
   }
 
-  async projectroles(project_id: string,@Req() req) {
+  async projectroles(project_id: string, @Req() req) {
     try {
       const new_arr = [];
-    const payload = req.headers.authorization.split('.')[1];
-    const encodetoken = Base64.decode(payload);
-    var obj = JSON.parse(encodetoken);
-    var organizationkey = obj.organization_id;
-       const roles= await this.RoleModel.find({ project_id: project_id });
-       for (let index = 0; index < roles.length; index++) {
-        if ( roles[index].organization_id === organizationkey) {
-          new_arr.push( roles[index]);
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
+      const roles = await this.RoleModel.find({ project_id: project_id });
+      for (let index = 0; index < roles.length; index++) {
+        if (
+          roles[index].organization_id === organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
+          new_arr.push(roles[index]);
         }
       }
       return new_arr;

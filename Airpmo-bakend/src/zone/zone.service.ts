@@ -27,9 +27,13 @@ export class ZoneService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const findzone = await this.zoneModel.find();
     for (let index = 0; index < findzone.length; index++) {
-      if (findzone[index].organization_id === organizationkey) {
+      if (findzone[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(findzone[index]);
       }
     }
@@ -42,8 +46,12 @@ export class ZoneService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const zone = await this.zoneModel.findOne({ _id: id });
-      if (zone.organization_id === organizationkey) {
+      if (zone.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return zone;
       } else {
         throw new UnprocessableEntityException(
@@ -95,9 +103,13 @@ export class ZoneService {
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
     var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
     const projectdata = await this.zoneModel.find({ project_id: project_id });
     for (let index = 0; index < projectdata.length; index++) {
-      if (projectdata[index].organization_id === organizationkey) {
+      if (projectdata[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(projectdata[index]);
       }
     }

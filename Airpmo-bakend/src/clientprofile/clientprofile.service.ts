@@ -33,9 +33,13 @@ export class ClientprofileService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_client = await this.clientModel.find();
       for (let index = 0; index < find_client.length; index++) {
-        if (find_client[index].organization_id === organizationkey) {
+        if (find_client[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(find_client[index]);
         }
       }
@@ -52,8 +56,9 @@ export class ClientprofileService {
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
       const client = await this.clientModel.findOne({ _id: id });
-      if (client.organization_id === organizationkey) {
+      if (client.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return client;
       } else {
         throw new UnprocessableEntityException(
