@@ -25,8 +25,8 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
     QuantityTOAchivedData.set(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
     // console.log(projectobjectdata?.min_hours)
 
-    setTotalTimeGangProductivity(productivitysheetobject["totaltime"])
-
+    // setTotalTimeGangProductivity(productivitysheetobject["totaltime"]) 
+    setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "]) 
 
 
     let data1 = Object.entries(productivitysheetobject).slice(4, -1).map(([key, value], i, items) => {
@@ -101,6 +101,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                         <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
                         <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
                         ).toFixed(2)}</th>
+                         
                       </tr>
                       <tr className="m-0 p-0 h-[20px]"  >
                         <th  ></th>

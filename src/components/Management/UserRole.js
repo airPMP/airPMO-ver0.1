@@ -13,6 +13,14 @@ const UserRole1 = () => {
     const [deleteid, setDeleteId] = useState(null);
     const [open, setOpen] = useState(false);
 
+
+    const [allpermission, setAllPermission] = useState(null)
+    const [editpermission, setEditPermission] = useState(null)
+    const [createpermission, setCreatePermission] = useState(null)
+    const [viewpermission, setViewPermission] = useState(null)
+    const [allpermissions, setAllPermissions] = useState(null)
+
+
     let navigate = useNavigate();
     let urlTitle = useLocation();
 
@@ -77,6 +85,69 @@ const UserRole1 = () => {
     }
 
 
+    useEffect(() => {
+        const permissionData = reactLocalStorage.get("permisions", false);
+        setAllPermission(permissionData)
+    
+        getPermision()
+      }, [allpermission])
+    
+    
+      const getPermision = async () => {
+    
+        const url_data = await allpermission
+        const database = url_data.split(',')
+    
+        let value = "EDIT-ROLES".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+    
+    
+        let value1 = "CREATE-ROLES".toUpperCase();
+        let result1 = []
+        result1 = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value1) !== -1;
+          }
+        });
+    
+        let value2 = "GET-ROLES".toUpperCase();
+        let result2 = []
+        result2 = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value2) !== -1;
+          }
+        });
+    
+      
+    
+    
+        if (result[0] === "EDIT-ROLES" ||
+          result1[0] === "CREATE-ROLES" ||
+          result2[0] === "GET-ROLES") {
+          setEditPermission(result[0])
+          setCreatePermission(result1[0])
+          setViewPermission(result2[0])
+        }
+        else {
+          let value = "ALL".toUpperCase();
+          let result = []
+          result = database?.filter((data) => {
+            if (isNaN(+value)) {
+              return data?.toUpperCase().search(value) !== -1;
+            }
+          });
+          setAllPermissions(result[0])
+        }
+    
+      }
+
+
+
 
     return (
         <>
@@ -118,9 +189,10 @@ const UserRole1 = () => {
                                         </svg>
                                     </Link>
                                 </div>
-                                <Link to={`/UserManagement/AddUserRole`}>
+                                <Link to={createpermission || allpermissions ?`/UserManagement/AddUserRole`: `/UserManagement/UserRole`}>
                                     <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                                        className=" rounded-[0.625rem] w-[120px]  ">
+                                        className={`${createpermission === "CREATE-ROLES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                         rounded-[0.625rem] w-[120px]  `}>
                                         <div className="flex  ">
                                             <svg width="28" height="28" viewBox="0 0 31 31"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +223,7 @@ const UserRole1 = () => {
 
                                 {rolesdata?.map((item, i) => {
 
-                                    if (i >= 2) {
+                                    
                                         return <tbody className="  mb-[10px]   ">
                                             <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  "  >
                                                 {/* <td className="pt-[15px] pb-[14.83px]">{item.name} </td> */}
@@ -195,7 +267,7 @@ const UserRole1 = () => {
                                                 <td className="p-[10px]"></td>
                                             </tr>
                                         </tbody>
-                                    }
+                                     
                                 })}
 
                             </table>

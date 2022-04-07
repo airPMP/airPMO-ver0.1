@@ -13,7 +13,7 @@ const validate = (values) => {
   console.log(values)
 
   const errors = {};
-   
+
   if (!values.client_name) {
     errors.client_name = "Client Name Required";
   }
@@ -53,7 +53,7 @@ const NewClientProfile = () => {
       setTitle("Master");
     }
 
-    const organization_Id = reactLocalStorage.get("organizationId", false);
+    const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganization_Id(organization_Id)
 
   }, [urlTitle.pathname]);
@@ -67,14 +67,17 @@ const NewClientProfile = () => {
       upload_logo_file: "",
       address: "",
       discription: "",
-      contact_no: "", 
+      contact_no: "",
       client_id: "",
-      orgainization_id: "", 
-      
+      organization_id: "",
+
     },
     validate,
     onSubmit: (values, { resetForm }) => {
-      values.orgainization_id = organization_id_data
+      console.log(organization_id_data)
+      if (organization_id_data !== "undefined" && organization_id_data !== null && organization_id_data !== false) { 
+        values.organization_id = organization_id_data
+      }
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {
         headers: {
@@ -135,7 +138,7 @@ const NewClientProfile = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[16px]">
 
-                <div className="relative w-[350px]"> 
+                <div className="relative w-[350px]">
                   <input
                     id="client_name"
                     name="client_name"
@@ -158,8 +161,8 @@ const NewClientProfile = () => {
                   )}
                 </div>
                 <div className="relative w-[350px]">
-                   
-                <input
+
+                  <input
                     id="client_id"
                     name="client_id"
                     type="text"

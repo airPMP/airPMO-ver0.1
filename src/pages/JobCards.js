@@ -37,8 +37,8 @@ const JobCards = () => {
 
   let urlTitle = useLocation();
   useEffect(() => {
-    if (urlTitle.pathname === "/job_cards") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname]);
 
@@ -130,7 +130,7 @@ const JobCards = () => {
     }
   }, [openSearchData1])
 
-  console.log("Job Cards", urlTitle.pathname);
+  
 
   const handleChangeForClientData = (e) => {
     setChooseprojectOpnCls(true)
@@ -256,9 +256,9 @@ const JobCards = () => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
-          <Link to={`/job_cards/All-job-cards`}>
+          <Link to={`/daily_task/All-daily-task`}>
             <Card
-              title={"Job Cards"}
+              title={"Daily Task"}
               totalNumber={alljobcardapi}
 
               iconn={
@@ -279,9 +279,9 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Link to={`/job_cards/job-cards-assigned`}>
+          <Link to={`/daily_task/daily-task-assigned`}>
             <Card
-              title={"Job Cards Assigned"}
+              title={"Daily Task Assigned"}
               totalNumber={alljobcardapi}
               iconn={
                 <svg
@@ -300,9 +300,9 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Link to={`/job_cards/my-job-cards`}>
+          <Link to={`/daily_task/my-daily-task`}>
             <Card
-              title={"My Job Cards"}
+              title={"My  Daily Task"}
               totalNumber={myjobcardapi}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
@@ -365,7 +365,7 @@ export default JobCards;
 
 //   let urlTitle = useLocation();
 //   useEffect(() => {
-//     if (urlTitle.pathname === "/job_cards") {
+//     if (urlTitle.pathname === "/daily_task") {
 //       setTitle("Job Cards");
 //     }
 //   }, [urlTitle.pathname]);
@@ -395,7 +395,7 @@ export default JobCards;
 //           </div>
 //         </div>
 //         <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] "> 
-//         <Link to={`/job_cards/new_job_card`}>
+//         <Link to={`/daily_task/new_job_card`}>
 //           <Card
 //             title={"Job Cards"}
 //             totalNumber={1500}

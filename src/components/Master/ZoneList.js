@@ -5,6 +5,7 @@ import { ViewZoneData } from '../../SimplerR/auth'
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
+import {   useParams } from "react-router-dom";
 
 
 const validate = (values) => {
@@ -22,6 +23,7 @@ const ZoneList = ({ closeModal, projectidzone }) => {
 
   const { addToast } = useToasts();
   const viewzonedata = ViewZoneData.use() 
+  let useperma = useParams()
 
   const formik = useFormik({
     initialValues: {
@@ -34,9 +36,11 @@ const ZoneList = ({ closeModal, projectidzone }) => {
     validate,
     onSubmit: async (values, { resetForm }) => {
       const token = reactLocalStorage.get("access_token", false);
-      const organization_Id = reactLocalStorage.get("organizationId", false);
-      values.organization_id = organization_Id
-      values.project_id = projectidzone
+      const organization_Id = reactLocalStorage.get("organization_id", false);
+      if (organization_Id !== "undefined" && organization_Id !== null) { 
+        values.organization_id = organization_Id
+      } 
+      values.project_id = projectidzone || useperma.id
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/zone/`, values, {
         headers: {
           Authorization: `Bearer ${token}`,

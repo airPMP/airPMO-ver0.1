@@ -9,7 +9,7 @@ import { useToasts } from "react-toast-notifications";
 const MyJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
-  const [filteredData, setFilteredData] = useState(null);
+  const [filteredData, setFilteredData] = useState([null]);
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -17,8 +17,8 @@ const MyJobCards = () => {
 
   useEffect(() => {
 
-    if (urlTitle.pathname === "/job_cards/my-job-cards") {
-      setTitle("Job Cards");
+    if (urlTitle.pathname === "/daily_task/my-daily-task") {
+      setTitle("Daily Task");
     }
   }, [urlTitle.pathname])
 
@@ -26,7 +26,7 @@ const MyJobCards = () => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
-    const user_id = reactLocalStorage.get("organizationId", false);
+    const user_id = reactLocalStorage.get("user_id", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/assign_user_data/${user_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,7 +34,7 @@ const MyJobCards = () => {
     })
 
       .then((response) => {
-
+        console.log(response?.data)
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
         if (response.status === 201) {
@@ -46,10 +46,6 @@ const MyJobCards = () => {
     handleSearch()
 
 
-
-
-
-     
 
 
   }, [])
@@ -81,10 +77,11 @@ const MyJobCards = () => {
 
   const CardAssignIdPage = (e, itemid) => {
     console.log(itemid)
-    navigate(`/job_cards/CardAssignId/${itemid}`)
+    navigate(`/daily_task/CardAssignId/${itemid}`)
   }
 
 
+  console.log(filteredData)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -94,7 +91,7 @@ const MyJobCards = () => {
       <div className="flex flex-col">
         <Header title={title} />
         <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px]
-         leading-[53.15px] tracking-[-2%] " > My Job Cards</div>
+         leading-[53.15px] tracking-[-2%] " > My Daily Task</div>
         <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] 
         bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
@@ -160,7 +157,7 @@ const MyJobCards = () => {
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="whitespace-nowrap  pb-[15.39px] ">Activity ID</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Job Card No.</th>
+                  <th className="whitespace-nowrap pb-[15.39px]">Daily Task No.</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Date(YY/MM/DD)</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Description</th>
                   <th className="whitespace-nowrap pb-[15.39px]">Qty</th>
@@ -171,19 +168,19 @@ const MyJobCards = () => {
                   <th className="whitespace-nowrap pb-[15.39px]">Status</th>
                 </tr>
               </thead>
-              {filteredData?.map((item, ids) => {
+              {filteredData && filteredData?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
-                    <th className=" py-[13px]">{item.activity_code}</th>
+                    <th className=" py-[13px]">{item?.activity_code}</th>
                     <th className=" cursor-pointer" onClick={(e) => CardAssignIdPage(e, item._id)} >{item?._id}</th>
-                    <th className=" ">{item.jc_creation}</th>
-                    <th className=" ">{item.activity_name}</th>
-                    <th className=" ">{item.quantity_to_be_achieved}</th>
-                    <th className=" ">{item.zone}</th>
-                    <th className=" "> {item.assign ? item.assign : "no"}</th>
-                    <th className=" "> {item.spi ? item.spi : "0"}</th>
-                    <th className=" ">{item.cpi ? item.cpi : "0"}</th>
-                    <th className=" ">{item.status ? item.status : "No Status"}</th>
+                    <th className=" ">{item?.jc_creation}</th>
+                    <th className=" ">{item?.activity_name}</th>
+                    <th className=" ">{item?.quantity_to_be_achieved}</th>
+                    <th className=" ">{item?.zone}</th>
+                    <th className=" "> {item?.assign ? item.assign : "no"}</th>
+                    <th className=" "> {item?.spi ? item.spi : "0"}</th>
+                    <th className=" ">{item?.cpi ? item.cpi : "0"}</th>
+                    <th className=" ">{item?.status ? item.status : "No Status"}</th>
 
                     {/* <th className="">
                       <select className=" outline-none bg-[#ECF1F0] cursor-pointer"

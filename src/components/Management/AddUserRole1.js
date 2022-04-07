@@ -127,10 +127,15 @@ const AddUserRole = () => {
 
         validate,
         onSubmit: (values, { resetForm }) => {
-            const organization_Id = reactLocalStorage.get("organizationId", false);
-            console.log(values.description)
+            const organization_Id = reactLocalStorage.get("organization_id", false);
+            
+            if (organization_Id !== "undefined" && organization_Id !== null) { 
+                values.organization_id = organization_Id
+              } 
+ 
+
             values.name = rolesalldata
-            values.organization_id = organization_Id
+            
             values.hierarchy = hierarchydata
 
             const token = reactLocalStorage.get("access_token", false);

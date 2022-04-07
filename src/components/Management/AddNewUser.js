@@ -89,7 +89,7 @@ const AddNewUser = () => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                }) 
+                })
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
@@ -157,14 +157,14 @@ const AddNewUser = () => {
         }
     }, [designationedata])
 
-    useEffect(() => { 
+    useEffect(() => {
         if (designatiotrue) {
             RolePostApi()
             setDesignatioTrue(false)
-        } 
+        }
     }, [designatiotrue])
 
-    const CancelButton =()=>{
+    const CancelButton = () => {
         navigate('/UserManagement/UserRole2')
     }
 
@@ -176,20 +176,33 @@ const AddNewUser = () => {
             Email: "",
             Password: "",
             PhoneNumber: "",
+            organization_id: ""
 
         },
         validate,
         onSubmit: (values, { resetForm }) => {
 
+            const token = reactLocalStorage.get("access_token", false);
+            const organization_Id = reactLocalStorage.get("organization_id", false);
+
             values.FirstName = firstnamedata
             values.LastName = lastnamedata
             values.spread_sheet_user_id = spreadalldata
 
+            if (organization_Id !== "undefined" && organization_Id !== null) {
+                values.organization_id = organization_Id
+            }
+
+
             // if (designationdata && spreadalldata) {
             if (spreadalldata) {
-                axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values
-                )
+                axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
                     .then((response) => {
+                        console.log(response)
                         setUserId_Designation(response?.data._id)
                         if (response.status === 201) {
 
@@ -221,7 +234,7 @@ const AddNewUser = () => {
         },
     });
 
-    
+
 
     const AssignRoles = () => {
 
@@ -273,19 +286,24 @@ const AddNewUser = () => {
 
             }
         }
-        feachUser(); 
+        feachUser();
     }
 
-     
+
 
     const AssignUserRole = () => {
-        const organization_Id = reactLocalStorage.get("organizationId", false);
-        const token = reactLocalStorage.get("access_token", false); 
-         
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+        const token = reactLocalStorage.get("access_token", false);
+
+        let organizationid = ""
+        if (organization_Id !== "undefined" && organization_Id !== null) {
+            organizationid = organization_Id
+        }
+
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
             user_id: userid_designation,
-            role_id: roleid,  
-            organization_id: organization_Id
+            role_id: roleid,
+            organization_id: organizationid
         }, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -323,7 +341,7 @@ const AddNewUser = () => {
 
     }
 
-    
+
     const postRole = () => {
         let value = designationedata.toUpperCase();
         let result
@@ -332,23 +350,26 @@ const AddNewUser = () => {
                 return data?.name?.toUpperCase().search(value) !== -1;
             }
         });
- 
 
-        if (result.length === 0) {
-            console.log("0 lenth")
+
+        if (result?.length === 0) {
             setRoleName(designationedata)
             setDesignatioTrue(true)
 
         }
         else {
-            console.log(result[0]._id)
-            setRoleId(result[0]._id)
-        } 
+            // console.log(result[0]._id)
+            if (result) {
+                setRoleId(result[0]?._id)
+            }
+        }
     }
 
 
     const RolePostApi = () => {
-        const organization_Id = reactLocalStorage.get("organizationId", false);
+
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+
         const token = reactLocalStorage.get("access_token", false);
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
             "name": rolename,
@@ -379,8 +400,8 @@ const AddNewUser = () => {
                     appearance: "error",
                     autoDismiss: true,
                 })
-            }) 
-    } 
+            })
+    }
 
     const ChangeDesignation = (e) => {
         // const url_data = e.target.value
@@ -389,6 +410,7 @@ const AddNewUser = () => {
         // setRoleId(designation_data[1]) 
     }
 
+    console.log(clientiddata)
 
     return (
         <>
@@ -438,7 +460,7 @@ const AddNewUser = () => {
                                                     focus:outline-none "
                                                 >
                                                     <option value="" label="User Id" />
-                                                    {clientiddata?.map((item, id) => {
+                                                    {clientiddata ?.map((item, id) => {
                                                         return <>
                                                             <option value={item} label={item} key={id} />
                                                         </>

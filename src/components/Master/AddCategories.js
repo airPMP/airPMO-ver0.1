@@ -44,7 +44,7 @@ const AddCategories = () => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
-    const organization_Id = reactLocalStorage.get("organizationId", false);
+    const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganization_Id(organization_Id)
 
   }, [urlTitle.pathname]);
@@ -55,11 +55,17 @@ const AddCategories = () => {
       category: "",
       sub_category: "",
       discription:"" ,
-      orgainization_id:'' 
+      organization_id:'' 
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
-     values.orgainization_id= organization_id_data
+
+      console.log(organization_id_data)
+      if (organization_id_data !== "undefined" && organization_id_data !== null) { 
+        values.organization_id = organization_id_data
+      }
+ 
+     
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/categories/`, values, {
         headers: {

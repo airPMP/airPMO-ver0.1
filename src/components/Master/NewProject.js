@@ -118,7 +118,7 @@ const NewProject = () => {
     }
     feach1();
 
-    const organization_Id = reactLocalStorage.get("organizationId", false);
+    const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganization_Id(organization_Id)
 
   }, [urlTitle.pathname]);
@@ -147,13 +147,16 @@ const NewProject = () => {
       time_sheet_id: "",
       spread_sheet_id: "",
       spread_sheet_key: "",
-      orgainization_id: '',
+      organization_id: '',
       categories_id: ""
     },
     validate,
-    onSubmit: async (values, { resetForm }) => {
-      console.log(`Form data`, values);
-      values.orgainization_id = organization_id_data
+    onSubmit: async (values, { resetForm }) => { 
+
+      if (organization_id_data !== "undefined" && organization_id_data !== null) { 
+        values.organization_id = organization_id_data
+      }
+ 
       values.category = categorydata
       values.categories_id = categoryid
       values.client_name = clientdata
@@ -177,10 +180,10 @@ const NewProject = () => {
               appearance: "success",
               autoDismiss: true,
             })
-            if (createpermission) {
+            if (createpermission || allpermissions) {
               ViewZoneData.set(o => !o)
             }
-          
+
             // navigate('/')
           }
           resetForm()

@@ -172,7 +172,7 @@ console.log(userdata)
                                 </tr>
 
 
-                                {userdata?.slice(1).map((item, id) => {
+                                {userdata?.map((item, id) => {
 
 
                                     return <tbody className="  mb-[10px]   " key={id}>

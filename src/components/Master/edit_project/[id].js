@@ -12,6 +12,7 @@ import SubZoneList from "../SubZoneList";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { ViewZoneData } from "../../../SimplerR/auth";
 
 
 const validate = (values) => {
@@ -55,6 +56,7 @@ const EditProject = () => {
     const [responcedata, setResponceData] = useState(true)
     const [showeye, setShowEye] = useState(" ");
     const [sheetdata, setSheetData] = useState(null)
+    
 
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
@@ -62,6 +64,8 @@ const EditProject = () => {
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
 
+
+    const viewzonedata = ViewZoneData.use()
     let useperma = useParams()
 
     let urlTitle = useLocation();
@@ -353,24 +357,24 @@ const EditProject = () => {
                                 <div className="flex ">
 
                                     <div className="mr-[25px] shadow-[buttonshadow] ">
-                                        {/* <button
-                                          
+                                        <button
+
                                             className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
                                             Add Delay
-                                        </button> */}
+                                        </button>
                                     </div>
 
                                     <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button
-                                            // onClick={() => createpermission || allpermissions ? ViewZoneData.set(o => !o) : null}
-                                            // className={`${createpermission === "CREATE-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
-                                            //     w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
-                                            //     text-[14px] text-center font-medium not-italic items-center 
-                                            //     bg-[#FFFFFF] text-[#2E3A59] `}
-                                                 >
-                                            {/* Add Zones & Subzone */}
+                                            onClick={() => createpermission || allpermissions ? ViewZoneData.set(o => !o) : null}
+                                            className={`${createpermission === "CREATE-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
+                                                   w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
+                                                   text-[14px] text-center font-medium not-italic items-center 
+                                                   bg-[#FFFFFF] text-[#2E3A59] `}
+                                        >
+                                            Add Zones & Subzone  
                                         </button>
-                                         
+
                                     </div>
 
                                 </div>
@@ -848,10 +852,10 @@ const EditProject = () => {
                                         </button> */}
                                     </div>
 
-                                    {/* <div className="mr-[25px] shadow-[buttonshadow] ">
+                                    <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button
                                             onClick={() =>
-                                                viewpermission || allpermissions ?  naviagte(`/master/zones/${useperma.id}`) : null
+                                                viewpermission || allpermissions ? naviagte(`/master/zones/${useperma.id}`) : null
                                             }
                                             className={`${viewpermission === "GET-ZONES" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                                                     w-[160px] btnshadow  h-[25px] rounded text-sm
@@ -860,16 +864,16 @@ const EditProject = () => {
                                         >
                                             View Zones & Subzones
                                         </button>
-                                    </div> */}
+                                    </div>
 
-                                    {/* <div className="mr-[25px] shadow-[buttonshadow] ">
+                                    <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button onClick={() => { naviagte("/UserManagement/EditAccess") }}
                                             className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
                       text-[14px] text-center font-medium not-italic items-center 
                        bg-[#FFFFFF] text-[#2E3A59] ">
                                             View Edit Access
                                         </button>
-                                    </div> */}
+                                    </div>
 
                                     {/* <div className="mr-[45px] shadow-[buttonshadow] ">
                                         <button

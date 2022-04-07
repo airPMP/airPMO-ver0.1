@@ -39,8 +39,14 @@ const Login = () => {
         console.log(response)
         if (response.status === 201) {
 
-          if (response?.data?.permissions[0] === "ALL") {
-            navigate('/super_admin')
+          if (response?.data?.permissions[0] === "ALL" ) {
+             if(response?.data?.user?.organization_id){
+              navigate('/dashboard')
+             }
+             else{
+              navigate('/super_admin')
+             }
+             
           }
           else {
             navigate('/dashboard')
@@ -50,7 +56,8 @@ const Login = () => {
             autoDismiss: true,
           })
           reactLocalStorage.set("access_token", response?.data?.access_token);
-          reactLocalStorage.set("organizationId", response?.data?.user?._id);
+          reactLocalStorage.set("user_id", response?.data?.user?._id);
+          reactLocalStorage.set("organization_id", response?.data?.user?.organization_id);
           reactLocalStorage.set("permisions", response?.data?.permissions); 
           // navigate('/dashboard')
         }

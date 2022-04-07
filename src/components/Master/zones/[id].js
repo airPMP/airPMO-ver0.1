@@ -1,159 +1,465 @@
-
-import { useFormik } from "formik";
-import { useParams } from "react-router-dom";
-import React, { useState } from 'react'
-import { ViewZoneData } from '../../SimplerR/auth'
-import axios from "axios";
-import { useToasts } from "react-toast-notifications";
+import React, { useState, useEffect } from 'react'
+import SideBar from '../../layout/SideBar';
+import Header from '../../layout/Header';
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { ViewZoneData, ViewSubZoneData, CategorieLengthSet } from '../../../SimplerR/auth'
+import axios from "axios";
+import Popup from "reactjs-popup";
+import ZoneList from '.././ZoneList';
+import SubZoneList from '../SubZoneList';
+
+const ZoneById = () => {
+
+  const [title, setTitle] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [zonedata, setZoneData] = useState(null)
+  const [zone_id, setZone_id] = useState(null)
+  const [subzonedata, setSubZoneData] = useState(null)
 
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.zone_name) {
-    errors.zone_name = "Zone Required";
-  }
-  if (!values.discription) {
-    errors.discription = "Desciption Required";
-  }
 
-  return errors;
-};
-const ZoneById = ({ closeModal, projectidzone }) => {
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
 
-  const { addToast } = useToasts();
-  
-  const viewzonedata = ViewZoneData.use() 
+
+  const [filteredData, setFilteredData] = useState(zonedata);
+
+  const CategorieLengthget = CategorieLengthSet.use()
+
+  const [deleteid, setDeleteId] = useState(null);
+  let urlTitle = useLocation();
+  let navigate = useNavigate();
 
   let useperma = useParams()
 
-  console.log(useperma)
 
 
-  const formik = useFormik({
-    initialValues: {
-      zone_name: "",
-      discription: "",
-      organization_id: "",
-      project_id: ""
-    },
+  const [subzoneid, setSubZoneId] = useState(null);
+  const [activezoneshow, setActiveZoneShow] = useState(null);
+  const viewzonedata = ViewZoneData.use()
+  const viewsubzonedata = ViewSubZoneData.use()
 
-    validate,
-    onSubmit: async (values, { resetForm }) => {
-      const token = reactLocalStorage.get("access_token", false);
-      const organization_Id = reactLocalStorage.get("organizationId", false);
-      values.organization_id = organization_Id
-      values.project_id = projectidzone
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/project//zone`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+  useEffect(() => {
+
+
+    if (urlTitle.pathname === "/master/categories") {
+      setTitle("Master");
+    }
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${useperma.id}/zone`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        console.log(data)
+        setZoneData(data?.data)
+        setFilteredData(data?.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach();
+    handleSearch();
+
+
+    getPermision()
+
+  }, [urlTitle.pathname ,viewzonedata])
+
+
+
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+  }, [allpermission])
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data?.split(',')
+
+    let value = "EDIT-SUBZONES".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    let value1 = "CREATE-SUBZONES".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-SUBZONES".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+    if (result[0] === "EDIT-SUBZONES" ||
+      result1[0] === "CREATE-SUBZONES" ||
+      result2[0] === "GET-SUBZONES") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
         }
-      })
-        .then((response) => {
-          console.log(response)
-          if (response.status === 201) {
-            addToast("Zone is Added Sucessfully", {
-              appearance: "success",
-              autoDismiss: true,
-            })
-           ViewZoneData.set(o => !o) 
-            // window.location.reload(false)
-          }
-          resetForm()
+      });
+      setAllPermissions(result[0])
+    }
+
+  }
+
+
+
+
+
+
+
+
+  const handleSearch = (e) => {
+    let value = e?.target?.value?.toUpperCase();
+    let result = []
+    result = zonedata?.filter((data) => {
+
+      if (isNaN(+value)) {
+        return data?.zone_name?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+    setFilteredData(result)
+
+    if (value === "") {
+      setFilteredData(zonedata)
+    }
+  }
+
+
+  const DeleteProfile = (e) => {
+    setDeleteId(e)
+    setOpen(o => !o)
+  }
+
+  const conformDelete = () => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    const feach = async () => {
+      try {
+        const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/Categories/${deleteid}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
-        .catch((error) => {
-          console.log(error)
-          addToast(error.response.data.message, {
-            appearance: "error",
-            autoDismiss: true,
-          })
+        if (data?.status === 200) {
+
+          window.location.reload(false);
+        }
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach();
+    setOpen(o => !o)
+  }
+
+  const CancelButton = (e) => {
+    setOpen(o => !o)
+  }
+
+  
+
+
+  const Subzone = (e, zone_id) => {
+    setSubZoneId(zone_id)
+    setActiveZoneShow(o => !o)
+
+
+    const feach = async () => {
+      const token = reactLocalStorage.get("access_token", false);
+      try {
+        const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${zone_id}/subzone`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
 
-    },
-  });
+        setSubZoneData(data?.data)
+        if (data?.status === 200) {
+
+          // window.location.reload(false);
+        }
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    feach();
+  }
+
+
+  const ViewSubZoneFun = (e, item_data) => {
+    ViewSubZoneData.set(o => !o)
+    setZone_id(item_data._id)
+  }
+
+
+  const AddZone = () => {
+    ViewZoneData.set(o => !o)
+  }
+
+
+
   return (
-    <div className="flex flex-row  overflow-hidden">
+
+    <div className="flex flex-row justify-start overflow-hidden">
+      <div>
+        <SideBar />
+      </div>
       <div className="flex flex-col">
-        <div className=" flex flex-col      w-[100%] max-h-[40%] bg-[#FFFFFF] pl-[26px] 
-        pr-[46.02px]    rounded-[31.53px] ">
-          <div className="pl-[40px] pr-[26px] pt-[33.49px]">
-            <form onSubmit={formik.handleSubmit}>
+        <Header title={title} />
 
-              <div className=" flex-row   pb-[10px] w-[100%]">
-                <div className="relative w-[350px] mb-10">
-                  <input
-                    id="zone_name"
-                    name="zone_name"
-                    type="text"
-                    value={formik.values.zone_name}
-                    onChange={formik.handleChange}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
-                    placeholder="john@doe.com"
+        <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
+          <div className="flex flex-row justify-between">
+            <div className="flex space-x-[27.92px] self-center">
+              <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px]  rounded-full">
+                <img
+                  src="/Group8.png"
+                  alt="logo"
+                  width="42.79px"
+                  height="44px"
+                  className="content-center"
+                />
+              </div>
+              <div className="font-secondaryFont font-medium not-italic mt-[10px] text-[28.09px] leading-[37.83px] text-[#000000] ">
+                Zones & Subzones
+              </div>
+            </div>
+
+            <div
+              style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+              className=" basic-1/4 flex flex-row  items-center w-[273.87px] h-[36.94px] bg-[#FFFFFF] rounded-[0.625rem] px-[20px] "
+            >
+              <div>
+                <svg
+                  width="11"
+                  height="12"
+                  viewBox="0 0 11 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="5"
+                    cy="5"
+                    r="4.3"
+                    stroke="#1B2559"
+                    strokeWidth="1.4"
                   />
-                  <label
-                    htmlFor="zonename"
-                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-[9.35px] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-[9.35px]"
-                  >
-                    Zone
-                  </label>
-                  {formik.errors.zone_name && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.zone_name}
-                    </div>
-                  )}
-                </div>
-                <div className=" relative w-[350px]">
-                  <input
-                    id="discription"
-                    type="text"
-                    name="discription"
-                    value={formik.values.discription}
-                    onChange={formik.handleChange}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#2E3A59] text-[#2E3A59] placeholder-transparent focus:outline-none focus:border-[#2E3A59]"
-                    placeholder="Password"
+                  <line
+                    x1="10.0101"
+                    y1="11"
+                    x2="8"
+                    y2="8.98995"
+                    stroke="#1B2559"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
                   />
-                  <label
-                    htmlFor="discription"
-                    className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#2E3A59] text-[9.35px] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#2E3A59] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#2E3A59] peer-focus:text-[9.35px]"
-                  >
-                    Description
-                  </label>
-                  {formik.errors.discription && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.discription}
-                    </div>
-                  )}
-                </div>
+                </svg>
+              </div>
+              <div className="bg-[#FFFFFF] pl-[7px]">
+                <input
+                  onChange={(e) => handleSearch(e)}
+                  type="text"
+                  placeholder="Search for zone or subzone"
+                  className="outline-none"
+                />
+
+
               </div>
 
-              <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[50px]">
+            </div>
 
-                <div className="flex flex-row float-right">
-                  <div className="mr-[25px] shadow-[buttonshadow] "
-                    onClick={() => ViewZoneData.set(o => !o)}>
-                    <button onClick={closeModal} className="w-[100px] btnshadow 
-                     h-[25px] rounded   font-secondaryFont text-[12px] text-center 
-                     font-medium not-italic items-center  bg-[#ffffff] text-[#000000] ">
-                      Close
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-[110px] h-[25px] rounded btnshadow     font-secondaryFont text-[12px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
+          </div>
+
+          <div className="text-right mb-2  ">
+
+            <button className=" " style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
+              onClick={(e) => AddZone(e)}
+            >
+              <div className="flex p-2">
+                <span className="mt-1">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
+                  </svg>
+
+                </span>
+                <span className="pl-4  ">
+                  Add Zone
+                </span>
               </div>
+            </button>
+          </div>
 
-            </form>
+          <div className="pl-[80px]">
+            <table className="table-auto pt-[24px]  w-[100%]">
+              <thead className="font-secondaryFont 
+                              text-[#000000] font-normal not-italic text-[12px]
+                               leading-[20px] tracking-[-2%]   ">
+                <tr className="max-h-[52.84px] ">
+                  <th className="w-[30%] py-[13px] float-left"> Zone</th>
+                  <th className="w-[50%] py-[13px]">Zone Description</th>
+                  <th className="w-[20%] py-[13px] float-right pr-14  ">Subzone</th>
+                </tr>
+              </thead>
+              {filteredData?.map((item, i) => {
+                return <tbody className="font-secondaryFont 
+                                      text-[#000000] font-normal not-italic text-[12px] ">
+                  <tr className="bg-[#ECF1F0] ">
+                    <th className=" w-[30%]  py-[13px] float-left cursor-pointer "
+                      onClick={(e) => viewpermission || allpermissions ? Subzone(e, item._id) : null}>{item.zone_name}</th>
+
+
+                    <th className="w-[50%]  py-[13px]">{item.discription}</th>
+                    <th className=" w-[20%] py-[13px]">
+                      <div className=" float-right pr-5  space-x-xl">
+                        <div
+                          // onClick={() => ViewSubZoneData.set(o => !o)}
+                          onClick={(e) => createpermission || allpermissions ? ViewSubZoneFun(e, item) : null}
+                          className={`${createpermission === "CREATE-SUBZONES" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 13V19H11V13H5V11H11V5H13V11H19V13H13Z" fill="black" />
+                          </svg>
+
+                        </div>
+
+                      </div>
+                    </th>
+                  </tr>
+
+                  {activezoneshow && item._id === subzoneid ? <>
+                    <tr className="bg-[#ffffff]   " style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                      <td colSpan="1" className="pl-[20px] font-semibold py-5  "  >
+                        <span className="pb-2"
+                          style={{ borderBottom: "2px solid black" }}>
+                          Subzones
+                        </span>
+                      </td>
+                      <td colSpan="3" className="pl-[120px]  font-semibold py-5">
+                        <span className="pb-2"
+                          style={{ borderBottom: "2px solid black" }}>
+                          Subzone Description
+                        </span>
+
+                      </td>
+                    </tr>
+
+                    {subzonedata?.map((item, i) => {
+                      return <tr className="bg-[#ffffff]  " style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                        <td colSpan="1" className="pl-[20px] py-5">
+                          {item.subzone_name}
+                        </td>
+                        <td colSpan="3" className="pl-[120px] py-5">
+                          {item.discription}
+                        </td>
+                      </tr>
+                    })}</> : null}
+
+                  <tr className="p-[15px]">
+                    <td className="p-[10px]" ></td>
+                  </tr>
+                  <Popup
+                    open={open}
+                    position="right center"
+                    model
+                  >
+                    <div className="p-7">
+                      <div className="flex pb-3">
+                        <div>
+
+                        </div>
+                        <div style={{ marginLeft: "90%" }}>
+                          <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                            <b>X</b>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <h3>
+                          Are You sure You Want to Delete
+                        </h3>
+                      </div>
+                      <div className=" w-[70px] text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                        <button
+                          onClick={(e) => conformDelete(e)}
+                          className="  h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px]   text-[#ffffff] ">
+                          Yes
+                        </button>
+                      </div>
+                    </div>
+
+                  </Popup>
+                </tbody>
+              })}
+            </table>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
 
-export default ZoneById
+      <Popup
+        open={viewzonedata}
+        position="right center"
+        model
+        className="zone_pops"
+      >
+        <ZoneList />
+
+      </Popup>
+      <Popup
+        open={viewsubzonedata}
+        position="right center"
+        model
+        className="zone_pops"
+      >
+        <SubZoneList
+
+          zone_id={zone_id}
+
+        />
+
+      </Popup>
+    </div>
+
+  );
+};
+
+export default ZoneById;
