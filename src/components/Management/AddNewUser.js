@@ -410,6 +410,7 @@ const AddNewUser = () => {
         // setRoleId(designation_data[1]) 
     }
 
+    console.log(clientiddata)
 
     return (
         <>
@@ -459,7 +460,7 @@ const AddNewUser = () => {
                                                     focus:outline-none "
                                                 >
                                                     <option value="" label="User Id" />
-                                                    {clientiddata?.map((item, id) => {
+                                                    {clientiddata ?.map((item, id) => {
                                                         return <>
                                                             <option value={item} label={item} key={id} />
                                                         </>
