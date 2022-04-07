@@ -221,7 +221,7 @@ const UserRole1 = () => {
                                 </tr>
 
 
-                                {rolesdata?.map((item, i) => {
+                                {rolesdata?.slice(1).map((item, i) => {
 
                                     
                                         return <tbody className="  mb-[10px]   ">

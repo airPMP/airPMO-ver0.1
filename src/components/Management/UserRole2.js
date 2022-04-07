@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
+import Popup from "reactjs-popup";
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate, Link } from "react-router-dom";
@@ -11,9 +12,17 @@ const UserRole1 = () => {
 
     const [title, setTitle] = useState(null);
     const [userdata, setUserData] = useState(null);
+    const [deleteid, setDeleteId] = useState(null);
     const [rolesdata, setRolesData] = useState([]);
-    const [userdata1, setUserData1] = useState([]);
-    const [userdetails, setUserDetailsData] = useState([]);
+  
+
+    const [employeeid, setEmployeeId] = useState(null);
+    const [employeedesignation, setEmployeeDesignation] = useState(null);
+    const [emailid, setEmailId] = useState(null);
+    const [editopen, setEditOpen] = useState(false);
+
+
+    const [open, setOpen] = useState(false);
 
     let navigate = useNavigate();
     let urlTitle = useLocation();
@@ -34,58 +43,50 @@ const UserRole1 = () => {
         })
 
     }, [urlTitle.pathname])
-    // shivam1q1@gmail.com
-    
 
-    // useEffect(() => {
 
-    //     // if (userdata) {
-    //     //     let some = []
-    //     //     userdata?.forEach(item => {
-    //     //         const token = reactLocalStorage.get("access_token", false);
+    const DeleteProfile = (e) => {
 
-    //     //         const feach = async () => {
-    //     //             try {
-    //     //                 const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${item?._id}/roles`, {
-    //     //                     headers: {
-    //     //                         Authorization: `Bearer ${token}`,
-    //     //                     }
-    //     //                 })
+        setDeleteId(e)
+        setOpen(o => !o)
+    }
 
-    //     //                 if (data1?.data[0]?.name) {
-    //     //                     let dataq = []
-    //     //                     item.designation = data1?.data[0]?.name
-    //     //                     // console.log(item)
-    //     //                     dataq.push(item)
-    //     //                     setUserData1(dataq)
-    //     //                 }
+    const CancelButton = (e) => {
+        setOpen(o => !o)
+    }
 
-    //     //             } catch (error) {
-    //     //                 console.log(error)
-    //     //             }
-    //     //         }
+    const conformDelete = () => {
 
-    //     //         feach();
-    //     //     })
+        const token = reactLocalStorage.get("access_token", false);
+        const feach = async () => {
+            try {
+                const data = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/users/${deleteid}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                if (data?.status === 200) {
 
-             
-    //     // }
+                    window.location.reload(false);
+                }
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feach();
+        setOpen(o => !o)
+    }
 
-    // }, [userdata])
-
-    // useEffect(() => {
+    const EditProfile = (e, alldata) => {
+        setEmployeeId(alldata?.employee_id) 
+        setEmailId(alldata.hour) 
+        setEmployeeDesignation(alldata.designation)
          
-    //     if (userdata1) {
-    //         userdata1.map((item, id) => { 
-    //             setUserDetailsData([...userdetails, item])
-    //         })
-    //     }
 
-    // }, [userdata1])
+        setEditOpen(true)
+    }
 
-    
-
-console.log(userdata)
 
 
 
@@ -172,11 +173,11 @@ console.log(userdata)
                                 </tr>
 
 
-                                {userdata?.map((item, id) => {
+                                {userdata?.slice(1).map((item, id) => {
 
 
                                     return <tbody className="  mb-[10px]   " key={id}>
-                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " 
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  "
                                         // onClick={() => { navigate("/UserManagement/UserRole1/Details") }}
                                         >
                                             <td className="pt-[15px] pb-[14.83px]">{item?.spread_sheet_user_id} </td>
@@ -184,7 +185,7 @@ console.log(userdata)
                                             <td className="pt-[15px] pb-[14.83px]">{item?.Email}</td>
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
-                                                    <div>
+                                                    <div onClick={(e) => EditProfile(e, item)} className="hidden"  >
                                                         <svg
                                                             width="19"
                                                             height="20"
@@ -198,7 +199,7 @@ console.log(userdata)
                                                             />
                                                         </svg>
                                                     </div>
-                                                    <div>
+                                                    <div onClick={(e) => DeleteProfile(item._id)}>
                                                         <svg
                                                             width="18"
                                                             height="21"
@@ -242,6 +243,101 @@ console.log(userdata)
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <Popup
+                open={open}
+                position="right center"
+                model
+            >
+                <div className="p-7">
+                    <div className="flex pb-3">
+                        <div>
+
+                        </div>
+                        <div style={{ marginLeft: "90%" }}>
+                            <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
+                                <b>X</b>
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mt-3">
+                        <h3>
+                            Are You sure You Want to Delete
+                        </h3>
+                    </div>
+                    <div className="w-[70px]  selection: text-center border-[1px] border-solid border-[#000000] rounded bg-[#09a061] mt-[30px]">
+                        <button
+                            onClick={(e) => conformDelete(e)}
+                            className="  h-[37px] font-mainFont text-[15px] 
+                            font-normal not-italic leading-[18px]  w-[70px] text-[#ffffff] ">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+
+            </Popup>
+
+            <div>
+            <Popup
+                    open={editopen}
+                    position="right center"
+                    model
+                    className="jobCard_popup"
+                >
+                    <div className="p-4 jobCard_popup">
+                        
+                        <div className=" grid grid-cols-4 p-4 gap-3">
+                            <div className="col-span-2    " style={{ borderBottom: "2px solid  black" }}>
+                                <label className="text-[14px]  text-[#aaa]" >User Id</label>
+                                <p className="text-[18px]  text-[#aaa]" >
+                                    {/* {timesheetname} */}
+                                    </p>
+                            </div>
+                            <div className="col-span-2 pt-4">
+                                <input
+                                    id="FirstName"
+                                    name="FirstName"
+                                    type="text"
+                                    // value={timesheethours}
+                                    // onChange={(e) => setTimeSheetHours(e.target.value)}
+                                    className="  h-10 w-full border-b
+                     font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
+                       focus:outline-none focus:border-[#5e5d5d]"
+                                    placeholder="Designation"
+                                />
+
+                            </div>
+                        </div>
+                        <div className="p-4">
+                            <input
+                                id="FirstName"
+                                name="FirstName"
+                                type="text"
+                                // value={timesheetremark}
+                                // onChange={(e) => setTimeSheetRemark(e.target.value)}
+                                className="  h-10 w-full border-b
+                     font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
+                       focus:outline-none focus:border-[#5e5d5d]"
+                                placeholder="Email"
+                            />
+                        </div>
+
+                        <div className="mt-10  float-right ">
+                            <button className="  text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
+                                onClick={(e) => setEditOpen(false)}
+                                >
+                                CANCEL
+                            </button>
+                            <button className=" text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
+                                // onClick={(e) => EditAddToList(e)}
+                                >
+                                 EDIT DONE
+                            </button>
+                        </div>
+                    </div>
+
+                </Popup>
             </div>
         </>
     )
