@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Req,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -7,6 +12,7 @@ import {
 } from 'src/schemas/my-job-card-equipment.schema';
 import { CreateMyJobCardEquipmentDto } from './dto/create-my-job-card-equipment.dto';
 import { UpdateMyJobCardEquipmentDto } from './dto/update-my-job-card-equipment.dto';
+import { Base64, encode } from 'js-base64';
 
 @Injectable()
 export class MyJobCardEquipmentService {
@@ -26,20 +32,57 @@ export class MyJobCardEquipmentService {
     }
   }
 
-  async findAll() {
+  async findAll(@Req() req) {
     try {
-      return await this.myjobcardequipmentmodal.find();
+      const new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
+      const all_my_job_card_eqipments =
+        await this.myjobcardequipmentmodal.find();
+      for (let index = 0; index < all_my_job_card_eqipments.length; index++) {
+        if (
+          all_my_job_card_eqipments[index].organization_id ===
+            organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
+          new_arr.push(all_my_job_card_eqipments[index]);
+        }
+      }
+      return new_arr;
     } catch {
       throw new NotFoundException('equipment not found');
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, @Req() req) {
     try {
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const find_one_equipment = await this.myjobcardequipmentmodal.findOne({
         _id: id,
       });
-      return find_one_equipment;
+      if (
+        find_one_equipment.organization_id === organizationkey ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
+        return find_one_equipment;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
     } catch {
       throw new NotFoundException('equipment not found');
     }
@@ -64,13 +107,26 @@ export class MyJobCardEquipmentService {
     return await this.myjobcardequipmentmodal.remove({ _id: id });
   }
 
-  async findemployeebyjcid(id: string) {
+  async findemployeebyjcid(id: string, @Req() req) {
     try {
       var new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const equipment = await this.myjobcardequipmentmodal.find();
       for (let i = 0; i < equipment.length; i++) {
         if (equipment[i].jc_id === id) {
-          new_arr.push(equipment[i]);
+          if (
+            equipment[i].organization_id === organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            new_arr.push(equipment[i]);
+          }
         }
       }
       if (new_arr.length != 0) {

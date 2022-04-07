@@ -1,29 +1,27 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateRoleDto {
+ 
+  @ApiProperty()
+  name: string;
 
-@ApiProperty()    
-roles_data: [];
+  @ApiProperty()
+  description: string;
 
-@ApiProperty() 
-name: string;
+  @ApiProperty()
+  permission: [];
 
-@ApiProperty() 
-description: string;
+  @IsNotEmpty()
+  @ApiProperty()
+  organization_id: string;
 
-@ApiProperty() 
-permission: [];
-
-@ApiProperty() 
-organization_id: string;
-
-@ApiProperty() 
+  @ApiProperty()
   project_id: string;
 
-@ApiProperty() 
+  @ApiProperty()
   is_assign_to_all_project: boolean;
 
   @ApiProperty()
   hierarchy: string;
-
 }

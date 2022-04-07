@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateMyJobCardEmployeeDto {
   @ApiProperty()
@@ -19,6 +20,7 @@ export class CreateMyJobCardEmployeeDto {
   @ApiProperty()
   remarks: string;
 
+  @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 }

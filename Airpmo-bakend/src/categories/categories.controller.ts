@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
-import {  ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -9,7 +18,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 @Controller('api')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
- 
+
   @Auth('CREATE-CATEGORIES')
   @Post('categories')
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -18,19 +27,22 @@ export class CategoriesController {
 
   @Auth('GET-CATEGORIES')
   @Get('categories')
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Req() req) {
+    return this.categoriesService.findAll(req);
   }
-   
+
   @Auth('GET-CATEGORIES')
   @Get('categories/:id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req) {
+    return this.categoriesService.findOne(id, req);
   }
 
   @Auth('EDIT-CATEGORIES')
   @Patch('categories/:id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
@@ -39,7 +51,6 @@ export class CategoriesController {
   remove(@Param('id') id: string) {
     return this.categoriesService.remove(id);
   }
-
 
   @Auth('GET-CATEGORIES')
   @Get('organization/:organization_id/categories')

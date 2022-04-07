@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -19,13 +19,13 @@ export class RolesController {
 
   @Auth('GET-ROLES')
   @Get('roles')
-  findAll() {
-    return this.rolesService.findAll();
+  findAll(@Req()req) {
+    return this.rolesService.findAll(req);
   }
 
   @Auth('GET-ROLES')
   @Get('roles/:id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string,@Req() req) {
     return this.rolesService.findOne(id);
   }
 
@@ -43,8 +43,8 @@ export class RolesController {
 
   @Auth('GET-ROLES')
   @Get('project/:project_id/roles')
-  find_project_roles(@Param('project_id') project_id: string) {
-    return this.rolesService.projectroles(project_id);
+  find_project_roles(@Param('project_id') project_id: string,@Req() req) {
+    return this.rolesService.projectroles(project_id,req);
   }
 
   @Auth('GET-ROLES')

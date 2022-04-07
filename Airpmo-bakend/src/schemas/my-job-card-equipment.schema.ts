@@ -23,7 +23,7 @@ export class equipment {
   remarks: string;
 
   @Prop()
-  orgainization_id: string;
+  organization_id: string;
 
   @Prop({ default: Date })
   createdAt: string;

@@ -36,7 +36,7 @@ export class excels {
   light_fitting_quantity_sheets: [];
 
   @Prop()
-  orgainization_id: string;
+  organization_id: string;
 
   @Prop({ default: Date })
   createdAt: string;

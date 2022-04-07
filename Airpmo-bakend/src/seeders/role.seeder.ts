@@ -16,11 +16,11 @@ export class RolesSeeder implements Seeder {
 
   async seed(): Promise<any> {
     let role = await this.RoleModel.insertMany([
-      { name: 'Airpmo Super Admin', permission: 'ALL' },
-      { name: 'super admin', permission: 'ALL' },
-      { name: 'riyaz', permission: 'ALL' },
-      { name: 'neeraj', permission: 'ALL' },
-      { name: 'aditya', permission: 'ALL' },
+      { name: 'Airpmo Super Admin', permission: 'ALL', organization_id: 1 },
+      { name: 'super admin', permission: 'ALL', organization_id: 2 },
+      { name: 'riyaz', permission: 'ALL', organization_id: 3 },
+      { name: 'neeraj', permission: 'ALL', organization_id: 4 },
+      { name: 'aditya', permission: 'ALL', organization_id: 5 },
     ]);
     let user = await this.usersModel.find();
 

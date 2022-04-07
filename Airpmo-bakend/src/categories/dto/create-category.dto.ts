@@ -14,9 +14,9 @@ export class CreateCategoryDto {
         @ApiProperty()
         discription:string;
 
-      
+        @IsNotEmpty()
         @ApiProperty()
-        orgainization_id: string;
+        organization_id: string;
 
         
 

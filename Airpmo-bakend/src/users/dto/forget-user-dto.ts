@@ -5,6 +5,5 @@ export class forgetuserdto {
   @ApiProperty()
   Email: string;
 
-  @ApiProperty()
-  organization_id: string;
+
 }

@@ -35,7 +35,8 @@ export class CreateUserDto {
     @IsString()
     @ApiProperty()
     Password:string;
-
+    
+    @IsNotEmpty()
     @ApiProperty()
     organization_id: string;
 

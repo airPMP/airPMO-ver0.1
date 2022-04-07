@@ -19,11 +19,12 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/decorator/auth.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
+import { stringify } from 'querystring';
 @ApiTags('Users api')
 @Controller('api')
 export class UsersController {
   constructor(private readonly UsersService: UsersService) {}
-
+  @Auth('CREATE-USERS')
   @Post('users/register')
   @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createUserDto: CreateUserDto) {
@@ -33,7 +34,7 @@ export class UsersController {
   @Auth('GET-USERS')
   @Get('users')
   findAll(@Req() req) {
-    return this.UsersService.findAll();
+    return this.UsersService.findAll(req);
   }
 
   @Auth('GET-USERS')

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards ,Request} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards ,Request, Req} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -18,14 +18,14 @@ export class ProjectsController {
 
   @Auth('GET-PROJECTS')
   @Get('projects')
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Req() req) {
+    return this.projectsService.findAll(req);
   }
 
   @Auth('GET-PROJECTS')
   @Get('projects/:id')
-  findOne(@Param('id') id: string) {
-    return this.projectsService.findOne(id);
+  findOne(@Param('id') id: string,@Req() req) {
+    return this.projectsService.findOne(id,req);
   }
 
   @Auth('EDIT-PROJECTS')
@@ -49,13 +49,13 @@ export class ProjectsController {
 
   @Auth('GET-PROJECTS')
   @Get('catagories/:catagories_id/project')
-  findcatagories(@Param('catagories_id') catagories_id: string) {
-    return this.projectsService.findcatagories(catagories_id);
+  findcatagories(@Param('catagories_id') catagories_id: string,@Req() req) {
+    return this.projectsService.findcatagories(catagories_id,req);
   }
 
   @Auth('GET-PROJECTS')
   @Get('client/:client_id/project')
-  findclient(@Param('client_id') client_id: string) {
-    return this.projectsService.findclient(client_id);
+  findclient(@Param('client_id') client_id: string, @Req() req) {
+    return this.projectsService.findclient(client_id,req);
   }
 }

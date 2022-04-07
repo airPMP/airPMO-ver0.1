@@ -8,7 +8,5 @@ export class CreateUserRoleDto {
     @ApiProperty() 
     role_id: string;
 
-    @ApiProperty() 
-    organization_id: string;
 
 }

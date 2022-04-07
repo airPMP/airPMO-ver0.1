@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { SubdividedzoneService } from './subdividedzone.service';
 import { CreateSubdividedzoneDto } from './dto/create-subdividedzone.dto';
 import { UpdateSubdividedzoneDto } from './dto/update-subdividedzone.dto';
@@ -17,14 +17,14 @@ export class SubdividedzoneController {
 
   @Auth('GET-SUB_DIVIDED_ZONES')
   @Get("sub_divided_zone")
-  findAll() {
-    return this.subdividedzoneService.findAll();
+  findAll(@Req() req) {
+    return this.subdividedzoneService.findAll(req);
   }
 
   @Auth('GET-SUB_DIVIDED_ZONES')
   @Get('/sub_divided_zone/:id')
-  findOne(@Param('id') id: string) {
-    return this.subdividedzoneService.findOne(id);
+  findOne(@Param('id') id: string,@Req() req) {
+    return this.subdividedzoneService.findOne(id,req);
   }
 
   @Auth('EDIT-SUB_DIVIDED_ZONES')
@@ -41,8 +41,8 @@ export class SubdividedzoneController {
 
   @Auth('GET-SUB_DIVIDED_ZONES')
   @Get('/subzone/:subzone_id/sub_divided_zone')
-  findsubdivided(@Param('subzone_id') subzone_id: string) {
-    return this.subdividedzoneService.findsubdivided(subzone_id);
+  findsubdivided(@Param('subzone_id') subzone_id: string,@Req() req) {
+    return this.subdividedzoneService.findsubdivided(subzone_id,req);
   }
  
   @Auth('GET-SUB_DIVIDED_ZONES')

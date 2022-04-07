@@ -32,9 +32,10 @@ export class CreateProjectDto {
 
     @ApiProperty()
     client_id:string;
-
+    
+    @IsNotEmpty()
     @ApiProperty()
-    orgainization_id: string;
+    organization_id: string;
 
     @ApiProperty()
     discription: string;

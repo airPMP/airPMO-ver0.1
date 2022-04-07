@@ -1,15 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type UserRoleDocument = UserRole & Document;
+export type hrmsDocuments = hrms & Document;
 
 @Schema()
-export class UserRole {
+export class hrms {
   @Prop()
-  user_id: string;
-
-  @Prop()
-  role_id: string;
+  hrms: [{}];
 
   @Prop({ default: Date })
   createdAt: string;
@@ -17,4 +14,5 @@ export class UserRole {
   @Prop({ default: Date })
   updatedAt: string;
 }
-export const UserRoleSchema = SchemaFactory.createForClass(UserRole);
+
+export const hrmsSchema = SchemaFactory.createForClass(hrms);

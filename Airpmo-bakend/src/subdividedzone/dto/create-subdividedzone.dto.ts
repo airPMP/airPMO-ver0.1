@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 
 export class CreateSubdividedzoneDto {
 
@@ -11,8 +12,8 @@ export class CreateSubdividedzoneDto {
     @ApiProperty()
     subzone_id:string;
 
-
+    @IsNotEmpty()
     @ApiProperty()
-    organization_id:string;
+    organization_id: string;
 
 }

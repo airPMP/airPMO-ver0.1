@@ -12,6 +12,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { excelDocument, excels } from 'src/schemas/excel.schema';
 import { CreateExcelDto } from './dto/create-excel.dto';
+import { Base64, encode } from 'js-base64';
 var lodash = require('lodash');
 
 @Injectable()
@@ -21,6 +22,7 @@ export class ExcelService {
   ) {}
 
   async productiveFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -50,6 +52,7 @@ export class ExcelService {
         var pr = await this.excelModel.create({
           productivitysheet: jsonData,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -70,9 +73,25 @@ export class ExcelService {
 
   //FIND ALL DATA BY PROJECT ID API*
 
-  async findOne(projectid: string) {
+  async findOne(projectid: string, @Req() req) {
     try {
+     
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      var organizationkey = obj.organization_id;
+      var airmpo_designation = obj.roles[0];
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       var user = await this.excelModel.findOne({ project_id: projectid });
+      if (user.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+        return user;
+      } else {
+        throw new UnprocessableEntityException(
+          'its not exist in this orgainization',
+        );
+      }
       if (!user) {
         throw new NotFoundException('sheet not found');
       } else {
@@ -86,6 +105,7 @@ export class ExcelService {
   //QUANTITY...................SHEET
 
   async quantityFile(files, req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -297,6 +317,7 @@ export class ExcelService {
         var create_quantity = await this.excelModel.create({
           quantity_sheets: new_ar2,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -318,6 +339,7 @@ export class ExcelService {
   //FIRE QUANTITY API*
 
   async firequantityFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -371,11 +393,13 @@ export class ExcelService {
     var find_fire_data = await this.excelModel.findOne({
       project_id: projectid,
     });
+
     if (!find_fire_data) {
       if (files[0].fieldname === 'fire_quantity_sheet' && projectid) {
         var create_fire_quantity = await this.excelModel.create({
           fire_quantity_sheets: fire_all_data,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -397,6 +421,7 @@ export class ExcelService {
   //LIGHT QUANTITY API*
 
   async lightquantityFile(files: any, @Req() req) {
+    const organization_id = req.body.organization_id;
     const projectid = req.body.projectid;
     try {
       var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
@@ -516,6 +541,7 @@ export class ExcelService {
         var create_light_quantity = await this.excelModel.create({
           light_fitting_quantity_sheets: light_fitting_all_data,
           project_id: projectid,
+          organization_id: organization_id,
         });
         return 'upload sucessfully';
       } else {
@@ -534,10 +560,13 @@ export class ExcelService {
     }
   }
 
-  async updateproductiveFile( @Req() req , @Body() CreateExcelDto: CreateExcelDto,) {
+  async updateproductiveFile(
+    @Req() req,
+    @Body() CreateExcelDto: CreateExcelDto,
+  ) {
     try {
       var projectid = req.body.project_id;
-      var data = await this.excelModel.findOne({ project_id: projectid, });
+      var data = await this.excelModel.findOne({ project_id: projectid });
       if (data) {
         if (projectid) {
           var pro = await this.excelModel.updateOne(

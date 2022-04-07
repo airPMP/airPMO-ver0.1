@@ -15,7 +15,7 @@ export class zone {
     project_id:string;
     
     @Prop()
-    organization_id:string;
+    organization_id: string;
 
     @Prop({default:Date})
     createdAt: string;

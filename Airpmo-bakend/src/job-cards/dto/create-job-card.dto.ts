@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateJobCardDto {
   @ApiProperty()
@@ -42,6 +43,7 @@ export class CreateJobCardDto {
   @ApiProperty()
   min_hours: string;
 
+  @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 }

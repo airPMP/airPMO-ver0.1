@@ -31,9 +31,9 @@ export class CreateClientprofileDto {
     @ApiProperty()
     contact_no:string;
 
-  
+    @IsNotEmpty()
     @ApiProperty()
-    orgainization_id: string;
+    organization_id: string;
 
 
     @ApiProperty()

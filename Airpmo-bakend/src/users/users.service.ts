@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  Req,
   UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { loginusersDto } from './dto/login-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
+import { Base64, encode } from 'js-base64';
 
 @Injectable()
 export class UsersService {
@@ -31,8 +33,7 @@ export class UsersService {
     }
     const user = await this.usersModel.findOne({ Email: createUserDto.Email });
     if (!user) {
-      let userdata = await this.usersModel.create(createUserDto);
-      return await this.findOne(userdata.id);
+      return await this.usersModel.create(createUserDto);
     } else {
       throw new UnauthorizedException('User already rigister');
     }
@@ -46,24 +47,32 @@ export class UsersService {
     return user;
   }
 
-  async findAll() {
+  async findAll(@Req() req) {
     try {
-      var new_obj = {};
       var new_arr = [];
+      const payload = req.headers.authorization.split('.')[1];
+      const encodetoken = Base64.decode(payload);
+      var obj = JSON.parse(encodetoken);
+      const airmpo_designation = obj.roles[0];
+      var organizationkey = obj.organization_id;
+      if (organizationkey === undefined || organizationkey === null) {
+        throw new UnprocessableEntityException('organization not found');
+      }
       const users = await this.usersModel.find().lean();
-
       for (let i = 0; i < users.length; i++) {
-        const user_designation = await this.userRolesService.userroles(
-          users[i]._id.toString(),
-        );
+        if (users[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+          const user_designation = await this.userRolesService.userroles(
+            users[i]._id.toString(),
+          );
 
-        if (user_designation.length != 0 && user_designation[0] != null) {
-          const desig = user_designation[0].name;
-          const ab = { designation: desig };
-          const obj = Object.assign({}, users[i], ab);
-          new_arr.push(obj);
-        } else {
-          new_arr.push(users[i]);
+          if (user_designation.length != 0 && user_designation[0] != null) {
+            const desig = user_designation[0].name;
+            const ab = { designation: desig };
+            const obj = Object.assign({}, users[i], ab);
+            new_arr.push(obj);
+          } else {
+            new_arr.push(users[i]);
+          }
         }
       }
       return new_arr;
@@ -98,7 +107,6 @@ export class UsersService {
 
   async findOne(id: string) {
     try {
-      const findroles = await this.userRolesService.userroles(id);
       const user = await this.usersModel.findOne({ _id: id });
       return user;
     } catch {
