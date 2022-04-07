@@ -21,9 +21,6 @@ export class MyJobCardEmployeeService {
     private myjobcardemployeemodal: Model<myjobcardemployeeDocument>,
   ) {}
 
-
-
-
   async create(createMyJobCardEmployeeDto: CreateMyJobCardEmployeeDto) {
     try {
       const register_employee = await this.myjobcardemployeemodal.create(
@@ -34,8 +31,6 @@ export class MyJobCardEmployeeService {
       throw new NotFoundException('employee not found');
     }
   }
-
-  
 
   async findAll(@Req() req) {
     try {
@@ -50,7 +45,10 @@ export class MyJobCardEmployeeService {
       }
       const all_employee = await this.myjobcardemployeemodal.find();
       for (let index = 0; index < all_employee.length; index++) {
-        if (all_employee[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+        if (
+          all_employee[index].organization_id === organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
           new_arr.push(all_employee[index]);
         }
       }
@@ -59,7 +57,6 @@ export class MyJobCardEmployeeService {
       throw new NotFoundException('employee not found');
     }
   }
-
 
   async findOne(id: string, @Req() req) {
     try {
@@ -74,7 +71,10 @@ export class MyJobCardEmployeeService {
       const find_one_employee = await this.myjobcardemployeemodal.findOne({
         _id: id,
       });
-      if (find_one_employee.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+      if (
+        find_one_employee.organization_id === organizationkey ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
         return find_one_employee;
       } else {
         throw new UnprocessableEntityException(
@@ -85,7 +85,6 @@ export class MyJobCardEmployeeService {
       throw new NotFoundException('employee not found');
     }
   }
-
 
   async update(
     id: string,
@@ -102,11 +101,9 @@ export class MyJobCardEmployeeService {
     }
   }
 
-
   async remove(id: string) {
     return await this.myjobcardemployeemodal.remove({ _id: id });
   }
-
 
   async findemployeebyjcid(id: string, @Req() req) {
     try {
@@ -122,9 +119,13 @@ export class MyJobCardEmployeeService {
       const employe = await this.myjobcardemployeemodal.find();
 
       for (let i = 0; i < employe.length; i++) {
-        if (
-          employe[i].jc_id === id &&employe[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin" ) {
-          new_arr.push(employe[i]);
+        if (employe[i].jc_id === id) {
+          if (
+            employe[i].organization_id === organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            new_arr.push(employe[i]);
+          }
         }
       }
       if (new_arr.length != 0) {

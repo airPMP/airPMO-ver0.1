@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, Req, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Req,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -41,7 +46,11 @@ export class MyJobCardEquipmentService {
       const all_my_job_card_eqipments =
         await this.myjobcardequipmentmodal.find();
       for (let index = 0; index < all_my_job_card_eqipments.length; index++) {
-        if (all_my_job_card_eqipments[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+        if (
+          all_my_job_card_eqipments[index].organization_id ===
+            organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
           new_arr.push(all_my_job_card_eqipments[index]);
         }
       }
@@ -50,8 +59,6 @@ export class MyJobCardEquipmentService {
       throw new NotFoundException('equipment not found');
     }
   }
-
-
 
   async findOne(id: string, @Req() req) {
     try {
@@ -66,20 +73,20 @@ export class MyJobCardEquipmentService {
       const find_one_equipment = await this.myjobcardequipmentmodal.findOne({
         _id: id,
       });
-      if (find_one_equipment.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+      if (
+        find_one_equipment.organization_id === organizationkey ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
         return find_one_equipment;
       } else {
         throw new UnprocessableEntityException(
           'its not exist in this orgainization',
         );
       }
-     
     } catch {
       throw new NotFoundException('equipment not found');
     }
   }
-
-
 
   async update(
     id: string,
@@ -96,17 +103,11 @@ export class MyJobCardEquipmentService {
     }
   }
 
-
-
-
   async remove(id: string) {
     return await this.myjobcardequipmentmodal.remove({ _id: id });
   }
 
-
-
-
-  async findemployeebyjcid(id: string,@Req() req) {
+  async findemployeebyjcid(id: string, @Req() req) {
     try {
       var new_arr = [];
       const payload = req.headers.authorization.split('.')[1];
@@ -119,8 +120,13 @@ export class MyJobCardEquipmentService {
       }
       const equipment = await this.myjobcardequipmentmodal.find();
       for (let i = 0; i < equipment.length; i++) {
-        if (equipment[i].jc_id === id&& equipment[i].organization_id===organizationkey||airmpo_designation==="Airpmo Super Admin") {
-          new_arr.push(equipment[i]);
+        if (equipment[i].jc_id === id) {
+          if (
+            equipment[i].organization_id === organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            new_arr.push(equipment[i]);
+          }
         }
       }
       if (new_arr.length != 0) {
