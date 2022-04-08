@@ -159,7 +159,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             .then((response) => {
                 // console.log(response);
                 if (response.status === 201) {
-                    addToast(" Employee is add Sucessfully", {
+                    addToast(" Equipments is add Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
@@ -211,7 +211,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             .then((response) => {
                 // console.log(response);
                 if (response.status === 200) {
-                    addToast(" Employee is edit Sucessfully", {
+                    addToast(" Equipments is edit Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })

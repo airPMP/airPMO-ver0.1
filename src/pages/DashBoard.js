@@ -85,7 +85,7 @@ const DashBoard = () => {
                   <b>LogOut</b></button>
               </div>
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
-                <SearchBox
+                {/* <SearchBox
                   placeHolderName={"Choose Client"}
                   handleChangeForClient={handleChangeForClient}
                   value={client}
@@ -94,7 +94,7 @@ const DashBoard = () => {
                   placeHolderName={"Choose Project"}
                   handleChangeForProject={handleChangeForProject}
                   value={project}
-                />
+                /> */}
               </div>
               <div className="grid grid-cols-4 gap-4 mt-[62px]  px-[20px] ">
                 <Card
