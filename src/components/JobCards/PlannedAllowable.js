@@ -95,7 +95,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                 return items[2] = valuess
                             }
 
-                        }
+                        } 
                         if (` ${item1.designation.toUpperCase()} ` !== items[0]) {
                             // console.log(items[0])
                             console.log(item1.designation.toUpperCase())  
@@ -104,7 +104,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             //     item1.designation = item1.hour
                             // ] 
 
-                            // data.push(item1)
+                            // data.push(item1) 
                         }
  
                         
@@ -112,7 +112,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     // setdummydata(data)
 
                     // console.log(items)
-                    // console.log(data)
+                    // console.log(data)  
 
                 })
 
@@ -128,7 +128,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             // } 
 
             // )
-            // console.log(deta)
+            // console.log(data)
 
 
         }
