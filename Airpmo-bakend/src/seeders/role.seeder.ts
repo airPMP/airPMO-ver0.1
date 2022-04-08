@@ -21,6 +21,8 @@ export class RolesSeeder implements Seeder {
       { name: 'riyaz', permission: 'ALL', organization_id: 3 },
       { name: 'neeraj', permission: 'ALL', organization_id: 4 },
       { name: 'aditya', permission: 'ALL', organization_id: 5 },
+      { name: 'albannaadmin', permission: 'ALL', organization_id: 6 },
+      { name: 'riyazadmin', permission: 'ALL', organization_id: 7 },
     ]);
     let user = await this.usersModel.find();
 
