@@ -26,7 +26,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [spidata, setSpiData] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
-
+    const [ummydata, setdummydata] = useState(null)
 
 
 
@@ -72,64 +72,47 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             // })
 
 
-            let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => {
-
-
-
-                // console.log(Object.entries(item))
-
-                // let datqqa = Object.entries(item).filter((itemss, id) => {
-                //     // console.log(itemss[0])
-                //     return !employeechangeData.find((items) => {
-                //         console.log()
-                //         return itemss[0] === items.designation.toUpperCase()
-                //     })
-                // })
+            let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => { 
+                
 
                 let data = []
                 data = Object.entries(item)
 
-                Object.entries(item).map((items, ids) => {
+                data.map((items, ids) => {
                     employeechangeData?.map((item1, id) => {
 
                         if (items[0] === ` ${item1.designation.toUpperCase()} `) {
-                            // console.log(item1)
 
-                            // items.push(item1.hour)
-                            console.log(items[2])
-                            let num = Number(items[2])
-                            console.log(item1.hour)
-                            let cal = parseInt(Number(items[2]) + Number(item1.hour))
+                            if (!items[2]) {
 
-                            console.log(cal) 
-                            
-
-                            items.push(item1.hour)
-                            items.push(cal) 
+                                items.push(parseInt(Number(item1.hour)))
+                            }
 
 
+                            else if (items[2]) {
 
-
-
+                                let valuess = parseInt(Number(items[2]) + Number(item1.hour))
+                                return items[2] = valuess
+                            }
 
                         }
-                        else {
+                        if (` ${item1.designation.toUpperCase()} ` !== items[0]) {
+                            // console.log(items[0])
+                            console.log(item1.designation.toUpperCase())  
+                            //   console.log(item1)
+                            // let newarry = [  
+                            //     item1.designation = item1.hour
+                            // ] 
 
-                            // console.log(item1)
-
-                            // data.push([
-                            //     item1.designation,
-                            //     ,
-                            //     item1.hour]
-                            // )
+                            // data.push(item1)
                         }
+ 
+                        
                     })
+                    // setdummydata(data)
+
+                    // console.log(items)
                     // console.log(data)
-
-                    console.log(items)
-                    
-
-
 
                 })
 
@@ -152,6 +135,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     }, [assigncarddata])
 
+
+    console.log(ummydata)
 
 
 

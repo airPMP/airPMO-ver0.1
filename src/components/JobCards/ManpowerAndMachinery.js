@@ -26,7 +26,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
     // console.log(projectobjectdata?.min_hours)
 
     // setTotalTimeGangProductivity(productivitysheetobject["totaltime"]) 
-    setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "]) 
+    setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
 
 
     let data1 = Object.entries(productivitysheetobject).slice(4, -1).map(([key, value], i, items) => {
@@ -68,7 +68,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
       {/* scroll_bar_Manpower */}
       <div className="flex flex-row mt-[30px] ml-[37px] mr-[20px]   scroll_bar_Manpower">
         <table className=" w-[100%]  pt-[24px] ml-[40px] ">
-            <thead className="font-secondaryFont text-[#000000] font-normal 
+          <thead className="font-secondaryFont text-[#000000] font-normal 
           not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px]   ">
             <tr className="bg-[#ECF1F0]  h-[40px]   ">
               <th className="  ">SL No.</th>
@@ -80,7 +80,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
             <tr className="p-[15px] ">
               <td className="p-[10px]" ></td>
             </tr>
-          </thead>  
+          </thead>
           {productivitysheetarray?.map((item, index) => (
             <>
               {
@@ -90,8 +90,8 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                   return <> {
                     value !== 0 ? <tbody
                       className=" max-w-[100%] font-secondaryFont   text-[#000000] 
-                      font-normal not-italic text-[12px]   " 
-                      
+                      font-normal not-italic text-[12px]   "
+
                     >
                       <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
                         <th className=" ">{i + 1}</th>
@@ -99,9 +99,9 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                         <th className="">{item[" UNIT "]}</th>
                         {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th> */}
                         <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
-                        <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
-                        ).toFixed(2)}</th>
-                         
+                        <th className="">{((totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
+                        ) ).toFixed(2)}</th>
+
                       </tr>
                       <tr className="m-0 p-0 h-[20px]"  >
                         <th  ></th>
