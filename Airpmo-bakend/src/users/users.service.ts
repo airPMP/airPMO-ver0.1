@@ -40,20 +40,14 @@ export class UsersService {
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-    if (loginusersDto.username) {
+  
       const user = await this.usersModel
-        .findOne({ username: loginusersDto.username })
-        .select('Password')
-        .select('Email');
-      console.log(user);
-      return user;
-    } else {
-      const user = await this.usersModel
-        .findOne({ Email: loginusersDto.Email })
+        .findOne({ $or: [ { username:loginusersDto.Email }, { Email:loginusersDto.Email }] }
+          )
         .select('Password')
         .select('Email');
       return user;
-    }
+ 
   }
 
   async findAll(@Req() req) {

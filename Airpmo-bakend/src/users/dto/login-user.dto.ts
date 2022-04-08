@@ -2,9 +2,8 @@ import { Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 export class loginusersDto {
-  @ApiProperty()
-  username: string;
-
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty()
   Email: string;
 
