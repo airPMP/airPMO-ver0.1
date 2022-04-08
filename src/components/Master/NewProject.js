@@ -31,6 +31,15 @@ const validate = (values) => {
   //   errors.uploadLogoFile = "uploadLogoFile Required";
   // }
 
+  if (!values.min_hours) {
+    errors.min_hours = "Min Hours Required";
+  }
+
+  if (!values.max_hours) {
+    errors.max_hours = "Max Hours Required";
+  }
+
+
   if (!values.project_name) {
     errors.project_name = "Project Name Required";
   }
@@ -151,12 +160,12 @@ const NewProject = () => {
       categories_id: ""
     },
     validate,
-    onSubmit: async (values, { resetForm }) => { 
+    onSubmit: async (values, { resetForm }) => {
 
-      if (organization_id_data !== "undefined" && organization_id_data !== null) { 
+      if (organization_id_data !== "undefined" && organization_id_data !== null) {
         values.organization_id = organization_id_data
       }
- 
+
       values.category = categorydata
       values.categories_id = categoryid
       values.client_name = clientdata
@@ -276,11 +285,7 @@ const NewProject = () => {
       }
     });
 
-
-
-
-
-
+  
     if (result[0] === "EDIT-ZONES" ||
       result1[0] === "CREATE-ZONES" ||
       result2[0] === "GET-ZONES") {

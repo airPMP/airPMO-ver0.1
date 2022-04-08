@@ -109,11 +109,7 @@ const AllJobCards = () => {
       }
     });
 
-
-
-
-
-
+ 
     if (result[0] === "EDIT-JOB-CARD" ||
       result1[0] === "CREATE-JOB-CARD" ||
       result2[0] === "GET-JOB-CARD") {
