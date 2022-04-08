@@ -4,6 +4,9 @@ export type ussersDocument = users & Document;
 
 @Schema()
 export class users {
+  @Prop({ required: true, unique: true })
+  username: string;
+
   @Prop()
   FirstName: string;
 
@@ -13,7 +16,7 @@ export class users {
   @Prop()
   PhoneNumber: string;
 
-  @Prop({required:true,unique: true })
+  @Prop({ required: true, unique: true })
   Email: string;
 
   @Prop()
@@ -25,10 +28,9 @@ export class users {
   @Prop()
   Comments: string;
 
-  @Prop({select:false})
-  Password:string
-  
-  
+  @Prop({ select: false })
+  Password: string;
+
   @Prop()
   organization_id: string;
 
@@ -61,6 +63,5 @@ export class users {
 
   @Prop({ default: Date })
   updatedAt: string;
-
 }
 export const usersSchema = SchemaFactory.createForClass(users);
