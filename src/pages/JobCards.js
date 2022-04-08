@@ -46,12 +46,12 @@ const JobCards = () => {
   useLayoutEffect(() => {
 
     const userData = getAllJobCardApi().then((data) => {
-      setAllJobCardApi(data?.data.length)  
-       
+      setAllJobCardApi(data?.data.length)
+
     })
 
-    const userData1 = getMyJobCardApi().then((data) => {   
-      setMyJobCardApi(data?.data?.length) 
+    const userData1 = getMyJobCardApi().then((data) => {
+      setMyJobCardApi(data?.data?.length)
     })
 
 
@@ -130,7 +130,7 @@ const JobCards = () => {
     }
   }, [openSearchData1])
 
-  
+
 
   const handleChangeForClientData = (e) => {
     setChooseprojectOpnCls(true)
@@ -300,14 +300,10 @@ const JobCards = () => {
               }
             />
           </Link>
-          {/* <Link to={`/daily_task/my-daily-task`}>
+          <Link to={`/daily_task/my-daily-task`}>
             <Card
               title={"My  Daily Task"}
-              totalNumber={myjobcardapi} */}
-              <Link to={`/daily_task`}>
-            <Card
-              title={"My  Daily Task"}
-              totalNumber={"0"}
+              totalNumber={myjobcardapi}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
                   <svg
@@ -334,4 +330,3 @@ const JobCards = () => {
 
 export default JobCards;
 
-   
