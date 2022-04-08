@@ -40,11 +40,14 @@ export class UsersService {
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-    const user = await this.usersModel
-      .findOne({ Email: loginusersDto.Email })
-      .select('Password')
-      .select('Email');
-    return user;
+  
+      const user = await this.usersModel
+        .findOne({ $or: [ { username:loginusersDto.Email }, { Email:loginusersDto.Email }] }
+          )
+        .select('Password')
+        .select('Email');
+      return user;
+ 
   }
 
   async findAll(@Req() req) {
@@ -60,7 +63,10 @@ export class UsersService {
       }
       const users = await this.usersModel.find().lean();
       for (let i = 0; i < users.length; i++) {
-        if (users[i].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
+        if (
+          users[i].organization_id === organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
           const user_designation = await this.userRolesService.userroles(
             users[i]._id.toString(),
           );

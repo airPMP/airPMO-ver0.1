@@ -1,75 +1,82 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty,  IsOptional, IsEmail, IsPhoneNumber  } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsEmail,
+  IsPhoneNumber,
+} from 'class-validator';
 
 //This is DTO for User Mode
 export class CreateUserDto {
+  @ApiProperty()
+  username: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    FirstName:string;
-   
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    LastName:string;
-    
-    @IsString()
-    @IsNotEmpty()
-    @IsEmail()
-    @ApiProperty()
-    Email:string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  FirstName: string;
 
-    @IsNotEmpty()
-    @ApiProperty()
-    @IsPhoneNumber('IN')
-    PhoneNumber:string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  LastName: string;
 
-    @ApiProperty()
-    CompanyName:string;
+  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty()
+  Email: string;
 
-    @IsOptional()
-    @ApiProperty()
-    Comments:string;
- 
-    @IsString()
-    @ApiProperty()
-    Password:string;
-    
-    @IsNotEmpty()
-    @ApiProperty()
-    organization_id: string;
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsPhoneNumber('IN')
+  PhoneNumber: string;
 
-    @IsOptional()
-    @ApiProperty()
-    district:string;
-    
-    @IsOptional()
-    @ApiProperty()
-    address:string;
+  @ApiProperty()
+  CompanyName: string;
 
-    @IsString()
-    @IsOptional()
-    @ApiProperty()
-    blood_group:string;
+  @IsOptional()
+  @ApiProperty()
+  Comments: string;
 
-    @IsOptional()
-    @ApiProperty()
-    place:string;
+  @IsString()
+  @ApiProperty()
+  Password: string;
 
-    @IsOptional()
-    @ApiProperty()
-    @IsPhoneNumber('IN')
-    emergency_contact:string;
+  @IsNotEmpty()
+  @ApiProperty()
+  organization_id: string;
 
-    @IsOptional()
-    @ApiProperty()
-    image:string;
+  @IsOptional()
+  @ApiProperty()
+  district: string;
 
-    @ApiProperty()
-    spread_sheet_user_id: string;
+  @IsOptional()
+  @ApiProperty()
+  address: string;
 
-    @ApiProperty()
-    is_employee: boolean;
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  blood_group: string;
 
+  @IsOptional()
+  @ApiProperty()
+  place: string;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsPhoneNumber('IN')
+  emergency_contact: string;
+
+  @IsOptional()
+  @ApiProperty()
+  image: string;
+
+  @ApiProperty()
+  spread_sheet_user_id: string;
+
+  @ApiProperty()
+  is_employee: boolean;
 }
