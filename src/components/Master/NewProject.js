@@ -23,6 +23,14 @@ const validate = (values) => {
     errors.sub_category = "Sub Category Required";
   }
 
+  if (!values.max_hours) {
+    errors.max_hours = "Max Hours Required";
+  }
+
+  if (!values.min_hours) {
+    errors.min_hours = "Min Hours Required";
+  }
+
   // if (!values.client_name) {
   //   errors.client_name = "Client Name Required";
   // }
@@ -275,10 +283,6 @@ const NewProject = () => {
         return data?.toUpperCase().search(value2) !== -1;
       }
     });
-
-
-
-
 
 
     if (result[0] === "EDIT-ZONES" ||
