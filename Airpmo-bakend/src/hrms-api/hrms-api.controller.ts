@@ -9,16 +9,18 @@ import {
   Res,
   Response,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/decorator/auth.decorator';
 import { HrmsApiService } from './hrms-api.service';
-import { CreateHrmsApiDto } from './dto/create-hrms-api.dto';
-import { UpdateHrmsApiDto } from './dto/update-hrms-api.dto';
 
+@ApiTags('hrms api')
 @Controller('api')
 export class HrmsApiController {
   constructor(private readonly hrmsApiService: HrmsApiService) {}
 
+  @Auth()
   @Get('/hrms-api/:id')
-  findAll(@Param('id') id: string,@Response()res) {
-    return this.hrmsApiService.findAll(id,res);
+  findAll(@Param('id') id: string, @Response() res) {
+    return this.hrmsApiService.findAll(id, res);
   }
 }
