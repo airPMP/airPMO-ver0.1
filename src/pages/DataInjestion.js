@@ -1,32 +1,40 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link ,useNavigate} from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
-import ProductSearch from "../components/Injestion/ProductSearch"; 
+import ProductSearch from "../components/Injestion/ProductSearch";
 
 const DataInjestion = () => {
   const [title, setTitle] = useState(null);
   const [page, setPage] = useState(null);
-  
 
+  let navigate = useNavigate();
 
   let urlTitle = useLocation();
 
   useEffect(() => {
     if (urlTitle.pathname === "/DataInjestion") {
       setTitle("Data Injestion");
+      // window.location.reload(false)
     }
+    // window.location.reload(false)
+
   }, [urlTitle.pathname]);
 
+   
   const sendPage = (pagename) => {
     setPage(pagename);
   };
 
-   
+  const ProductSheetPath =()=>{ 
+    navigate('/DataInjestion/ProductivitySheet')
+    window.location.reload(false)
+  }
 
+  
 
 
 
@@ -63,9 +71,12 @@ const DataInjestion = () => {
               <div className="w-10/12">
                 <div className="grid grid-cols-2 gap-6 mt-[62px]  px-[20px]   ">
                   <Link to={`/DataInjestion/ProductivitySheet`}>
+
+                    <span onClick={(e)=>  ProductSheetPath()}>
                     <InjestionCardOnline
                       title={"Productivity Sheet"}
-                      totalNumber={400}
+                      // totalNumber={400}
+                      
                       pathSet={"UserRole1"}
                       iconn={
                         <svg
@@ -83,11 +94,12 @@ const DataInjestion = () => {
                         </svg>
                       }
                     />
+                    </span>
                   </Link>
                   <Link to={`/DataInjestion/QuantitySheet`}>
                     <InjestionCardOffine
                       title={"Quantity Sheet"}
-                      totalNumber={800}
+                      // totalNumber={800}
                       iconn={
                         <svg
                           width="

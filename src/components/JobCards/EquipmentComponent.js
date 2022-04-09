@@ -123,7 +123,12 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         setEmployeeId(spitData[0])
         setEmployeeDesignation(spitData[3])
 
-        setOpen(true) ///open popup
+
+        if (spitData[1]) {
+            console.log(spitData[1])
+            setOpen(true)  ///open popup
+        }
+        
     }
 
     const AddToList = () => {

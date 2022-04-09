@@ -235,7 +235,7 @@ const QuantitySheet = () => {
         setAllSubZoneValue(item)
     }
 
-
+console.log(filteredsheetdata)
 
     return (
         <>
@@ -455,6 +455,7 @@ const QuantitySheet = () => {
 
 
                                 {sheetupdateddata && filteredsheetdata?.map((item, i) => (
+                                     
 
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="max-h-[52.84px] text-center  ">

@@ -54,6 +54,8 @@ import ViewZones from "./components/Master/ViewZones";
 // import NewJobCardMulti from "./components/JobCards/NewJobCardMulti"; 
 import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
 import ZoneById from "./components/Master/zones/[id]";
+import AllJobCardsId from "./components/JobCards/JobCardByProjectId/[id]";
+import JobCardAssignedId from "./components/JobCards/AssignById/[id]";
 
 function App() {
   return (
@@ -86,7 +88,7 @@ function App() {
         <Route path="/manpower" element={<ManpowerAndMachinery />} />
         <Route path="/daily_task/my-daily-task" element={<MyJobCards />} /> 
         {/* MyJobCards this is arab electricals after status conform */}
-        <Route path="/daily_task/new_daily_task" element={<NewJobCard />} />
+        <Route path="/daily_task/:id/new_daily_task" element={<NewJobCard />} />
          {/* NewJobCard this is Create new Job */}
         <Route path="/daily_task/All-daily-task" element={<AllJobCards />} />
          {/* AllJobCards this is arab electricals before status conform */}
@@ -98,7 +100,10 @@ function App() {
 
         <Route path="/daily_task/CardAssignId/:id" element={<NewJobCardMultiId />} />
          {/* NewJobCardMulti this is Create new Job */}
+         <Route path="/daily_task/JobCardByProjectId/:id" element={<AllJobCardsId />} />
 
+
+         <Route path="/daily_task/AssignById/:id" element={<JobCardAssignedId />} />
 
         {
           // Master

@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import { reactLocalStorage } from "reactjs-localstorage";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react/cjs/react.development";
 
 const SideBar = ({ sendDataToParent }) => {
   const [style, setStyle] = useState(1);
-  
+  const [Rolesdata, setRolesdata] = useState(null);
+  const [title, setTitle] = useState(null);
   let navigate = useNavigate();
   let param = useLocation();
+  let urlTitle = useLocation();
+
+  useEffect(() => {
+
+    if (urlTitle.pathname === "/dashboard") {
+      setTitle("Dashboard");
+    }
+    
+  
+  }, [urlTitle.pathname])
+
   const gotoDashboard = () => {
     navigate("/dashboard");
   };
@@ -21,6 +35,13 @@ const SideBar = ({ sendDataToParent }) => {
   const gotoJobTimeLine = () => {
     navigate("/timeline");
   };
+
+  useEffect(()=>{
+    const rolesData = reactLocalStorage.get("roles", "roles");
+    setRolesdata(rolesData)
+  })
+
+  console.log(Rolesdata)
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
@@ -34,7 +55,7 @@ const SideBar = ({ sendDataToParent }) => {
         <hr className=" mt-[30.33px] border  border-[#000000] " />
       </div>
 
-      <div
+     {  Rolesdata==="Airpmo Super Admin" || urlTitle.pathname === "/dashboard" ?  <div
         className={`flex flex-row justify-start mt-[55px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${
           param.pathname === "/dashboard" ||
           param.pathname === "/dashboard/user"
@@ -45,7 +66,7 @@ const SideBar = ({ sendDataToParent }) => {
           gotoDashboard();
         }}
       >
-        <div className="">
+     <div className="">
           <svg
             width="28"
             height="28"
@@ -64,6 +85,9 @@ const SideBar = ({ sendDataToParent }) => {
             />
           </svg>
         </div>
+        
+      
+      
         <div
           className={`${
             param.pathname === "/dashboard" ||
@@ -74,7 +98,7 @@ const SideBar = ({ sendDataToParent }) => {
         >
           Dashboard
         </div>
-      </div>
+      </div>:null}
       <div
         className={` flex flex-row justify-start mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${param.pathname.includes("/daily_task") ? "bg-[#136C57]" : ""
           }`}

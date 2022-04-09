@@ -144,9 +144,13 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         
         setTimeSheetName( spitData[0])
         setEmployeeId(spitData[1])
-        setEmployeeDesignation(spitData[2])
+        setEmployeeDesignation(spitData[2]) 
+        
+        if (spitData[1]) {
+            console.log(spitData[1])
+            setOpen(true)  ///open popup
+        }
 
-        setOpen(true) ///open popup
     }
 
     const AddToList = () => {
@@ -299,7 +303,9 @@ console.log(filterempoyeealldata)
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
-                                    onClick={(e) => TimeSelectFun(e)}>
+                                    onClick={(e) => TimeSelectFun(e)}
+
+                                >
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
 // {console.log(filterempoyeealldata)}

@@ -41,6 +41,7 @@ const SuperAdmin = () => {
 
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
+    const [assignproject, setAssignProject] = useState(false)
     const [designationdata, setDesignationData] = useState(null)
 
 
@@ -66,19 +67,22 @@ const SuperAdmin = () => {
         }
 
         const token = reactLocalStorage.get("access_token", false);
+        const user_id = reactLocalStorage.get("user_id", false);
 
         if (name && location && address) {
             console.log("done")
             axios.post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, {
                 hrms_api_url: hrmsdata,
                 location: location,
-                discription: "string",
+                discription: spread_sheet_id_1,
                 logo_url: "string",
                 spread_sheet_id: spread_sheet,
-                user_id: "string",
+                user_id: user_id,
                 address: address,
                 contact_details: "string",
-                name: name
+                name: name,
+                hrms_api_or_sheet:assignproject
+
 
             }, {
                 headers: {
@@ -180,9 +184,14 @@ const SuperAdmin = () => {
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
+
+                    const token = reactLocalStorage.get("access_token", false);
                     try {
                         // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                        const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`,)
+                        const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            }})
                         console.log(data1)
                         setSheetData(data1?.data)
                         // setSheetData(data1?.data?.values)
@@ -684,7 +693,7 @@ const SuperAdmin = () => {
 
                                                 <th className="w-[35%] py-[13px]"> User ID</th>
                                                 <th className="w-[35%] py-[13px]">User Name</th>
-                                                <th className="w-[30%] py-[13px]">Process Date</th>
+                                                <th className="w-[30%] py-[13px]">Designation</th>
                                                 {/* <th className="w-[30%] py-[13px]">{item[3]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[4]}</th>
                                                 <th className="w-[30%] py-[13px] px-5">{item[11]}</th> */}
@@ -707,7 +716,7 @@ const SuperAdmin = () => {
 
                                                     <td className=" pt-[15px] w-[35%]  pb-[14.83px]">{item.UserID} </td>
                                                     <td className="pt-[15px] w-[35%]  pb-[14.83px]">{item.UserName}</td>
-                                                    <td className="pt-[15px] w-[30%]  pb-[14.83px]">{item.ProcessDate}</td>
+                                                    <td className="pt-[15px] w-[30%]  pb-[14.83px]">{item.designation}</td>
                                                     {/* <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[3]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td> */}
