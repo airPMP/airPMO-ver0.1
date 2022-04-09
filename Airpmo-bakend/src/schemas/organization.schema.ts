@@ -3,46 +3,60 @@ import { Date, Document } from 'mongoose';
 
 export type orgainizationDocument = orgainization & Document;
 
- 
 @Schema()
 export class orgainization {
-    @Prop()
-    hrms_api_url:string;
+  @Prop()
+  hrms_api_url: string;
 
-    @Prop()
-    location:string;
+  @Prop()
+  location: string;
 
-    @Prop()
-    discription:string;
+  @Prop()
+  discription: string;
 
-    @Prop()
-    logo_url:string;
+  @Prop()
+  logo_url: string;
 
-    @Prop()
-   spread_sheet_id:string;
+  @Prop()
+  spread_sheet_id: string;
 
-   @Prop()
-   user_id:string;
+  @Prop()
+  user_id: string;
 
+  @Prop()
+  address: string;
 
+  @Prop()
+  contact_details: string;
 
-   @Prop()
-   address:string;
+  @Prop()
+  name: string;
 
-   @Prop()
-   contact_details:string;
+  @Prop()
+  hrms_format: string;
 
-   @Prop()
-   name:string;
+  @Prop()
+  equipments_list: string;
 
+  @Prop()
+  hrms_salary: string;
 
-   @Prop({default:Date})
-   createdAt: string;
+  @Prop()
+  hrms_rental: string;
 
-   @Prop({default:Date})
-   updatedAt:string;
-    
+  @Prop()
+  hrms_url_api: string;
+  @Prop()
+  hrms_api_url_id: string;
+
+  @Prop()
+  hrms_api_or_sheet: boolean;
+
+  @Prop({ default: Date })
+  createdAt: string;
+
+  @Prop({ default: Date })
+  updatedAt: string;
 }
-
 
 export const orgainizationSchema = SchemaFactory.createForClass(orgainization);
