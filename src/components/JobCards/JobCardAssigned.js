@@ -95,49 +95,55 @@ const JobCardAssigned = () => {
 
   const UserSelectFun = (e, itemData) => {
 
-    let organizationId = ""
+    console.log(itemData)
+    
+    // if (itemData.assign_user_id !== undefined && itemData.assign_user_id !== "") {
 
-    const organization_Id = reactLocalStorage.get("organization_id", false);
+      console.log(itemData)
 
-    if (organization_Id !== "undefined" && organization_Id !== null) {
-      organizationId = organization_Id
-    }
+      let organizationId = ""
 
-    const userDetail = e.target.value
-    const database = userDetail.split(',')
-    let selectedObject = itemData
-    let selectedValue = database[0]
-    selectedObject.assign_role = selectedValue
-    selectedObject.assign_user_id = database[1]
+      const organization_Id = reactLocalStorage.get("organization_id", false);
 
-    selectedObject.organization_id = organizationId
+      if (organization_Id !== "undefined" && organization_Id !== null) {
+        organizationId = organization_Id
+      }
 
-    const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+      const userDetail = e.target.value
+      const database = userDetail.split(',')
+      let selectedObject = itemData
+      let selectedValue = database[0]
+      selectedObject.assign_role = selectedValue
+      selectedObject.assign_user_id = database[1]
 
-      .then((response) => {
-        setUserRolesData(response?.data[0]?.permission)
-        selectedObject.assign_user_roles = response?.data[0]?.permission
-        if (response.status === 201) {
+      selectedObject.organization_id = organizationId
 
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-
+      const token = reactLocalStorage.get("access_token", false);
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
-    setDetail([...userdetail, selectedObject]);
-    // console.log(selectedObject)
-    // allObjectArray.push(...selectedObject,selectedObject) 
-    // console.log(allObjectArray)
-    // console.log(itemData)
-    // console.log(e.target.value)
+        .then((response) => {
+          setUserRolesData(response?.data[0]?.permission)
+          selectedObject.assign_user_roles = response?.data[0]?.permission
+          if (response.status === 201) {
 
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+
+        })
+
+      setDetail([...userdetail, selectedObject]);
+      // console.log(selectedObject)
+      // allObjectArray.push(...selectedObject,selectedObject) 
+      // console.log(allObjectArray)
+      // console.log(itemData)
+      // console.log(e.target.value)
+    // }
   }
 
   const UserOnFocusSelectFun = (e, itemData) => {

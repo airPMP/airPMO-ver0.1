@@ -123,7 +123,12 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         setEmployeeId(spitData[0])
         setEmployeeDesignation(spitData[3])
 
-        setOpen(true) ///open popup
+
+        if (spitData[1]) {
+            console.log(spitData[1])
+            setOpen(true)  ///open popup
+        }
+        
     }
 
     const AddToList = () => {
@@ -159,7 +164,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             .then((response) => {
                 // console.log(response);
                 if (response.status === 201) {
-                    addToast(" Employee is add Sucessfully", {
+                    addToast(" Equipments is add Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
@@ -211,7 +216,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             .then((response) => {
                 // console.log(response);
                 if (response.status === 200) {
-                    addToast(" Employee is edit Sucessfully", {
+                    addToast(" Equipments is edit Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })

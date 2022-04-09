@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import Header from "../layout/Header";
-import SideBar from "../layout/SideBar";
-import SearchBox from "../layout/SearchBox";
+import { useLocation, useNavigate, Link,useParams } from "react-router-dom";
+import Header from "../../layout/Header";
+import SideBar from "../../layout/SideBar";
+import SearchBox from "../../layout/SearchBox";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { ProjectObjectData } from "../../../SimplerR/auth";
 
 
-const AllJobCards = () => {
+const AllJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
@@ -18,9 +19,11 @@ const AllJobCards = () => {
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
 
+  const projectobjectdata = ProjectObjectData.use() 
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
-
+  let useperma = useParams()
 
   useEffect(() => {
     if (urlTitle.pathname === "/daily_task/All-daily-task") {
@@ -32,7 +35,7 @@ const AllJobCards = () => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${useperma.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -109,7 +112,11 @@ const AllJobCards = () => {
       }
     });
 
- 
+
+
+
+
+
     if (result[0] === "EDIT-JOB-CARD" ||
       result1[0] === "CREATE-JOB-CARD" ||
       result2[0] === "GET-JOB-CARD") {
@@ -130,7 +137,7 @@ const AllJobCards = () => {
 
   }
 
-
+console.log(useperma.id)
 
 
 
@@ -142,8 +149,8 @@ const AllJobCards = () => {
       <div className="flex flex-col">
         <Header title={title} />
         <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
-          <SearchBox placeHolderName={"Arab Electrician"} />
-          <SearchBox placeHolderName={"Shinning Towers"} />
+          {/* <SearchBox placeHolderName={"Arab Electrician"} />
+          <SearchBox placeHolderName={"Shinning Towers"} /> */}
         </div>
         <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
@@ -214,7 +221,7 @@ const AllJobCards = () => {
             </div>
           </div>
           <div className=" text-right pr-20">
-            <Link to={`${createpermission || allpermissions ? `/daily_task/new_daily_task` : `/daily_task/All-daily-task`}`}>
+            <Link to={`${createpermission || allpermissions ? `/daily_task/${useperma.id}/new_daily_task` : `/daily_task/All-daily-task`}`}>
               <button
                 className={`${createpermission === "CREATE-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                 bg-[#8d8b8b] p-2 text-[#f0f0f0] mb-4 rounded-[8px]`}>
@@ -292,4 +299,4 @@ const AllJobCards = () => {
   );
 };
 
-export default AllJobCards;
+export default AllJobCardsId;

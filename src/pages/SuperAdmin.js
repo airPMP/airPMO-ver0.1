@@ -16,9 +16,11 @@ const SuperAdmin = () => {
     const [location, setLocation] = useState('')
     const [address, setAddress] = useState('')
     const [organizationid, setOrganizationId] = useState(null)
-    const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
+    // const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
+    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('AT - HRMS format');
+    // const [spread_sheet_id_1, setSpreadSheet_1] = useState('AT - HRMS format');
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('1');
     const [spread_sheet_id_2, setSpreadSheet_2] = useState('AT - Equipment List format');
     const [spread_sheet_id_3, setSpreadSheet_3] = useState('AT - HRMS Std Salaries');
     const [spread_sheet_id_4, setSpreadSheet_4] = useState('AT - HRMS Std Rentals');
@@ -39,6 +41,7 @@ const SuperAdmin = () => {
 
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
+    const [assignproject, setAssignProject] = useState(false)
     const [designationdata, setDesignationData] = useState(null)
 
 
@@ -64,19 +67,22 @@ const SuperAdmin = () => {
         }
 
         const token = reactLocalStorage.get("access_token", false);
+        const user_id = reactLocalStorage.get("user_id", false);
 
         if (name && location && address) {
             console.log("done")
             axios.post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, {
                 hrms_api_url: hrmsdata,
                 location: location,
-                discription: "string",
+                discription: spread_sheet_id_1,
                 logo_url: "string",
                 spread_sheet_id: spread_sheet,
-                user_id: "string",
+                user_id: user_id,
                 address: address,
                 contact_details: "string",
-                name: name
+                name: name,
+                hrms_api_or_sheet:assignproject
+
 
             }, {
                 headers: {
@@ -85,10 +91,10 @@ const SuperAdmin = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    reactLocalStorage.set("organization_id",response?.data?._id);
-                    setOrganizationId(response?.data?._id) 
+                    reactLocalStorage.set("organization_id", response?.data?._id);
+                    setOrganizationId(response?.data?._id)
                     console.log(response?.data?._id)
-                    if (response.status === 201) { 
+                    if (response.status === 201) {
                         // navigate("/UserManagement/AddNewUser")
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
@@ -178,14 +184,22 @@ const SuperAdmin = () => {
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
-                    try {
-                        const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                        setSheetData(data1?.data?.values)
 
-                        let storedDesignamtion = []
-                        data1?.data?.values.map((items, id) => {
-                            storedDesignamtion.push(items[3])
-                        })
+                    const token = reactLocalStorage.get("access_token", false);
+                    try {
+                        // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
+                        const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            }})
+                        console.log(data1)
+                        setSheetData(data1?.data)
+                        // setSheetData(data1?.data?.values)
+
+                        // let storedDesignamtion = []
+                        // data1?.data?.values.map((items, id) => {
+                        //     storedDesignamtion.push(items[3])
+                        // })
 
                     } catch (error) {
                         console.log(error)
@@ -205,12 +219,12 @@ const SuperAdmin = () => {
     }
 
 
-    useEffect(()=>{
-if(organizationid){
-    userApi()
-}
+    useEffect(() => {
+        if (organizationid) {
+            userApi()
+        }
 
-    },[organizationid])
+    }, [organizationid])
 
     const userApi = () => {
 
@@ -220,7 +234,7 @@ if(organizationid){
         const user_id = reactLocalStorage.get("user_id", false);
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/${user_id}`, {
             organization_id: organizationid,
-            
+
 
         }, {
             headers: {
@@ -229,23 +243,23 @@ if(organizationid){
         })
             .then((response) => {
                 console.log(response)
-                
-               
-                if (response.status === 201) { 
+
+
+                if (response.status === 201) {
                     // addToast("form submitted Sucessfully", {
                     //     appearance: "success",
                     //     autoDismiss: true,
                     // })
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
             })
 
-        
+
     }
 
 
@@ -382,7 +396,7 @@ if(organizationid){
                             </div>
                             <div className="flex flex-row space-x-40 pb-[36px]">
 
-                                <div className=" relative w-[350px]">
+                                {/* <div className=" relative w-[350px]">
                                     <input
                                         id="spread_sheet"
                                         type="text"
@@ -401,7 +415,7 @@ if(organizationid){
 
                                     </label>
 
-                                </div>
+                                </div> */}
 
                                 <div className="relative w-[350px]">
                                     <div className="flex">
@@ -440,7 +454,7 @@ if(organizationid){
 
                             </div>
 
-                            <div className="flex flex-row space-x-40 pb-[36px]">
+                            {/* <div className="flex flex-row space-x-40 pb-[36px]">
                                 <div className="relative w-[350px]">
                                     <div className="flex">
                                         <input
@@ -505,9 +519,9 @@ if(organizationid){
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <div className="flex flex-row space-x-40 ">
+                            {/* <div className="flex flex-row space-x-40 ">
                                 <div className="relative w-[350px]">
                                     <div className="flex">
 
@@ -560,7 +574,7 @@ if(organizationid){
                                     </label>
 
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
                                 <div className="mr-[45px] shadow-[buttonshadow] ">
@@ -598,8 +612,8 @@ if(organizationid){
                     <div className="mt-3 ex1">
                         <table className="table-auto   text-center   
                             text-[#8F9BBA] text-[12px] font-sans
-                         font-normal not-italic ">
-                            {sheetdata_3_open ? sheetdata_3?.map((item, i) => {
+                         font-normal not-italic  w-[100%]">
+                            {/* {sheetdata_3_open ? sheetdata_3?.map((item, i) => {
                                 if (i <= 0) {
                                     return (
                                         <tr className="max-h-[52.84px] text-center  ">
@@ -629,10 +643,10 @@ if(organizationid){
                                 :
                                 <>
                                 </>
-                            }
+                            } */}
 
-                            <>
-                                {sheetdata_2_open ? sheetdata_2?.map((item, i) => {
+                            {/* <>
+                                 {sheetdata_2_open ? sheetdata_2?.map((item, i) => {
                                     if (i <= 0) {
                                         return (
                                             <tr className="max-h-[52.84px] text-center  ">
@@ -663,33 +677,50 @@ if(organizationid){
                                     <>
                                     </>
                                 }
-                            </>
+                            </> */}
 
                             <>
                                 {sheetdata_1_open ? sheetdata?.map((item, i) => {
                                     if (i <= 0) {
                                         return (
-                                            <tr className="max-h-[52.84px] text-center  ">
-                                                <th className="w-[15%] py-[13px]">{item[0]}</th>
+                                            <tr className="max-h-[52.84px] text-center w-[100%] ">
+                                                {/* <th className="w-[15%] py-[13px]">{item[0]}</th>
                                                 <th className="w-[15%] py-[13px]">{item[1]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[2]}</th>
                                                 <th className="w-[30%] py-[13px]">{item[3]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[4]}</th>
-                                                <th className="w-[30%] py-[13px] px-5">{item[11]}</th>
+                                                <th className="w-[30%] py-[13px] px-5">{item[11]}</th> */}
+
+                                                <th className="w-[35%] py-[13px]"> User ID</th>
+                                                <th className="w-[35%] py-[13px]">User Name</th>
+                                                <th className="w-[30%] py-[13px]">Designation</th>
+                                                {/* <th className="w-[30%] py-[13px]">{item[3]}</th>
+                                                <th className="w-[20%] py-[13px]">{item[4]}</th>
+                                                <th className="w-[30%] py-[13px] px-5">{item[11]}</th> */}
+
+
 
                                             </tr>
                                         )
                                     }
                                     else {
                                         return (
-                                            <tbody className=" mb-[10px]   ">
+                                            <tbody className=" mb-[10px]  w-[100%] ">
                                                 <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans  ">
-                                                    <td className=" pt-[15px] w-[15%] pb-[14.83px]">{item[0]} </td>
+                                                    {/* <td className=" pt-[15px] w-[15%] pb-[14.83px]">{item[0]} </td>
                                                     <td className="pt-[15px] w-[15%] pb-[14.83px]">{item[1]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[2]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[3]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
-                                                    <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td>
+                                                    <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td> */}
+
+                                                    <td className=" pt-[15px] w-[35%]  pb-[14.83px]">{item.UserID} </td>
+                                                    <td className="pt-[15px] w-[35%]  pb-[14.83px]">{item.UserName}</td>
+                                                    <td className="pt-[15px] w-[30%]  pb-[14.83px]">{item.designation}</td>
+                                                    {/* <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[3]}</td>
+                                                    <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
+                                                    <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td> */}
+
 
                                                 </tr>
                                                 <tr>
@@ -706,7 +737,7 @@ if(organizationid){
                                 }
                             </>
 
-                            <>
+                            {/* <>
                                 {sheetdata_4_open ? sheetdata_4?.map((item, i) => {
                                     if (i <= 0) {
                                         return (
@@ -737,7 +768,7 @@ if(organizationid){
                                     <>
                                     </>
                                 }
-                            </>
+                            </> */}
 
                         </table>
 

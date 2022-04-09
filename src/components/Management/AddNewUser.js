@@ -75,6 +75,14 @@ const AddNewUser = () => {
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
     const [refracedata, setRefraceData] = useState(false)
     const [designatiotrue, setDesignatioTrue] = useState(false)
+    
+
+    // const [hrmsdata, setHRMSData] = useState(null);
+    const [spread_sheet, setSpreadSheet] = useState(null);
+    // const [spread_sheet_id_1, setSpreadSheet_1] = useState(null);
+
+    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('59');
 
 
     let navigate = useNavigate();
@@ -100,30 +108,71 @@ const AddNewUser = () => {
         }
         feachRolls();
 
-        const feachSheetId = async () => {
+        const user_id = reactLocalStorage.get("user_id", false);
+        const feachAddUser = async () => {
             try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
-
-                let ClientIdStore = []
-                data1?.data?.values.map((items, id) => {
-                    if (id >= 1) {
-                        ClientIdStore.push(items[0])
-                    }
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${user_id}/organization`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 })
 
-                setSpreadSheetIdAllData(data1?.data?.values)
-                let ClientFirstNameStore = []
-                let ClientLastNameStore = []
-                let ClientDesignaionStore = []
-                data1?.data?.values.map((items, id) => {
-                    if (id >= 1) {
-                        ClientFirstNameStore.push(items[1])
-                        ClientLastNameStore.push(items[2])
-                        ClientDesignaionStore.push(items[3])
-                    }
-                })
+                // let hrmsapi=data1?.data[0].hrms_api_url
+                // let spread_sheet_id=data1?.data[0].spread_sheet_id
+                // let ATHRMSformat=data1?.data[0].discription
 
-                setClientIdData(ClientIdStore)
+
+                console.log(data1)
+
+                setHRMSData(data1?.data[0].hrms_api_url)
+                setSpreadSheet(data1?.data[0].spread_sheet_id)
+                setSpreadSheet_1(data1?.data[0].discription)
+                 
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachAddUser();
+
+  
+
+    }, [ ])
+
+
+    useEffect(()=>{
+        const feachSheetId = async () => {
+            const token = reactLocalStorage.get("access_token", false);
+            try {
+                const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }})
+                    setClientIdData(data1?.data)
+                    console.log(data1)
+                // let ClientIdStore = []
+                // data1?.data?.values.map((items, id) => {
+                //     if (id >= 1) {
+                //         ClientIdStore.push(items[0])
+                //     }
+                // })
+
+                 
+
+                // setSpreadSheetIdAllData(data1?.data?.values)
+                // let ClientFirstNameStore = []
+                // let ClientLastNameStore = []
+                // let ClientDesignaionStore = []
+                // data1?.data?.values.map((items, id) => {
+                //     if (id >= 1) {
+                //         ClientFirstNameStore.push(items[1])
+                //         ClientLastNameStore.push(items[2])
+                //         ClientDesignaionStore.push(items[3])
+                //     }
+                // })
+
+                // setClientIdData(ClientIdStore)
 
             } catch (error) {
                 console.log(error)
@@ -132,7 +181,7 @@ const AddNewUser = () => {
         feachSheetId();
 
 
-    }, [])
+    },[spread_sheet_id_1])
 
 
     useEffect(() => {
@@ -329,15 +378,22 @@ const AddNewUser = () => {
     }
 
     const SpreadFun = (e) => {
-        setSpreadAllData(e.target.value)
+        
+        console.log(e.target.value)
+         let splitdata =e.target.value
+        let somdata= splitdata.split(",")
+         console.log(somdata)
+         let nameSplit =somdata[0].split(" ")
+         console.log(nameSplit)
+         setSpreadAllData(somdata[2])
 
-        spreadsheetalldata?.map((item, id) => {
-            if (e.target.value === item[0]) {
-                setFirstNameData(item[1])
-                setLastNameData(item[2])
-                setDesignaionData(item[3])
-            }
-        })
+        // spreadsheetalldata?.map((item, id) => {
+        //     if (e.target.value === item[0]) {
+                setFirstNameData(nameSplit[0])
+                setLastNameData(nameSplit[1])
+                setDesignaionData(somdata[1])
+        //     }
+        // })
 
     }
 
@@ -410,7 +466,7 @@ const AddNewUser = () => {
         // setRoleId(designation_data[1]) 
     }
 
-    console.log(clientiddata)
+    
 
     return (
         <>
@@ -462,7 +518,7 @@ const AddNewUser = () => {
                                                     <option value="" label="User Id" />
                                                     {clientiddata ?.map((item, id) => {
                                                         return <>
-                                                            <option value={item} label={item} key={id} />
+                                                            <option value={[item.UserName,item.designation,item.UserID]} label={item.UserID} key={id} />
                                                         </>
                                                     })}
                                                 </select>
