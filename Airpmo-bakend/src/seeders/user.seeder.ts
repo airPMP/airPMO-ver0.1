@@ -63,7 +63,6 @@ export class UsersSeeder implements Seeder {
         LastName: 'dubai',
         Email: 'albanna@gmail.com',
         username: 'AlbannaSuperadmin',
-        organization_id: 6,
         Password:
           '$2b$10$mblFPyBDBzcHXNzy3BXmNuKgg521aqkv2OmnXKK211qx1tZTpspLu',
       },
@@ -72,7 +71,6 @@ export class UsersSeeder implements Seeder {
         LastName: 'dubai',
         Email: 'riyaz1@gmail.com',
         username: 'Riyashar',
-        organization_id: 7,
         Password:
           '$2b$10$StFrJoUutGwyQHZ583eYh.1m.MoOys0u70cUBMPhXpa/Evva2FQqa',
       },
