@@ -39,6 +39,12 @@ export class JobCardsController {
     return await this.jobCardsService.findjob(req);
   }
 
+  @Auth('GET-JOB-CARD')
+  @Get('find_job_card_by_project/:id')
+  async getjobcardbyprojectid(@Param('id') id: string, @Req() req) {
+    return await this.jobCardsService.jobcardbyprojectid(id, req);
+  }
+
   @Auth('DELETE-JOB-CARD')
   @Delete('delete_job_card/:id')
   async deleteJobcard(@Param('id') id: string) {
@@ -78,6 +84,12 @@ export class JobCardsController {
     return await this.jobCardsService.findallassigncard(req);
   }
 
+  @Auth('GET-ASSIGN-JOB-CARD')
+  @Get('find_assign_job_card_by_project/:id')
+  async getassignjobcardbyprojectid(@Param('id') id: string, @Req() req) {
+    return await this.jobCardsService.assignjobcardbyprojectid(id, req);
+  }
+
   @Auth('CREATE-MY-JOB-CARD')
   @Post('create_my_job_card')
   async myjobcard(@Body() createmyjobcardDto: createmyjobcardDto) {
@@ -86,8 +98,8 @@ export class JobCardsController {
 
   @Auth('GET-MY-JOB-CARD')
   @Get('find_my_job_card/:id')
-  async findmyjobcardByid(@Param('id') id: string,@Req() req) {
-    return await this.jobCardsService.findmyjobcard(id,req);
+  async findmyjobcardByid(@Param('id') id: string, @Req() req) {
+    return await this.jobCardsService.findmyjobcard(id, req);
   }
 
   @Auth('GET-MY-JOB-CARD')
@@ -95,4 +107,11 @@ export class JobCardsController {
   async findmyjobcard(@Req() req) {
     return await this.jobCardsService.myjobcard(req);
   }
+
+  @Auth('GET-MY-JOB-CARD')
+  @Get('find_my_job_card_by_project/:id')
+  async getmyjobcardbyprojectid(@Param('id') id: string, @Req() req) {
+    return await this.jobCardsService.myjobcardbyprojectid(id, req);
+  }
+
 }

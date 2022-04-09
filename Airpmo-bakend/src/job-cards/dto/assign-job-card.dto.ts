@@ -8,4 +8,6 @@ export class assignJobCardDto {
   @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
+
+  
 }

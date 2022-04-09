@@ -26,28 +26,36 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    if (createUserDto.Password) {
-      const saltOrRounds = 10;
-      const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
-      createUserDto.Password = hash;
-    }
-    const user = await this.usersModel.findOne({ Email: createUserDto.Email });
-    if (!user) {
-      return await this.usersModel.create(createUserDto);
-    } else {
-      throw new UnauthorizedException('User already rigister');
+    try {
+      if (createUserDto.Password) {
+        const saltOrRounds = 10;
+        const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
+        createUserDto.Password = hash;
+      }
+      const user = await this.usersModel.findOne({
+        Email: createUserDto.Email,
+      });
+      if (!user) {
+        return await this.usersModel.create(createUserDto);
+      } else {
+        throw new UnauthorizedException('User already rigister');
+      }
+    } catch {
+      throw new NotFoundException('user all ready exist');
     }
   }
 
   async findByEmail(loginusersDto: loginusersDto) {
-  
-      const user = await this.usersModel
-        .findOne({ $or: [ { username:loginusersDto.Email }, { Email:loginusersDto.Email }] }
-          )
-        .select('Password')
-        .select('Email');
-      return user;
- 
+    const user = await this.usersModel
+      .findOne({
+        $or: [
+          { username: loginusersDto.Email },
+          { Email: loginusersDto.Email },
+        ],
+      })
+      .select('Password')
+      .select('Email');
+    return user;
   }
 
   async findAll(@Req() req) {

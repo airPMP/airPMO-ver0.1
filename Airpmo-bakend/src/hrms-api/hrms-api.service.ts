@@ -24,29 +24,77 @@ export class HrmsApiService {
         Cookie: 'ASP.NET_SessionId=imwgbqprs0tkczardwcqydf1',
       },
     };
+    var config2 = {
+      method: 'get',
+      url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/USER?ACTION=GET;field-name=id,name,designation-name;range=section;id=${id}`,
+      headers: {
+        Authorization: 'Basic YWlycG1vOkFJUlBNTzIwMjI=',
+        Cookie: 'ASP.NET_SessionId=imwgbqprs0tkczardwcqydf1',
+      },
+    };
 
     axios(config)
       .then(function (response) {
-        var final_hrms_array = [];
-        var hrms_arr = [];
-        var hrms_all_data = response.data;
-        const myArray = hrms_all_data.split('\r\n');
-        for (let i = 0; i < myArray.length; i++) {
-          const a = myArray[i].split('|');
-          hrms_arr.push(a);
-        }
-        let new_obj = {};
+        axios(config2).then(function (response2) {
+          var hrms_first_url = response.data;
+          var hrms_second_url = response2.data;
+          const hrms_array_data = hrms_first_url.split('\r\n');
+          const hrms_array_data2 = hrms_second_url.split('\r\n');
+          var hrms_arr1 = [];
+          var hrms_arr2 = [];
 
-        for (let i = 1; i < hrms_arr.length - 1; i++) {
-          for (let j = 0; j < hrms_arr[i].length; j++) {
-            new_obj[hrms_arr[0][j]] = hrms_arr[i][j];
-            if (hrms_arr[i].length - 1 === j) {
-              final_hrms_array.push(new_obj);
-              new_obj = {};
+          var final_one_url_array = [];
+          var final_one_url_array1 = [];
+          for (let i = 0; i < hrms_array_data2.length; i++) {
+            const a = hrms_array_data2[i].split('|');
+            hrms_arr2.push(a);
+          }
+          for (let i = 0; i < hrms_array_data.length; i++) {
+            const a = hrms_array_data[i].split('|');
+            hrms_arr1.push(a);
+          }
+
+          let new_obj = {};
+          for (let i = 1; i < hrms_arr1.length - 1; i++) {
+            for (let j = 0; j < hrms_arr1[i].length; j++) {
+              new_obj[hrms_arr1[0][j]] = hrms_arr1[i][j];
+              if (hrms_arr1[i].length - 1 === j) {
+                final_one_url_array.push(new_obj);
+                new_obj = {};
+              }
             }
           }
-        }
-        return res.json(final_hrms_array);
+          let new_obj2 = {};
+          for (let i = 1; i < hrms_arr2.length; i++) {
+            for (let j = 0; j < hrms_arr2[i].length; j++) {
+              new_obj2[hrms_arr2[0][j]] = hrms_arr2[i][j];
+              if (hrms_arr2[i].length - 1 === j) {
+                final_one_url_array1.push(new_obj2);
+                new_obj2 = {};
+              }
+            }
+          }
+          const merger_arr = [];
+          for (let k = 0; k < final_one_url_array.length; k++) {
+            for (let index = 0; index < final_one_url_array1.length; index++) {
+              if (
+                final_one_url_array[k].UserID === final_one_url_array1[index].id
+              ) {
+                const designation = {
+                  designation: final_one_url_array1[index]['designation-name'],
+                };
+
+                const new_data = Object.assign(
+                  {},
+                  final_one_url_array[k],
+                  designation,
+                );
+                merger_arr.push(new_data);
+              }
+            }
+          }
+          return res.json(merger_arr);
+        });
       })
       .catch(function (error) {
         console.log(error);

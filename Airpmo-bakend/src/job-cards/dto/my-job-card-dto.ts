@@ -3,6 +3,9 @@ import { IsNotEmpty } from 'class-validator';
 
 export class createmyjobcardDto {
   @ApiProperty()
+ project_id: string;
+
+  @ApiProperty()
   jc_number: string;
 
   @ApiProperty()

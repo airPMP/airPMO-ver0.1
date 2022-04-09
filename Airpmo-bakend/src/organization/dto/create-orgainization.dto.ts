@@ -1,52 +1,64 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateOrgainizationDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  hrms_api_url: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    hrms_api_url:string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  location: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    location:string;
+  @IsOptional()
+  @ApiProperty()
+  discription: string;
 
-   
-    @IsOptional()
-    @ApiProperty()
-    discription:string;
+  @IsOptional()
+  @ApiProperty()
+  logo_url: string;
 
+  @IsOptional()
+  @ApiProperty()
+  spread_sheet_id: string;
 
-    
-    @IsOptional()
-    @ApiProperty()
-    logo_url:string;
+  @IsOptional()
+  @ApiProperty()
+  user_id: string;
 
-   
-    @IsOptional()
-    @ApiProperty()
-    spread_sheet_id:string;
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  address: string;
 
-   
-    @IsOptional()
-    @ApiProperty()
-    user_id:string;
+  @ApiProperty()
+  contact_details: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  name: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    address:string;
+  @ApiProperty()
+  hrms_format: string;
 
-    
-    @ApiProperty()
-    contact_details:string;
+  @ApiProperty()
+  equipments_list: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty()
-    name:string;
+  @ApiProperty()
+  hrms_salary: string;
 
+  @ApiProperty()
+  hrms_rental: string;
+
+  @ApiProperty()
+  hrms_url_api: string;
+
+  @ApiProperty()
+  hrms_api_url_id: string;
+
+  @ApiProperty()
+  hrms_api_or_sheet: boolean;
 }
