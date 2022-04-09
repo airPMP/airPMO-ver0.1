@@ -111,8 +111,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
         setEmployeeId(spitData[0])
         setEmployeeDesignation(spitData[3])
+        if (spitData[1]) {
+            console.log(spitData[1])
+            setOpen(true)  ///open popup
+        }
 
-        setOpen(true) ///open popup
     }
 
     const AddToList = () => {
@@ -238,7 +241,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                     window.location.reload(false);
                 }
-               
+
             } catch (error) {
                 console.log(error)
             }
@@ -265,11 +268,14 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
-                                    onClick={(e) => TimeSelectFun(e)}>
+                                    onClick={(e) => TimeSelectFun(e)}
+
+                                >
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
 
-                                        return <option value={[item[0], item[1], item[2], item[3]]}>
+                                        return <option value={[item[0], item[1], item[2], item[3]]}
+                                            >
                                             {`${item[0]} [${item[3]}]`}
                                         </option>
                                     })}

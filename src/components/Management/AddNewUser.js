@@ -75,6 +75,11 @@ const AddNewUser = () => {
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
     const [refracedata, setRefraceData] = useState(false)
     const [designatiotrue, setDesignatioTrue] = useState(false)
+    
+
+    const [hrmsdata, setHRMSData] = useState(null);
+    const [spread_sheet, setSpreadSheet] = useState(null);
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState(null);
 
 
     let navigate = useNavigate();
@@ -100,9 +105,42 @@ const AddNewUser = () => {
         }
         feachRolls();
 
+        const user_id = reactLocalStorage.get("user_id", false);
+        const feachAddUser = async () => {
+            try {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${user_id}/organization`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                // let hrmsapi=data1?.data[0].hrms_api_url
+                // let spread_sheet_id=data1?.data[0].spread_sheet_id
+                // let ATHRMSformat=data1?.data[0].discription
+
+
+                console.log(data1)
+
+                setHRMSData(data1?.data[0].hrms_api_url)
+                setSpreadSheet(data1?.data[0].spread_sheet_id)
+                setSpreadSheet_1(data1?.data[0].discription)
+                 
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        feachAddUser();
+
+  
+
+    }, [ ])
+
+
+    useEffect(()=>{
         const feachSheetId = async () => {
             try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
+                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
 
                 let ClientIdStore = []
                 data1?.data?.values.map((items, id) => {
@@ -110,6 +148,8 @@ const AddNewUser = () => {
                         ClientIdStore.push(items[0])
                     }
                 })
+
+                console.log(data1)
 
                 setSpreadSheetIdAllData(data1?.data?.values)
                 let ClientFirstNameStore = []
@@ -132,7 +172,7 @@ const AddNewUser = () => {
         feachSheetId();
 
 
-    }, [])
+    },[spread_sheet_id_1])
 
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { ProjectObjectData } from "../SimplerR/auth";
 
 export const getUserApi = async () => {
     const token = reactLocalStorage.get("access_token", false);
@@ -59,6 +60,9 @@ export const getCategorieApi = async () => {
 
 
 export const getAllJobCardApi = async () => {
+
+  const projectobjectdata = ProjectObjectData.use() 
+
     const token = reactLocalStorage.get("access_token", false);
 
     return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`, {

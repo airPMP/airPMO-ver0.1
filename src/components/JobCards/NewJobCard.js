@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate,useParams } from "react-router-dom";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 // import { useToasts } from "react-toast-notifications";
@@ -42,6 +42,7 @@ const NewJobCard = () => {
   const [productivitysheetarray, seProductivitySheetArray] = useState([])
   const [currentdate, setCurrentDate] = useState(null)
 
+  let useperma = useParams()
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
@@ -204,10 +205,36 @@ const NewJobCard = () => {
       .catch((error) => {
         console.log(error)
 
-      })
-
+      }) 
 
   }
+
+
+
+  useEffect(()=>{
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${useperma.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((response) => {
+        console.log(response?.data?.productivitysheet)
+        ProductivitySheetData.set(response?.data?.productivitysheet)
+      })
+      .catch((error) => {
+        console.log(error)
+        addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+        })
+
+      })
+
+  },[])
+
+console.log(useperma)
+
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">

@@ -113,6 +113,8 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
 
         ProjectObjectData.set(ObjData)
 
+        
+
 
     }
 
@@ -160,7 +162,6 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
             })
     }
 
-
     return (
         <div>
             <div className=" basic-1/4 flex flex-row px-[20px] bg-[#FFFFFF] rounded-[0.625rem] ">
@@ -201,6 +202,7 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
 
                     {
                         searchdata?.map((item, id) => {
+                             
                             return <li onClick={(e) => ProjectIdName(e, item)}>
                                 {
                                     item?.project_name

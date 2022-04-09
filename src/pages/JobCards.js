@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link,useParams } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import Card from "../components/layout/Card";
@@ -8,7 +8,7 @@ import axios from "axios";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
-import { SearchClientSet, ProductiveSheetId, ProductivitySheetData } from '../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductivitySheetData, ProjectObjectData } from '../SimplerR/auth'
 import { getAllJobCardApi, getClientApi, getMyJobCardApi } from '../AllApi/Api'
 import ProductSearch from "../components/Injestion/ProductSearch";
 const JobCards = () => {
@@ -27,13 +27,14 @@ const JobCards = () => {
   const searchclientset = SearchClientSet.use()
   const productivesheetid = ProductiveSheetId.use()
   const productivitysheetdata = ProductivitySheetData.use()
-
+  const projectobjectdata = ProjectObjectData.use() 
   const [alljobcardapi, setAllJobCardApi] = useState(null)
   const [myjobcardapi, setMyJobCardApi] = useState(null)
 
   const { addToast } = useToasts();
 
   let navigate = useNavigate();
+  let useperma = useParams()
 
   let urlTitle = useLocation();
   useEffect(() => {
@@ -43,19 +44,44 @@ const JobCards = () => {
   }, [urlTitle.pathname]);
 
 
-  useLayoutEffect(() => {
+console.log(useperma.id)
 
-    const userData = getAllJobCardApi().then((data) => {
-      setAllJobCardApi(data?.data.length)
+  useEffect(() => {
 
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
 
-    const userData1 = getMyJobCardApi().then((data) => {
-      setMyJobCardApi(data?.data?.length)
-    })
+      .then((response) => {
+        console.log(response?.data)
+        setAllJobCardApi(response?.data.length)
+
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+     
+
+    // const userData = getAllJobCardApi().then((data) => {
+    //   setAllJobCardApi(data?.data.length)
+    //   console.log(data?.data)
 
 
-  }, [])
+    // })
+
+//     const userData1 = getMyJobCardApi().then((data) => {
+//       setMyJobCardApi(data?.data?.length)
+//     })
+// console.log(projectobjectdata)
+
+  }, [ projectobjectdata?._id ])
 
   useEffect(() => {
 
@@ -171,6 +197,8 @@ const JobCards = () => {
   }
 
 
+  console.log(projectobjectdata?._id)
+
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -256,14 +284,14 @@ const JobCards = () => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
-          <Link to={`/daily_task/All-daily-task`}>
+          {/* <Link to={`/daily_task/All-daily-task`}> */}
+          <Link to={projectobjectdata?._id?`/daily_task/JobCardByProjectId/${projectobjectdata?._id}`:`/daily_task`}>
             <Card
               title={"Daily Task"}
               totalNumber={alljobcardapi}
 
               iconn={
-                <svg
-
+                <svg 
                   width="58"
                   height="58"
                   viewBox="0 0 58 58"
@@ -279,7 +307,7 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Link to={`/daily_task/daily-task-assigned`}>
+          <Link to={projectobjectdata?._id?`/daily_task/AssignById/${projectobjectdata?._id}`:`/daily_task  `}>
             <Card
               title={"Daily Task Assigned"}
               totalNumber={alljobcardapi}

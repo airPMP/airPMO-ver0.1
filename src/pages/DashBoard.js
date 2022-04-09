@@ -79,11 +79,11 @@ const DashBoard = () => {
             <SignUpTemplate />
           ) : (
             <>
-              <div className="ml-[90%] pt-3">
+              {/* <div className="ml-[90%] pt-3">
                 <button style={{ border: "2px solid red", background: "red" }}
                   className="text-[white] px-3" onClick={(e) => Logout(e)}>
                   <b>LogOut</b></button>
-              </div>
+              </div> */}
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
                 {/* <SearchBox
                   placeHolderName={"Choose Client"}

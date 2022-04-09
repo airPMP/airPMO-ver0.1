@@ -39,6 +39,7 @@ const SuperAdmin = () => {
 
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
+    const [assignproject, setAssignProject] = useState(false)
     const [designationdata, setDesignationData] = useState(null)
 
 
@@ -64,19 +65,22 @@ const SuperAdmin = () => {
         }
 
         const token = reactLocalStorage.get("access_token", false);
+        const user_id = reactLocalStorage.get("user_id", false);
 
         if (name && location && address) {
             console.log("done")
             axios.post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, {
                 hrms_api_url: hrmsdata,
                 location: location,
-                discription: "string",
+                discription: spread_sheet_id_1,
                 logo_url: "string",
                 spread_sheet_id: spread_sheet,
-                user_id: "string",
+                user_id: user_id,
                 address: address,
                 contact_details: "string",
-                name: name
+                name: name,
+                hrms_api_or_sheet:assignproject
+
 
             }, {
                 headers: {
@@ -85,10 +89,10 @@ const SuperAdmin = () => {
             })
                 .then((response) => {
                     console.log(response)
-                    reactLocalStorage.set("organization_id",response?.data?._id);
-                    setOrganizationId(response?.data?._id) 
+                    reactLocalStorage.set("organization_id", response?.data?._id);
+                    setOrganizationId(response?.data?._id)
                     console.log(response?.data?._id)
-                    if (response.status === 201) { 
+                    if (response.status === 201) {
                         // navigate("/UserManagement/AddNewUser")
                         addToast("form submitted Sucessfully", {
                             appearance: "success",
@@ -205,12 +209,12 @@ const SuperAdmin = () => {
     }
 
 
-    useEffect(()=>{
-if(organizationid){
-    userApi()
-}
+    useEffect(() => {
+        if (organizationid) {
+            userApi()
+        }
 
-    },[organizationid])
+    }, [organizationid])
 
     const userApi = () => {
 
@@ -220,7 +224,7 @@ if(organizationid){
         const user_id = reactLocalStorage.get("user_id", false);
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/${user_id}`, {
             organization_id: organizationid,
-            
+
 
         }, {
             headers: {
@@ -229,23 +233,23 @@ if(organizationid){
         })
             .then((response) => {
                 console.log(response)
-                
-               
-                if (response.status === 201) { 
+
+
+                if (response.status === 201) {
                     // addToast("form submitted Sucessfully", {
                     //     appearance: "success",
                     //     autoDismiss: true,
                     // })
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
             })
 
-        
+
     }
 
 
@@ -560,6 +564,32 @@ if(organizationid){
                                     </label>
 
                                 </div>
+
+
+                            </div>
+                            <div className="ml-[80%] flex  mt-10">
+                                <div className="   ">
+                                    <input
+                                        id="AssignProject"
+                                        type="checkbox"
+                                        name="AssignProject"
+                                        className="   w-[30px]      border-b font-medium 
+                                        font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent 
+                                        focus:outline-none focus:border-[#000000]"
+                                    // value={assignproject}
+                                    onChange={(e) => setAssignProject(e.target.checked)}
+
+                                    />
+                                </div>
+                                <label
+                                    htmlFor="AssignProject"
+                                    className="pl-2"
+                                    // className=" after:content-['*'] after:ml-0.5 after:text-red-500 
+                                    //             absolute left-0 top-2 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                                >
+                                    Hrms Api
+
+                                </label>
                             </div>
 
                             <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
