@@ -410,4 +410,37 @@ export class JobCardsService {
       throw new NotFoundException('my job card not exist');
     }
   }
+
+  async getmyjobcardbyuserid(id: string, @Req() req) {
+    const new_arr = [];
+    const payload = req.headers.authorization.split('.')[1];
+    const encodetoken = Base64.decode(payload);
+    var obj = JSON.parse(encodetoken);
+    var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
+    const get_assign_all_card = await this.assignjobcardmodal.find();
+    let arr1 = [];
+    get_assign_all_card?.map((item, id) => {
+      item?.assign_data?.map((item2, ids) => {
+        arr1.push(item2);
+      });
+    });
+    var find_assign_user = [];
+    for (let index = 0; index < arr1.length; index++) {
+      if (
+        arr1[index].organization_id === id ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
+        if (arr1[index].assign_user_id === id) {
+          find_assign_user.push(arr1[index]);
+        } else if (arr1[index].assign_user_id === undefined) {
+          find_assign_user.push(arr1[index]);
+        }
+      }
+    }
+    return find_assign_user;
+  }
 }

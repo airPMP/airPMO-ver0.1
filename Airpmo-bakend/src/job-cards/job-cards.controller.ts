@@ -114,4 +114,9 @@ export class JobCardsController {
     return await this.jobCardsService.myjobcardbyprojectid(id, req);
   }
 
+  @Auth('GET-MY-JOB-CARD')
+  @Get('find_my_job_card_by_user/:id')
+  async getmyjobcardbyuserid(@Param('id') id: string, @Req() req) {
+    return await this.jobCardsService. getmyjobcardbyuserid(id, req);
+  }
 }
