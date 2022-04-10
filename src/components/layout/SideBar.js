@@ -1,8 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react/cjs/react.development";
+import { useState,useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; 
 
 const SideBar = ({ sendDataToParent }) => {
   const [style, setStyle] = useState(1);
