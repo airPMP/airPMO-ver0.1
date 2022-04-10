@@ -124,7 +124,7 @@ const Master = () => {
             </Link>
 
 
-            <Link to={`/master/consultant`}>
+            {/* <Link to={`/master/consultant`}>
               <InjestionCardOffine
                 title={"Consultant"}
                 totalNumber={800}
@@ -139,7 +139,7 @@ const Master = () => {
                   </svg>
                 }
               />
-            </Link>
+            </Link> */}
 
           </div>
         </div>
