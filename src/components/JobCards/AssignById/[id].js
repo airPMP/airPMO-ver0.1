@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate,useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import axios from "axios";
@@ -35,7 +35,7 @@ const JobCardAssignedId = () => {
 
     useEffect(() => {
 
-        if (urlTitle.pathname === "/daily_task/daily-task-assigned") {
+        if (urlTitle.pathname === `/daily_task/AssignById/${useperma.id}`) {
             setTitle("Daily Task");
         }
     }, [urlTitle.pathname])
@@ -51,7 +51,7 @@ const JobCardAssignedId = () => {
         })
 
             .then((response) => {
-                // console.log(response?.data)
+                console.log(response?.data)
                 setAllJobCardData(response?.data)
                 setFilteredData(response?.data)
 
@@ -158,7 +158,7 @@ const JobCardAssignedId = () => {
 
     const SavePostApi = () => {
 
-
+        console.log(userdetail)
 
         let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
 

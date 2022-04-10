@@ -56,6 +56,7 @@ import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
 import ZoneById from "./components/Master/zones/[id]";
 import AllJobCardsId from "./components/JobCards/JobCardByProjectId/[id]";
 import JobCardAssignedId from "./components/JobCards/AssignById/[id]";
+import MyJobCardsId from "./components/JobCards/MyJobCard/[id]";
 
 function App() {
   return (
@@ -104,6 +105,8 @@ function App() {
 
 
          <Route path="/daily_task/AssignById/:id" element={<JobCardAssignedId />} />
+
+         <Route path="/daily_task/my_daily_task/:id" element={<MyJobCardsId />} />
 
         {
           // Master

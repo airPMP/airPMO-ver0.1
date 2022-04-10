@@ -155,7 +155,7 @@ const JobCardAssigned = () => {
 
   const SavePostApi = () => {
 
-
+console.log(userdetail)
 
     let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
 
