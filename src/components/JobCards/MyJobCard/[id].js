@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate,useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import axios from "axios";
@@ -14,6 +14,7 @@ const MyJobCardsId = () => {
   let urlTitle = useLocation();
   const { addToast } = useToasts();
   let navigate = useNavigate();
+  let useperma = useParams()
 
   useEffect(() => {
 
@@ -24,10 +25,10 @@ const MyJobCardsId = () => {
 
 
   useEffect(() => {
-
+    // /api/find_my_all_assign_card_by_user/{id}/{project_id}
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/assign_user_data/${user_id}`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_all_assign_card_by_user/${user_id}/${useperma.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -45,7 +45,9 @@ const Login = () => {
                if(response?.data?.roles[0]==="Airpmo Super Admin"){
               navigate('/dashboard')}
               else{
+                 
                 navigate('/daily_task')
+                window.location.reload(false)
               }
              }
              else{

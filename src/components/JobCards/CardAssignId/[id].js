@@ -515,7 +515,7 @@ const NewJobCardMultiId = () => {
 
                                 <div className="flex flex-row mr-[-50px]">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                        <button onClick={() => { naviagte("/job_cards") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                             Cancel
                                         </button>
                                     </div>

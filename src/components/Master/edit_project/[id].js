@@ -72,7 +72,7 @@ const EditProject = () => {
     let naviagte = useNavigate();
     const { addToast } = useToasts();
 
-
+console.log(viewzonedata)
 
     useEffect(() => {
         if (urlTitle.pathname === "/master/projects/new_project") {

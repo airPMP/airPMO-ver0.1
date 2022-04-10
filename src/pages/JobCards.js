@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { useLocation, useNavigate, Link,useParams } from "react-router-dom";
+import { useLocation, useNavigate, Link, useParams } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import Card from "../components/layout/Card";
@@ -27,10 +27,11 @@ const JobCards = () => {
   const searchclientset = SearchClientSet.use()
   const productivesheetid = ProductiveSheetId.use()
   const productivitysheetdata = ProductivitySheetData.use()
-  const projectobjectdata = ProjectObjectData.use() 
+  const projectobjectdata = ProjectObjectData.use()
   const [alljobcardapi, setAllJobCardApi] = useState(null)
   const [allassignjobcardapi, setAllAssignJobCardApi] = useState(null)
   const [myjobcardapi, setMyJobCardApi] = useState(null)
+  const [reloadtrue, setReloadTrue] = useState(true)
 
   const { addToast } = useToasts();
 
@@ -45,7 +46,7 @@ const JobCards = () => {
   }, [urlTitle.pathname]);
 
 
-console.log(useperma.id)
+  console.log(useperma.id)
 
   useEffect(() => {
 
@@ -68,27 +69,49 @@ console.log(useperma.id)
         console.log(error)
 
       })
-     
 
 
-      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_assign_job_card_by_project/${projectobjectdata?._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_assign_job_card_by_project/${projectobjectdata?._id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setAllAssignJobCardApi(response?.data.length)
+
+        if (response.status === 201) {
+
+        }
       })
-  
-        .then((response) => {
-          console.log(response?.data)
-          setAllAssignJobCardApi(response?.data.length)
-  
-          if (response.status === 201) {
-  
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-  
-        })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+    const user_id = reactLocalStorage.get("user_id", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_all_assign_card_by_user/${user_id}/${projectobjectdata?._id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setMyJobCardApi(response?.data.length)
+
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+
 
     // const userData = getAllJobCardApi().then((data) => {
     //   setAllJobCardApi(data?.data.length)
@@ -97,18 +120,24 @@ console.log(useperma.id)
 
     // })
 
-//     const userData1 = getMyJobCardApi().then((data) => {
-//       setMyJobCardApi(data?.data?.length)
-//     })
-// console.log(projectobjectdata)
+    //     const userData1 = getMyJobCardApi().then((data) => {
+    //       setMyJobCardApi(data?.data?.length)
+    //     })
+    // console.log(projectobjectdata)
 
-  }, [ projectobjectdata?._id ])
+  }, [projectobjectdata?._id])
 
   useEffect(() => {
 
     const userData = getClientApi().then((data) => {
       setClientData(data?.data) //get client data c-1 -1a
     })
+
+    if (reloadtrue) {
+      // window.location.reload(false)
+      setReloadTrue(false)
+    }
+
   }, [])
 
   useEffect(() => {
@@ -306,13 +335,13 @@ console.log(useperma.id)
         </div>
         <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
           {/* <Link to={`/daily_task/All-daily-task`}> */}
-          <Link to={projectobjectdata?._id?`/daily_task/JobCardByProjectId/${projectobjectdata?._id}`:`/daily_task`}>
+          <Link to={projectobjectdata?._id ? `/daily_task/JobCardByProjectId/${projectobjectdata?._id}` : `/daily_task`}>
             <Card
               title={"Daily Task"}
               totalNumber={alljobcardapi}
 
               iconn={
-                <svg 
+                <svg
                   width="58"
                   height="58"
                   viewBox="0 0 58 58"
@@ -328,7 +357,7 @@ console.log(useperma.id)
               }
             />
           </Link>
-          <Link to={projectobjectdata?._id?`/daily_task/AssignById/${projectobjectdata?._id}`:`/daily_task  `}>
+          <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"Daily Task Assigned"}
               totalNumber={allassignjobcardapi}
@@ -349,7 +378,7 @@ console.log(useperma.id)
               }
             />
           </Link>
-          <Link to={projectobjectdata?._id?`/daily_task/my_daily_task/${projectobjectdata?._id}`:`/daily_task  `}>
+          <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"My  Daily Task"}
               totalNumber={myjobcardapi}
