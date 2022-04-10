@@ -62,25 +62,36 @@ const AddUserRole = () => {
     const [rolesalldata, setRolesAllData] = useState(null)
     const [hierarchydata, setHierarchyData] = useState(null)
     const [errrolesalldata, setErrRolesAllData] = useState(false)
+    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
 
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('1');
 
     let navigate = useNavigate();
 
-     
+
 
     useEffect(() => {
 
         const feachSheetId = async () => {
             try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
+                // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
 
-                let ClientIdStore = []
-                data1?.data?.values.map((items, id) => {
-                    if (id >= 1) {
-                        ClientIdStore.push(items[0])
+                const token = reactLocalStorage.get("access_token", false);
+                const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
                     }
                 })
-                setRolesData(ClientIdStore)
+
+                // let ClientIdStore = []
+                // data1?.data?.values.map((items, id) => {
+                //     if (id >= 1) {
+                //         ClientIdStore.push(items[0])
+                //     }
+                // })
+                // setRolesData(ClientIdStore)
+
+                setRolesData(data1?.data)
 
             } catch (error) {
                 console.log(error)
@@ -89,7 +100,7 @@ const AddUserRole = () => {
         feachSheetId();
 
 
-    }, [])
+    } )
 
     useEffect(() => {
         if (designationdata) {
@@ -111,7 +122,7 @@ const AddUserRole = () => {
         { "number": "5", }
     ]
 
-    const CancelButton =()=>{
+    const CancelButton = () => {
         navigate('/UserManagement/UserRole')
     }
 
@@ -128,14 +139,14 @@ const AddUserRole = () => {
         validate,
         onSubmit: (values, { resetForm }) => {
             const organization_Id = reactLocalStorage.get("organization_id", false);
-            
-            if (organization_Id !== "undefined" && organization_Id !== null) { 
+
+            if (organization_Id !== "undefined" && organization_Id !== null) {
                 values.organization_id = organization_Id
-              } 
- 
+            }
+
 
             values.name = rolesalldata
-            
+
             values.hierarchy = hierarchydata
 
             const token = reactLocalStorage.get("access_token", false);
@@ -176,6 +187,7 @@ const AddUserRole = () => {
 
     const SpreadFun = (e) => {
         setRolesAllData(e.target.value)
+        console.log(e.target.value)
     }
     const HierarchyFun = (e) => {
         setHierarchyData(e.target.value)
@@ -183,8 +195,7 @@ const AddUserRole = () => {
 
     }
 
-
-
+console.log(rolesdata)
 
     return (
         <>
@@ -236,7 +247,7 @@ const AddUserRole = () => {
                                                     <option value="" label="Role" />
                                                     {rolesdata?.map((item, id) => {
                                                         return <>
-                                                            <option value={item} label={item} key={id} />
+                                                            <option value={item.designation} label={item.designation} key={id} />
                                                         </>
                                                     })}
                                                 </select>
