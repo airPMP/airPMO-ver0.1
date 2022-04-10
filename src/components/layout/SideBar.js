@@ -268,7 +268,7 @@ const SideBar = ({ sendDataToParent }) => {
           Data Injestion
         </div>
       </div>
-      <div
+      {/* <div
         className={`flex flex-row justify-center mt-[15px] max-w-[170px] max-h-[50px]  py-[11px]  rounded cursor-pointer  ${style === 6 ? "bg-[#136C57]" : ""
           } `}
         onClick={() => {
@@ -283,7 +283,7 @@ const SideBar = ({ sendDataToParent }) => {
         >
           QA/QC
         </div>
-      </div>
+      </div> */}
       <div
         className={`flex flex-row justify-center mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-12 ${param.pathname.includes("UserManagement") ? "bg-[#136C57]" : ""
           }`}
