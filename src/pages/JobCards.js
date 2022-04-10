@@ -360,7 +360,7 @@ const JobCards = () => {
           <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"Daily Task Assigned"}
-              totalNumber={alljobcardapi}
+              totalNumber={allassignjobcardapi}
               iconn={
                 <svg
                   width="58"
@@ -381,7 +381,7 @@ const JobCards = () => {
           <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"My  Daily Task"}
-              totalNumber={alljobcardapi}
+              totalNumber={myjobcardapi}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
                   <svg
