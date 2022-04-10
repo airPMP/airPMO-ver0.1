@@ -38,14 +38,14 @@ const SideBar = ({ sendDataToParent }) => {
   useEffect(() => {
     const rolesData = reactLocalStorage.get("roles", "roles");
     setRolesdata(rolesData)
-  })
+  }) 
 
   console.log(Rolesdata)
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
 
-        {Rolesdata === "albannaadmin" || urlTitle.pathname === "/daily_task" ? <img
+        { Rolesdata === "albannaadmin"   ? <img
           src="/abe_logo.jpg"
           alt="logo"
           width="182px"
@@ -56,7 +56,7 @@ const SideBar = ({ sendDataToParent }) => {
           alt="logo"
           width="182px"
           height="60.67px"
-          className="px-[35px] pt-[26px]"
+          className={`${Rolesdata === "albannaadmin"?"hidden":null}  px-[35px] pt-[26px]`}
         />
         }
 
