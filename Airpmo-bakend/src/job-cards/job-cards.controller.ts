@@ -90,6 +90,16 @@ export class JobCardsController {
     return await this.jobCardsService.assignjobcardbyprojectid(id, req);
   }
 
+  @Auth('GET-MY-JOB-CARD')
+  @Get('find_my_all_assign_card_by_user/:id/:project_id')
+  async getmyjobcardbyuserid(
+    @Param('id') id: string,
+    @Param('project_id') project_id: string,
+    @Req() req,
+  ) {
+    return await this.jobCardsService.getmyjobcardbyuserid(id,project_id, req);
+  }
+
   @Auth('CREATE-MY-JOB-CARD')
   @Post('create_my_job_card')
   async myjobcard(@Body() createmyjobcardDto: createmyjobcardDto) {
@@ -114,9 +124,5 @@ export class JobCardsController {
     return await this.jobCardsService.myjobcardbyprojectid(id, req);
   }
 
-  @Auth('GET-MY-JOB-CARD')
-  @Get('find_my_job_card_by_user/:id')
-  async getmyjobcardbyuserid(@Param('id') id: string, @Req() req) {
-    return await this.jobCardsService. getmyjobcardbyuserid(id, req);
-  }
+  
 }

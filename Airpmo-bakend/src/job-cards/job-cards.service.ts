@@ -26,6 +26,7 @@ import { CreateJobCardDto } from './dto/create-job-card.dto';
 import { createmyjobcardDto } from './dto/my-job-card-dto';
 import { UpdateJobCardDto } from './dto/update-job-card.dto';
 import { Base64, encode } from 'js-base64';
+import { assign } from 'nodemailer/lib/shared';
 
 @Injectable()
 export class JobCardsService {
@@ -152,10 +153,47 @@ export class JobCardsService {
 
   async assignjobcard(assignJobCardDto: assignJobCardDto) {
     try {
-      const job_card_assigen = await this.assignjobcardmodal.create(
-        assignJobCardDto,
-      );
-      return job_card_assigen;
+      const arr1 = [];
+      const find_assign_job_card_by_job_id =
+        await this.assignjobcardmodal.find();
+      find_assign_job_card_by_job_id?.map((item, id) => {
+        item?.assign_data?.map((item4, ids) => {
+          arr1.push(item4);
+        });
+      });
+      const push_arr = [];
+      assignJobCardDto.assign_data.map((item1, id) => {
+        push_arr.push(item1);
+      });
+      var dumy_arr = [];
+      for (let index = 0; index < push_arr.length; index++) {
+        for (let i = 0; i < arr1.length; i++) {
+          if (push_arr[index]._id === arr1[i]._id) {
+            dumy_arr.push(push_arr);
+          }
+        }
+      }
+     if(dumy_arr.length!=0){
+      for (let index = 0; index < push_arr.length; index++) {
+        for (let i = 0; i < arr1.length; i++) {
+          if (push_arr[index]._id === arr1[i]._id) {
+            arr1[i].assign_role = push_arr[index].assign_role;
+            assignJobCardDto.assign_data = arr1[i];
+            const update_assign_data = await this.assignjobcardmodal.updateOne({
+              assign_data: assignJobCardDto.assign_data,
+            });
+          }
+        }
+      }
+      }else{
+       return await this.assignjobcardmodal.create(assignJobCardDto)
+      }
+      
+      // console.log(arr1);
+      // const job_card_assigen = await this.assignjobcardmodal.create(
+      //   assignJobCardDto,
+      // );
+      // return job_card_assigen;
     } catch {
       throw new NotFoundException('data not found');
     }
@@ -269,12 +307,18 @@ export class JobCardsService {
         throw new UnprocessableEntityException('organization not found');
       }
       const find_all_asign_card = await this.assignjobcardmodal.find();
-      for (let index = 0; index < find_all_asign_card.length; index++) {
+      const arr1 = [];
+      find_all_asign_card?.map((item, id) => {
+        item?.assign_data?.map((item2, ids) => {
+          arr1.push(item2);
+        });
+      });
+      for (let index = 0; index < arr1.length; index++) {
         if (
-          find_all_asign_card[index].organization_id === organizationkey ||
+          arr1[index].organization_id === organizationkey ||
           airmpo_designation === 'Airpmo Super Admin'
         ) {
-          new_arr.push(find_all_asign_card[index]);
+          new_arr.push(arr1[index]);
         }
       }
       return new_arr;
@@ -315,6 +359,49 @@ export class JobCardsService {
       return find_array;
     } catch {
       throw new NotFoundException('assign job cardrs not exist');
+    }
+  }
+
+  async getmyjobcardbyuserid(id: string, project_id: string, @Req() req) {
+    const new_arr = [];
+    const payload = req.headers.authorization.split('.')[1];
+    const encodetoken = Base64.decode(payload);
+    var obj = JSON.parse(encodetoken);
+    var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
+    const get_assign_all_card = await this.assignjobcardmodal.find();
+    let arr1 = [];
+    get_assign_all_card?.map((item, id) => {
+      item?.assign_data?.map((item2, ids) => {
+        arr1.push(item2);
+      });
+    });
+    var new_ar = [];
+    for (let i = 0; i < arr1.length; i++) {
+      if (
+        arr1[i].organization_id === organizationkey ||
+        airmpo_designation === 'Airpmo Super Admin'
+      ) {
+        if (arr1[i].project_id === project_id) {
+          new_ar.push(arr1[i]);
+        }
+      }
+    }
+    if (airmpo_designation === 'Airpmo Super Admin') {
+      return new_ar;
+    } else {
+      var find_assign_user = [];
+      for (let index = 0; index < new_ar.length; index++) {
+        if (new_ar[index].assign_user_id === id) {
+          find_assign_user.push(new_ar[index]);
+        } else if (new_ar[index].assign_user_id === undefined) {
+          find_assign_user.push(new_ar[index]);
+        }
+      }
+      return find_assign_user;
     }
   }
 
@@ -409,38 +496,5 @@ export class JobCardsService {
     } catch {
       throw new NotFoundException('my job card not exist');
     }
-  }
-
-  async getmyjobcardbyuserid(id: string, @Req() req) {
-    const new_arr = [];
-    const payload = req.headers.authorization.split('.')[1];
-    const encodetoken = Base64.decode(payload);
-    var obj = JSON.parse(encodetoken);
-    var organizationkey = obj.organization_id;
-    var airmpo_designation = obj.roles[0];
-    if (organizationkey === undefined || organizationkey === null) {
-      throw new UnprocessableEntityException('organization not found');
-    }
-    const get_assign_all_card = await this.assignjobcardmodal.find();
-    let arr1 = [];
-    get_assign_all_card?.map((item, id) => {
-      item?.assign_data?.map((item2, ids) => {
-        arr1.push(item2);
-      });
-    });
-    var find_assign_user = [];
-    for (let index = 0; index < arr1.length; index++) {
-      if (
-        arr1[index].organization_id === id ||
-        airmpo_designation === 'Airpmo Super Admin'
-      ) {
-        if (arr1[index].assign_user_id === id) {
-          find_assign_user.push(arr1[index]);
-        } else if (arr1[index].assign_user_id === undefined) {
-          find_assign_user.push(arr1[index]);
-        }
-      }
-    }
-    return find_assign_user;
   }
 }
