@@ -29,6 +29,7 @@ const JobCards = () => {
   const productivitysheetdata = ProductivitySheetData.use()
   const projectobjectdata = ProjectObjectData.use() 
   const [alljobcardapi, setAllJobCardApi] = useState(null)
+  const [allassignjobcardapi, setAllAssignJobCardApi] = useState(null)
   const [myjobcardapi, setMyJobCardApi] = useState(null)
 
   const { addToast } = useToasts();
@@ -68,6 +69,26 @@ console.log(useperma.id)
 
       })
      
+
+
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_assign_job_card_by_project/${projectobjectdata?._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+  
+        .then((response) => {
+          console.log(response?.data)
+          setAllAssignJobCardApi(response?.data.length)
+  
+          if (response.status === 201) {
+  
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+  
+        })
 
     // const userData = getAllJobCardApi().then((data) => {
     //   setAllJobCardApi(data?.data.length)
@@ -310,7 +331,7 @@ console.log(useperma.id)
           <Link to={projectobjectdata?._id?`/daily_task/AssignById/${projectobjectdata?._id}`:`/daily_task  `}>
             <Card
               title={"Daily Task Assigned"}
-              totalNumber={alljobcardapi}
+              totalNumber={allassignjobcardapi}
               iconn={
                 <svg
                   width="58"
@@ -328,7 +349,7 @@ console.log(useperma.id)
               }
             />
           </Link>
-          <Link to={`/daily_task/my-daily-task`}>
+          <Link to={projectobjectdata?._id?`/daily_task/my_daily_task/${projectobjectdata?._id}`:`/daily_task  `}>
             <Card
               title={"My  Daily Task"}
               totalNumber={myjobcardapi}

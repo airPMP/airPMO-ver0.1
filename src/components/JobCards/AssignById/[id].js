@@ -44,7 +44,7 @@ const JobCardAssignedId = () => {
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
-        axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${useperma.id}`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_assign_job_card_by_project/${useperma.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
