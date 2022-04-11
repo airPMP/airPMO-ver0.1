@@ -320,13 +320,14 @@ console.log(useperma)
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                       37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
                       onClick={(e) => ZoneNameFun(e)}
+                      // placeholder="ikhdm"
                     >
 
-                      <option>Zone</option>
+                      <option selected="true" disabled="disabled" >Select Zone</option>
 
                       {zonedata?.map((items, id) => {
 
-                        return <option value={[items._id, items.zone_name]}>
+                        return <option value={[items._id, items.zone_name]}  >
                           {items.zone_name}
                         </option>
                       })}
@@ -339,13 +340,14 @@ console.log(useperma)
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
                       onClick={(e) => setSubZoneName(e.target.value)}
+                       
                     >
 
-                      <option>Subzone</option>
+                      <option selected="true" disabled="disabled">select Subzone </option>
 
                       {subzonedata?.map((items, id) => {
 
-                        return <option value={items.subzone_name} >
+                        return <option   value={items.subzone_name} >
                           {items.subzone_name}
                         </option>
                       })}

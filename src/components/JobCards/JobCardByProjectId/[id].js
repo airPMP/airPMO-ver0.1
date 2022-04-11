@@ -18,6 +18,7 @@ const AllJobCardsId = () => {
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
+  const [alltokenroles, setAllTokenRoles] = useState(null)
 
   const projectobjectdata = ProjectObjectData.use() 
 
@@ -29,6 +30,9 @@ const AllJobCardsId = () => {
     if (urlTitle.pathname === "/daily_task/All-daily-task") {
       setTitle("Daily Task");
     }
+    const tokenroles= reactLocalStorage.get("roles", false);
+    setAllTokenRoles(tokenroles)
+
   }, [urlTitle.pathname]);
 
 
@@ -169,10 +173,10 @@ console.log(useperma.id)
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
-                  Arab Electricians
+                 {alltokenroles ==="albannaadmin"?  "Albanna" : "Arab Electricians"}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
-                  Shining Towers
+                {alltokenroles ==="albannaadmin"?  "J725" : "Shining Towers"}
                 </div>
 
               </div>

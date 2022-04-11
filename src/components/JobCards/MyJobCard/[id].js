@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate,useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import axios from "axios";
@@ -10,6 +10,8 @@ const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [filteredData, setFilteredData] = useState([null]);
+  const [alltokenroles, setAllTokenRoles] = useState(null)
+
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -20,9 +22,20 @@ const MyJobCardsId = () => {
 
     if (urlTitle.pathname === "/daily_task/my-daily-task") {
       setTitle("Daily Task");
+
+      
+
+
     }
   }, [urlTitle.pathname])
 
+  useEffect(()=>{
+    let tokenroles = reactLocalStorage.get("roles", false);
+      setAllTokenRoles(tokenroles)
+
+  })
+
+ 
 
   useEffect(() => {
     // /api/find_my_all_assign_card_by_user/{id}/{project_id}
@@ -82,7 +95,7 @@ const MyJobCardsId = () => {
   }
 
 
-  console.log(filteredData)
+   
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -110,10 +123,11 @@ const MyJobCardsId = () => {
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
-                  Arab Electricians
+                  
+                  {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
-                  Shining Towers
+                  {alltokenroles === "albannaadmin" ? "J725" : "Shining Towers"}
                 </div>
               </div>
               <div

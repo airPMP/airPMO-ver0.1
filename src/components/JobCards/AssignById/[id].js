@@ -7,6 +7,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { getUserApi } from "../../../AllApi/Api";
 import { useToasts } from "react-toast-notifications";
 
+
 const JobCardAssignedId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state
@@ -22,6 +23,9 @@ const JobCardAssignedId = () => {
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
 
+    const [someallpermissions, setSomeAllPermissions] = useState([null])
+
+    const [alltokenroles, setAllTokenRoles] = useState(null)
 
 
 
@@ -38,6 +42,10 @@ const JobCardAssignedId = () => {
         if (urlTitle.pathname === `/daily_task/AssignById/${useperma.id}`) {
             setTitle("Daily Task");
         }
+
+        const tokenroles= reactLocalStorage.get("roles", false);
+        setAllTokenRoles(tokenroles)
+
     }, [urlTitle.pathname])
 
 
@@ -158,13 +166,20 @@ const JobCardAssignedId = () => {
 
     const SavePostApi = () => {
 
-        console.log(userdetail)
-
         let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
 
+        let detasome = alljobcarddata?.filter((item) => {
+            return !UserSdata.find((items) => {
+                return item._id === items._id
+            })
+        }
+
+        )
+
+        let AllAssignAndNotAssignData = UserSdata.concat(detasome)
 
 
-        console.log(UserSdata)
+        console.log(AllAssignAndNotAssignData)
 
         let organizationId = ""
 
@@ -177,7 +192,7 @@ const JobCardAssignedId = () => {
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
             {
-                assign_data: UserSdata,
+                assign_data: AllAssignAndNotAssignData,
                 organization_id: organizationId
             }
             , {
@@ -318,10 +333,11 @@ const JobCardAssignedId = () => {
                         <div className="flex flex-row space-x-[350px] ">
                             <div className="flex flex-col">
                                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
-                                    Arab Electricians
+                                {alltokenroles ==="albannaadmin"?  "Albanna" : "Arab Electricians"}
                                 </div>
                                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
-                                    Shining Towers
+                                {alltokenroles ==="albannaadmin"?  "J725" : "Shining Towers"}
+                                     
                                 </div>
                             </div>
                             <div
@@ -371,11 +387,12 @@ const JobCardAssignedId = () => {
                                     <th className="pb-[15.39px]">Description</th>
                                     <th className="pb-[15.39px]">Qty</th>
                                     <th className="pb-[15.39px]">Zone</th>
+                                    <th className="pb-[15.39px]">SubZone</th>
                                     <th className="pb-[15.39px]">Assign To</th>
                                 </tr>
                             </thead>
                             {filteredData?.map((item, id) => {
-
+{console.log(item)}
                                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                                     <tr className="mb-[5px] bg-[#ECF1F0]">
                                         <th className="py-[13px]">{item.activity_code}</th>
@@ -384,6 +401,7 @@ const JobCardAssignedId = () => {
                                         <th className="">{item.activity_name}</th>
                                         <th className="">{item.quantity_to_be_achieved}</th>
                                         <th className="">{item.zone}</th>
+                                        <th className="">{item.sub_zone}</th>
 
                                         <th className="">
                                             <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
