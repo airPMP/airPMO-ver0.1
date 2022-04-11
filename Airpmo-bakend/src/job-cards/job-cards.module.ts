@@ -16,7 +16,7 @@ import { Role, RoleSchema } from 'src/schemas/roles.schema';
   { name: jobcardassign.name, schema: jobcardassignSchema },
   { name: myjobcard.name, schema: myjobcardschema },
   { name:UserRole.name,schema:UserRoleSchema, },
-  { name:Role.name,schema:RoleSchema }]), ExcelModule],
+  { name:Role.name,schema:RoleSchema }]), ExcelModule,UsersModule],
   controllers: [JobCardsController],
   providers: [JobCardsService]
 
