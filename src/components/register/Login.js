@@ -40,7 +40,7 @@ const Login = () => {
         console.log(response?.data?.roles)
         if (response.status === 201) {
 
-          // if (response?.data?.permissions[0] === "ALL" ) {
+          
              if(response?.data?.user?.organization_id){
                if(response?.data?.roles[0]==="Airpmo Super Admin"){
               navigate('/dashboard')}
@@ -54,10 +54,7 @@ const Login = () => {
               navigate('/super_admin')
              }
              
-          // }
-          // else {
-          //   navigate('/dashboard')
-          // }
+          
           addToast("Login  Sucessfully", {
             appearance: "success",
             autoDismiss: true,
@@ -67,7 +64,7 @@ const Login = () => {
           reactLocalStorage.set("organization_id", response?.data?.user?.organization_id);
           reactLocalStorage.set("roles", response?.data?.roles);
           reactLocalStorage.set("permisions", response?.data?.permissions); 
-          // navigate('/dashboard')
+           
         }
         else {
 
