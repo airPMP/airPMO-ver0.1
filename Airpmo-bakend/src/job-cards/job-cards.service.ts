@@ -153,49 +153,21 @@ export class JobCardsService {
 
   async assignjobcard(assignJobCardDto: assignJobCardDto) {
     try {
-      const arr1 = [];
-      const find_assign_job_card_by_job_id =
-        await this.assignjobcardmodal.find();
-      find_assign_job_card_by_job_id?.map((item, id) => {
-        item?.assign_data?.map((item4, ids) => {
-          arr1.push(item4);
-        });
+      const id = assignJobCardDto.organization_id;
+      const find_assign = await this.assignjobcardmodal.findOne({
+        organization_id: id,
       });
-      const push_arr = [];
-      assignJobCardDto.assign_data.map((item1, id) => {
-        push_arr.push(item1);
-      });
-      var dumy_arr = [];
-      for (let index = 0; index < push_arr.length; index++) {
-        for (let i = 0; i < arr1.length; i++) {
-          if (push_arr[index]._id === arr1[i]._id) {
-            dumy_arr.push(push_arr);
-          }
-        }
+      if (find_assign === null) {
+        return await this.assignjobcardmodal.create(assignJobCardDto);
+      } else {
+        const update_assign_card = await this.assignjobcardmodal.updateOne(
+          { organization_id: assignJobCardDto.organization_id },
+          { assign_data: assignJobCardDto.assign_data },
+        );
+        return await this.assignjobcardmodal.findOne({ organization_id: id });
       }
-     if(dumy_arr.length!=0){
-      for (let index = 0; index < push_arr.length; index++) {
-        for (let i = 0; i < arr1.length; i++) {
-          if (push_arr[index]._id === arr1[i]._id) {
-            arr1[i].assign_role = push_arr[index].assign_role;
-            assignJobCardDto.assign_data = arr1[i];
-            const update_assign_data = await this.assignjobcardmodal.updateOne({
-              assign_data: assignJobCardDto.assign_data,
-            });
-          }
-        }
-      }
-      }else{
-       return await this.assignjobcardmodal.create(assignJobCardDto)
-      }
-      
-      // console.log(arr1);
-      // const job_card_assigen = await this.assignjobcardmodal.create(
-      //   assignJobCardDto,
-      // );
-      // return job_card_assigen;
     } catch {
-      throw new NotFoundException('data not found');
+      throw new UnprocessableEntityException('all ready exist');
     }
   }
 
