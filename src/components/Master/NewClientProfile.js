@@ -73,8 +73,7 @@ const NewClientProfile = () => {
 
     },
     validate,
-    onSubmit: (values, { resetForm }) => {
-      console.log(organization_id_data)
+    onSubmit: (values, { resetForm }) => { 
       if (organization_id_data !== "undefined" && organization_id_data !== null && organization_id_data !== false) { 
         values.organization_id = organization_id_data
       }
