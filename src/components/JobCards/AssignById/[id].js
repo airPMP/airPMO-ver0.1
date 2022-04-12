@@ -106,11 +106,11 @@ const JobCardAssignedId = () => {
 
     const UserSelectFun = (e, itemData) => {
 
-        console.log(itemData)
+        
 
         // if (itemData.assign_user_id !== undefined && itemData.assign_user_id !== "") {
 
-        console.log(itemData)
+        
 
         let organizationId = ""
 
@@ -124,10 +124,11 @@ const JobCardAssignedId = () => {
         const database = userDetail.split(',')
         let selectedObject = itemData
         let selectedValue = database[0]
-        selectedObject.assign_role = selectedValue
+        selectedObject.assign_to = selectedValue
+        selectedObject.assign_user_id = database[1]
         selectedObject.assign_user_id = database[1]
 
-        selectedObject.organization_id = organizationId
+        selectedObject.job_card_no = itemData._id
 
         const token = reactLocalStorage.get("access_token", false);
         axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
@@ -168,18 +169,20 @@ const JobCardAssignedId = () => {
 
         let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
 
-        let detasome = alljobcarddata?.filter((item) => {
-            return !UserSdata.find((items) => {
-                return item._id === items._id
-            })
-        }
+        // let detasome = alljobcarddata?.filter((item) => {
+        //     return !UserSdata.find((items) => {
+        //         return item._id === items._id
+        //     })
+        // }
 
-        )
+        // )
 
-        let AllAssignAndNotAssignData = UserSdata.concat(detasome)
+        // let AllAssignAndNotAssignData = UserSdata.concat(detasome)
 
 
-        console.log(AllAssignAndNotAssignData)
+        // console.log(AllAssignAndNotAssignData)
+console.log(UserSdata)
+        
 
         let organizationId = ""
 
@@ -189,13 +192,12 @@ const JobCardAssignedId = () => {
         if (organization_Id !== "undefined" && organization_Id !== null) {
             organizationId = organization_Id
         }
-
-        axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_job_card`,
-            {
-                assign_data: AllAssignAndNotAssignData,
-                organization_id: organizationId
-            }
-            , {
+        
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card`,
+             UserSdata,
+                // organization_id: organizationId
+            
+             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
@@ -203,7 +205,7 @@ const JobCardAssignedId = () => {
 
             .then((response) => {
                 console.log(response);
-                if (response.status === 201) {
+                if (response.status === 200) {
                     addToast("your daily task is assign Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
@@ -407,12 +409,16 @@ const JobCardAssignedId = () => {
                                             <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
                                                 onFocus={(e) => UserOnFocusSelectFun(e, item)}
                                                 onClick={(e) => UserSelectFun(e, item)}>
-                                                <option> Select User</option>
+                                                <option> {item?.assign_to!==""?item?.assign_to:`Select User`}</option>
                                                 {item?.user?.map((items, i) => {
+                                                    console.log(item)
 
 
 
-                                                    return <option value={[items.name, items.assignuserid]}>{items.name}</option>
+                                                    return <option 
+                                                     className={`${item?.assign_to===items.name?"bg-[red] text-[black]":null}`} 
+                                                     value={[items.name, items.assignuserid]}>
+                                                        {  items.name}</option>
                                                 })
                                                 }
 

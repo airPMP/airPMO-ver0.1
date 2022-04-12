@@ -111,6 +111,8 @@ const NewJobCard = () => {
       manager_comments: "",
       discription: "",
       organization_id: "",
+      assign_user_id: "",
+      assign_to: "",
     },
     validate,
     onSubmit: async (values, { resetForm }) => {

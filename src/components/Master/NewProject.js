@@ -81,6 +81,8 @@ const NewProject = () => {
   const [categoryid, setCategoryId] = useState(null)
   const [clientdata, setClientData] = useState(null)
   const [clientid, setClientId] = useState(null)
+  const [clientnullerror, setClientNullError] = useState(true)
+  const [clientnullerror1, setClientNullError1] = useState(false)
   const [showeye, setShowEye] = useState(" ");
   const [organization_id_data, setOrganization_Id] = useState();
 
@@ -164,7 +166,7 @@ const NewProject = () => {
       time_sheet_id: "",
       spread_sheet_id: "",
       spread_sheet_key: "",
-      organization_id: '',
+      organization_id: "",
       categories_id: ""
     },
     validate,
@@ -183,36 +185,41 @@ const NewProject = () => {
 
 
 
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-        .then((response) => {
-          console.log(response)
-          setProjectIdZone(response?.data?._id)
-          console.log(response?.data?._id)
-          if (response.status === 201) {
-            addToast("Project is Added Sucessfully", {
-              appearance: "success",
+      if (clientnullerror && clientnullerror1) {
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+          .then((response) => {
+            console.log(response)
+            setProjectIdZone(response?.data?._id)
+            console.log(response?.data?._id)
+            if (response.status === 201) {
+              addToast("Project is Added Sucessfully", {
+                appearance: "success",
+                autoDismiss: true,
+              })
+              if (createpermission || allpermissions) {
+                ViewZoneData.set(o => !o)
+              }
+
+              // navigate('/')
+            }
+            resetForm()
+          })
+          .catch((error) => {
+            console.log(error)
+            addToast(error.response.data.message, {
+              appearance: "error",
               autoDismiss: true,
             })
-            if (createpermission || allpermissions) {
-              ViewZoneData.set(o => !o)
-            }
-
-            // navigate('/')
-          }
-          resetForm()
-        })
-        .catch((error) => {
-          console.log(error)
-          addToast(error.response.data.message, {
-            appearance: "error",
-            autoDismiss: true,
           })
-        })
-
+      }
+      else{
+        setClientNullError(false)
+         
+      }
 
     },
   });
@@ -250,10 +257,18 @@ const NewProject = () => {
   }
 
   const ClientFun = (e) => {
+    console.log(e.target.value)
+
     const url_data = e.target.value
     const client_data = url_data.split(',')
     setClientData(client_data[0])
     setClientId(client_data[1])
+
+    if (client_data[0]) {
+      setClientNullError(true)
+      setClientNullError1(true)
+    }
+
   }
 
   useEffect(() => {
@@ -461,11 +476,11 @@ const NewProject = () => {
                       name="client_name"
                       // value={formik.values.client_name}
                       // onChange={formik.handleChange}
-                      onChange={(e) => ClientFun(e)}
+                      onChange={(e) => { ClientFun(e); formik.handleChange() }}
 
                       className="bg-white pr-[54%] text-[14px]"
                     >
-                      <option value="" label="Select Client Name" />
+                      <option selected="true" disabled="disabled" label="Select Client Name" />
                       {projectdata?.map((item, id) => {
                         return <>
                           <option value={[item.client_name, item._id]} label={item.client_name} />
@@ -475,13 +490,14 @@ const NewProject = () => {
 
 
                   </div>
-                  {/* {
-                    formik.errors.client_name && (
+                  {
+                    !clientnullerror && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.client_name}{" "}
+                        {/* {formik.errors.client_name} */}
+                        {"Client Name Required "}
                       </div>
                     )
-                  } */}
+                  }
                 </div>
                 <div className=" relative w-[350px]">
                   <input

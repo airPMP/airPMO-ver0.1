@@ -41,14 +41,16 @@ const validate = (values) => {
     ) {
         errors.PhoneNumber = "Invalid Phone Number";
     }
-    
+    // if (!values.spread_sheet_user_id) {
+    //     errors.spread_sheet_user_id = "User Id Required";
+    // }
     // if (!values.Designation) {
     //     errors.Designation = "Designation  Required";
     // }
     // if (!values.Comments) {
     //     errors.Comments = "comment Required";
     // }
-    
+    // console.log(errors);
     return errors;
 };
 
