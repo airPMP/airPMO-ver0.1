@@ -11,10 +11,11 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Update_role_Permission } from './dto/update_permission-role.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectModel(Role.name) private RoleModel: Model<RoleDocument>) {}
+  constructor(@InjectModel(Role.name) private RoleModel: SoftDeleteModel<RoleDocument>) {}
   async create(createRoleDto: CreateRoleDto) {
     const find = await this.RoleModel.find({
       organization_id: createRoleDto.organization_id,
@@ -71,10 +72,10 @@ export class RolesService {
 
   async remove(id: string) {
     try {
-      const data = await this.RoleModel.deleteOne({ _id: id });
-      if (!data.deletedCount) {
-        return 'object not exist';
-      }
+      const data = await this.RoleModel.softDelete({ _id: id });
+      // if (!data.deletedCount) {
+      //   return 'object not exist';
+      // }
       return 'deleted seccessfully';
     } catch {
       throw new NotFoundException('role not exist');

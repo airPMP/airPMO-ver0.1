@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type zoneDocument = zone & Document;
 
@@ -25,4 +26,4 @@ export class zone {
   
 }
 
-export const zoneSchema = SchemaFactory.createForClass(zone);
+export const zoneSchema = SchemaFactory.createForClass(zone).plugin(softDeletePlugin);

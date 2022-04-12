@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document, SortValues } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type excelDocument = excels & Document;
 @Schema()
@@ -45,4 +46,4 @@ export class excels {
   updatedAt: string;
 }
 
-export const excelSchema = SchemaFactory.createForClass(excels);
+export const excelSchema = SchemaFactory.createForClass(excels).plugin(softDeletePlugin);

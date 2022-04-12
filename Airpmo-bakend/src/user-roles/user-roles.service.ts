@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { RolesService } from 'src/roles/roles.service';
 import { UserRole, UserRoleDocument } from 'src/schemas/user_roles.schema';
 import { UsersService } from 'src/users/users.service';
@@ -15,7 +16,7 @@ import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 @Injectable()
 export class UserRolesService {
   constructor(
-    @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
+    @InjectModel(UserRole.name) private UserRoleModel:SoftDeleteModel<UserRoleDocument>,
     private roleService: RolesService,
     @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
@@ -52,10 +53,10 @@ export class UserRolesService {
 
   async remove(id: string) {
     try {
-      const data = await this.UserRoleModel.deleteOne({ _id: id });
-      if (!data.deletedCount) {
-        return 'object not exist';
-      }
+      const data = await this.UserRoleModel.softDelete({ _id: id });
+      // if (!data.deletedCount) {
+      //   return 'object not exist';
+      // }
       return 'deleted seccessfully';
     } catch {
       throw new NotFoundException('user role not exist');

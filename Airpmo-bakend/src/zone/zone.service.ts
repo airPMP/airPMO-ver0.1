@@ -10,9 +10,10 @@ import { zone, zoneDocument } from 'src/schemas/zone.schema';
 import { CreateZoneDto } from './dto/create-zone.dto';
 import { UpdateZoneDto } from './dto/update-zone.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 @Injectable()
 export class ZoneService {
-  constructor(@InjectModel(zone.name) private zoneModel: Model<zoneDocument>) {}
+  constructor(@InjectModel(zone.name) private zoneModel: SoftDeleteModel<zoneDocument>) {}
   async create(createZoneDto: CreateZoneDto) {
     try {
       return await this.zoneModel.create(createZoneDto);
@@ -77,7 +78,7 @@ export class ZoneService {
 
   async remove(id: string) {
     try {
-      const deletezone = await this.zoneModel.remove({ _id: id });
+      const deletezone = await this.zoneModel.softDelete({ _id: id });
       return {
         massage: 'deleted sucessfully',
       };

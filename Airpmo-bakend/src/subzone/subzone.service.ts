@@ -10,11 +10,12 @@ import { subzone, subzoneDocument } from 'src/schemas/subzone.schema';
 import { CreateSubzoneDto } from './dto/create-subzone.dto';
 import { UpdateSubzoneDto } from './dto/update-subzone.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class SubzoneService {
   constructor(
-    @InjectModel(subzone.name) private subzoneModel: Model<subzoneDocument>,
+    @InjectModel(subzone.name) private subzoneModel:SoftDeleteModel<subzoneDocument>,
   ) {}
   async create(createSubzoneDto: CreateSubzoneDto) {
     return await this.subzoneModel.create(createSubzoneDto);
@@ -76,7 +77,7 @@ export class SubzoneService {
 
   async remove(id: string) {
     try {
-      const deletezone = await this.subzoneModel.deleteOne({ _id: id });
+      const deletezone = await this.subzoneModel.softDelete({ _id: id });
       return deletezone;
     } catch {
       throw new NotFoundException('subzone is not exist');
