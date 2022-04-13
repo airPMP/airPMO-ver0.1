@@ -47,11 +47,15 @@ export class orgainization {
 
   @Prop()
   hrms_url_api: string;
+
   @Prop()
   hrms_api_url_id: string;
 
   @Prop()
   hrms_api_or_sheet: boolean;
+
+  @Prop()
+  organization_image_url: string;
 
   @Prop({ default: Date })
   createdAt: string;
@@ -60,4 +64,5 @@ export class orgainization {
   updatedAt: string;
 }
 
-export const orgainizationSchema = SchemaFactory.createForClass(orgainization).plugin(softDeletePlugin);
+export const orgainizationSchema =
+  SchemaFactory.createForClass(orgainization).plugin(softDeletePlugin);

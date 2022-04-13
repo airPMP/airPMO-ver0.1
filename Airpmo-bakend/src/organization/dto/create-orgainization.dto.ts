@@ -61,4 +61,7 @@ export class CreateOrgainizationDto {
 
   @ApiProperty()
   hrms_api_or_sheet: boolean;
+
+  @ApiProperty()
+  organization_image_url: string;
 }
