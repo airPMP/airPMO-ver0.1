@@ -57,17 +57,17 @@ export class JobCardsController {
     // @Param('id') id: string,
     @Body() UpdateJobCardDto: UpdateJobCardDto[],
   ) {
-    return await this.jobCardsService.updatejobcard( UpdateJobCardDto);
+    return await this.jobCardsService.updatejobcard(UpdateJobCardDto);
   }
 
   @Auth('GET-JOB-CARD')
-  @Get('find_all_assign_card_by_user/:id')
+  @Get('find_all_assign_card_by_user/:id/:project_id')
   async getmyjobcardbyuserid(
     @Param('id') id: string,
-    // @Param('project_id') project_id: string,
+    @Param('project_id') project_id: string,
     @Req() req,
   ) {
-    return await this.jobCardsService.getmyjobcardbyuserid(id, req);
+    return await this.jobCardsService.getmyjobcardbyuserid(id, project_id, req);
   }
 
   // @Auth('CREATE-ASSIGN-JOB-CARD')
