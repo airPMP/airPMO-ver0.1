@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type spicpiDocument = spicpi & Document;
 
@@ -27,4 +28,4 @@ export class spicpi {
   updatedAt: string;
 }
 
-export const spicpiSchema = SchemaFactory.createForClass(spicpi);
+export const spicpiSchema = SchemaFactory.createForClass(spicpi).plugin(softDeletePlugin);

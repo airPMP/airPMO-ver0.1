@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 export type ussersDocument = users & Document;
 
 @Schema()
@@ -63,5 +64,9 @@ export class users {
 
   @Prop({ default: Date })
   updatedAt: string;
+
+  @Prop({ default: Date })
+  deletedAt: string;
 }
-export const usersSchema = SchemaFactory.createForClass(users);
+export const usersSchema =
+  SchemaFactory.createForClass(users).plugin(softDeletePlugin);

@@ -10,11 +10,12 @@ import { project, projectDocument } from 'src/schemas/projects.schema';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class ProjectsService {
   constructor(
-    @InjectModel(project.name) private projectModel: Model<projectDocument>,
+    @InjectModel(project.name) private projectModel:SoftDeleteModel<projectDocument>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto) {
@@ -78,7 +79,7 @@ export class ProjectsService {
   }
   async remove(id: string) {
     try {
-      const user = await this.projectModel.deleteOne({ _id: id });
+      const user = await this.projectModel.softDelete({ _id: id });
       return {
         massage: 'Delete sucessfully',
       };

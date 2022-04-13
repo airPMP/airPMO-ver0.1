@@ -11,11 +11,12 @@ import { Client, ClientDocument } from 'src/schemas/client.schema';
 import { CreateClientprofileDto } from './dto/create-clientprofile.dto';
 import { UpdateClientprofileDto } from './dto/update-clientprofile.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class ClientprofileService {
   constructor(
-    @InjectModel(Client.name) private clientModel: Model<ClientDocument>,
+    @InjectModel(Client.name) private clientModel:  SoftDeleteModel<ClientDocument>,
   ) {}
 
   async create(createClientprofileDto: CreateClientprofileDto) {
@@ -86,7 +87,7 @@ export class ClientprofileService {
 
   async remove(id: string) {
     try {
-      const client = await this.clientModel.deleteOne({ _id: id });
+      const client = await this.clientModel.softDelete({ _id: id });
       return {
         massage: ' Deleted ',
       };

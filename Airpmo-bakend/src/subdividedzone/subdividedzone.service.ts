@@ -13,12 +13,13 @@ import {
 import { CreateSubdividedzoneDto } from './dto/create-subdividedzone.dto';
 import { UpdateSubdividedzoneDto } from './dto/update-subdividedzone.dto';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class SubdividedzoneService {
   constructor(
     @InjectModel(subdividedzone.name)
-    private subdividedzonemodel: Model<subdividedzoneDocument>,
+    private subdividedzonemodel: SoftDeleteModel<subdividedzoneDocument>,
   ) {}
   async create(createSubdividedzoneDto: CreateSubdividedzoneDto) {
     return await this.subdividedzonemodel.create(createSubdividedzoneDto);
@@ -83,7 +84,7 @@ export class SubdividedzoneService {
   }
 
   async remove(id: string) {
-    return this.subdividedzonemodel.deleteOne({ _id: id });
+    return this.subdividedzonemodel.softDelete({ _id: id });
   }
 
   async findsubdivided(subzone_id: string, @Req() req) {

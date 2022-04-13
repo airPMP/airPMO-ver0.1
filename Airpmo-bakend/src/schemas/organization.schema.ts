@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type orgainizationDocument = orgainization & Document;
 
@@ -59,4 +60,4 @@ export class orgainization {
   updatedAt: string;
 }
 
-export const orgainizationSchema = SchemaFactory.createForClass(orgainization);
+export const orgainizationSchema = SchemaFactory.createForClass(orgainization).plugin(softDeletePlugin);
