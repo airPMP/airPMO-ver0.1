@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate,useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 // import { useToasts } from "react-toast-notifications";
@@ -50,7 +50,7 @@ const NewJobCard = () => {
   const productivitysheetdata = ProductivitySheetData.use()
   const productivesheetid = ProductiveSheetId.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
-  const projectobjectdata = ProjectObjectData.use()  
+  const projectobjectdata = ProjectObjectData.use()
 
 
 
@@ -124,7 +124,7 @@ const NewJobCard = () => {
       if (organization_Id !== "undefined" && organization_Id !== null) {
         values.organization_id = organization_Id
         values.permissions = permisions_data
-    }
+      }
 
 
       values.project_name = projectobjectdata.project_name
@@ -149,8 +149,8 @@ const NewJobCard = () => {
             addToast("Issue JC Sucessfully", {
               appearance: "success",
               autoDismiss: true,
-            }) 
-            
+            })
+
             naviagte("/daily_task")
 
           }
@@ -210,13 +210,13 @@ const NewJobCard = () => {
       .catch((error) => {
         console.log(error)
 
-      }) 
+      })
 
   }
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${useperma.id}`, {
       headers: {
@@ -236,9 +236,9 @@ const NewJobCard = () => {
 
       })
 
-  },[])
+  }, [])
 
-console.log(useperma)
+  console.log(useperma)
 
 
   return (
@@ -270,10 +270,10 @@ console.log(useperma)
 
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer "
-                    onClick={(e) => ActivityCode(e)}
+                     onChange={(e) => ActivityCode(e)}
                   >
 
-                    <option>Activity Code</option>
+                    <option selected="true" disabled="disabled" >Activity Code</option>
 
                     {productivitysheetdata?.map((items, id) => {
 
@@ -324,8 +324,8 @@ console.log(useperma)
 
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                       37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
-                      onClick={(e) => ZoneNameFun(e)}
-                      // placeholder="ikhdm"
+                      onChange={(e) => ZoneNameFun(e)}
+                    // placeholder="ikhdm"
                     >
 
                       <option selected="true" disabled="disabled" >Select Zone</option>
@@ -344,15 +344,15 @@ console.log(useperma)
 
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
-                      onClick={(e) => setSubZoneName(e.target.value)}
-                       
+                      onChange={(e) => setSubZoneName(e.target.value)}
+
                     >
 
-                      <option selected="true" disabled="disabled">select Subzone </option>
+                      <option selected="true" disabled="disabled">Select Subzone </option>
 
                       {subzonedata?.map((items, id) => {
 
-                        return <option   value={items.subzone_name} >
+                        return <option value={items.subzone_name} >
                           {items.subzone_name}
                         </option>
                       })}

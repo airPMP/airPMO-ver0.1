@@ -58,7 +58,7 @@ const JobCards = () => {
     })
 
       .then((response) => {
-        console.log(response?.data)
+        // console.log(response?.data)
         setAllJobCardApi(response?.data.length)
 
         if (response.status === 201) {
@@ -72,7 +72,7 @@ const JobCards = () => {
 
 
 
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_assign_job_card_by_project/${projectobjectdata?._id}`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -80,7 +80,17 @@ const JobCards = () => {
 
       .then((response) => {
         console.log(response?.data)
-        setAllAssignJobCardApi(response?.data.length)
+        let assingnLength = response?.data?.filter((items, id) => {
+          if (items.assign_to !== "") {
+            // console.log(items)
+            return items
+          }
+
+        })
+
+        // console.log(assingnLength.length)
+
+        setAllAssignJobCardApi(assingnLength.length)
 
         if (response.status === 201) {
 
@@ -92,14 +102,14 @@ const JobCards = () => {
       })
 
     const user_id = reactLocalStorage.get("user_id", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_all_assign_card_by_user/${user_id}/${projectobjectdata?._id}`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
 
       .then((response) => {
-        console.log(response?.data)
+        // console.log(response?.data)
         setMyJobCardApi(response?.data.length)
 
         if (response.status === 201) {
@@ -360,7 +370,7 @@ const JobCards = () => {
           <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"Daily Task Assigned"}
-              totalNumber={alljobcardapi}
+              totalNumber={allassignjobcardapi}
               iconn={
                 <svg
                   width="58"
@@ -381,7 +391,7 @@ const JobCards = () => {
           <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"My  Daily Task"}
-              totalNumber={alljobcardapi}
+              totalNumber={projectobjectdata?._id ?myjobcardapi:"0"}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
                   <svg

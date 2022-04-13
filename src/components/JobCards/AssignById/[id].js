@@ -106,7 +106,7 @@ const JobCardAssignedId = () => {
 
     const UserSelectFun = (e, itemData) => {
 
-        
+        console.log( e.target.value)
 
         // if (itemData.assign_user_id !== undefined && itemData.assign_user_id !== "") {
 
@@ -180,8 +180,7 @@ const JobCardAssignedId = () => {
         // let AllAssignAndNotAssignData = UserSdata.concat(detasome)
 
 
-        // console.log(AllAssignAndNotAssignData)
-console.log(UserSdata)
+        // console.log(AllAssignAndNotAssignData) 
         
 
         let organizationId = ""
@@ -393,8 +392,7 @@ console.log(UserSdata)
                                     <th className="pb-[15.39px]">Assign To</th>
                                 </tr>
                             </thead>
-                            {filteredData?.map((item, id) => {
-{console.log(item)}
+                            {filteredData?.map((item, id) => { 
                                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                                     <tr className="mb-[5px] bg-[#ECF1F0]">
                                         <th className="py-[13px]">{item.activity_code}</th>
@@ -408,10 +406,9 @@ console.log(UserSdata)
                                         <th className="">
                                             <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
                                                 onFocus={(e) => UserOnFocusSelectFun(e, item)}
-                                                onClick={(e) => UserSelectFun(e, item)}>
-                                                <option> {item?.assign_to!==""?item?.assign_to:`Select User`}</option>
-                                                {item?.user?.map((items, i) => {
-                                                    console.log(item)
+                                                onChange={(e) => UserSelectFun(e, item)}>
+                                                <option selected="true" disabled="disabled"> {item?.assign_to!==""?item?.assign_to:`Select User`}</option>
+                                                {item?.user?.map((items, i) => { 
 
 
 
