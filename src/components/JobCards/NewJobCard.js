@@ -113,14 +113,17 @@ const NewJobCard = () => {
       organization_id: "",
       assign_user_id: "",
       assign_to: "",
+      permissions: "",
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
 
       const organization_Id = reactLocalStorage.get("organization_id", false);
+      const permisions_data = reactLocalStorage.get("permisions", false);
 
       if (organization_Id !== "undefined" && organization_Id !== null) {
         values.organization_id = organization_Id
+        values.permissions = permisions_data
     }
 
 
