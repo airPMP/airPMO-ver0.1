@@ -413,6 +413,7 @@ const JobCardAssignedId = () => {
 
 
                                                     return <option 
+                                                    // selected= {`${item?.assign_to===items.name?"true":null}`} 
                                                      className={`${item?.assign_to===items.name?"bg-[red] text-[black]":null}`} 
                                                      value={[items.name, items.assignuserid]}>
                                                         {  items.name}</option>
