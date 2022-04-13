@@ -188,7 +188,9 @@ const NewJobCard = () => {
   const ZoneNameFun = (e) => {
 
     const zoneData = e.target.value
-    const ZoneDataSplit = zoneData.split(',')
+    const ZoneDataSplit = zoneData.split(',a,')
+    console.log(e.target.value)
+    console.log(ZoneDataSplit)
     setZoneName(ZoneDataSplit[1])
 
 
@@ -270,7 +272,7 @@ const NewJobCard = () => {
 
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer "
-                     onChange={(e) => ActivityCode(e)}
+                    onChange={(e) => ActivityCode(e)}
                   >
 
                     <option selected="true" disabled="disabled" >Activity Code</option>
@@ -332,7 +334,7 @@ const NewJobCard = () => {
 
                       {zonedata?.map((items, id) => {
 
-                        return <option value={[items._id, items.zone_name]}  >
+                        return <option value={[items._id, "a", items.zone_name]}  >
                           {items.zone_name}
                         </option>
                       })}

@@ -239,24 +239,27 @@ console.log(useperma.id)
             <table className="table-auto pt-[24px] w-[100%]  ">
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
-                  <th className="pb-[15.39px]">Activity ID</th>
-                  <th className="pb-[15.39px]"> Daily Task No.</th>
-                  <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
-                  <th className="pb-[15.39px]">Description</th>
-                  <th className="pb-[15.39px]">Qty</th>
-                  <th className="pb-[15.39px]">Zone</th>
-                  <th className="pb-[15.39px]">Status</th>
+                  <th className="pb-[15.39px] w-[10%]">Activity ID</th>
+                  {/* <th className="pb-[15.39px]"> Daily Task No.</th> */}
+                  <th className="pb-[15.39px] w-[10%]">Date(YY/MM/DD)</th>
+                  <th className="pb-[15.39px] w-[20%]">Description</th>
+                  <th className="pb-[15.39px]w-[6%]">Qty</th>
+                  <th className="pb-[15.39px] w-[20%]">Zone</th>
+                  <th className="pb-[15.39px] w-[20%]">Subzone</th>
+                  <th className="pb-[15.39px]w-[10%]">Status</th>
                 </tr>
               </thead>
               {filteredData?.map((item, id) => {
+                console.log(item)
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className="py-[13px]">{item.activity_code}</th>
-                    <th className="">{item._id}</th>
+                    {/* <th className="">{item._id}</th> */}
                     <th className="">{item.jc_creation}</th>
                     <th className="">{item.activity_name}</th>
                     <th className="">{item.quantity_to_be_achieved}</th>
                     <th className="">{item.zone}</th>
+                    <th className="">{item.sub_zone}</th>
 
                     <th
                       className="cursor-pointer"
