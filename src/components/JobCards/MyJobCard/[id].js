@@ -41,7 +41,7 @@ const MyJobCardsId = () => {
     // /api/find_my_all_assign_card_by_user/{id}/{project_id}
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
