@@ -515,8 +515,8 @@ const NewJobCardMultiId = () => {
 
                                 <div className="flex flex-row mr-[-50px]">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
-                                        <button onClick={() => { naviagte("/job_cards") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                                            Cancel
+                                        <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
+                                        My JC
                                         </button>
                                     </div>
                                     <div>
@@ -525,7 +525,7 @@ const NewJobCardMultiId = () => {
                                             type="submit"
                                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                         >
-                                            Issue JC
+                                           Execute JC
                                         </button>
                                     </div>
                                 </div>
