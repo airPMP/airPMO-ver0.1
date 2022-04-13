@@ -144,19 +144,29 @@ export class JobCardsService {
 
   async updatejobcard(@Body() UpdateJobCardDto: UpdateJobCardDto[]) {
     try {
-   const find_all_job= await this.jobcardmodal.find()
-   for (let index = 0; index < UpdateJobCardDto.length; index++) {
-     for (let i = 0; i < find_all_job.length; i++) {
-       if(find_all_job[i]._id.toString()===UpdateJobCardDto[index].job_card_no){
-           const asss_user_id= UpdateJobCardDto[index].assign_user_id
-            const assign_to =UpdateJobCardDto[index].assign_to
-            const permisssions =UpdateJobCardDto[index].permissions
-            await this.jobcardmodal.updateOne({_id:UpdateJobCardDto[index].job_card_no}, { $set: { assign_user_id:asss_user_id,assign_to:assign_to,permissions:permisssions } })
-       }
-       
-     }  
-   }
-    
+      const find_all_job = await this.jobcardmodal.find();
+      for (let index = 0; index < UpdateJobCardDto.length; index++) {
+        for (let i = 0; i < find_all_job.length; i++) {
+          if (
+            find_all_job[i]._id.toString() ===
+            UpdateJobCardDto[index].job_card_no
+          ) {
+            const asss_user_id = UpdateJobCardDto[index].assign_user_id;
+            const assign_to = UpdateJobCardDto[index].assign_to;
+            const permisssions = UpdateJobCardDto[index].permissions;
+            await this.jobcardmodal.updateOne(
+              { _id: UpdateJobCardDto[index].job_card_no },
+              {
+                $set: {
+                  assign_user_id: asss_user_id,
+                  assign_to: assign_to,
+                  permissions: permisssions,
+                },
+              },
+            );
+          }
+        }
+      }
     } catch {
       throw new NotFoundException('Not found data');
     }
@@ -167,7 +177,7 @@ export class JobCardsService {
     const payload = req.headers.authorization.split('.')[1];
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
-       var permission= obj.permission
+    var permission = obj.permission;
     var organizationkey = obj.organization_id;
     var airmpo_designation = obj.roles[0];
     if (organizationkey === undefined || organizationkey === null) {
@@ -176,18 +186,12 @@ export class JobCardsService {
     const get_assign_all_card = await this.jobcardmodal.find();
     var new_ass = [];
     for (let index = 0; index < get_assign_all_card.length; index++) {
-      if( airmpo_designation === 'Airpmo Super Admin'){
-          new_ass.push(get_assign_all_card[index])
+      if (airmpo_designation === 'Airpmo Super Admin') {
+        new_ass.push(get_assign_all_card[index]);
       }
-     else if  (
+      else if (
         get_assign_all_card[index].organization_id === organizationkey
-       
       ) {
-        if( get_assign_all_card[index].permissions==='ALL'){
-          new_ass.push(get_assign_all_card[index]);
-        }else{
-
-        
         if (
           get_assign_all_card[index].assign_user_id === id ||
           get_assign_all_card[index].assign_user_id === null ||
@@ -196,9 +200,8 @@ export class JobCardsService {
           new_ass.push(get_assign_all_card[index]);
         }
       }
-      }
     }
-  return new_ass
+    return new_ass;
   }
 
   async assignjobcard(assignJobCardDto: assignJobCardDto) {
