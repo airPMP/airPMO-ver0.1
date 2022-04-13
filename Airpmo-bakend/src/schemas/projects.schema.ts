@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiTags } from '@nestjs/swagger';
 import { Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type projectDocument = project & Document;
 
@@ -82,4 +83,4 @@ export class project {
   spread_sheet_id: string;
 }
 
-export const projectSchema = SchemaFactory.createForClass(project);
+export const projectSchema = SchemaFactory.createForClass(project).plugin(softDeletePlugin);

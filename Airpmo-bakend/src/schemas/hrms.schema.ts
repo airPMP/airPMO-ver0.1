@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type hrmsDocuments = hrms & Document;
 
@@ -15,4 +16,4 @@ export class hrms {
   updatedAt: string;
 }
 
-export const hrmsSchema = SchemaFactory.createForClass(hrms);
+export const hrmsSchema = SchemaFactory.createForClass(hrms).plugin(softDeletePlugin);

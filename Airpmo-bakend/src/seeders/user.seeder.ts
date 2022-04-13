@@ -73,7 +73,7 @@ export class UsersSeeder implements Seeder {
         username: 'Riyashar',
         Password:
           '$2b$10$StFrJoUutGwyQHZ583eYh.1m.MoOys0u70cUBMPhXpa/Evva2FQqa',
-      },
+      }
     ]);
   }
 

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import {
   orgainization,
   orgainizationDocument,
@@ -12,17 +13,18 @@ import { UpdateOrgainizationDto } from './dto/update-orgainization.dto';
 export class OrgainizationService {
   constructor(
     @InjectModel(orgainization.name)
-    private orgainizationmodel: Model<orgainizationDocument>,
+    private orgainizationmodel: SoftDeleteModel<orgainizationDocument>,
   ) {}
 
   async create(createOrgainizationDto: CreateOrgainizationDto) {
-    const find_organization = await this.orgainizationmodel.findOne({user_id:createOrgainizationDto.user_id});
-    if(find_organization===null){
+    const find_organization = await this.orgainizationmodel.findOne({
+      user_id: createOrgainizationDto.user_id,
+    });
+    if (find_organization === null) {
       return this.orgainizationmodel.create(createOrgainizationDto);
-    }else{
-      throw new NotFoundException('organization already exist')
+    } else {
+      throw new NotFoundException('organization already exist');
     }
-   
   }
 
   findAll() {
@@ -55,7 +57,7 @@ export class OrgainizationService {
   }
   async remove(id: string) {
     try {
-      const orgainizationd = await this.orgainizationmodel.deleteOne({
+      const orgainizationd = await this.orgainizationmodel.softDelete({
         _id: id,
       });
       return {

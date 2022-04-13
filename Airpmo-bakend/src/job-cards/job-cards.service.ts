@@ -9,7 +9,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, set } from 'mongoose';
 import { setPriority } from 'os';
 import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
@@ -27,11 +27,13 @@ import { createmyjobcardDto } from './dto/my-job-card-dto';
 import { UpdateJobCardDto } from './dto/update-job-card.dto';
 import { Base64, encode } from 'js-base64';
 import { assign } from 'nodemailer/lib/shared';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class JobCardsService {
   constructor(
-    @InjectModel(jobcard.name) private jobcardmodal: Model<jobcardDocuments>,
+    @InjectModel(jobcard.name)
+    private jobcardmodal: SoftDeleteModel<jobcardDocuments>,
     @InjectModel(jobcardassign.name)
     private assignjobcardmodal: Model<jobcardassignDocuments>,
     @InjectModel(myjobcard.name)
@@ -130,7 +132,7 @@ export class JobCardsService {
     try {
       const check_card = await this.jobcardmodal.findOne({ _id: id });
       if (check_card) {
-        const delete_card = await this.jobcardmodal.deleteOne({ _id: id });
+        const delete_card = await this.jobcardmodal.softDelete({ _id: id });
         return 'delete sucessfully';
       } else {
         throw new NotFoundException('data not found');
@@ -140,15 +142,66 @@ export class JobCardsService {
     }
   }
 
-  async updatejobcard(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
+  async updatejobcard(@Body() UpdateJobCardDto: UpdateJobCardDto[]) {
     try {
-      return await this.jobcardmodal.updateOne(
-        { _id: id },
-        { ...UpdateJobCardDto },
-      );
+      const find_all_job = await this.jobcardmodal.find();
+      for (let index = 0; index < UpdateJobCardDto.length; index++) {
+        for (let i = 0; i < find_all_job.length; i++) {
+          if (
+            find_all_job[i]._id.toString() ===
+            UpdateJobCardDto[index].job_card_no
+          ) {
+            const asss_user_id = UpdateJobCardDto[index].assign_user_id;
+            const assign_to = UpdateJobCardDto[index].assign_to;
+            const permisssions = UpdateJobCardDto[index].permissions;
+            await this.jobcardmodal.updateOne(
+              { _id: UpdateJobCardDto[index].job_card_no },
+              {
+                $set: {
+                  assign_user_id: asss_user_id,
+                  assign_to: assign_to,
+                  permissions: permisssions,
+                },
+              },
+            );
+          }
+        }
+      }
     } catch {
       throw new NotFoundException('Not found data');
     }
+  }
+
+  async getmyjobcardbyuserid(id: string, @Req() req) {
+    const new_arr = [];
+    const payload = req.headers.authorization.split('.')[1];
+    const encodetoken = Base64.decode(payload);
+    var obj = JSON.parse(encodetoken);
+    var permission = obj.permission;
+    var organizationkey = obj.organization_id;
+    var airmpo_designation = obj.roles[0];
+    if (organizationkey === undefined || organizationkey === null) {
+      throw new UnprocessableEntityException('organization not found');
+    }
+    const get_assign_all_card = await this.jobcardmodal.find();
+    var new_ass = [];
+    for (let index = 0; index < get_assign_all_card.length; index++) {
+      if (airmpo_designation === 'Airpmo Super Admin') {
+        new_ass.push(get_assign_all_card[index]);
+      }
+      else if (
+        get_assign_all_card[index].organization_id === organizationkey
+      ) {
+        if (
+          get_assign_all_card[index].assign_user_id === id ||
+          get_assign_all_card[index].assign_user_id === null ||
+          get_assign_all_card[index].assign_user_id === ''
+        ) {
+          new_ass.push(get_assign_all_card[index]);
+        }
+      }
+    }
+    return new_ass;
   }
 
   async assignjobcard(assignJobCardDto: assignJobCardDto) {
@@ -334,48 +387,48 @@ export class JobCardsService {
     }
   }
 
-  async getmyjobcardbyuserid(id: string, project_id: string, @Req() req) {
-    const new_arr = [];
-    const payload = req.headers.authorization.split('.')[1];
-    const encodetoken = Base64.decode(payload);
-    var obj = JSON.parse(encodetoken);
-    var organizationkey = obj.organization_id;
-    var airmpo_designation = obj.roles[0];
-    if (organizationkey === undefined || organizationkey === null) {
-      throw new UnprocessableEntityException('organization not found');
-    }
-    const get_assign_all_card = await this.assignjobcardmodal.find();
-    let arr1 = [];
-    get_assign_all_card?.map((item, id) => {
-      item?.assign_data?.map((item2, ids) => {
-        arr1.push(item2);
-      });
-    });
-    var new_ar = [];
-    for (let i = 0; i < arr1.length; i++) {
-      if (
-        arr1[i].organization_id === organizationkey ||
-        airmpo_designation === 'Airpmo Super Admin'
-      ) {
-        if (arr1[i].project_id === project_id) {
-          new_ar.push(arr1[i]);
-        }
-      }
-    }
-    if (airmpo_designation === 'Airpmo Super Admin') {
-      return new_ar;
-    } else {
-      var find_assign_user = [];
-      for (let index = 0; index < new_ar.length; index++) {
-        if (new_ar[index].assign_user_id === id) {
-          find_assign_user.push(new_ar[index]);
-        } else if (new_ar[index].assign_user_id === undefined) {
-          find_assign_user.push(new_ar[index]);
-        }
-      }
-      return find_assign_user;
-    }
-  }
+  // async getmyjobcardbyuserid(id: string, project_id: string, @Req() req) {
+  //   const new_arr = [];
+  //   const payload = req.headers.authorization.split('.')[1];
+  //   const encodetoken = Base64.decode(payload);
+  //   var obj = JSON.parse(encodetoken);
+  //   var organizationkey = obj.organization_id;
+  //   var airmpo_designation = obj.roles[0];
+  //   if (organizationkey === undefined || organizationkey === null) {
+  //     throw new UnprocessableEntityException('organization not found');
+  //   }
+  //   const get_assign_all_card = await this.assignjobcardmodal.find();
+  //   let arr1 = [];
+  //   get_assign_all_card?.map((item, id) => {
+  //     item?.assign_data?.map((item2, ids) => {
+  //       arr1.push(item2);
+  //     });
+  //   });
+  //   var new_ar = [];
+  //   for (let i = 0; i < arr1.length; i++) {
+  //     if (
+  //       arr1[i].organization_id === organizationkey ||
+  //       airmpo_designation === 'Airpmo Super Admin'
+  //     ) {
+  //       if (arr1[i].project_id === project_id) {
+  //         new_ar.push(arr1[i]);
+  //       }
+  //     }
+  //   }
+  //   if (airmpo_designation === 'Airpmo Super Admin') {
+  //     return new_ar;
+  //   } else {
+  //     var find_assign_user = [];
+  //     for (let index = 0; index < new_ar.length; index++) {
+  //       if (new_ar[index].assign_user_id === id) {
+  //         find_assign_user.push(new_ar[index]);
+  //       } else if (new_ar[index].assign_user_id === undefined) {
+  //         find_assign_user.push(new_ar[index]);
+  //       }
+  //     }
+  //     return find_assign_user;
+  //   }
+  // }
 
   async createmyjobcard(createmyjobcardDto: createmyjobcardDto) {
     return await this.myjobcardmodal.create(createmyjobcardDto);

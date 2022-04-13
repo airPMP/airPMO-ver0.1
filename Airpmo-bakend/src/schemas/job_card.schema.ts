@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Date, Document } from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 export type jobcardDocuments = jobcard & Document;
 
 @Schema()
 export class jobcard {
+  
   @Prop()
   project_id: string;
 
@@ -50,11 +52,26 @@ export class jobcard {
   @Prop()
   organization_id: string;
 
+  @Prop()
+  assign_to: string;
+
+  @Prop()
+  assign_user_id: string;
+
+  @Prop()
+  job_card_no: string;
+
+  @Prop()
+  permissions: string;
+
   @Prop({ default: Date })
   createdAt: string;
 
   @Prop({ default: Date })
   updatedAt: string;
+  
+  
 }
 
-export const jobcardSchema = SchemaFactory.createForClass(jobcard);
+export const jobcardSchema =
+  SchemaFactory.createForClass(jobcard).plugin(softDeletePlugin);

@@ -10,12 +10,13 @@ import { Categories, CategoriesDocument } from 'src/schemas/categories.schema';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Base64 } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectModel(Categories.name)
-    private categoriesModel: Model<CategoriesDocument>,
+    private categoriesModel: SoftDeleteModel<CategoriesDocument>,
   ) {}
   async create(createCategoryDto: CreateCategoryDto) {
     return await this.categoriesModel.create(createCategoryDto);
@@ -85,7 +86,7 @@ export class CategoriesService {
 
   async remove(id: string) {
     try {
-      const user = await this.categoriesModel.deleteOne({ _id: id });
+      const user = await this.categoriesModel.softDelete({ _id: id });
       return {
         massage: 'categories Deleted',
       };

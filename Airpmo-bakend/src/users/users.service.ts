@@ -16,11 +16,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
 import { Base64, encode } from 'js-base64';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(users.name) private usersModel: Model<ussersDocument>,
+    @InjectModel(users.name) private usersModel:SoftDeleteModel<ussersDocument>,
     @Inject(forwardRef(() => UserRolesService))
     private userRolesService: UserRolesService,
   ) {}
@@ -110,7 +111,7 @@ export class UsersService {
 
   async remove(id: string) {
     try {
-      const user = await this.usersModel.deleteOne({ _id: id });
+      const user = await this.usersModel.softDelete({ _id: id });
       return {
         massage: 'user deleted',
       };
