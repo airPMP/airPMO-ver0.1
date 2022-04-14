@@ -166,6 +166,8 @@ const JobCards = () => {
     //
   }, [clientsearchdata])
 
+  
+
   const clientidname = (e, Objdata) => {
     setChooseprojectOpnCls(false)
     setClientSearchData(Objdata?.client_name)
@@ -186,13 +188,7 @@ const JobCards = () => {
         else {
           setSheetUpdatedData(true)
         }
-        // if (response.status === 200) {
-        //     addToast("Project is Added Sucessfully", {
-        //         appearance: "success",
-        //         autoDismiss: true,
-        //     })
-
-        // }
+        
 
       })
       .catch((error) => {
@@ -257,7 +253,7 @@ const JobCards = () => {
   }
 
 
-  console.log(projectobjectdata?._id)
+  console.log(clientsearchdata)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">

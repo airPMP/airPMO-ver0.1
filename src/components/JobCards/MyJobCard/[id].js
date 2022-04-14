@@ -23,19 +23,19 @@ const MyJobCardsId = () => {
     if (urlTitle.pathname === "/daily_task/my-daily-task") {
       setTitle("Daily Task");
 
-      
+
 
 
     }
   }, [urlTitle.pathname])
 
-  useEffect(()=>{
+  useEffect(() => {
     let tokenroles = reactLocalStorage.get("roles", false);
-      setAllTokenRoles(tokenroles)
+    setAllTokenRoles(tokenroles)
 
   })
 
- 
+
 
   useEffect(() => {
     // /api/find_my_all_assign_card_by_user/{id}/{project_id}
@@ -95,7 +95,7 @@ const MyJobCardsId = () => {
   }
 
 
-   
+
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -123,7 +123,7 @@ const MyJobCardsId = () => {
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
-                  
+
                   {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
@@ -172,11 +172,34 @@ const MyJobCardsId = () => {
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th>
+                  {/* <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th> */}
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Date(YY/MM/DD)</th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Description</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Description</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Zone</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]      ">
+                    <div className=" flex justify-center cursor-pointer ">
+                      <span>Zone</span>
+                      <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                      </svg>
+                      </span>
+                    </div>
+
+                  </th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
+                    
+                    <div className=" flex justify-center cursor-pointer ">
+                      <span>
+                    Subzone
+                    </span>
+                    <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                      </svg>
+                      </span>
+                     
+                    </div>
+                    
+                    </th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">Assign To</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">SPI</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">CPI</th>
@@ -186,12 +209,15 @@ const MyJobCardsId = () => {
               {filteredData && filteredData?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
-                    <th className=" py-[13px]">{item?.activity_code}</th>
-                    <th className=" cursor-pointer" onClick={(e) => CardAssignIdPage(e, item._id)} >{item?._id}</th>
+                    <th className=" py-[13px]  cursor-pointer " onClick={(e) => CardAssignIdPage(e, item._id)}>
+                      {item?.activity_code}</th>
+                    {/* <th className=" "  >
+                      {item?._id}</th> */}
                     <th className=" ">{item?.jc_creation}</th>
                     <th className=" ">{item?.activity_name}</th>
                     <th className=" ">{item?.quantity_to_be_achieved}</th>
                     <th className=" ">{item?.zone}</th>
+                    <th className=" ">{item?.sub_zone}</th>
                     <th className=" "> {item?.assign ? item.assign : "no"}</th>
                     <th className=" "> {item?.spi ? item.spi : "0"}</th>
                     <th className=" ">{item?.cpi ? item.cpi : "0"}</th>
