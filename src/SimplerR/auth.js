@@ -19,11 +19,14 @@ export const ViewZoneData = entity(false)
 export const ViewSubZoneData = entity(false)
 
 export const ProductivitySheetData = entity(null)
-export const QuantityTOAchivedData = entity(null) 
+export const QuantityTOAchivedData = entity(null)
 
-export const CurrentQuantityTOAchivedData = entity(null) 
+export const CurrentQuantityTOAchivedData = entity(null)
 
 
-export const EmployeeChangeData = entity(null) 
+export const EmployeeChangeData = entity(null)
+
+export const ClientDataFreze = entity(null)
+export const  ProjectDataFreze = entity(null)
 
 

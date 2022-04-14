@@ -30,9 +30,7 @@ import UserRole3 from "./components/Management/UserRole3";
 import DataInjestion from "./pages/DataInjestion";
 import ProductivitySheet from "./components/Injestion/ProductivitySheet";
 import UserRole1Details from "./components/Management/UserRole1Details";
-import AllJobCards from "./components/JobCards/AllJobCards";
-import JobCardAssigned from "./components/JobCards/JobCardAssigned";
-import MyJobCards from "./components/JobCards/MyJobCards";
+import AllJobCards from "./components/JobCards/AllJobCards";  
 import HRMS from "./components/Injestion/HRMS";
 import QuantitySheet from "./components/Injestion/QuantitySheet";
 import ResetPassword from "./pages/ResetPassword";
@@ -86,14 +84,12 @@ function App() {
         }
         <Route path="daily_task" element={<JobCards />} />
         {/* <Route path="/daily_task/new_daily_task" element={<NewJobCard />} /> */}
-        <Route path="/manpower" element={<ManpowerAndMachinery />} />
-        <Route path="/daily_task/my-daily-task" element={<MyJobCards />} /> 
-        {/* MyJobCards this is arab electricals after status conform */}
+        <Route path="/manpower" element={<ManpowerAndMachinery />} /> 
         <Route path="/daily_task/:id/new_daily_task" element={<NewJobCard />} />
          {/* NewJobCard this is Create new Job */}
         <Route path="/daily_task/All-daily-task" element={<AllJobCards />} />
          {/* AllJobCards this is arab electricals before status conform */}
-        <Route path="/daily_task/daily-task-assigned" element={<JobCardAssigned />} />
+        
           {/* JobCardAssigned this is arab electricals  drop down */}
         {/* <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} /> */}
 

@@ -6,6 +6,7 @@ import SignUpTemplate from "../components/layout/SignUpTemplate";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
 import ProductSearch from "../components/Injestion/ProductSearch";
+import SearchInjustion from "../components/Injestion/SearchInjustion";
 
 const DataInjestion = () => {
   const [title, setTitle] = useState(null);
@@ -54,14 +55,14 @@ const DataInjestion = () => {
             <>
               <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
                 <div className="mr-[70px]">
-                  <ProductSearch
+                  <SearchInjustion
                     placeHolderName={"Choose Client"}
 
                   // value={client}
                   />
                 </div>
                 <div>
-                  <ProductSearch
+                  <SearchInjustion
                     placeHolderName={"Choose Project"}
 
                   // value={client}

@@ -41,6 +41,11 @@ const NewJobCard = () => {
   const [productivitysheetobject, seProductivitySheetObject] = useState([])
   const [productivitysheetarray, seProductivitySheetArray] = useState([])
   const [currentdate, setCurrentDate] = useState(null)
+  const [projectidperma, setProjectIdPerma] = useState(null)
+
+  const [dataData, setdataData] = useState(currentdate)
+
+  const [projectobjectdata, setProjectObjectData] = useState(null)
 
   let useperma = useParams()
   let urlTitle = useLocation();
@@ -48,19 +53,18 @@ const NewJobCard = () => {
   const { addToast } = useToasts();
 
   const productivitysheetdata = ProductivitySheetData.use()
-  const productivesheetid = ProductiveSheetId.use()
-  const quantitytoachivedData = QuantityTOAchivedData.use()
-  const projectobjectdata = ProjectObjectData.use()
+  const quantitytoachivedData = QuantityTOAchivedData.use() 
 
-
-
-  console.log(projectobjectdata)
+  
+  console.log(useperma.id)
 
   useEffect(() => {
 
     if (urlTitle.pathname === "/daily_task/new_daily_task") {
       setTitle("Daily Task");
     }
+
+
   }, [urlTitle.pathname])
 
 
@@ -68,7 +72,7 @@ const NewJobCard = () => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${productivesheetid}/zone`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${useperma.id}/zone`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -85,10 +89,32 @@ const NewJobCard = () => {
         console.log(error)
 
       })
+ 
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+  
+        .then((response) => {
+          // console.log(response?.data)
+          setProjectObjectData(response?.data)
+          
+          
+        })
+        .catch((error) => {
+          console.log(error)
+  
+        })
+  
+
+
 
     let today = new Date();
     let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     setCurrentDate(date)
+
+    setProjectIdPerma(useperma.id)
   }, [])
 
   const [open, setOpen] = useState(false);
@@ -97,7 +123,7 @@ const NewJobCard = () => {
 
   const formik = useFormik({
     initialValues: {
-      project_id: productivesheetid,
+      project_id: "",
       project_name: "",
       activity_code: "",
       activity_name: "",
@@ -118,6 +144,9 @@ const NewJobCard = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
 
+      console.log(dataData)
+
+
       const organization_Id = reactLocalStorage.get("organization_id", false);
       const permisions_data = reactLocalStorage.get("permisions", false);
 
@@ -126,18 +155,25 @@ const NewJobCard = () => {
         values.permissions = permisions_data
       }
 
-
+       
+      values.project_id = projectidperma
+      console.log("dataData")
       values.project_name = projectobjectdata.project_name
+      console.log("dataData")
       values.activity_code = activitycode
       values.activity_name = activityname
-      values.jc_creation = currentdate
+      values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
       values.quantity_to_be_achieved = quantitytoachivedData
       values.manpower_and_machinary = [productivitysheetobject]
 
+      
 
+ 
       const token = reactLocalStorage.get("access_token", false);
+
+      console.log("dataData")
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_job_card`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -293,7 +329,7 @@ const NewJobCard = () => {
                     name="jcCreation"
                     type="text"
                     value={activityname}
-                    // onChange={formik.handleChange}
+                    onChange={formik.handleChange}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
@@ -312,9 +348,10 @@ const NewJobCard = () => {
                   <input
                     id="jcCreation"
                     name="jcCreation"
-                    type="text"
-                    value={currentdate}
-                    onChange={formik.handleChange}
+                    type="date"
+                    value={dataData}
+                    // onChange={formik.handleChange}
+                    onChange={(e) => setdataData(e.target.value)}
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />

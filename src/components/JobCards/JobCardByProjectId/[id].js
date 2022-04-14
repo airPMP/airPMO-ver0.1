@@ -23,6 +23,7 @@ const AllJobCardsId = () => {
 
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
+  const [deletedatarefrace, setDeleteDataRefrace] = useState(false);
 
   const projectobjectdata = ProjectObjectData.use()
 
@@ -63,7 +64,8 @@ const AllJobCardsId = () => {
 
       })
     handleSearch()
-  }, [])
+     
+  }, [deletedatarefrace])
 
   const handleSearch = (e) => {
 
@@ -163,10 +165,10 @@ const AllJobCardsId = () => {
           },
         })
         if (data?.status === 200) {
-
-          window.location.reload(false);
+          setDeleteDataRefrace(true)
+          // window.location.reload(false);
         }
-         
+
       } catch (error) {
         console.log(error)
       }
@@ -260,12 +262,22 @@ const AllJobCardsId = () => {
 
             </div>
           </div>
-          <div className=" text-right pr-20">
+          <div className=" flex justify-end   pr-14">
             <Link to={`${createpermission || allpermissions ? `/daily_task/${useperma.id}/new_daily_task` : `/daily_task/All-daily-task`}`}>
+
               <button
                 className={`${createpermission === "CREATE-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
-                bg-[#8d8b8b] p-2 text-[#f0f0f0] mb-4 rounded-[8px]`}>
-                Add  DailyTask
+                  p-2 text-[#000000] mb-4 rounded-[8px] flex justify-end`}
+                  style={{boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25"}}>
+                <span>
+                  <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.7916 10.7918V18.5418H8.20825V10.7918H0.458252V8.2085H8.20825V0.458496H10.7916V8.2085H18.5416V10.7918H10.7916Z" fill="#2E3A59" />
+                  </svg>
+                </span>
+
+                <span className="pl-2">
+                  New JC
+                </span>
               </button>
             </Link>
 
