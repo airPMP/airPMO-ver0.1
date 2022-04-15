@@ -172,7 +172,30 @@ export class JobCardsService {
     }
   }
 
-  async getmyjobcardbyuserid(id: string,project_id: string, @Req() req) {
+  async editjobcardbyid(id: string, project_id: string, UpdateJobCardDto) {
+    const find_all_job = await this.jobcardmodal.findOne({
+      _id: id,
+      project_id: project_id,
+    });
+
+    if (find_all_job != null) {
+      const update_obj = await this.jobcardmodal.updateOne(
+        { _id: id },
+        { ...UpdateJobCardDto },
+      );
+      if (update_obj.modifiedCount != 0) {
+        return {
+          massage: 'update sucessfully',
+        };
+      } else {
+        throw new UnprocessableEntityException('plz update properly');
+      }
+    } else {
+      throw new NotFoundException('sorry data not found');
+    }
+  }
+
+  async getmyjobcardbyuserid(id: string, project_id: string, @Req() req) {
     const new_arr = [];
     const payload = req.headers.authorization.split('.')[1];
     const encodetoken = Base64.decode(payload);
@@ -183,34 +206,31 @@ export class JobCardsService {
     if (organizationkey === undefined || organizationkey === null) {
       throw new UnprocessableEntityException('organization not found');
     }
-    const get_assign_all_card = await this.jobcardmodal.find({project_id:project_id});
-  if(get_assign_all_card.length!=0){
-    var new_ass = [];
-    for (let index = 0; index < get_assign_all_card.length; index++) {
-      if (airmpo_designation === 'Airpmo Super Admin') {
-        new_ass.push(get_assign_all_card[index]);
-      }
-      else if (
-        get_assign_all_card[index].organization_id === organizationkey
-      ) {
-        if (
-          get_assign_all_card[index].assign_user_id === id ||
-          get_assign_all_card[index].assign_user_id === null ||
-          get_assign_all_card[index].assign_user_id === ''
-        ) {
+    const get_assign_all_card = await this.jobcardmodal.find({
+      project_id: project_id,
+    });
+    if (get_assign_all_card.length != 0) {
+      var new_ass = [];
+      for (let index = 0; index < get_assign_all_card.length; index++) {
+        if (airmpo_designation === 'Airpmo Super Admin') {
           new_ass.push(get_assign_all_card[index]);
+        } else if (
+          get_assign_all_card[index].organization_id === organizationkey
+        ) {
+          if (
+            get_assign_all_card[index].assign_user_id === id ||
+            get_assign_all_card[index].assign_user_id === null ||
+            get_assign_all_card[index].assign_user_id === ''
+          ) {
+            new_ass.push(get_assign_all_card[index]);
+          }
         }
       }
+      return new_ass;
+    } else {
+      throw new NotFoundException('these project id data not found');
     }
-    return new_ass;
-  
-  }else{
-    throw new NotFoundException('these project id data not found')
   }
-}
-
-
-
 
   // async assignjobcard(assignJobCardDto: assignJobCardDto) {
   //   try {
