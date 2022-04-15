@@ -125,3 +125,11 @@ width: 120px !important;
 width: 100px !important;
     }
    }
+
+   .searchWrapper{
+       border: none !important;
+       margin-top: -20px !important;
+   }
+   #search_input::placeholder{
+       color: transparent !important;
+   }

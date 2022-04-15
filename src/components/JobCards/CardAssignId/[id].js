@@ -91,9 +91,9 @@ const NewJobCardMultiId = () => {
 
         feach();
 
-        let today = new Date();
-        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        setCurrentDate(date)
+        // let today = new Date();
+        // let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        // setCurrentDate(date)
 
     }, [urlTitle.pathname]);
 
@@ -285,9 +285,9 @@ const NewJobCardMultiId = () => {
                                         <input
                                             id="hseRemarks"
                                             name="hseRemarks"
-                                            type="text"
+                                            type="date"
                                             value={currentdate}
-                                            onChange={formik.handleChange}
+                                            onChange={(e)=>{setCurrentDate(e.target.value);formik.handleChange()}}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
                                         />

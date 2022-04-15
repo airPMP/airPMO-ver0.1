@@ -1,17 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
+import Multiselect from 'multiselect-react-dropdown';
+import makeAnimated from "react-select/animated";
+// import { colourOptions } from "./data.js";
+// import MySelect from "./MySelect.js"; 
+import { components } from "react-select";
+import { default as ReactSelect } from "react-select";
+import MultiselectList from "../UpdateCreateJC.js/MultiselectList";
 
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
-  const [alljobcarddata, setAllJobCardData] = useState(null);
+  const [alljobcarddata, setAllJobCardData] = useState([null]);
   const [filteredData, setFilteredData] = useState([null]);
   const [alltokenroles, setAllTokenRoles] = useState(null)
 
+
+  const [allpermission, setAllPermission] = useState(null)
+  const [editpermission, setEditPermission] = useState(null)
+  const [createpermission, setCreatePermission] = useState(null)
+  const [viewpermission, setViewPermission] = useState(null)
+  const [allpermissions, setAllPermissions] = useState(null)
+
+  const [filterselecetddata, setFilterSelecetdData] = useState(null)
+  const [selecteddataselected, setSelectedDataSelected] = useState([null])
+  const [comezonedata, setComeZoneData] = useState(false)
+  const [FilterZonesdata, setFilterZonesData] = useState(false)
+
+  console.log(selecteddataselected)
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -49,9 +69,14 @@ const MyJobCardsId = () => {
 
       .then((response) => {
         console.log(response?.data)
+
+
+        let zoneFilterData = response?.data.filter((elem => elem.zone  ))
+        setFilterZonesData(zoneFilterData)
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
-        if (response.status === 201) {
+        if (response.status === 200) {
+          setComeZoneData(true)
         }
       })
       .catch((error) => {
@@ -96,6 +121,98 @@ const MyJobCardsId = () => {
 
 
 
+
+  useEffect(() => {
+    const permissionData = reactLocalStorage.get("permisions", false);
+    setAllPermission(permissionData)
+
+    getPermision()
+  }, [allpermission])
+
+  const getPermision = async () => {
+
+    const url_data = await allpermission
+    const database = url_data?.split(',')
+
+    let value = "EDIT-MY-JOB-CARD".toUpperCase();
+    let result = []
+    result = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value) !== -1;
+      }
+    });
+
+
+    let value1 = "EDIT-MY-JOB-CARD".toUpperCase();
+    let result1 = []
+    result1 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value1) !== -1;
+      }
+    });
+
+    let value2 = "GET-MY-JOB-CARD".toUpperCase();
+    let result2 = []
+    result2 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value2) !== -1;
+      }
+    });
+
+
+
+
+
+
+
+    if (result[0] === "EDIT-MY-JOB-CARD" ||
+      result1[0] === "EDIT-MY-JOB-CARD" ||
+      result2[0] === "GET-MY-JOB-CARD") {
+      setEditPermission(result[0])
+      setCreatePermission(result1[0])
+      setViewPermission(result2[0])
+    }
+    else {
+      let value = "ALL".toUpperCase();
+      let result = []
+      result = database?.filter((data) => {
+        if (isNaN(+value)) {
+          return data?.toUpperCase().search(value) !== -1;
+        }
+      });
+      setAllPermissions(result[0])
+    }
+
+  }
+
+  const handleChange = (selected) => {
+    console.log(selected)
+    setFilterSelecetdData(selected)
+
+  };
+
+  const onSelect = (selectedList, selectedItem) => {
+    setSelectedDataSelected(selectedList)
+  }
+
+
+
+  console.log(filteredData)
+
+  const colourOptions = [
+    { value: "ocean", label: "Ocean", color: "#00B8D9" },
+    { value: "blue", label: "Blue", color: "#0052CC" },
+    { value: "purple", label: "Purple", color: "#5243AA" },
+    { value: "red", label: "Red", color: "#FF5630" },
+    { value: "orange", label: "Orange", color: "#FF8B00" },
+    { value: "yellow", label: "Yellow", color: "#FFC400" },
+    { value: "green", label: "Green", color: "#36B37E" },
+    { value: "forest", label: "Forest", color: "#00875A" },
+    { value: "slate", label: "Slate", color: "#253858" },
+    { value: "silver", label: "Silver", color: "#666666" }
+  ];
+
+  console.log(comezonedata)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -177,29 +294,66 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Description</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]      ">
+
                     <div className=" flex justify-center cursor-pointer ">
                       <span>Zone</span>
+
+                      <span
+                      > <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                        </svg>
+                      </span>
+                    </div>
+
+                    {/* <select id="cars">
+                      {filteredData && filteredData?.map((item, ids) => {
+                        return <option value="volvo">
+                          {item?.zone}
+                        </option>
+
+                      })}
+
+                    </select> */}
+
+                    <div>
+
+
+                      {/* <MultiselectList/> */}
+
+
+                      {comezonedata &&
+                        <Multiselect
+                          displayValue={`zone`}
+                          onKeyPressFn={function noRefCheck() { }}
+                          onRemove={function noRefCheck() { }}
+                          onSelect={onSelect}
+                          options={FilterZonesdata}
+                          showCheckbox
+                        />
+
+                      }
+
+
+
+
+                    </div>
+
+
+                  </th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
+
+                    <div className=" flex justify-center cursor-pointer ">
+                      <span>
+                        Subzone
+                      </span>
                       <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
                       </svg>
                       </span>
+
                     </div>
 
                   </th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
-                    
-                    <div className=" flex justify-center cursor-pointer ">
-                      <span>
-                    Subzone
-                    </span>
-                    <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
-                      </svg>
-                      </span>
-                     
-                    </div>
-                    
-                    </th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">Assign To</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">SPI</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">CPI</th>
@@ -209,7 +363,8 @@ const MyJobCardsId = () => {
               {filteredData && filteredData?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
-                    <th className=" py-[13px]  cursor-pointer " onClick={(e) => CardAssignIdPage(e, item._id)}>
+                    <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
+                      onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, item._id) : null}>
                       {item?.activity_code}</th>
                     {/* <th className=" "  >
                       {item?._id}</th> */}
