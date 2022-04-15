@@ -45,7 +45,7 @@ export class SpiCpiService {
   }
 
   async getjobcardcal(id: string) {
-    const finddata = await this.spicpiModel.findOne({ project_id: id });
+    const finddata = await this.spicpiModel.findOne({ activity_code: id });
     try {
       if (finddata != null) {
         return finddata;
@@ -55,7 +55,11 @@ export class SpiCpiService {
     } catch {}
   }
 
-  async update(id: string, activity_code: string, updateSpiCpiDto: UpdateSpiCpiDto) {
+  async update(
+    id: string,
+    activity_code: string,
+    updateSpiCpiDto: UpdateSpiCpiDto,
+  ) {
     const gangproductivity =
       updateSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
     let min_hour = parseInt(updateSpiCpiDto.min_hour);
@@ -85,10 +89,6 @@ export class SpiCpiService {
       const data = parseInt(calulate[0]);
       const minute_2 = (parseInt(calulate[1]) / 100) * 60;
       const hour_minute = `${data}.${minute_2}`;
-
-      //  const decimal= parseInt(calulate[1])*60
-      //  const new_cal =`${calulate[0]}.${decimal}`
-
       cal_arr.push(hour_minute);
     }
 
@@ -97,21 +97,21 @@ export class SpiCpiService {
       const ar = arr1[i] * gangproductivity;
       new_arr[arr[i]] = [arr[i], ar, cal_arr[i]];
     }
-  
+
     updateSpiCpiDto.productivity[0] = new_arr;
+    updateSpiCpiDto.quantity_to_be_achived = gangproductivity;
     const finddata = await this.spicpiModel.findOne({
-      project_id:id,
-      activity_code:activity_code
+      project_id: id,
+      activity_code: activity_code,
     });
-    if(finddata!=null){
+    if (finddata != null) {
       return await this.spicpiModel.updateOne(
-        { activity_code:activity_code},
+        { activity_code: activity_code },
         { ...updateSpiCpiDto },
       );
-    }else{
-      throw new NotFoundException('not found')
+    } else {
+      throw new NotFoundException('not found');
     }
-    
   }
 
   async remove(id: string) {

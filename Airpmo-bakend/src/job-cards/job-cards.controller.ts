@@ -80,6 +80,19 @@ export class JobCardsController {
     return await this.jobCardsService.getmyjobcardbyuserid(id, project_id, req);
   }
 
+  @Auth('EDIT-JOB-CARD')
+  @Patch('update_job_card/:id')
+  async editspicpi(
+    @Param('id') id: string,
+    @Body() UpdateJobCardDto: UpdateJobCardDto,
+  ) {
+    return await this.jobCardsService.editspicpi(id,UpdateJobCardDto);
+  }
+
+
+
+
+
   // @Auth('CREATE-ASSIGN-JOB-CARD')
   // @Post('assign_job_card')
   // async assignjobcard(@Body() assignJobCardDto: assignJobCardDto) {

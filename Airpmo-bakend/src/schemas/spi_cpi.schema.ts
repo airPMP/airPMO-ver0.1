@@ -24,6 +24,9 @@ export class spicpi {
   @Prop()
   productivity: [{}];
 
+  @Prop()
+  quantity_to_be_achived: string;
+
   @Prop({ default: Date })
   createdAt: string;
 

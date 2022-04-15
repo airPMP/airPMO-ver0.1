@@ -19,4 +19,8 @@ export class CreateSpiCpiDto {
 
   @ApiProperty()
   productivity: [{}];
+
+  @ApiProperty()
+  quantity_to_be_achived: string;
+
 }

@@ -59,4 +59,13 @@ export class CreateJobCardDto {
 
   @ApiProperty()
   permissions: string;
+
+  @ApiProperty()
+  actual_employees: [{}]
+
+  @ApiProperty()
+  actual_equipments: [{}]
+
+  @ApiProperty()
+  alanned_vs_allowable_vs_actual: [{}]
 }

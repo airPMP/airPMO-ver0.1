@@ -188,7 +188,7 @@ export class JobCardsService {
           massage: 'update sucessfully',
         };
       } else {
-        throw new UnprocessableEntityException('plz update properly');
+        throw new NotFoundException('not update properly');
       }
     } else {
       throw new NotFoundException('sorry data not found');
@@ -231,6 +231,72 @@ export class JobCardsService {
       throw new NotFoundException('these project id data not found');
     }
   }
+
+  async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
+    const find = await this.jobcardmodal.findOne({ _id: id });
+    const machinary_data = UpdateJobCardDto.manpower_and_machinary[0];
+    const machinary_data_value = Object.values(machinary_data);
+    const employe_data = UpdateJobCardDto.actual_employees;
+    const current_quantity = parseInt(UpdateJobCardDto.quantity_to_be_achieved);
+    ///actual employee array
+
+    var employe_data_arr = [];
+    for (let i = 0; i < employe_data.length; i++) {
+      employe_data_arr.push(employe_data[i]);
+    }
+    ///array 1
+    var machinary_arr = [];
+    for (let i = 0; i < machinary_data_value.length; i++) {
+      machinary_arr.push(machinary_data_value[i]);
+    }
+    /////array 2
+    var new_array = [];
+    var new_array2 = [];
+    for (let j = 0; j < machinary_arr.length; j++) {
+      for (let k = 1; k < machinary_arr[j].length; k++) {
+        new_array.push(machinary_arr[j][k]);
+        if (machinary_arr[j].length - 1 === k) {
+          new_array2.push(new_array);
+          new_array = [];
+        }
+      }
+    }
+
+    ///concate array 1 array 2
+    var alwoable_arr = [];
+    var alwoable_cal = 0;
+    for (let i = 0; i < machinary_arr.length; i++) {
+      var children = machinary_arr[i].concat(new_array2[i]);
+      // console.log(children.length)
+      alwoable_arr.push(children);
+
+      // alwoable_arr.push(children);
+    }
+
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      for (let i = 0; i < employe_data_arr.length; i++) {
+        if (alwoable_arr[index][0] === employe_data_arr[i].designation) {
+          const cal = parseInt(employe_data_arr[i].hour);
+          alwoable_cal = alwoable_cal + cal;
+        }
+        if (employe_data_arr.length - 1 === i) {
+          alwoable_arr[index].push(alwoable_cal);
+          alwoable_cal = 0;
+        }
+      }
+    }
+    console.log(alwoable_arr);
+    // console.log( alwoable_arr)
+    // console.log(alwoable_arr);
+    // const children = arr1.concat(arr2)( machinary_arr);
+  }
+  //  for (let l = 0; l <  new_array.length; l++) {
+  //    console.log(new_array[l])
+
+  //  }
+  // //  if(find!=null){
+
+  //  }
 
   // async assignjobcard(assignJobCardDto: assignJobCardDto) {
   //   try {

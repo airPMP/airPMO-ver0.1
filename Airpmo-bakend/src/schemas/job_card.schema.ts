@@ -64,6 +64,15 @@ export class jobcard {
   @Prop()
   permissions: string;
 
+  @Prop()
+  actual_employees: [{}]
+
+  @Prop()
+  actual_equipments: [{}]
+
+  @Prop()
+  alanned_vs_allowable_vs_actual: [{}]
+
   @Prop({ default: Date })
   createdAt: string;
 
