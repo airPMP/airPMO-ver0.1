@@ -7,6 +7,9 @@ export type spicpiDocument = spicpi & Document;
 @Schema()
 export class spicpi {
   @Prop()
+ activity_code: string;
+ 
+  @Prop()
   client_name: string;
 
   @Prop()
@@ -28,4 +31,5 @@ export class spicpi {
   updatedAt: string;
 }
 
-export const spicpiSchema = SchemaFactory.createForClass(spicpi).plugin(softDeletePlugin);
+export const spicpiSchema =
+  SchemaFactory.createForClass(spicpi).plugin(softDeletePlugin);

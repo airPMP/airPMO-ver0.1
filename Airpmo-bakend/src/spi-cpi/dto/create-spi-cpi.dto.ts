@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSpiCpiDto {
+  
+  @ApiProperty()
+  activity_code: string;
+
   @ApiProperty()
   client_name: string;
 
@@ -15,6 +19,4 @@ export class CreateSpiCpiDto {
 
   @ApiProperty()
   productivity: [{}];
-
-  
 }
