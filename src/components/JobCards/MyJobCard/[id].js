@@ -171,16 +171,16 @@ const MyJobCardsId = () => {
             <table className="table-auto pt-[24px] w-[100%]  ">
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
-                  <th className="whitespace-nowrap  pb-[15.39px] ">Activity ID</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Daily Task No.</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Date(YY/MM/DD)</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Description</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Qty</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Zone</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Assign To</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">SPI</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">CPI</th>
-                  <th className="whitespace-nowrap pb-[15.39px]">Status</th>
+                  <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Date(YY/MM/DD)</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Description</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Zone</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[5%]">Assign To</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[5%]">SPI</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[5%]">CPI</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Status</th>
                 </tr>
               </thead>
               {filteredData && filteredData?.map((item, ids) => {

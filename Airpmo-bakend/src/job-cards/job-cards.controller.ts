@@ -60,6 +60,16 @@ export class JobCardsController {
     return await this.jobCardsService.updatejobcard(UpdateJobCardDto);
   }
 
+  @Auth('EDIT-JOB-CARD')
+  @Patch('update_job_card/:id/:project_id')
+  async editjobcardbyid(
+    @Param('id') id: string,
+    @Param('project_id') project_id: string,
+    @Body() UpdateJobCardDto: UpdateJobCardDto,
+  ) {
+    return await this.jobCardsService.editjobcardbyid(id,project_id,UpdateJobCardDto);
+  }
+
   @Auth('GET-JOB-CARD')
   @Get('find_all_assign_card_by_user/:id/:project_id')
   async getmyjobcardbyuserid(
