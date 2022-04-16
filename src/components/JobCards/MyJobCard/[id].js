@@ -10,8 +10,8 @@ import makeAnimated from "react-select/animated";
 // import { colourOptions } from "./data.js";
 // import MySelect from "./MySelect.js"; 
 import { components } from "react-select";
-import { default as ReactSelect } from "react-select";
-import MultiselectList from "../UpdateCreateJC.js/MultiselectList";
+import { default as ReactSelect } from "react-select"; 
+
 
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
@@ -346,7 +346,8 @@ const MyJobCardsId = () => {
 
                     <div className=" flex justify-center cursor-pointer "  >
                       <div className="flex justify-center cursor-pointer"
-                        onClick={(e) => setShowMultiSelectZone(o => !o)}>
+                        // onClick={(e) => setShowMultiSelectZone(o => !o)}
+                        >
                         <span>Zone</span>
 
                         <span
@@ -386,7 +387,8 @@ const MyJobCardsId = () => {
 
                     <div className=" flex justify-center cursor-pointer ">
                       <div className="flex justify-center cursor-pointer"
-                        onClick={(e) => setShowMultiSelectSubzone(o => !o)}>
+                        // onClick={(e) => setShowMultiSelectSubzone(o => !o)}
+                        >
                         <span>
                           Subzone
                         </span>
