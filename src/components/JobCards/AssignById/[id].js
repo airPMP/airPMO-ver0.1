@@ -281,6 +281,7 @@ const JobCardAssignedId = () => {
 
 
 
+
         if (result[0] === "CREATE-ASSIGN-JOB-CARD" ||
             result1[0] === "CREATE-ASSIGN-JOB-CARD" ||
             result2[0] === "GET-ASSIGN-JOB-CARD") {
@@ -434,7 +435,7 @@ const JobCardAssignedId = () => {
                     <div className="flex flex-row justify-end py-[20px] space-x-2 ">
                         <div
                             onClick={(e) => editpermission || allpermissions ? SavePostApi(e) : null}
-                            className={`${editpermission === "EDIT-CLIENTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} cursor-pointer flex justify-center items-center w-[100px] 
+                            className={`${editpermission === "CREATE-ASSIGN-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} cursor-pointer flex justify-center items-center w-[100px] 
               h-[25px]   font-secondaryFont font-medium bg-[#0FCC7C] text-[#000000]
                rounded-[4px] text-[14px] leading-[37.83px] self-center` }
                             style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}

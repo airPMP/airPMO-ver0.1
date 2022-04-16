@@ -303,14 +303,14 @@ console.log(filterempoyeealldata)
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
-                                    onClick={(e) => TimeSelectFun(e)}
+                                    onChange={(e) => TimeSelectFun(e)}
 
                                 >
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
-// {console.log(filterempoyeealldata)}
+{console.log(filterempoyeealldata)}
                                         return <option value={[item.UserName, item.UserID, item.designation]}>
-                                            {`${item.UserID} [${item.designation}]`}
+                                            {`${item.UserID} [${item.designation}]  ${item.UserName}`}
                                         </option>
                                     })}
 
