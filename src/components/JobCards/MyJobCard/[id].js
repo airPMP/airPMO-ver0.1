@@ -27,11 +27,15 @@ const MyJobCardsId = () => {
   const [allpermissions, setAllPermissions] = useState(null)
 
   const [filterselecetddata, setFilterSelecetdData] = useState(null)
-  const [selecteddataselected, setSelectedDataSelected] = useState([null])
   const [comezonedata, setComeZoneData] = useState(false)
   const [FilterZonesdata, setFilterZonesData] = useState(false)
+  const [FilterSubZonesdata, setFilterSubZonesData] = useState(false)
+  const [showmultiselectzone, setShowMultiSelectZone] = useState(false)
+  const [showmultiselectsubzone, setShowMultiSelectSubzone] = useState(false)
+  const [selectallsubzonedata, SetSelectAllSubZoneData] = useState(false)
+  const [selectalldata, SetSelectAllData] = useState(false)
 
-  console.log(selecteddataselected)
+
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -71,8 +75,11 @@ const MyJobCardsId = () => {
         console.log(response?.data)
 
 
-        let zoneFilterData = response?.data.filter((elem => elem.zone  ))
+        let zoneFilterData = response?.data.filter((elem => elem.zone))
         setFilterZonesData(zoneFilterData)
+        let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
+        setFilterSubZonesData(SubzoneFilterData)
+
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
         if (response.status === 200) {
@@ -84,10 +91,22 @@ const MyJobCardsId = () => {
       })
     handleSearch()
 
+    if (selectalldata) {
+      onSelect()
+
+      setShowMultiSelectZone(o => !o)
+      SetSelectAllData(false)
+    }
+
+    if (selectallsubzonedata) {
+      onSelectSub()
+
+      setShowMultiSelectSubzone(o => !o)
+      SetSelectAllSubZoneData(false)
+    }
 
 
-
-  }, [])
+  }, [selectalldata,selectallsubzonedata])
 
   const handleSearch = (e) => {
 
@@ -161,10 +180,6 @@ const MyJobCardsId = () => {
 
 
 
-
-
-
-
     if (result[0] === "EDIT-MY-JOB-CARD" ||
       result1[0] === "EDIT-MY-JOB-CARD" ||
       result2[0] === "GET-MY-JOB-CARD") {
@@ -185,34 +200,68 @@ const MyJobCardsId = () => {
 
   }
 
-  const handleChange = (selected) => {
-    console.log(selected)
-    setFilterSelecetdData(selected)
 
-  };
+
 
   const onSelect = (selectedList, selectedItem) => {
-    setSelectedDataSelected(selectedList)
+
+    let detasome = FilterZonesdata?.filter((item) => {
+      return selectedList?.find((items) => {
+        return item.zone === items.zone
+      })
+    })
+
+    console.log("detasome")
+    console.log(detasome)
+
+    setFilteredData(detasome)
+
+  }
+
+  const onRemove = (selectedList, removedItem) => {
+
+    let detasome = FilterZonesdata?.filter((item) => {
+      return selectedList?.find((items) => {
+        return item.zone === items.zone
+      })
+    })
+
+    setFilteredData(detasome)
+
   }
 
 
 
-  console.log(filteredData)
+  const onSelectSub = (selectedList, selectedItem) => {
 
-  const colourOptions = [
-    { value: "ocean", label: "Ocean", color: "#00B8D9" },
-    { value: "blue", label: "Blue", color: "#0052CC" },
-    { value: "purple", label: "Purple", color: "#5243AA" },
-    { value: "red", label: "Red", color: "#FF5630" },
-    { value: "orange", label: "Orange", color: "#FF8B00" },
-    { value: "yellow", label: "Yellow", color: "#FFC400" },
-    { value: "green", label: "Green", color: "#36B37E" },
-    { value: "forest", label: "Forest", color: "#00875A" },
-    { value: "slate", label: "Slate", color: "#253858" },
-    { value: "silver", label: "Silver", color: "#666666" }
-  ];
+    let detasome = FilterZonesdata?.filter((item) => {
+      return selectedList?.find((items) => {
+        return item.sub_zone === items.sub_zone
+      })
+    })
 
-  console.log(comezonedata)
+    console.log("detasome")
+    console.log(detasome)
+
+    setFilteredData(detasome)
+
+  }
+
+  const onRemoveSub = (selectedList, removedItem) => {
+
+    let detasome = FilterZonesdata?.filter((item) => {
+      return selectedList?.find((items) => {
+        return item.sub_zone === items.sub_zone
+      })
+    }
+
+    )
+
+    setFilteredData(detasome)
+
+  }
+
+
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -295,46 +344,39 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]      ">
 
-                    <div className=" flex justify-center cursor-pointer ">
-                      <span>Zone</span>
+                    <div className=" flex justify-center cursor-pointer "  >
+                      <div className="flex justify-center cursor-pointer"
+                        onClick={(e) => setShowMultiSelectZone(o => !o)}>
+                        <span>Zone</span>
 
-                      <span
-                      > <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                        <span
+                        > <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                          </svg>
+                        </span>
+                      </div>
+                      <span className={`${showmultiselectzone ? null : "hidden"} pl-4 flex`}
+                        onClick={(e) => SetSelectAllData(true)}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
+                        <span className="pl-1 pb-2"> Select All </span>
                       </span>
                     </div>
-
-                    {/* <select id="cars">
-                      {filteredData && filteredData?.map((item, ids) => {
-                        return <option value="volvo">
-                          {item?.zone}
-                        </option>
-
-                      })}
-
-                    </select> */}
-
-                    <div>
-
-
-                      {/* <MultiselectList/> */}
-
+                    <div className={`${showmultiselectzone ? null : "hidden"}`}>
 
                       {comezonedata &&
                         <Multiselect
                           displayValue={`zone`}
                           onKeyPressFn={function noRefCheck() { }}
-                          onRemove={function noRefCheck() { }}
+                          onRemove={onRemove}
                           onSelect={onSelect}
                           options={FilterZonesdata}
                           showCheckbox
                         />
 
                       }
-
-
-
 
                     </div>
 
@@ -343,13 +385,39 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
 
                     <div className=" flex justify-center cursor-pointer ">
-                      <span>
-                        Subzone
+                      <div className="flex justify-center cursor-pointer"
+                        onClick={(e) => setShowMultiSelectSubzone(o => !o)}>
+                        <span>
+                          Subzone
+                        </span>
+                        <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
+                        </svg>
+                        </span>
+                      </div>
+
+                      <span className={`${showmultiselectsubzone ? null : "hidden"} pl-2 flex`}
+                        onClick={(e) => SetSelectAllSubZoneData(true)}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span className="pl-1 pb-2"> Select All </span>
                       </span>
-                      <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
-                      </svg>
-                      </span>
+                    </div>
+                    <div className={`${showmultiselectsubzone ? null : "hidden"}`}>
+
+                      {comezonedata &&
+                        <Multiselect
+                          displayValue={`sub_zone`}
+                          onKeyPressFn={function noRefCheck() { }}
+                          onRemove={onRemoveSub}
+                          onSelect={onSelectSub}
+                          options={FilterSubZonesdata}
+                          showCheckbox
+                        />
+
+                      }
 
                     </div>
 
