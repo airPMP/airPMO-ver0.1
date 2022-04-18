@@ -6,7 +6,6 @@ export type jobcardDocuments = jobcard & Document;
 
 @Schema()
 export class jobcard {
-  
   @Prop()
   project_id: string;
 
@@ -30,6 +29,9 @@ export class jobcard {
 
   @Prop()
   quantity_to_be_achieved: string;
+
+  @Prop()
+  updated_quantity_to_be_achived: string;
 
   @Prop()
   manpower_and_machinary: [];
@@ -65,21 +67,22 @@ export class jobcard {
   permissions: string;
 
   @Prop()
-  actual_employees: [{}]
+  actual_employees: [{}];
 
   @Prop()
-  actual_equipments: [{}]
+  actual_equipments: [{}];
 
   @Prop()
-  alanned_vs_allowable_vs_actual: [{}]
+  alanned_vs_allowable_vs_actual: [{}];
+
+  @Prop()
+  hourly_salrey: string;
 
   @Prop({ default: Date })
   createdAt: string;
 
   @Prop({ default: Date })
   updatedAt: string;
-  
-  
 }
 
 export const jobcardSchema =

@@ -42,8 +42,7 @@ export class ExcelService {
     if (sheet) {
       var jsonData = await xlsx.utils.sheet_to_json(sheet, {
         dateNF: 'YYYY-MM-DD',
-      });
-    
+      });;
     } else {
       throw new NotFoundException('sheet  not found');
     }

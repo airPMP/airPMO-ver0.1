@@ -26,7 +26,9 @@ export class spicpi {
 
   @Prop()
   quantity_to_be_achived: string;
-
+  
+  @Prop()
+  gang_productivity: string;
   @Prop({ default: Date })
   createdAt: string;
 

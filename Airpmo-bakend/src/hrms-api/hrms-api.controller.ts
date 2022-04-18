@@ -21,6 +21,7 @@ export class HrmsApiController {
   @Auth()
   @Get('/hrms-api/:id')
   findAll(@Param('id') id: string, @Response() res) {
+    console.log(id);
     return this.hrmsApiService.findAll(id, res);
   }
 }

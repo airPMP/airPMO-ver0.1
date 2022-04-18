@@ -22,5 +22,7 @@ export class CreateSpiCpiDto {
 
   @ApiProperty()
   quantity_to_be_achived: string;
-
+  
+  @ApiProperty()
+  gang_productivity: string;
 }

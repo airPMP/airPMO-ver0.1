@@ -15,7 +15,7 @@ export class HrmsApiService {
   ) {}
 
   async findAll(id: string, @Response() res) {
-    // console.log(res);
+    
     var config = {
       method: 'get',
       url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/attendance-daily?action=get;range=section;id=${id}`,

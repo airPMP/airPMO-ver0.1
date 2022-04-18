@@ -16,6 +16,12 @@ export class SpiCpiService {
   ) {}
   async create(createSpiCpiDto: CreateSpiCpiDto) {
     let min_hour = parseInt(createSpiCpiDto.min_hour);
+    var unit =
+      createSpiCpiDto.productivity[0][' UNIT '] ||
+      createSpiCpiDto.productivity[0]['UNIT'];
+    if (unit === undefined || unit === null) {
+      unit = 'absents';
+    }
     const productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(
       4,
     );
@@ -28,7 +34,7 @@ export class SpiCpiService {
     const cal_arr = [];
     const total_hour = [];
     for (let index = 0; index < productivity_key.length; index++) {
-      if (productivity_key[index].startsWith('Part') === false) {
+      if (productivity_key[index].startsWith(' Part ') === false) {
         arr.push(productivity_key[index]);
       }
     }
@@ -36,10 +42,14 @@ export class SpiCpiService {
       const calculate_hour = arr1[i] * min_hour;
       cal_arr.push(calculate_hour);
     }
+
     var new_arr = {};
     for (let i = 0; i < arr.length; i++) {
-      new_arr[arr[i]] = [arr[i], productivity_value[i], cal_arr[i]];
+      new_arr[arr[i]] = [arr[i], unit, productivity_value[i], cal_arr[i]];
     }
+    createSpiCpiDto.gang_productivity =
+      createSpiCpiDto.productivity[0][' GANG PRODUCTIVIVY (APRVD. BY PM) '] ||
+      createSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
     createSpiCpiDto.productivity = [new_arr];
     return await this.spicpiModel.create(createSpiCpiDto);
   }
@@ -60,13 +70,17 @@ export class SpiCpiService {
     activity_code: string,
     updateSpiCpiDto: UpdateSpiCpiDto,
   ) {
-    const gangproductivity =
-      updateSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
+    const gangproductivity = updateSpiCpiDto.gang_productivity;
     let min_hour = parseInt(updateSpiCpiDto.min_hour);
     const productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(
       4,
     );
-
+    var unit =
+      updateSpiCpiDto.productivity[0][' UNIT '] ||
+      updateSpiCpiDto.productivity[0]['UNIT'];
+    if (unit === undefined || unit === null) {
+      unit = 'absents';
+    }
     var productivity_value = Object.values(
       updateSpiCpiDto.productivity[0],
     ).slice(4);
@@ -82,7 +96,7 @@ export class SpiCpiService {
     }
 
     for (let i = 0; i < arr.length; i++) {
-      const calculate_hour = arr1[i] * min_hour * gangproductivity;
+      const calculate_hour = arr1[i] * min_hour * parseInt(gangproductivity);
       const cal_ar = calculate_hour.toFixed(2);
 
       const calulate = cal_ar.split('.');
@@ -94,8 +108,8 @@ export class SpiCpiService {
 
     var new_arr = {};
     for (let i = 0; i < arr.length; i++) {
-      const ar = arr1[i] * gangproductivity;
-      new_arr[arr[i]] = [arr[i], ar, cal_arr[i]];
+      const ar = arr1[i] * parseInt(gangproductivity);
+      new_arr[arr[i]] = [arr[i], unit, ar, cal_arr[i]];
     }
 
     updateSpiCpiDto.productivity[0] = new_arr;
@@ -105,14 +119,23 @@ export class SpiCpiService {
       activity_code: activity_code,
     });
     if (finddata != null) {
-      return await this.spicpiModel.updateOne(
+      const a = await this.spicpiModel.updateOne(
         { activity_code: activity_code },
         { ...updateSpiCpiDto },
       );
+      if (a.modifiedCount != 0) {
+        return await this.spicpiModel.findOne({
+          project_id: id,
+          activity_code: activity_code,
+        });
+      } else {
+        throw new NotFoundException('not found');
+      }
     } else {
       throw new NotFoundException('not found');
     }
   }
+
 
   async remove(id: string) {
     const remove = await this.spicpiModel.softDelete({ _id: id });
