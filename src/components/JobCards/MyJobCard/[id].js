@@ -346,7 +346,7 @@ const MyJobCardsId = () => {
 
                     <div className=" flex justify-center cursor-pointer "  >
                       <div className="flex justify-center cursor-pointer"
-                        // onClick={(e) => setShowMultiSelectZone(o => !o)}
+                        onClick={(e) => setShowMultiSelectZone(o => !o)}
                         >
                         <span>Zone</span>
 
@@ -387,7 +387,7 @@ const MyJobCardsId = () => {
 
                     <div className=" flex justify-center cursor-pointer ">
                       <div className="flex justify-center cursor-pointer"
-                        // onClick={(e) => setShowMultiSelectSubzone(o => !o)}
+                        onClick={(e) => setShowMultiSelectSubzone(o => !o)}
                         >
                         <span>
                           Subzone
