@@ -18,7 +18,7 @@ import { HrmsApiService } from './hrms-api.service';
 export class HrmsApiController {
   constructor(private readonly hrmsApiService: HrmsApiService) {}
 
-  @Auth()
+  // @Auth()
   @Get('/hrms-api/:id')
   findAll(@Param('id') id: string, @Response() res) {
     return this.hrmsApiService.findAll(id, res);
