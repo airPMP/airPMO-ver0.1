@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
-const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray }) => {
+const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray,
+  allCalcultedMachineryData }) => {
 
   const projectobjectdata = ProjectObjectData.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
@@ -13,46 +14,58 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
 
   useEffect(() => {
-    ArrangedataFun()
+    if(allCalcultedMachineryData.length !== 0 && allCalcultedMachineryData[0] !== null){ 
+    console.log(allCalcultedMachineryData.gang_productivity)
+      // setGANG_PRODUCTIVIVY(allCalcultedMachineryData.gang_productivity)
+    }
 
-  }, [productivitysheetobject])
+  }, [allCalcultedMachineryData])
 
-  const ArrangedataFun = () => {
+  console.log(allCalcultedMachineryData)
 
-    productivitysheetobject.totaltime = projectobjectdata?.min_hours //add total time in productive sheeet data
-    setGANG_PRODUCTIVIVY(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-    setTotalGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-    QuantityTOAchivedData.set(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-    // console.log(projectobjectdata?.min_hours)
+  // const ArrangedataFun = () => {
 
-    // setTotalTimeGangProductivity(productivitysheetobject["totaltime"]) 
-    setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  //   productivitysheetobject.totaltime = projectobjectdata?.min_hours //add total time in productive sheeet data
+  //   setGANG_PRODUCTIVIVY(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  //   setTotalGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  //   QuantityTOAchivedData.set(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  //   // console.log(projectobjectdata?.min_hours)
+
+  //   // setTotalTimeGangProductivity(productivitysheetobject["totaltime"]) 
+  //   setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+
+  //   console.log(allCalcultedMachineryData.productivity)
+
+  //   let data1 =  Object.entries(allCalcultedMachineryData?.productivity[0]).map(([key, value], i, items) => {
+
+  //     // console.log(key)
+  //     console.log(value[1])
+  //     return <tr className="rounded  bg-[#ECF1F0] ">
+  //       {/* <th className="py-[10px]" >{i + 1}</th> */}
+  //       <th className="">{key}</th>
+  //       <th className="">{"i"}</th>
+  //       {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
+  //       <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
+  //       ).toFixed(2)}</th>   */}
+  //     </tr>
 
 
-    let data1 = Object.entries(productivitysheetobject).slice(4, -1).map(([key, value], i, items) => {
 
-      return <tr className="rounded  bg-[#ECF1F0] ">
-        <th className="py-[10px]" >{i + 1}</th>
-        <th className="">{key}</th>
-        <th className="">{"i"}</th>
-        <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
-        <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
-        ).toFixed(2)}</th>
-      </tr>
+  //   })
 
-
-
-    })
-
-    console.log(data1)
-  }
+  //   console.log(data1)
+  // }
 
   const GangProductData = (e, data) => {
-    setGANG_PRODUCTIVIVY(e.target.value)
+    // setGANG_PRODUCTIVIVY(e.target.value)
     QuantityTOAchivedData.set(e.target.value)
+
+
+
 
   }
 
+  console.log(allCalcultedMachineryData)
 
 
 
@@ -81,11 +94,15 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
               <td className="p-[10px]" ></td>
             </tr>
           </thead>
-          {productivitysheetarray?.map((item, index) => (
+          {allCalcultedMachineryData?.productivity?.map((item, index) => (
+            
+ 
             <>
               {
-                Object.entries(productivitysheetobject).slice(4, -2).map(([key, value], i, items) => {
+                Object.entries(allCalcultedMachineryData?.productivity[0]).map(([key, value], i, items) => {
+                  
 
+                  
 
                   return <> {
                     value !== 0 ? <tbody
@@ -96,11 +113,10 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                       <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
-                        <th className="">{item[" UNIT "]}</th>
+                        <th className="">{value[1]}</th>
                         {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th> */}
-                        <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
-                        <th className="">{((totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
-                        ) ).toFixed(2)}</th>
+                        <th className="">{value[2]}</th>
+                        <th className="">{value[3]}</th>
 
                       </tr>
                       <tr className="m-0 p-0 h-[20px]"  >
@@ -134,7 +150,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
               <span className=" "> <input type='number' placeholder="Gang Productivity"
                 className="border-none  px-2  gang_product_input"
                 value={GANG_PRODUCTIVIVY}
-                onChange={(e) => GangProductData(e)}
+                onChange={(e) => { setGANG_PRODUCTIVIVY(e.target.value);GangProductData(e)}}
               />
               </span>
             </div>
