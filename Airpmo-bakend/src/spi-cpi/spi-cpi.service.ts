@@ -39,10 +39,10 @@ export class SpiCpiService {
       }
     }
     for (let i = 0; i < arr.length; i++) {
-      const calculate_hour = arr1[i] * min_hour;
+      const calculate_hour = (arr1[i] * min_hour).toFixed(2);
       cal_arr.push(calculate_hour);
     }
-
+    
     var new_arr = {};
     for (let i = 0; i < arr.length; i++) {
       new_arr[arr[i]] = [arr[i], unit, productivity_value[i], cal_arr[i]];
@@ -99,11 +99,11 @@ export class SpiCpiService {
       const calculate_hour = arr1[i] * min_hour * parseInt(gangproductivity);
       const cal_ar = calculate_hour.toFixed(2);
 
-      const calulate = cal_ar.split('.');
-      const data = parseInt(calulate[0]);
-      const minute_2 = (parseInt(calulate[1]) / 100) * 60;
-      const hour_minute = `${data}.${minute_2}`;
-      cal_arr.push(hour_minute);
+      // const calulate = cal_ar.split('.');
+      // const data = parseInt(calulate[0]);
+      // const minute_2 = (parseInt(calulate[1]) / 100) * 60;
+      // const hour_minute = `${data}.${minute_2}`;
+      cal_arr.push(cal_ar);
     }
 
     var new_arr = {};
@@ -135,7 +135,6 @@ export class SpiCpiService {
       throw new NotFoundException('not found');
     }
   }
-
 
   async remove(id: string) {
     const remove = await this.spicpiModel.softDelete({ _id: id });

@@ -78,6 +78,9 @@ export class jobcard {
   @Prop()
   hourly_salrey: string;
 
+  @Prop()
+  hourly_standrd_salrey: string;
+
   @Prop({ default: Date })
   createdAt: string;
 

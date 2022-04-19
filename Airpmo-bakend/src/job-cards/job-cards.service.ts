@@ -233,27 +233,37 @@ export class JobCardsService {
   }
 
   async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
-    // const find = await this.jobcardmodal.findOne({ _id: id });
     const machinary_data = UpdateJobCardDto.manpower_and_machinary[0];
     const machinary_data_value = Object.values(machinary_data);
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
-    const current_quantity = parseInt(UpdateJobCardDto.quantity_to_be_achieved);
-    const hourly_sal = parseInt(UpdateJobCardDto.hourly_salrey).toFixed(2)
+    const current_quantity = parseFloat(
+      UpdateJobCardDto.quantity_to_be_achieved,
+    );
+    const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
+    const hourly_standard_sal = parseFloat(
+      UpdateJobCardDto.hourly_standrd_salrey,
+    ).toFixed(2);
+
     const update_quantity = parseInt(
       UpdateJobCardDto.updated_quantity_to_be_achived,
     );
-   
+
     ///actual employee array
-    var employe_data_arr = [];
+    var data_arr = [];
     for (let i = 0; i < employe_data.length; i++) {
-      employe_data_arr.push(employe_data[i]);
+      data_arr.push(employe_data[i]);
     }
     for (let i = 0; i < equipmets_data.length; i++) {
-      employe_data_arr.push(equipmets_data[i]);
+      data_arr.push(equipmets_data[i]);
+    }
+    var employe_data_arr = [];
+    for (let index = 0; index < data_arr.length; index++) {
+      if (Object.keys(data_arr[index]).length != 0) {
+        employe_data_arr.push(data_arr[index]);
+      }
     }
 
-    ///array 1
     var machinary_arr = [];
     for (let i = 0; i < machinary_data_value.length; i++) {
       machinary_arr.push(machinary_data_value[i]);
@@ -282,18 +292,23 @@ export class JobCardsService {
       var children = machinary_arr[i].concat(new_array2[i]);
       alwoable_arr.push(children);
     }
+
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let i = 0; i < employe_data_arr.length; i++) {
-        if (alwoable_arr[index][0] === employe_data_arr[i].designation) {
-          const cal = parseInt(employe_data_arr[i].hour);
-          alwoable_cal = alwoable_cal + cal;
+        if (employe_data_arr[i].designation != undefined) {
+          if (
+            alwoable_arr[index][0].toLowerCase() ===
+            employe_data_arr[i].designation.toLowerCase()
+          ) {
+            const cal = parseInt(employe_data_arr[i].hour);
+            alwoable_cal = alwoable_cal + cal;
+          }
         }
         if (employe_data_arr.length - 1 === i) {
           dup.push(alwoable_arr[index][0]);
-           const actual_cost= alwoable_cal*parseInt(hourly_sal)
-          alwoable_arr[index].push(alwoable_cal,actual_cost);
+          const actual_cost = alwoable_cal * parseInt(hourly_sal);
+          alwoable_arr[index].push(alwoable_cal, actual_cost);
           alwoable_cal = 0;
-         
         }
       }
     }
@@ -306,9 +321,13 @@ export class JobCardsService {
     }
 
     var res = [];
+
     res = employe_data_arr?.filter((el) => {
       return !new_arr2?.find((element, i) => {
-        return element === el.designation;
+        if (el.designation != undefined) {
+          console.log();
+          return element.toLowerCase() === el.designation.toLowerCase();
+        }
       });
     });
 
@@ -318,30 +337,89 @@ export class JobCardsService {
       var arr3 = [];
       var total = 0;
       for (let index = 0; index < res.length; index++) {
-        arr1.push(res[index].designation);
+        if (res[index].designation != undefined) {
+          arr1.push(res[index].designation);
+        }
         var uniqueChars = [...new Set(arr1)];
       }
-      for (let index = 0; index < uniqueChars.length; index++) {
-        for (let i = 0; i < res.length; i++) {
-          if (uniqueChars[index] === res[i].designation) {
-            total = total + parseInt(res[i].hour);
-            var h = res[i].designation;
-          }
-          if (res.length - 1 === i) {
-            const actual_cos=  total*parseInt(hourly_sal)
-            arr2.push([h, total,actual_cos]);
-            total = 0;
+
+      if (uniqueChars.length != 0 || uniqueChars.length != null) {
+        for (let index = 0; index < uniqueChars.length; index++) {
+          for (let i = 0; i < res.length; i++) {
+            if (employe_data_arr[i].designation != undefined) {
+              if (
+                uniqueChars[index].toLowerCase() ===
+                res[i].designation.toLowerCase()
+              ) {
+                total = total + parseInt(res[i].hour);
+                var h = res[i].designation;
+              }
+            }
+            if (res.length - 1 === i) {
+              const actual_cos = total * parseInt(hourly_sal);
+              arr2.push([h, total, actual_cos]);
+              total = 0;
+            }
           }
         }
       }
-    }
-    for (let m = 0; m < arr2.length; m++) {
-      for (let index = 1; index < 5; index++) {
-        arr2[m].splice(index, 0, '0');
+
+      for (let m = 0; m < arr2.length; m++) {
+        for (let index = 1; index < 5; index++) {
+          arr2[m].splice(index, 0, '0');
+        }
+        alwoable_arr.push(arr2[m]);
       }
-      alwoable_arr.push(arr2[m]);
+    }
+
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      if (employe_data_arr.length === 0) {
+        alwoable_arr[index].push(0, 0);
+      }
     }
     console.log(alwoable_arr);
+    var cpi_array = [];
+    var cpi_array2 = [];
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      for (let j = 0; j < alwoable_arr[index].length; j++) {
+        var allowable_cost =
+          parseFloat(alwoable_arr[index][4]) * parseFloat(hourly_standard_sal);
+        var actual_cost1 = alwoable_arr[index][5];
+        var cpi;
+        var spi;
+        if (actual_cost1 === 0) {
+          cpi = 0;
+        } else {
+          cpi = (allowable_cost / actual_cost1).toFixed(2);
+        }
+        if (update_quantity === 0) {
+          spi = 0;
+        } else {
+          spi = current_quantity / update_quantity;
+        }
+
+        cpi_array.push(alwoable_arr[index][j]);
+        if (alwoable_arr[index].length - 1 === j) {
+          cpi_array.push(spi, cpi);
+          cpi_array2.push(cpi_array);
+          cpi_array = [];
+        }
+      }
+    }
+    const find = await this.jobcardmodal.findOne({ _id: id });
+    if (find != null) {
+      const update = await this.jobcardmodal.updateOne(
+        { _id: id },
+        { alanned_vs_allowable_vs_actual: cpi_array2 },
+      );
+      if (update.modifiedCount != 0) {
+        return await this.jobcardmodal.findOne({ _id: id });
+      } else {
+        throw new NotFoundException('data not found');
+      }
+    } else {
+      throw new NotFoundException('data not found');
+    }
   }
 
   // async assignjobcard(assignJobCardDto: assignJobCardDto) {
