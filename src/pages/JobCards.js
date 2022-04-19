@@ -8,7 +8,7 @@ import axios from "axios";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
-import { SearchClientSet, ProductiveSheetId, ProductivitySheetData, ProjectObjectData } from '../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductivitySheetData, ProjectObjectData, ClientDataFreze } from '../SimplerR/auth'
 import { getAllJobCardApi, getClientApi, getMyJobCardApi } from '../AllApi/Api'
 import ProductSearch from "../components/Injestion/ProductSearch";
 const JobCards = () => {
@@ -19,13 +19,15 @@ const JobCards = () => {
   const [openSearchData, setopenSearchData] = useState(false);
   const [openSearchData1, setopenSearchData1] = useState(null);
   const [searchdata, setSearchData] = useState(null);
-  const [clientsearchdata, setClientSearchData] = useState(null);
+  const clientdatareze = ClientDataFreze.use()
+  const [clientsearchdata, setClientSearchData] = useState(clientdatareze);
   const [projectsearchdata, setProjectSearchData] = useState(null);
   const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
   const [sheetupdateddata, setSheetUpdatedData] = useState(false)
   const [productivesheetdata, setProductiveSheetData] = useState(null)
   const searchclientset = SearchClientSet.use()
   const productivesheetid = ProductiveSheetId.use()
+   
   const productivitysheetdata = ProductivitySheetData.use()
   const projectobjectdata = ProjectObjectData.use()
   const [alljobcardapi, setAllJobCardApi] = useState(null)
@@ -157,18 +159,14 @@ const JobCards = () => {
   }, [productivesheetid])
 
   useEffect(() => {
-    const clientidname = (e, Objdata) => {
-      setClientSearchData(Objdata?.client_name)
-    }
+     
     setopenSearchData(false)
-    clientidname()
-    //when he click to seach client  then this useState will and run the clientNameFun run -7a
-    //
-  }, [clientsearchdata])
+    
+  }, [clientdatareze])
 
   const clientidname = (e, Objdata) => {
-    setChooseprojectOpnCls(false)
-    setClientSearchData(Objdata?.client_name)
+    setChooseprojectOpnCls(false) 
+    ClientDataFreze.set(Objdata?.client_name)
 
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${Objdata?._id}/project`, {
@@ -257,7 +255,9 @@ const JobCards = () => {
   }
 
 
-  console.log(projectobjectdata?._id)
+  console.log(clientsearchdata)
+
+  console.log(clientdatareze)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -297,9 +297,9 @@ const JobCards = () => {
                   <input
                     type="text"
                     placeholder="Choose Client"
-                    value={clientsearchdata}
+                    value={clientdatareze}
                     className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                    onChange={(e) => handleChangeForClientData(e)} //-2a 
+                    onChange={(e) =>{ClientDataFreze.set(e.target.value); handleChangeForClientData(e)}} //-2a 
                   />
                 </div>
               </div>
@@ -391,7 +391,7 @@ const JobCards = () => {
           <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"My  Daily Task"}
-              totalNumber={projectobjectdata?._id ?myjobcardapi:"0"}
+              totalNumber={projectobjectdata?._id ? myjobcardapi : "0"}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">
                   <svg

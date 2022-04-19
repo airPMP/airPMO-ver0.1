@@ -10,7 +10,7 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 
 
-const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
+const SearchInjustion = ({ placeHolderName, valueData, chooseprojectopnclsData
     , sheetData }) => {
 
     const [openSearchData, setopenSearchData] = useState(false);
@@ -182,7 +182,7 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
                     <input
                         type="text"
                         placeholder={placeHolderName}
-                        value={projectdatafreze}
+                        // value={projectdatafreze}
                         className="outline-none w-[332px] h-[46px] rounded-[10px]"
                         onChange={(e) => { ProjectDataFreze.set(e.target.value); handleChangeForClientData(e) }}
                     />
@@ -211,4 +211,4 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     );
 };
 
-export default ProductSearch;
+export default SearchInjustion;

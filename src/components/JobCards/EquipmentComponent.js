@@ -94,14 +94,14 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
 
 
- 
+
 
     useEffect(() => {
 
         if (timesheetdata && empoyeealldata) {
-            
 
-            let deta = timesheetdata?.filter((item) => { 
+
+            let deta = timesheetdata?.filter((item) => {
                 return !empoyeealldata.find((items) => {
                     return item[0] === items.equipment_id
                 })
@@ -128,7 +128,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             console.log(spitData[1])
             setOpen(true)  ///open popup
         }
-        
+
     }
 
     const AddToList = () => {
@@ -155,7 +155,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         }
 
 
-       
+
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_equipments`, AddlistObject, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -254,7 +254,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
                     window.location.reload(false);
                 }
-                
+
             } catch (error) {
                 console.log(error)
             }
@@ -283,10 +283,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
-                                    onClick={(e) => TimeSelectFun(e)}>
+                                    onChange={(e) => TimeSelectFun(e)}>
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(2).map((item, id) => {
-                                        
                                         return <option value={[item[0], item[1], item[2], item[3]]}>
                                             {`${item[0]} [${item[3]}]`}
                                         </option>

@@ -4,13 +4,13 @@ import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 // import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
-import Header from "../layout/Header";
-import SideBar from "../layout/SideBar";
+import Header from "../../layout/Header";
+import SideBar from "../../layout/SideBar";
 import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import { useToasts } from "react-toast-notifications";
-import ManpowerAndMachinery from "./ManpowerAndMachinery";
-import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData } from "../../SimplerR/auth";
+import ManpowerAndMachinery from "../ManpowerAndMachinery";
+import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData } from "../../../SimplerR/auth";
 
 const validate = (values) => {
   const errors = {};
@@ -29,23 +29,29 @@ const validate = (values) => {
   // } 
   return errors;
 };
-const NewJobCard = () => {
+const UpdateCreateJCId = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
+  const [updatedata, setUpdateData] = useState(null)
   const [activityname, setActivityName] = useState(null)
   const [activitycode, setActivityCode] = useState(null)
-  const [zonedata, setZoneData] = useState(null)
+
   const [subzonedata, setSubZoneData] = useState(null)
   const [zonename, setZoneName] = useState(null)
   const [subzonename, setSubZoneName] = useState(null)
   const [productivitysheetobject, seProductivitySheetObject] = useState([])
   const [productivitysheetarray, seProductivitySheetArray] = useState([])
-  const [currentdate, setCurrentDate] = useState(null)
+  // const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
+  const [zonedata, setZoneData] = useState(null)
 
-  const [dataData, setdataData] = useState(currentdate)
+  const [dataData, setdataData] = useState("")
+
 
   const [projectobjectdata, setProjectObjectData] = useState(null)
+
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
 
   let useperma = useParams()
   let urlTitle = useLocation();
@@ -53,18 +59,15 @@ const NewJobCard = () => {
   const { addToast } = useToasts();
 
   const productivitysheetdata = ProductivitySheetData.use()
-  const quantitytoachivedData = QuantityTOAchivedData.use() 
+  const quantitytoachivedData = QuantityTOAchivedData.use()
 
-  
-  console.log(useperma.id)
+
+
 
   useEffect(() => {
-
     if (urlTitle.pathname === "/daily_task/new_daily_task") {
       setTitle("Daily Task");
     }
-
-
   }, [urlTitle.pathname])
 
 
@@ -72,7 +75,7 @@ const NewJobCard = () => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${useperma.id}/zone`, {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id} `, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -80,7 +83,21 @@ const NewJobCard = () => {
 
       .then((response) => {
         console.log(response?.data)
-        setZoneData(response?.data)
+        setUpdateData(response?.data)
+
+        setActivityCode(response?.data?.activity_code)
+        setActivityName(response?.data?.activity_name)
+        setdataData(response?.data?.jc_creation)
+        setZoneName(response?.data?.zone)
+        setSubZoneName(response?.data?.sub_zone)
+
+        formik.values.qc_remark = response?.data?.qc_remark
+        formik.values.hse_remark = response?.data?.hse_remark
+        formik.values.manager_comments = response?.data?.manager_comments
+        formik.values.discription = response?.data?.discription
+
+         
+
         if (response.status === 201) {
 
         }
@@ -89,42 +106,29 @@ const NewJobCard = () => {
         console.log(error)
 
       })
- 
-      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-  
-        .then((response) => {
-          // console.log(response?.data)
-          setProjectObjectData(response?.data)
-          
-          
-        })
-        .catch((error) => {
-          console.log(error)
-  
-        })
-  
 
 
 
-    let today = new Date();
-    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    setCurrentDate(date)
+
+
+
+
+    // let today = new Date();
+    // let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    // console.log(date)
+    // setCurrentDate(date)
 
     setProjectIdPerma(useperma.id)
+
   }, [])
 
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
-
+  console.log(new Date().toISOString().slice(0, 10))
+  console.log(dataData)
 
   const formik = useFormik({
     initialValues: {
-      project_id: "",
-      project_name: "",
+      // project_id: "",
+      // project_name: "",
       activity_code: "",
       activity_name: "",
       jc_creation: "",
@@ -136,58 +140,53 @@ const NewJobCard = () => {
       hse_remark: "",
       manager_comments: "",
       discription: "",
-      organization_id: "",
-      assign_user_id: "",
-      assign_to: "",
-      permissions: "",
+      // organization_id: "",
+      // assign_user_id: "",
+      // assign_to: "",
+      // permissions: "",
     },
     validate,
-    onSubmit: async (values, { resetForm }) => {
-
-      console.log(dataData)
-
+    onSubmit: async (values, { resetForm }) => { 
 
       const organization_Id = reactLocalStorage.get("organization_id", false);
       const permisions_data = reactLocalStorage.get("permisions", false);
 
       if (organization_Id !== "undefined" && organization_Id !== null) {
-        values.organization_id = organization_Id
-        values.permissions = permisions_data
+        // values.organization_id = organization_Id
+        // values.permissions = permisions_data
       }
 
-       
-      values.project_id = projectidperma
-      console.log("dataData")
-      values.project_name = projectobjectdata.project_name
-      console.log("dataData")
+
+      // values.project_id = projectidperma
+      // values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
       values.activity_name = activityname
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
-      values.quantity_to_be_achieved = quantitytoachivedData
-      values.manpower_and_machinary = [productivitysheetobject]
+      // values.quantity_to_be_achieved = quantitytoachivedData
+      // values.manpower_and_machinary = [productivitysheetobject]
 
-      
 
- 
+
+
       const token = reactLocalStorage.get("access_token", false);
 
       console.log("dataData")
-      axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_job_card`, values, {
+      axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}/${updatedata?.project_id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       })
         .then((response) => {
           console.log(response)
-          if (response.status === 201) {
-            addToast("Issue JC Sucessfully", {
+          if (response.status === 200) {
+            addToast("JC Updated Sucessfully", {
               appearance: "success",
               autoDismiss: true,
             })
 
-            naviagte("/daily_task")
+            naviagte(`/daily_task/JobCardByProjectId/${updatedata?.project_id}`)
 
           }
           resetForm()
@@ -202,9 +201,12 @@ const NewJobCard = () => {
     },
   });
 
+
+
+
   const ActivityCode = (e) => {
 
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setActivityCode(e.target.value)
 
     let productArray = []
@@ -225,8 +227,6 @@ const NewJobCard = () => {
 
     const zoneData = e.target.value
     const ZoneDataSplit = zoneData.split(',a,')
-    console.log(e.target.value)
-    console.log(ZoneDataSplit)
     setZoneName(ZoneDataSplit[1])
 
 
@@ -255,28 +255,72 @@ const NewJobCard = () => {
 
 
   useEffect(() => {
-    const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then((response) => {
-        console.log(response?.data?.productivitysheet)
-        ProductivitySheetData.set(response?.data?.productivitysheet)
+
+    if (updatedata) {
+
+      const token = reactLocalStorage.get("access_token", false);
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${updatedata?.project_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       })
-      .catch((error) => {
-        console.log(error)
-        addToast(error.response.data.message, {
-          appearance: "error",
-          autoDismiss: true,
+        .then((response) => {
+          console.log(response?.data?.productivitysheet)
+          ProductivitySheetData.set(response?.data?.productivitysheet)
+        })
+        .catch((error) => {
+          console.log(error)
+          addToast(error.response.data.message, {
+            appearance: "error",
+            autoDismiss: true,
+          })
+
         })
 
+
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${updatedata?.project_id}/zone`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
-  }, [])
+        .then((response) => {
+          console.log(response?.data)
+          setZoneData(response?.data)
+          if (response.status === 201) {
 
-  console.log(useperma)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+
+        })
+
+
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${updatedata?.project_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+        .then((response) => {
+          setProjectObjectData(response?.data)
+
+
+        })
+        .catch((error) => {
+          console.log(error)
+
+        })
+
+
+
+    }
+
+  }, [updatedata])
+
+
+  console.log(dataData)
 
 
   return (
@@ -307,8 +351,11 @@ const NewJobCard = () => {
                 <div className="relative w-[350px] border-b border-black   ">
 
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer "
+                     37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] 
+                     cursor-pointer "
                     onChange={(e) => ActivityCode(e)}
+
+                    value={activitycode}
                   >
 
                     <option selected="true" disabled="disabled" >Activity Code</option>
@@ -316,7 +363,9 @@ const NewJobCard = () => {
                     {productivitysheetdata?.map((items, id) => {
 
                       return <option className="cursor-pointer" >
-                        {items["Activity code"]}</option>
+                        {items["Activity code"]}
+
+                      </option>
                     })}
                   </select>
                 </div>
@@ -364,7 +413,8 @@ const NewJobCard = () => {
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                       37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
                       onChange={(e) => ZoneNameFun(e)}
-                    // placeholder="ikhdm"
+                      value={ zonename }
+
                     >
 
                       <option selected="true" disabled="disabled" >Select Zone</option>
@@ -384,7 +434,7 @@ const NewJobCard = () => {
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
                       onChange={(e) => setSubZoneName(e.target.value)}
-
+                      value={subzonename}
                     >
 
                       <option selected="true" disabled="disabled">Select Subzone </option>
@@ -562,4 +612,4 @@ const NewJobCard = () => {
   );
 };
 
-export default NewJobCard;
+export default UpdateCreateJCId;

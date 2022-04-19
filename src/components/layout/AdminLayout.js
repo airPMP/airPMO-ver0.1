@@ -3,7 +3,7 @@ import Header from "./Header";
 import SideBar from "./SideBar";
 import SearchBox from "./SearchBox";
 import SignUpTemplate from "./SignUpTemplate";
-import TableDesign from "../JobCards/MyJobCards";
+// import TableDesign from "../JobCards/MyJobCards";
 
 import Clients from "../Master/Clients";
 import Projects from "../Master/Projects";
@@ -164,7 +164,8 @@ const AdminLayout = () => {
               {
                 title === "User Roles" ? <div>Hello</div> :
                 client ? (
-                <TableDesign />
+                // <TableDesign />
+                null
               ) : title === "Job Cards" ? (
                 <div className="grid grid-cols-3 gap-4 mt-[62px]  px-[20px] ">
                   <Card
