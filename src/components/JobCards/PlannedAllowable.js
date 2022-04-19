@@ -256,8 +256,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             text-[#000000] font-normal not-italic text-[12px]
                              leading-[20px] tracking-[-2%]"
                         >
-                            {/* <tr className="bg-[#ECF1F0] "> */}
-                            {assigncarddata &&
+                            
+                            {/* {assigncarddata &&
                                 Object.entries(assigncarddata?.manpower_and_machinary[0]).
                                     slice(4, -2).map(([key, value]) => {
                                         return <tr className=" h-[20px] text-center">
@@ -302,11 +302,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                                 </>
                                             }
                                         </tr>
-                                    })}
+                                    })} */}
 
-                            {/* </tr> */}
+                            
 
-                            <tr className="p-[15px] text-center ">
+                            {/* <tr className="p-[15px] text-center ">
                                 <td className="py-[20px]" >    </td>
                                 <td className="py-[20px]">    </td>
                                 <td className="py-[20px]">    </td>
@@ -317,7 +317,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                 <td className="py-[20px]">    </td>
                                 <td className="py-[20px]">  {(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)} </td>
                                 <td className="py-[20px]">    </td>
-                            </tr>
+                            </tr> */}
 
                         </tbody>
                     })}
