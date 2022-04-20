@@ -30,6 +30,8 @@ const MyJobCardsId = () => {
   const [selectallsubzonedata, SetSelectAllSubZoneData] = useState(false)
   const [selectalldata, SetSelectAllData] = useState(false)
   const [AllCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
+  const [activityid, setActivityId] = useState(null)
+  const [patchapiTrue, setPatchApiTrue] = useState(false)
 
   const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
@@ -53,7 +55,7 @@ const MyJobCardsId = () => {
 
 
   useEffect(() => {
-    // /api/find_my_all_assign_card_by_user/{id}/{project_id}
+
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
@@ -119,7 +121,7 @@ const MyJobCardsId = () => {
 
   const CardAssignIdPage = (e, itemid) => {
     console.log(itemid)
-
+    setActivityId(itemid)
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_create_job_card_cal/${itemid?.activity_code}`, {
       headers: {
@@ -130,32 +132,33 @@ const MyJobCardsId = () => {
       setAllCalcultedMachineryData(response?.data)
       CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
       if (response.status === 200) {
-        PatchCalculatedData()
+        setPatchApiTrue(true)
+
+
       }
     }).catch((error) => {
       console.log(error)
     })
+
     // navigate(`/daily_task/CardAssignId/${itemid._id}`)
   }
 
 
-  const PatchCalculatedData = (e) => {
-
-    console.log(AllCalcultedMachineryData?._id)
-
+  const PatchCalculatedData = (e) => {  
+    
     const token = reactLocalStorage.get("access_token", false);
-    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${AllCalcultedMachineryData?._id}/`, {
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityid?._id}`, {
 
       quantity_to_be_achieved: AllCalcultedMachineryData?.quantity_to_be_achived,
       updated_quantity_to_be_achived: currentquantitytoachivedData,
-      manpower_and_machinary: [
+      manpower_and_machinary:
         AllCalcultedMachineryData?.productivity
-      ],
+      ,
       actual_employees: [
-         
+
       ],
       actual_equipments: [
-         
+
       ],
       alanned_vs_allowable_vs_actual: [
 
@@ -172,7 +175,7 @@ const MyJobCardsId = () => {
       .then((response) => {
         console.log(response)
         if (response.status === 200) {
-
+          navigate(`/daily_task/CardAssignId/${activityid._id}`)
         }
       })
       .catch((error) => {
@@ -188,9 +191,12 @@ const MyJobCardsId = () => {
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
-  }, [allpermission])
+
+    if (patchapiTrue && activityid) {
+      PatchCalculatedData()
+    }
+  }, [allpermission, patchapiTrue, activityid])
 
 
 
@@ -474,6 +480,7 @@ const MyJobCardsId = () => {
                 </tr>
               </thead>
               {filteredData && filteredData?.map((item, ids) => {
+                console.log(item?.updated_quantity_to_be_achived)
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
@@ -483,7 +490,7 @@ const MyJobCardsId = () => {
                       {item?._id}</th> */}
                     <th className=" ">{item?.jc_creation}</th>
                     <th className=" ">{item?.activity_name}</th>
-                    <th className=" ">{item?.quantity_to_be_achieved}</th>
+                    <th className=" ">{item?.updated_quantity_to_be_achived}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
                     <th className=" "> {item?.assign ? item.assign : "no"}</th>

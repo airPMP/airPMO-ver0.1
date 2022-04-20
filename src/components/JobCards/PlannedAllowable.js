@@ -1,142 +1,37 @@
 import axios from "axios";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData } from '../../SimplerR/auth'
 
 
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddata }) => {
 
 
+    console.log(assigncarddata)
 
     const [open, setOpen] = useState(false);
-    const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
-    const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
-
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetid, setTimeSheetId] = useState(null);
     const [timesheetname, setTimeSheetName] = useState(null);
-    const [timesheetremark, setTimeSheetRemark] = useState(null);
-    const [timesheethours, setTimeSheetHours] = useState(null);
-    const [assigncarddataarray, AssignCardDataArray] = useState([]);
     const [quantityachieved, setQuantityAchieved] = useState(null);
     const [spidata, setSpiData] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
-    const [ummydata, setdummydata] = useState(null)
+    const equipmentallData = EquipmentAllData.use()
 
 
-
-
-    useEffect(() => {
-
-        const token = reactLocalStorage.get("access_token", false);
-        const feach = async () => {
-            try {
-                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-
-                setTimeSheetData(data1?.data?.values)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        feach();
-
-
-
-    }, []);
+    let useperma = useParams()
 
     useEffect(() => {
 
-        AssignCardDataArray([assigncarddata])
+        setQuantityAchieved(assigncarddata?.updated_quantity_to_be_achived)
 
-        if (assigncarddata) {
-            Object.entries(assigncarddata?.manpower_and_machinary[0]).map(([key, value]) => {
-
-
-                // console.log(key)
-            })
-            setQuantityAchieved(assigncarddata?.quantity_to_be_achieved)
-            setSpiData(quantityachieved / assigncarddata?.quantity_to_be_achieved)
-
-            // console.log(employeechangeData)
-            // console.log(assigncarddata?.manpower_and_machinary[0]) 
-            // console.log(employeechangeData) 
-
-            //  employeechangeData?.map((item, ids) => {
-            //     console.log(item)  
-            // })
-
-
-            let deksa = assigncarddata?.manpower_and_machinary?.map((item, ids) => { 
-                
-
-                let data = []
-                data = Object.entries(item)
-
-                data.map((items, ids) => {
-                    employeechangeData?.map((item1, id) => {
-
-                        if (items[0] === ` ${item1.designation.toUpperCase()} `) {
-
-                            if (!items[2]) {
-
-                                items.push(parseInt(Number(item1.hour)))
-                            }
-
-
-                            else if (items[2]) {
-
-                                let valuess = parseInt(Number(items[2]) + Number(item1.hour))
-                                return items[2] = valuess
-                            }
-
-                        } 
-                        if (` ${item1.designation.toUpperCase()} ` !== items[0]) {
-                            // console.log(items[0])
-                            console.log(item1.designation.toUpperCase())  
-                            //   console.log(item1)
-                            // let newarry = [  
-                            //     item1.designation = item1.hour
-                            // ] 
-
-                            // data.push(item1) 
-                        }
- 
-                        
-                    })
-                    // setdummydata(data)
-
-                    // console.log(items)
-                    // console.log(data)  
-
-                })
-
-
-
-            })
-
-
-            // let deta =  assigncarddata?.manpower_and_machinary?.filter((item) => {
-            //     return !employeechangeData?.find((items) => {
-            //         return    items?.designation.toLowerCase() === Object.values(item).toLowerCase()
-            //     })
-            // } 
-
-            // )
-            // console.log(data)
-
-
-        }
-
+        console.log(assigncarddata?.quantity_to_be_achieved)
     }, [assigncarddata])
-
-
-    console.log(ummydata)
 
 
 
@@ -146,7 +41,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         let spitData = e.target.value.split(",")
         setTimeSheetId(spitData[0])
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
-
         setOpen(true) ///open popup
     }
 
@@ -156,6 +50,53 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         setSpiData((e.target.value) / (quantityachieved))
         CurrentQuantityTOAchivedData.set(e.target.value)
     }
+
+
+console.log(currentquantitytoachivedData)
+console.log(quantityachieved)
+
+    useEffect(() => {
+
+
+        const PatchCalculatedData = (e) => {
+
+            const token = reactLocalStorage.get("access_token", false);
+            axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
+                quantity_to_be_achieved: assigncarddata?.quantity_to_be_achieved,
+                updated_quantity_to_be_achived: currentquantitytoachivedData,
+                manpower_and_machinary:
+                    assigncarddata?.manpower_and_machinary,
+                actual_employees: employeechangeData !== null ? [employeechangeData] : [],
+                actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
+                alanned_vs_allowable_vs_actual: [
+
+                ],
+                hourly_salrey: "10",
+                hourly_standrd_salrey: "10"
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                .then((response) => {
+                    console.log(response)
+                    if (response.status === 200) {
+
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+
+                })
+
+        }
+        if (currentquantitytoachivedData) {
+            PatchCalculatedData()
+        }
+
+    }, [currentquantitytoachivedData])
 
 
 
@@ -229,8 +170,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             </div>
             <div className="flex flex-row mt-[30px]  mr-[20px]">
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
-                    <thead className="font-secondaryFont text-[#000000] font-normal 
-                    not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
+                    <thead className="font-secondaryFont text-[#000000] font-normal  text-[12px]
+                not-italic text-[12px]leading-[20px]tracking-[-2%]">
                         <tr className="bg-[#ECF1F0]  ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
@@ -248,78 +189,59 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {assigncarddata && assigncarddataarray?.map((item, id) => {
+                    {assigncarddata && assigncarddata?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
 
-                        return <tbody
+                        console.log(item)
+                        return <>  {
 
-                            className=" max-w-[100%] font-secondaryFont   
-                            text-[#000000] font-normal not-italic text-[12px]
-                             leading-[20px] tracking-[-2%]"
-                        >
-                            
-                            {/* {assigncarddata &&
-                                Object.entries(assigncarddata?.manpower_and_machinary[0]).
-                                    slice(4, -2).map(([key, value]) => {
-                                        return <tr className=" h-[20px] text-center">
-                                            {value !== 0 ?
-                                                <> <td className="py-[20px]">{id + 1}</td>
-                                                    <td className="py-[20px]">{key}</td>
-
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddata?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * item?.quantity_to_be_achieved)}
-                                                    </td>
+                            !item[0].startsWith(" Part NO") ?
 
 
-                                                    <td className="py-[20px]">
-                                                        {
-                                                            assigncarddata?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddata?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * item?.quantity_to_be_achieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddata?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * quantityachieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
+                                <tbody
+                                    className=" max-w-[100%] font-secondaryFont   
+                text-[#000000]font-normal not-italic text-[12px]
+                leading-[20px]tracking-[-2%]"
+                                >
 
-                                                        {
-                                                            (assigncarddata?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddata?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * quantityachieved)).toFixed(2)}
+                                    <tr className=" h-[20px] text-center">
 
-                                                    </td>
+                                        <> <td className="py-[20px]">{id + 1}</td>
+                                            <td className="py-[20px]">{item[0]}</td>
 
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">{(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)}</td>
-                                                    <td className="py-[20px]">CPI</td>
+                                            <td className="py-[20px]">
+                                                {item[1]}
+                                            </td>
 
-                                                </>
-                                                : <>
-                                                </>
-                                            }
-                                        </tr>
-                                    })} */}
 
-                            
+                                            <td className="py-[20px]">
+                                                {item[2]}
+                                            </td>
+                                            <td className="py-[20px]">
+                                                {item[3]}
+                                            </td>
+                                            <td className="py-[20px]">
 
-                            {/* <tr className="p-[15px] text-center ">
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">  {(quantityachieved) / (assigncarddata?.quantity_to_be_achieved)} </td>
-                                <td className="py-[20px]">    </td>
-                            </tr> */}
+                                                {item[4]}
 
-                        </tbody>
+                                            </td>
+
+                                            <td className="py-[20px]">{item[5]}</td>
+                                            <td className="py-[20px]">{item[6]}</td>
+                                            <td className="py-[20px]">{item[7]} </td>
+                                            <td className="py-[20px]">{item[8]}</td>
+
+                                        </>
+
+
+                                    </tr>
+
+
+                                </tbody>
+
+
+                                : <>
+                                </>
+                        }</>
                     })}
                 </table>
             </div>
@@ -339,6 +261,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     value={quantityachieved}
                                     // value={assigncarddata?.manpower_and_machinary[0][" UNIT "]}
                                     onChange={(e) => QtyAchieved(e)}
+
                                 /> <span>{assigncarddata?.manpower_and_machinary[0][" UNIT "]}</span>
                             </div>
                         </div>

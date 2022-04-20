@@ -82,6 +82,8 @@ const NewJobCardMultiId = () => {
                     },
                 })
                 
+                console.log(data?.data)
+
                 setAssignCardData(data?.data)
 
             } catch (error) {

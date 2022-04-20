@@ -66,12 +66,10 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     },
                 })
 
-                
-
                 if (data1?.data) {
 
-                    let PresentEmployeData = data1?.data.filter((elem => elem.Punch1  ))
-                      
+                    let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
+
                     setTimeSheetData(PresentEmployeData)
                     setFilterEmpoyeeAllData(PresentEmployeData)
 
@@ -117,41 +115,36 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     useEffect(() => {
 
         if (timesheetdata && empoyeealldata) {
-
-            console.log(timesheetdata)
-
             let deta = timesheetdata?.filter((item) => {
                 return !empoyeealldata.find((items) => {
                     return item?.UserID === items.employee_id
                 })
             }
-
             )
 
-            console.log(deta)
+
             setFilterEmpoyeeAllData(deta)
         }
     }, [empoyeealldata, timesheetdata])
 
 
 
-    const TimeSelectFun = (e) => {
-
-
-
-        let spitData = e.target.value.split(",")
-        console.log(spitData)
+    const TimeSelectFun = (e) => { 
         
-        setTimeSheetName( spitData[0])
+        
+
+        let spitData = e.target.value.split(",")  
+
+        setTimeSheetName(spitData[0])
         setEmployeeId(spitData[1])
-        setEmployeeDesignation(spitData[2]) 
-        
-        if (spitData[1]) {
-            console.log(spitData[1])
+        setEmployeeDesignation(spitData[2])
+
+        if (spitData[1]) { 
             setOpen(true)  ///open popup
         }
 
     }
+
 
     const AddToList = () => {
 
@@ -285,7 +278,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         setCencelDelete(false)
     }
 
-console.log(filterempoyeealldata)
+     
+
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
@@ -308,7 +302,7 @@ console.log(filterempoyeealldata)
                                 >
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
-{console.log(filterempoyeealldata)}
+
                                         return <option value={[item.UserName, item.UserID, item.designation]}>
                                             {`${item.UserID} [${item.designation}]  ${item.UserName}`}
                                         </option>

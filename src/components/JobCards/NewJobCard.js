@@ -140,6 +140,7 @@ const NewJobCard = () => {
       assign_user_id: "",
       assign_to: "",
       permissions: "",
+      updated_quantity_to_be_achived: ""
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
@@ -160,8 +161,9 @@ const NewJobCard = () => {
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
-      values.quantity_to_be_achieved = quantitytoachivedData
-      values.manpower_and_machinary = [productivitysheetobject]
+      values.quantity_to_be_achieved = allCalcultedMachineryData?.gang_productivity
+      values.manpower_and_machinary = allCalcultedMachineryData?.productivity
+      values.updated_quantity_to_be_achived = allCalcultedMachineryData?.gang_productivity
 
 
 
@@ -263,7 +265,7 @@ const NewJobCard = () => {
 
   }, [])
 
-console.log(productivitysheetobject)
+
 
   useEffect(() => {
 
@@ -278,7 +280,7 @@ console.log(productivitysheetobject)
         productivity: [
           productivitysheetobject
         ],
-        gang_productivity:""
+        gang_productivity: ""
 
       }, {
         headers: {
@@ -309,7 +311,7 @@ console.log(productivitysheetobject)
 
   }, [activitycode])
 
-  console.log(productivitysheetobject)
+
 
   const GetCalculatedData = (e) => {
 
@@ -335,20 +337,19 @@ console.log(productivitysheetobject)
 
   }
 
-  useEffect(()=>{
-    if (quantitytoachivedData){
-      PatchCalculatedData() 
+  useEffect(() => {
+    if (quantitytoachivedData) {
+      PatchCalculatedData()
     }
 
-  },[quantitytoachivedData])
+  }, [quantitytoachivedData])
 
- 
 
-  const PatchCalculatedData = (e) => {
 
-    console.log(quantitytoachivedData)
+  const PatchCalculatedData = (e) => {  
+    
     const token = reactLocalStorage.get("access_token", false);
-    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`,{
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`, {
       activity_code: activitycode,
       client_name: projectobjectdata?.client_name,
       project_name: projectobjectdata?.project_name,
@@ -357,16 +358,16 @@ console.log(productivitysheetobject)
       productivity: [
         productivitysheetobject
       ],
-      gang_productivity:quantitytoachivedData,
-      quantity_to_be_achived:""
-    } ,{
+      gang_productivity: quantitytoachivedData,
+      quantity_to_be_achived: ""
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
 
       .then((response) => {
-        console.log(response)  
+        console.log(response)
         if (response.status === 200) {
           GetCalculatedData()
 
@@ -506,9 +507,9 @@ console.log(productivitysheetobject)
               <div style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                 <ManpowerAndMachinery
                   productivitysheetobject={productivitysheetobject}
-                  productivitysheetarray={productivitysheetarray} 
+                  productivitysheetarray={productivitysheetarray}
                   allCalcultedMachineryData={allCalcultedMachineryData}
-                  />
+                />
               </div>
 
               <div className="flex flex-col mb-10 ">
