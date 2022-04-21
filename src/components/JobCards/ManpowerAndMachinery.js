@@ -62,7 +62,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
   }
 
 
-  console.log(GANG_PRODUCTIVIVY)
+  console.log(allCalcultedMachineryData)
 
 
 
@@ -109,10 +109,11 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                       <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
-                        <th className="">{value[1] !== "absents" ? value[1] : "-"}</th>
+                         <th className="">{value[3] !== "absents" ? value[3] : "-"}</th>
                         {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th> */}
+                        <th className="">{value[1]}</th>
                         <th className="">{value[2]}</th>
-                        <th className="">{value[3]}</th>
+                        
 
                       </tr>
                       <tr className="m-0 p-0 h-[20px]"  >

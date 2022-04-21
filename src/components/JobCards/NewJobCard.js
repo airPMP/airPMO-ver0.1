@@ -280,7 +280,8 @@ const NewJobCard = () => {
         productivity: [
           productivitysheetobject
         ],
-        gang_productivity: ""
+        gang_productivity: "",
+        quantity_to_be_achived: "",
 
       }, {
         headers: {

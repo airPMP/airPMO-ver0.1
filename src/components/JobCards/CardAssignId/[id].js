@@ -171,8 +171,8 @@ const NewJobCardMultiId = () => {
                                 className="content-center"
                             />
                         </div>
-                        <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-                            Create new Job Card
+                        <div className=" max-w-[308px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
+                            Activities executed
                         </div>
                     </div>
                     <div className="pl-[140px] pr-[96px] pt-[33.49px]">
