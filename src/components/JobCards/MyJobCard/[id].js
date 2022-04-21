@@ -71,10 +71,10 @@ const MyJobCardsId = () => {
         let zoneFilterData = response?.data.filter((elem => elem.zone))
         setFilterZonesData(zoneFilterData)
         let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
-        setFilterSubZonesData(SubzoneFilterData)
-
+        setFilterSubZonesData(SubzoneFilterData) 
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
+
         if (response.status === 200) {
           setComeZoneData(true)
         }
@@ -480,7 +480,7 @@ const MyJobCardsId = () => {
                 </tr>
               </thead>
               {filteredData && filteredData?.map((item, ids) => {
-                console.log(item?.updated_quantity_to_be_achived)
+                
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
@@ -490,7 +490,7 @@ const MyJobCardsId = () => {
                       {item?._id}</th> */}
                     <th className=" ">{item?.jc_creation}</th>
                     <th className=" ">{item?.activity_name}</th>
-                    <th className=" ">{item?.updated_quantity_to_be_achived}</th>
+                    <th className=" ">{item?.quantity_to_be_achieved}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
                     <th className=" "> {item?.assign ? item.assign : "no"}</th>

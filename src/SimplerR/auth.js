@@ -31,3 +31,8 @@ export const ClientDataFreze = entity(null)
 export const  ProjectDataFreze = entity(null)
 
 
+export const  MyJobcardActivityCoard = entity(false)
+
+
+
+

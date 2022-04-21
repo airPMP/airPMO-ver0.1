@@ -27,11 +27,13 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     let useperma = useParams()
 
     useEffect(() => {
+          if (assigncarddata) {
+ 
+            setQuantityAchieved(assigncarddata.quantity_to_be_achived)
+          }
 
-        setQuantityAchieved(assigncarddata?.updated_quantity_to_be_achived)
-
-        console.log(assigncarddata?.quantity_to_be_achieved)
-    }, [assigncarddata])
+         
+    }, [ ])
 
 
 
@@ -52,8 +54,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
 
-console.log(currentquantitytoachivedData)
-console.log(quantityachieved)
+
 
     useEffect(() => {
 

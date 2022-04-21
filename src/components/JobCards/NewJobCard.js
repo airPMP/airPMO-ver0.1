@@ -10,7 +10,7 @@ import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import { useToasts } from "react-toast-notifications";
 import ManpowerAndMachinery from "./ManpowerAndMachinery";
-import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData } from "../../SimplerR/auth";
+import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData, MyJobcardActivityCoard,   } from "../../SimplerR/auth";
 
 const validate = (values) => {
   const errors = {};
@@ -55,7 +55,7 @@ const NewJobCard = () => {
   const productivitysheetdata = ProductivitySheetData.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
 
-
+   const myJobcardActivityCoard=MyJobcardActivityCoard.use()
 
 
   useEffect(() => {
@@ -200,6 +200,8 @@ const NewJobCard = () => {
 
   const ActivityCode = (e) => {
 
+    MyJobcardActivityCoard.set(true)
+
     setActivityCode(e.target.value)
 
     let productArray = []
@@ -292,13 +294,6 @@ const NewJobCard = () => {
           console.log(response)
           if (response.status === 201) {
             GetCalculatedData()
-            // addToast("Issue JC Sucessfully", {
-            //   appearance: "success",
-            //   autoDismiss: true,
-            // })
-
-
-
           }
         })
         .catch((error) => {
@@ -325,6 +320,7 @@ const NewJobCard = () => {
 
       .then((response) => {
         console.log(response)
+
         setAllCalcultedMachineryData(response?.data)
 
         if (response.status === 201) {
@@ -347,8 +343,8 @@ const NewJobCard = () => {
 
 
 
-  const PatchCalculatedData = (e) => {  
-    
+  const PatchCalculatedData = (e) => {
+
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`, {
       activity_code: activitycode,
@@ -360,7 +356,8 @@ const NewJobCard = () => {
         productivitysheetobject
       ],
       gang_productivity: quantitytoachivedData,
-      quantity_to_be_achived: ""
+      quantity_to_be_achived: allCalcultedMachineryData?.quantity_to_be_achived,
+      deleted_filed: true
     }, {
       headers: {
         Authorization: `Bearer ${token}`,

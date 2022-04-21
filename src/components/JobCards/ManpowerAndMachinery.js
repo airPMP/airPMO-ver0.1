@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
+import { MyJobcardActivityCoard, ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
 const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray,
   allCalcultedMachineryData }) => {
 
@@ -8,61 +8,34 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
   const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
   const [totaltimegangproductivity, setTotalTimeGangProductivity] = useState(null)
   const [totalgangproductivity, setTotalGangProductivity] = useState(null)
-  const [data12, setdata12] = useState(null)
-
-
-
+  const [data12, setdata12] = useState(true)
+  const myJobcardActivityCoard = MyJobcardActivityCoard.use()
 
   useEffect(() => {
-    console.log(allCalcultedMachineryData)
+
     if (allCalcultedMachineryData !== undefined && allCalcultedMachineryData.length !== 0 && allCalcultedMachineryData[0] !== null
-        ) {
-      console.log("allCalcultedMachineryData")
-      console.log(allCalcultedMachineryData.gang_productivity)
-      setGANG_PRODUCTIVIVY(allCalcultedMachineryData.gang_productivity)
+    ) {
+
+      if (myJobcardActivityCoard) {
+        setGANG_PRODUCTIVIVY(allCalcultedMachineryData.quantity_to_be_achived)
+      }
+      else{
+        setGANG_PRODUCTIVIVY(allCalcultedMachineryData.gang_productivity)
+      }  
     }
+    // quantity_to_be_achived 
+
 
   }, [allCalcultedMachineryData])
 
-  console.log(allCalcultedMachineryData)
-
-  // const ArrangedataFun = () => { 
-  //   productivitysheetobject.totaltime = projectobjectdata?.min_hours //add total time in productive sheeet data
-  //   setGANG_PRODUCTIVIVY(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-  //   setTotalGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-  //   QuantityTOAchivedData.set(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-  //   // console.log(projectobjectdata?.min_hours)
-
-  //   // setTotalTimeGangProductivity(productivitysheetobject["totaltime"]) 
-  //   setTotalTimeGangProductivity(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-
-  //   console.log(allCalcultedMachineryData.productivity)
-
-  //   let data1 =  Object.entries(allCalcultedMachineryData?.productivity[0]).map(([key, value], i, items) => {
-
-  //     
-
-  //     return <tr className="rounded  bg-[#ECF1F0] ">
-  //       {/* <th className="py-[10px]" >{i + 1}</th> */}
-  //       <th className="">{key}</th>
-  //       <th className="">{"i"}</th>
-  //       {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
-  //       <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
-  //       ).toFixed(2)}</th>   */}
-  //     </tr> 
-
-  //   }) 
-
-  // }
 
   const GangProductData = (e, data) => {
-    console.log(e.target.value)
     QuantityTOAchivedData.set(e.target.value)
-
+    MyJobcardActivityCoard.set(false)
   }
 
 
-  console.log(allCalcultedMachineryData)
+
 
 
 
@@ -101,7 +74,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
 
                   return <> {
-                    value[2] !== 0 && !key.startsWith(" Part NO") ? <tbody
+                    value[1] !== 0 && !key.startsWith(" Part NO") ? <tbody
                       className=" max-w-[100%] font-secondaryFont   text-[#000000] 
                       font-normal not-italic text-[12px]   "
 
@@ -109,11 +82,11 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                       <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
-                         <th className="">{value[3] !== "absents" ? value[3] : "-"}</th>
+                        <th className="">{value[3] !== "absents" ? value[3] : "-"}</th>
                         {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th> */}
                         <th className="">{value[1]}</th>
                         <th className="">{value[2]}</th>
-                        
+
 
                       </tr>
                       <tr className="m-0 p-0 h-[20px]"  >

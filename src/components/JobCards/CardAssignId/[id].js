@@ -91,13 +91,9 @@ const NewJobCardMultiId = () => {
             }
         }
 
-        feach();
+        feach(); 
 
-        // let today = new Date();
-        // let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        // setCurrentDate(date)
-
-    }, [urlTitle.pathname]);
+    }, [urlTitle.pathname,currentquantitytoachivedData ]);
 
 
     const formik = useFormik({
