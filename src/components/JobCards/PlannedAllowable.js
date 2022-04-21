@@ -231,7 +231,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                        <tr className="bg-[#ECF1F0]  ">
+                        <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -248,7 +248,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {assigncarddata && assigncarddataarray?.map((item, id) => {
+                    {/* {assigncarddata && assigncarddataarray?.map((item, id) => {
 
                         return <tbody
 
@@ -256,7 +256,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             text-[#000000] font-normal not-italic text-[12px]
                              leading-[20px] tracking-[-2%]"
                         >
-                            {/* <tr className="bg-[#ECF1F0] "> */}
+                            
                             {assigncarddata &&
                                 Object.entries(assigncarddata?.manpower_and_machinary[0]).
                                     slice(4, -2).map(([key, value]) => {
@@ -304,7 +304,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                         </tr>
                                     })}
 
-                            {/* </tr> */}
+                             
 
                             <tr className="p-[15px] text-center ">
                                 <td className="py-[20px]" >    </td>
@@ -320,7 +320,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             </tr>
 
                         </tbody>
-                    })}
+                    })} */}
                 </table>
             </div>
 
