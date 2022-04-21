@@ -70,11 +70,20 @@ export class CreateJobCardDto {
   actual_equipments: [{}]
 
   @ApiProperty()
-  alanned_vs_allowable_vs_actual: [{}]
+  planned_vs_allowable_vs_actual: [{}]
 
   @ApiProperty()
   hourly_salrey:string
 
   @ApiProperty()
   hourly_standrd_salrey:string
+
+  @ApiProperty()
+  total_overall_cpi:string
+
+  @ApiProperty()
+  total_overall_spi:string
+
+  @ApiProperty()
+  unit:string
 }

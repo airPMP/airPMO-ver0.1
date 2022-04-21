@@ -7,8 +7,8 @@ export type spicpiDocument = spicpi & Document;
 @Schema()
 export class spicpi {
   @Prop()
- activity_code: string;
- 
+  activity_code: string;
+
   @Prop()
   client_name: string;
 
@@ -26,9 +26,10 @@ export class spicpi {
 
   @Prop()
   quantity_to_be_achived: string;
-  
+
   @Prop()
   gang_productivity: string;
+
   @Prop({ default: Date })
   createdAt: string;
 
