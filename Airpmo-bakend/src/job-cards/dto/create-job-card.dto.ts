@@ -28,7 +28,7 @@ export class CreateJobCardDto {
   quantity_to_be_achieved: string;
 
   @ApiProperty()
-   updated_quantity_to_be_achived: string;
+  updated_quantity_to_be_achived: string;
 
   @ApiProperty()
   manpower_and_machinary: [{}];
@@ -70,7 +70,7 @@ export class CreateJobCardDto {
   actual_equipments: [{}]
 
   @ApiProperty()
-  planned_vs_allowable_vs_actual: [{}]
+  alanned_vs_allowable_vs_actual: [{}]
 
   @ApiProperty()
   hourly_salrey:string

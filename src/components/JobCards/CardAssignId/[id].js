@@ -169,8 +169,8 @@ const NewJobCardMultiId = () => {
                                 className="content-center"
                             />
                         </div>
-                        <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-                            Create new Job Card
+                        <div className=" max-w-[308px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
+                             Activities executed
                         </div>
                     </div>
                     <div className="pl-[140px] pr-[96px] pt-[33.49px]">
@@ -320,14 +320,14 @@ const NewJobCardMultiId = () => {
                                     />
 
                                 </div>
-                                {/* <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <PlannedAllowable
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
                                         assigncarddata={assigncarddata}
                                     />
-                                </div> */}
+                                </div> 
                             </div>
 
 

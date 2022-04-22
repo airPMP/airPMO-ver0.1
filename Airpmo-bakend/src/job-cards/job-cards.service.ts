@@ -28,6 +28,7 @@ import { UpdateJobCardDto } from './dto/update-job-card.dto';
 import { Base64, encode } from 'js-base64';
 import { assign } from 'nodemailer/lib/shared';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { spicpi, spicpiDocument } from 'src/schemas/spi_cpi.schema';
 
 @Injectable()
 export class JobCardsService {
@@ -38,12 +39,15 @@ export class JobCardsService {
     private assignjobcardmodal: Model<jobcardassignDocuments>,
     @InjectModel(myjobcard.name)
     private myjobcardmodal: Model<myjobcardDocument>,
+    @InjectModel(spicpi.name)
+    private spicpiModel: SoftDeleteModel<spicpiDocument>,
     @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
     @InjectModel(Role.name) private RoleModel: Model<RoleDocument>,
   ) {}
 
   async createjobCard(CreateJobCardDto: CreateJobCardDto) {
     try {
+      // CreateJobCardDto.updated_quantity_to_be_achived=CreateJobCardDto.quantity_to_be_achieved
       const job_card = await this.jobcardmodal.create(CreateJobCardDto);
       return job_card;
     } catch {
@@ -237,17 +241,25 @@ export class JobCardsService {
     const machinary_data_value = Object.values(machinary_data);
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
-    const current_quantity = parseFloat(
-      UpdateJobCardDto.quantity_to_be_achieved,
+    var update_quantity = parseFloat(
+      UpdateJobCardDto.updated_quantity_to_be_achived,
     );
+    const a = await this.jobcardmodal.findOne({ _id: id });
+    var activity_id = a.activity_code;
+    const findqunaty = await this.spicpiModel.findOne({
+      activity_code: activity_id,
+    });
+
+    if (findqunaty != null) {
+      var current_quantity = parseFloat(findqunaty.gang_productivity);
+    } else {
+      throw new NotFoundException('activity code data not found');
+    }
+
     const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
     const hourly_standard_sal = parseFloat(
       UpdateJobCardDto.hourly_standrd_salrey,
     ).toFixed(2);
-
-    const update_quantity = parseInt(
-      UpdateJobCardDto.updated_quantity_to_be_achived,
-    );
 
     ///actual employee array
     var data_arr = [];
@@ -273,7 +285,7 @@ export class JobCardsService {
     var new_array = [];
     var new_array2 = [];
     for (let j = 0; j < machinary_arr.length; j++) {
-      for (let k = 1; k < machinary_arr[j].length-1; k++) {
+      for (let k = 1; k < machinary_arr[j].length - 1; k++) {
         const a = machinary_arr[j][k] / current_quantity;
         var calculated_all = (a * update_quantity).toFixed(2);
         new_array.push(calculated_all);
@@ -289,11 +301,11 @@ export class JobCardsService {
     var dup = [];
     var alwoable_cal = 0;
     for (let i = 0; i < machinary_arr.length; i++) {
-      var popped = machinary_arr[i].pop()
+      var popped = machinary_arr[i].pop();
       var children = machinary_arr[i].concat(new_array2[i]);
       alwoable_arr.push(children);
     }
-   
+
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let i = 0; i < employe_data_arr.length; i++) {
         if (employe_data_arr[i].designation != undefined) {
@@ -420,12 +432,13 @@ export class JobCardsService {
 
     UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
     UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
-    UpdateJobCardDto.planned_vs_allowable_vs_actual = [cpi_array2];
-    UpdateJobCardDto.updated_quantity_to_be_achived =
-      update_quantity.toString();
+    UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
     UpdateJobCardDto.hourly_salrey = hourly_sal;
     UpdateJobCardDto.hourly_standrd_salrey = hourly_standard_sal;
-     UpdateJobCardDto.unit=popped
+    UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString();
+    UpdateJobCardDto.updated_quantity_to_be_achived =
+      update_quantity.toString();
+    UpdateJobCardDto.unit = popped;
     const find = await this.jobcardmodal.findOne({ _id: id });
     if (find != null) {
       const update = await this.jobcardmodal.updateOne(
@@ -443,7 +456,6 @@ export class JobCardsService {
       throw new NotFoundException('data not found');
     }
   }
-
   // async assignjobcard(assignJobCardDto: assignJobCardDto) {
   //   try {
   //     const id = assignJobCardDto.organization_id;

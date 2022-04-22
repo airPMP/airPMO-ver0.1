@@ -30,6 +30,10 @@ export class spicpi {
   @Prop()
   gang_productivity: string;
 
+  @Prop()
+  deleted: boolean;
+
+
   @Prop({ default: Date })
   createdAt: string;
 

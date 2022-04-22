@@ -25,4 +25,6 @@ export class CreateSpiCpiDto {
   @ApiProperty()
   gang_productivity: string;
 
+  @ApiProperty()
+  deleted_filed: boolean;
 }

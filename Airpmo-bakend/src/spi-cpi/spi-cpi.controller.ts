@@ -31,13 +31,13 @@ export class SpiCpiController {
   }
 
   @Auth()
-  @Patch('update_create_job_card_cal:id/:activity_code')
+  @Patch('update_create_job_card_cal/:id/:activity_code')
   update(
     @Param('id') id: string,
     @Param('activity_code') activity_code: string,
     @Body() updateSpiCpiDto: UpdateSpiCpiDto,
   ) {
-    return this.spiCpiService.update(id,activity_code,updateSpiCpiDto);
+    return this.spiCpiService.update(id, activity_code, updateSpiCpiDto);
   }
 
   @Auth()

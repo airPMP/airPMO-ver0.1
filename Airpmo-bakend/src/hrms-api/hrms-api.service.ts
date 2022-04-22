@@ -3,8 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Console } from 'console';
 import { Model } from 'mongoose';
 import { hrms, hrmsDocuments } from 'src/schemas/hrms.schema';
-import { CreateHrmsApiDto } from './dto/create-hrms-api.dto';
-import { UpdateHrmsApiDto } from './dto/update-hrms-api.dto';
 var axios = require('axios');
 
 @Injectable()
@@ -14,15 +12,15 @@ export class HrmsApiService {
     private hrmsmodal: Model<hrmsDocuments>,
   ) {}
 
-  async findAll(id: string, @Response() res) {
-    
+  async findAll(id: string,particular_date: string, @Response() res) {
+   
     var config = {
       method: 'get',
-      url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/attendance-daily?action=get;range=section;id=${id}`,
-      headers: {
-        Authorization: 'Basic YWlycG1vOkFJUlBNTzIwMjI=',
-        Cookie: 'ASP.NET_SessionId=imwgbqprs0tkczardwcqydf1',
-      },
+      url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/attendance-daily?action=get;range=section;id=${id};date-range=${particular_date}`,
+      headers: { 
+        'Authorization': 'Basic YWlycG1vOkFJUlBNTzIwMjI=', 
+        'Cookie': 'ASP.NET_SessionId=5uevgerkcpxzhbfqeinflyor'
+      }
     };
     var config2 = {
       method: 'get',

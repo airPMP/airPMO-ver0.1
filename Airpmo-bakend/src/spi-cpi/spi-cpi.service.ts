@@ -28,7 +28,7 @@ export class SpiCpiService {
     const arr1 = productivity_value.map(Number);
 
     const arr = [];
-    const cal_arr = []
+    const cal_arr = [];
     for (let index = 0; index < productivity_key.length; index++) {
       if (productivity_key[index].startsWith(' Part ') === false) {
         arr.push(productivity_key[index]);
@@ -43,16 +43,23 @@ export class SpiCpiService {
     for (let i = 0; i < arr.length; i++) {
       new_arr[arr[i]] = [arr[i], productivity_value[i], cal_arr[i], unit];
     }
-      // createSpiCpiDto.gang_productivity =
-      // createSpiCpiDto.productivity[0][' GANG PRODUCTIVIVY (APRVD. BY PM) '] ||
-      // createSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
+    createSpiCpiDto.quantity_to_be_achived =
+      createSpiCpiDto.productivity[0][' GANG PRODUCTIVIVY (APRVD. BY PM) '] ||
+      createSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
+
+    createSpiCpiDto.gang_productivity =
+      createSpiCpiDto.productivity[0][' GANG PRODUCTIVIVY (APRVD. BY PM) '] ||
+      createSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
     createSpiCpiDto.productivity = [new_arr];
+    const find_activity_data = await this.spicpiModel.findOne({ activity_code:createSpiCpiDto.activity_code });
+   if(find_activity_data===null){
     return await this.spicpiModel.create(createSpiCpiDto);
+   }else{
+     throw new NotFoundException('data all ready exist this activiy code')
+   }
+    
   }
 
-
-
-  
   async getjobcardcal(id: string) {
     const finddata = await this.spicpiModel.findOne({ activity_code: id });
     try {
@@ -64,28 +71,27 @@ export class SpiCpiService {
     } catch {}
   }
 
-
-
-
-
   async update(
     id: string,
     activity_code: string,
     updateSpiCpiDto: UpdateSpiCpiDto,
   ) {
-    const gangproductivity = updateSpiCpiDto.gang_productivity;
+    var gangproductivity;
+    if(updateSpiCpiDto.gang_productivity!=''){
+     gangproductivity =updateSpiCpiDto.gang_productivity
+    
+    }else{
+      gangproductivity='0'
+    }
+
     const quantity_to_be_achieved = updateSpiCpiDto.quantity_to_be_achived;
     let min_hour = parseInt(updateSpiCpiDto.min_hour);
-    const productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(
-      4,
-    );
-    var unit =
-      updateSpiCpiDto.productivity[0][' UNIT '] ||
-      updateSpiCpiDto.productivity[0]['UNIT'];
+    const productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4);
+    var unit = updateSpiCpiDto.productivity[0][' UNIT '] ||updateSpiCpiDto.productivity[0]['UNIT'];
     if (unit === undefined || unit === null) {
       unit = 'absents';
     }
-    var productivity_value = Object.values(updateSpiCpiDto.productivity[0],).slice(4);
+    var productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(4);
     const arr1 = productivity_value.map(Number);
 
     const arr = [];
@@ -97,26 +103,35 @@ export class SpiCpiService {
     }
 
     for (let i = 0; i < arr.length; i++) {
+   
+      if(quantity_to_be_achieved!='0'&&quantity_to_be_achieved!=""){
       const calculate_hour = arr1[i] * min_hour;
       const cal_ar = calculate_hour.toFixed(2);
-      const initial_val = +cal_ar /parseFloat(quantity_to_be_achieved)
-      const calculation = (initial_val *parseFloat(gangproductivity)).toFixed(1);
+      const initial_val = +cal_ar / parseFloat(quantity_to_be_achieved);
+      const calculation = (initial_val * parseFloat(gangproductivity)).toFixed(1);
       const calulate = calculation.split('.');
-      const cal_minute=parseInt(calulate[1])
-      const a =(cal_minute).toFixed()
-      const minute_2 = +a*6
-      const data =calulate[0]
-      const hour_minute = `${data}.${minute_2 }`;
+      const cal_minute = parseInt(calulate[1]);
+      const a = cal_minute.toFixed();
+      const minute_2 = +a * 6;
+      const data = calulate[0];
+      const hour_minute = `${data}.${minute_2}`;
       cal_arr.push(hour_minute);
+      }else{
+        cal_arr.push(0);
+      }
     }
 
     var new_arr = {};
     for (let i = 0; i < arr.length; i++) {
-      const number = arr1[i] /parseFloat(quantity_to_be_achieved)
-      const ar = (number*parseFloat(gangproductivity)).toFixed(3)
-      new_arr[arr[i]] = [arr[i], ar, cal_arr[i], unit];
+      if(quantity_to_be_achieved!='0'&&quantity_to_be_achieved!=""){
+      const number = arr1[i] / parseFloat(quantity_to_be_achieved);
+      const ar = (number * parseFloat(gangproductivity)).toFixed(2);
+       new_arr[arr[i]] = [arr[i], ar, cal_arr[i], unit];
+    
+    } else{
+      new_arr[arr[i]] = [arr[i], 0, cal_arr[i], unit];
     }
-
+  }
     updateSpiCpiDto.productivity[0] = new_arr;
     updateSpiCpiDto.gang_productivity = gangproductivity;
     const finddata = await this.spicpiModel.findOne({
@@ -124,23 +139,24 @@ export class SpiCpiService {
       activity_code: activity_code,
     });
     if (finddata != null) {
+       if(updateSpiCpiDto.deleted_filed===true){
       const a = await this.spicpiModel.updateOne(
         { activity_code: activity_code },
         { ...updateSpiCpiDto },
-      );
-      if (a.matchedCount != 0) {
-        return await this.spicpiModel.findOne({
-          project_id: id,
-          activity_code: activity_code,
-        });
-      } else {
-        throw new NotFoundException('data not found');
+      )
+      if(a.matchedCount!=0){
+        return await this.spicpiModel.findOne({ activity_code: activity_code,project_id:id});
       }
+    }
+      else{
+          const temp_data=updateSpiCpiDto
+          return temp_data
+      }
+     
     } else {
-      throw new NotFoundException('data not found');
+      throw new NotFoundException('sorry no data matched');
     }
   }
-
   async remove(id: string) {
     const remove = await this.spicpiModel.softDelete({ _id: id });
     if (remove.deleted === 1) {
