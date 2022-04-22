@@ -84,6 +84,9 @@ const NewJobCardMultiId = () => {
                 
                 setAssignCardData(data?.data)
 
+                 
+
+
             } catch (error) {
                 console.log(error)
             }
@@ -308,7 +311,9 @@ const NewJobCardMultiId = () => {
                                     <EmployeComponent
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
-                                        assigncarddataId={assigncarddata?._id}
+                                        assigncarddataId={assigncarddata}
+                                        currentdate={currentdate}
+                                         
 
                                     />
                                 </div>

@@ -7,7 +7,8 @@ import { EmployeeChangeData } from "../../SimplerR/auth";
 
 
 
-const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataId }) => {
+const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown,
+    assigncarddataId, currentdate, useperma }) => {
 
 
 
@@ -23,7 +24,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [employeeid, setEmployeeId] = useState(null);
     const [employeedesignation, setEmployeeDesignation] = useState(null);
     const [addtolistdata, setAddToListData] = useState([]);
-    const [empoyeedata, setEmpoyeeData] = useState(null);
     const [empoyeealldata, setEmpoyeeAllData] = useState(null);
     const [filterempoyeealldata, setFilterEmpoyeeAllData] = useState([null]);
     const [empoyeeupdate, setEmpoyeeUpdate] = useState(false);
@@ -32,13 +32,15 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [editprofileid, setEditProfileId] = useState(null);
 
     const [deleteid, setDeleteId] = useState(null);
+    const [deletedatarefrace, setDeleteDataRefrace] = useState(false);
+    const [projecttime, setProjectTime] = useState(null);
 
-    const [textData, settextData] = useState([]);
     const employeechangeData = EmployeeChangeData.use()
 
 
     const { addToast } = useToasts();
 
+  
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -58,36 +60,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         // feach();
 
 
-        const feach = async () => {
-            try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-
-                
-
-                if (data1?.data) {
-
-                    let PresentEmployeData = data1?.data.filter((elem => elem.Punch1  ))
-                      
-                    setTimeSheetData(PresentEmployeData)
-                    setFilterEmpoyeeAllData(PresentEmployeData)
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        feach();
-
-
         const feach2 = async () => {
             try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId}`,
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId?._id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -97,6 +72,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     setEmpoyeeUpdate(false)
                 }
 
+                console.log(data1)
                 setEmpoyeeAllData(data1?.data)
                 EmployeeChangeData.set(data1?.data)
 
@@ -107,10 +83,71 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         feach2();
 
-    }, [assigncarddataId, empoyeeupdate]);
+        const feach3 = async () => {
+            try {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${assigncarddataId?.project_id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                setProjectTime(data1?.data)
+                console.log(data1?.data)
+                if (data1?.status === "200") {
+
+                }
+
+                console.log(data1)
+
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        feach3();
+
+    }, [assigncarddataId, empoyeeupdate, deletedatarefrace]);
+
+    useEffect(() => {
+
+        const token = reactLocalStorage.get("access_token", false);
+
+        if (currentdate) {
+            let spitData = currentdate?.split("-")
+            console.log(spitData)
+            let splitDataArange = `${spitData[2]}${spitData[1]}${spitData[0]}`
+            console.log(splitDataArange)
 
 
 
+            const feach = async () => {
+                try {
+                    const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${splitDataArange}-${splitDataArange}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+
+
+                    console.log(data1)
+
+                    if (data1?.data) {
+
+                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
+
+                        setTimeSheetData(PresentEmployeData)
+                        setFilterEmpoyeeAllData(PresentEmployeData)
+
+                    }
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            feach();
+        }
+    }, [currentdate])
 
 
 
@@ -118,17 +155,13 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         if (timesheetdata && empoyeealldata) {
 
-            console.log(timesheetdata)
-
             let deta = timesheetdata?.filter((item) => {
                 return !empoyeealldata.find((items) => {
                     return item?.UserID === items.employee_id
                 })
             }
 
-            )
-
-            console.log(deta)
+            ) 
             setFilterEmpoyeeAllData(deta)
         }
     }, [empoyeealldata, timesheetdata])
@@ -141,11 +174,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         let spitData = e.target.value.split(",")
         console.log(spitData)
-        
-        setTimeSheetName( spitData[0])
+
+        setTimeSheetName(spitData[0])
         setEmployeeId(spitData[1])
-        setEmployeeDesignation(spitData[2]) 
-        
+        setEmployeeDesignation(spitData[2])
+
         if (spitData[1]) {
             console.log(spitData[1])
             setOpen(true)  ///open popup
@@ -166,8 +199,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         }
 
 
+
         let AddlistObject = {
-            "jc_id": assigncarddataId,
+            "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
             "designation": employeedesignation,
             "employee_name": timesheetname,
@@ -175,6 +209,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             "remarks": timesheetremark,
             "organization_id": organizationId
         }
+
 
 
 
@@ -220,7 +255,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const EditAddToList = () => {
 
         let AddlistObject = {
-            "jc_id": assigncarddataId,
+            "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
             "designation": employeedesignation,
             "employee_name": timesheetname,
@@ -230,6 +265,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         const token = reactLocalStorage.get("access_token", false);
+
+
+
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_my_job_card_employee/${editprofileid}`, AddlistObject, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -273,8 +311,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     },
                 })
                 if (data?.status === 200) {
-
-                    window.location.reload(false);
+                    setDeleteDataRefrace(o => !o) 
                 }
 
             } catch (error) {
@@ -285,7 +322,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         setCencelDelete(false)
     }
 
-console.log(filterempoyeealldata)
+    console.log(parseInt(projecttime?.max_hours))
+    console.log(timesheethours)
+
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
@@ -308,7 +347,7 @@ console.log(filterempoyeealldata)
                                 >
                                     <option>Employee ID</option>
                                     {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
-{console.log(filterempoyeealldata)}
+
                                         return <option value={[item.UserName, item.UserID, item.designation]}>
                                             {`${item.UserID} [${item.designation}]  ${item.UserName}`}
                                         </option>
@@ -466,11 +505,18 @@ console.log(filterempoyeealldata)
                                     type="number"
                                     value={timesheethours}
                                     onChange={(e) => setTimeSheetHours(e.target.value)}
-                                    className="  h-10 w-full border-b
-                     font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
-                       focus:outline-none focus:border-[#5e5d5d]"
+                                    className={`${parseInt(projecttime?.max_hours)  >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                    font-medium font-secondaryFont    
+                                      focus:outline-none `}
+
                                     placeholder="Hour(s)"
                                 />
+                                {parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ?
+
+                                    null : <div className="text-[12px] text-[red]">
+                                        max {projecttime?.max_hours}
+                                    </div>
+                                }
 
                             </div>
                         </div>
@@ -493,8 +539,8 @@ console.log(filterempoyeealldata)
                                 onClick={(e) => setEditOpen(false)}>
                                 CANCEL
                             </button>
-                            <button className=" text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
-                                onClick={(e) => EditAddToList(e)}>
+                            <button className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
+                                onClick={(e) => parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? EditAddToList(e) : null}>
                                 ADD TO LIST
                             </button>
                         </div>
@@ -503,9 +549,9 @@ console.log(filterempoyeealldata)
                 </Popup>
             </div>
 
+            {/* this down is for fill the data */}
 
             <div className=" ">
-
                 <Popup
                     open={open}
                     position="right center"
@@ -528,11 +574,17 @@ console.log(filterempoyeealldata)
                                     type="number"
                                     // value={formik.values.FirstName}
                                     onChange={(e) => setTimeSheetHours(e.target.value)}
-                                    className="  h-10 w-full border-b
-                                     font-medium font-secondaryFont border-[#6d6c6c] text-gray-900
-                                       focus:outline-none focus:border-[#5e5d5d]"
+                                    className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                     font-medium font-secondaryFont    
+                                       focus:outline-none `}
                                     placeholder="Hour(s)"
                                 />
+                                {parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ?
+
+                                    null : <div className="text-[12px] text-[red]">
+                                        max {projecttime?.max_hours}
+                                    </div>
+                                }
 
                             </div>
                         </div>
@@ -555,8 +607,8 @@ console.log(filterempoyeealldata)
                                 onClick={(e) => setOpen(false)}>
                                 CANCEL
                             </button>
-                            <button className=" text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
-                                onClick={(e) => AddToList(e)}>
+                            <button className={` ${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
+                                onClick={(e) => parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? AddToList(e) : null}>
                                 ADD TO LIST
                             </button>
                         </div>
