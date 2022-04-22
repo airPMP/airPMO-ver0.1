@@ -16,12 +16,12 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
     if (allCalcultedMachineryData !== undefined && allCalcultedMachineryData.length !== 0 && allCalcultedMachineryData[0] !== null
     ) {
 
-      if (myJobcardActivityCoard) {
-        setGANG_PRODUCTIVIVY(allCalcultedMachineryData.quantity_to_be_achived)
-      }
-      else{
+      // if (myJobcardActivityCoard) {
+      //   setGANG_PRODUCTIVIVY(allCalcultedMachineryData.quantity_to_be_achived)
+      // }
+      // else{
         setGANG_PRODUCTIVIVY(allCalcultedMachineryData.gang_productivity)
-      }  
+      // }  
     }
     // quantity_to_be_achived 
 
@@ -31,7 +31,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
   const GangProductData = (e, data) => {
     QuantityTOAchivedData.set(e.target.value)
-    MyJobcardActivityCoard.set(false)
+    // MyJobcardActivityCoard.set(false)
   }
 
 

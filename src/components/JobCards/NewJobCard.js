@@ -357,7 +357,7 @@ const NewJobCard = () => {
       ],
       gang_productivity: quantitytoachivedData,
       quantity_to_be_achived: allCalcultedMachineryData?.quantity_to_be_achived,
-      deleted_filed: true
+      deleted_filed: false
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
