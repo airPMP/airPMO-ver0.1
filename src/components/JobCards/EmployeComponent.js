@@ -1,4 +1,5 @@
 import axios from "axios";
+import {  useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
@@ -8,7 +9,7 @@ import { EmployeeChangeData } from "../../SimplerR/auth";
 
 
 const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown,
-    assigncarddataId, currentdate, useperma }) => {
+    assigncarddataId, currentdate,   }) => {
 
 
 
@@ -39,7 +40,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
     const { addToast } = useToasts();
-
+    let useperma = useParams()
   
     useEffect(() => {
 
@@ -201,6 +202,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         let AddlistObject = {
+            "project_id":useperma.id,
+            "max_hour": projecttime?.max_hours,
             "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
             "designation": employeedesignation,
@@ -210,7 +213,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             "organization_id": organizationId
         }
 
+        console.log("jhdhjbk")
 
+console.log(AddlistObject)
 
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_employee`, AddlistObject, {
@@ -219,8 +224,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
         })
             .then((response) => {
-                // console.log(response);
+                console.log(response);
                 if (response.status === 201) {
+
+                    setTimeSheetHours(null)
+                    setTimeSheetRemark(null)
                     addToast(" Employee is add Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
@@ -255,6 +263,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const EditAddToList = () => {
 
         let AddlistObject = {
+            "project_id":useperma.id,
+            "max_hour": projecttime?.max_hours,
             "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
             "designation": employeedesignation,
@@ -266,6 +276,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         const token = reactLocalStorage.get("access_token", false);
 
+         
 
 
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_my_job_card_employee/${editprofileid}`, AddlistObject, {
@@ -274,8 +285,10 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
         })
             .then((response) => {
-                // console.log(response);
+                console.log(response);
                 if (response.status === 200) {
+                     
+                   
                     addToast(" Employee is edit Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
