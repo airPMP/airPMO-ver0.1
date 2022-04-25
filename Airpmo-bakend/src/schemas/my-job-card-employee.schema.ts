@@ -6,6 +6,15 @@ export type myjobcardemployeeDocument = myjobcardemployee & Document;
 @Schema()
 export class myjobcardemployee {
   @Prop()
+  project_id: string;
+
+  @Prop()
+  min_hour: string;
+
+  @Prop()
+  max_hour: string;
+
+  @Prop()
   jc_id: string;
 
   @Prop()
@@ -25,6 +34,9 @@ export class myjobcardemployee {
 
   @Prop()
   organization_id: string;
+
+  @Prop()
+  date: string;
 
   @Prop({ default: Date })
   createdAt: string;

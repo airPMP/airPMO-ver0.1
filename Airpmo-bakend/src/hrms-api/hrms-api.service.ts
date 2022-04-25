@@ -14,15 +14,15 @@ export class HrmsApiService {
     private hrmsmodal: Model<hrmsDocuments>,
   ) {}
 
-  async findAll(id: string, @Response() res) {
-    // console.log(res);
+  async findAll(id: string,particular_date: string, @Response() res) {
+   
     var config = {
       method: 'get',
-      url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/attendance-daily?action=get;range=section;id=${id}`,
-      headers: {
-        Authorization: 'Basic YWlycG1vOkFJUlBNTzIwMjI=',
-        Cookie: 'ASP.NET_SessionId=imwgbqprs0tkczardwcqydf1',
-      },
+      url: `http://abe.fortiddns.com:7993/cosec/api.svc/v2/attendance-daily?action=get;range=section;id=${id};date-range=${particular_date}`,
+      headers: { 
+        'Authorization': 'Basic YWlycG1vOkFJUlBNTzIwMjI=', 
+        'Cookie': 'ASP.NET_SessionId=5uevgerkcpxzhbfqeinflyor'
+      }
     };
     var config2 = {
       method: 'get',

@@ -3,6 +3,12 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateMyJobCardEmployeeDto {
   @ApiProperty()
+  project_id: string;
+
+  @ApiProperty()
+  max_hour: string;
+
+  @ApiProperty()
   jc_id: string;
 
   @ApiProperty()
@@ -23,4 +29,7 @@ export class CreateMyJobCardEmployeeDto {
   @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
+
+  @ApiProperty()
+  date: string;
 }
