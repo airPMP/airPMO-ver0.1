@@ -133,10 +133,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                     console.log(data1)
 
-                    if (data1?.data) {
-
-                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
-
+                    if (data1?.data) {  
+                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1)) 
                         setTimeSheetData(PresentEmployeData)
                         setFilterEmpoyeeAllData(PresentEmployeData)
 
@@ -163,7 +161,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
 
             ) 
-            setFilterEmpoyeeAllData(deta)
+            setFilterEmpoyeeAllData(timesheetdata)
         }
     }, [empoyeealldata, timesheetdata])
 
@@ -215,7 +213,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         console.log("jhdhjbk")
 
-console.log(AddlistObject)
+ 
 
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_employee`, AddlistObject, {
@@ -225,8 +223,16 @@ console.log(AddlistObject)
         })
             .then((response) => {
                 console.log(response);
-                if (response.status === 201) {
+                if (response.status === 201 && response?.data?.status===404) {
 
+                     
+                    addToast(response?.data?.message, {
+                        appearance: "error",
+                        autoDismiss: true,
+                    })
+                     
+                }
+                else if(response.status === 201){
                     setTimeSheetHours(null)
                     setTimeSheetRemark(null)
                     addToast(" Employee is add Sucessfully", {
