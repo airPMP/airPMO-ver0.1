@@ -69,8 +69,7 @@ const NewJobCardMultiId = () => {
     }, [urlTitle.pathname])
 
 
-
-
+    
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -186,7 +185,7 @@ const NewJobCardMultiId = () => {
                                         id="jcCreation"
                                         name="jcCreation"
                                         type="text"
-                                        value={assigncarddata?._id}
+                                        value={assigncarddata?.activity_code}
                                         onChange={formik.handleChange}
                                         className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                         placeholder="john@doe.com"
