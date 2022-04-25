@@ -195,7 +195,7 @@ const NewJobCardMultiId = () => {
                                         htmlFor="jcCreation"
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
-                                        JC Number
+                                        Activity ID
 
                                     </label>
                                 </div>
@@ -279,7 +279,7 @@ const NewJobCardMultiId = () => {
                                             htmlFor="hseRemarks"
                                             className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                         >
-                                            date
+                                            Date
 
                                         </label>
 
@@ -298,7 +298,7 @@ const NewJobCardMultiId = () => {
                                             htmlFor="hseRemarks"
                                             className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                         >
-                                            JC Executed
+                                            Executed Date
 
                                         </label>
 
