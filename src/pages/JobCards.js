@@ -365,7 +365,7 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
+          {/* <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"Activities Assigned"}
               totalNumber={allassignjobcardapi}
@@ -385,7 +385,7 @@ const JobCards = () => {
                 </svg>
               }
             />
-          </Link>
+          </Link> */}
           <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
               title={"Activity Log"}
