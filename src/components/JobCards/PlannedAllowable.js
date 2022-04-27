@@ -165,16 +165,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         overflow-hidden bg-[#FFFFFF] justify-center items-center 
          my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2  ">
                     <div className="col-span-1">
                         <div className="  font-secondaryFont ml-[18.65px]  mt-[11.51px] text-[#000000]
                           font-medium not-italic text-[20.09px] tracking-[-0.02em]">
                             {/* Manpower&#160;&&#160;Machinery */}
-                            {heading}
+                            {/* {heading} */}
 
                         </div>
                     </div>
-                    <div className="col-span-1  ">
+                    <div className="col-span-1   ">
                         <div className=" float-right font-secondaryFont 
                         ml-[80.65px]  mt-[11.51px] text-[#000000]  font-medium not-italic 
                         text-[28.09px] tracking-[-0.02em]">
@@ -189,49 +189,51 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                 </select>
                             </div> :
-                                <div className="  flex flex-row  items-center     
-                        bg-[#FFFFFF] rounded-[0.625rem] float-right" style={{ dropShadow: "(0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25))" }}>
-                                    <div className="pl-[20px]  pt-2">
-                                        <svg
-                                            width="11"
-                                            height="12"
-                                            viewBox="0 0 11 12"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <circle
-                                                cx="5"
-                                                cy="5"
-                                                r="4.3"
-                                                stroke="#1B2559"
-                                                strokeWidth="1.4"
-                                            />
-                                            <line
-                                                x1="10.0101"
-                                                y1="11"
-                                                x2="8"
-                                                y2="8.98995"
-                                                stroke="#1B2559"
-                                                strokeWidth="1.4"
-                                                strokeLinecap="round"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div className="bg-[#FFFFFF] pl-[7px]  ">
-                                        <input type="text" placeholder="Search"
-                                            className="outline-none  secrchplace  "
-                                            style={{ dropShadow: ("0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25)") }} />
-                                    </div>
-                                </div>}
+                        //         <div className="  flex flex-row  items-center     
+                        // bg-[#FFFFFF] rounded-[0.625rem] float-right" style={{ dropShadow: "(0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25))" }}>
+                        //             <div className="pl-[20px]  pt-2">
+                        //                 <svg
+                        //                     width="11"
+                        //                     height="12"
+                        //                     viewBox="0 0 11 12"
+                        //                     fill="none"
+                        //                     xmlns="http://www.w3.org/2000/svg"
+                        //                 >
+                        //                     <circle
+                        //                         cx="5"
+                        //                         cy="5"
+                        //                         r="4.3"
+                        //                         stroke="#1B2559"
+                        //                         strokeWidth="1.4"
+                        //                     />
+                        //                     <line
+                        //                         x1="10.0101"
+                        //                         y1="11"
+                        //                         x2="8"
+                        //                         y2="8.98995"
+                        //                         stroke="#1B2559"
+                        //                         strokeWidth="1.4"
+                        //                         strokeLinecap="round"
+                        //                     />
+                        //                 </svg>
+                        //             </div>
+                        //             <div className="bg-[#FFFFFF] pl-[7px]  ">
+                        //                 <input type="text" placeholder="Search"
+                        //                     className="outline-none  secrchplace  "
+                        //                     style={{ dropShadow: ("0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25)") }} />
+                        //             </div>
+                        //         </div>
+                        null
+                                }
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px]  mr-[20px]">
+            <div className="flex flex-row mt-[30px] h-[40px] mr-[20px]">
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                        <tr className="bg-[#ECF1F0]  h-[40px] ">
+                        {/* <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -242,7 +244,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]"> Actual Total Cost</th>
                             <th className="py-[20px]">SPI</th>
                             <th className="py-[20px]">CPI</th>
-                        </tr>
+                        </tr> */}
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
