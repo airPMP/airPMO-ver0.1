@@ -33,7 +33,7 @@ export class MyJobCardEmployeeService {
        var emloyee_hour=0
        for (let index = 0; index < user_id_data.length; index++) {
         emloyee_hour=emloyee_hour+parseFloat(user_id_data[index].hour)
-       }
+        }
         const total_employe_hours= emloyee_hour+parseFloat(recent_hour)
         if(total_employe_hours<=parseFloat(maximum_hour)){
          var remainig_hours= parseFloat(maximum_hour)-total_employe_hours
@@ -59,7 +59,9 @@ export class MyJobCardEmployeeService {
 
     else{
         if(parseFloat(createMyJobCardEmployeeDto.hour)<=parseFloat(createMyJobCardEmployeeDto.max_hour)&&user_id_data.length===0){
-            return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto);
+
+          return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto);
+         
         }else{
              return {
                 massage:`maximum limit is ${createMyJobCardEmployeeDto.max_hour}`

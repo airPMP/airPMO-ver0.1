@@ -6,6 +6,9 @@ export type myjobcardemployeeDocument = myjobcardemployee & Document;
 @Schema()
 export class myjobcardemployee {
   @Prop()
+  activity_id: string;
+
+  @Prop()
   project_id: string;
 
   @Prop()
