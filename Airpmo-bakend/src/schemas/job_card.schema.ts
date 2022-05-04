@@ -73,7 +73,7 @@ export class jobcard {
   actual_equipments: [{}];
 
   @Prop()
-  planned_vs_allowable_vs_actual: [{}]
+  alanned_vs_allowable_vs_actual: [{}];
 
   @Prop()
   hourly_salrey: string;
@@ -82,13 +82,13 @@ export class jobcard {
   hourly_standrd_salrey: string;
 
   @Prop()
-  total_overall_cpi:string
+  total_overall_cpi: string;
 
   @Prop()
-  total_overall_spi:string
+  total_overall_spi: string;
 
   @Prop()
-  unit:string
+  unit: string;
 
   @Prop({ default: Date })
   createdAt: string;
