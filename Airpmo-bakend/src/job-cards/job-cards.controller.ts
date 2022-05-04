@@ -80,6 +80,12 @@ export class JobCardsController {
     return await this.jobCardsService.getmyjobcardbyuserid(id, project_id, req);
   }
 
+  @Get('get_job_cards_by_project/:project_id')
+  async findjobprojectid(@Param('project_id') project_id: string) {
+    return await this.jobCardsService.findjobprojectid(project_id);
+  }
+
+
   // @Auth('CREATE-ASSIGN-JOB-CARD')
   // @Post('assign_job_card')
   // async assignjobcard(@Body() assignJobCardDto: assignJobCardDto) {
