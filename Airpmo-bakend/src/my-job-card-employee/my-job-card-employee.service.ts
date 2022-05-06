@@ -23,10 +23,50 @@ export class MyJobCardEmployeeService {
 
   async create(createMyJobCardEmployeeDto: CreateMyJobCardEmployeeDto) {
     try {
-      const register_employee = await this.myjobcardemployeemodal.create(
-        createMyJobCardEmployeeDto,
-      );
-      return register_employee;
+      const employe_id=createMyJobCardEmployeeDto.employee_id
+      const date=createMyJobCardEmployeeDto.date
+      const recent_hour=createMyJobCardEmployeeDto.hour
+      const  maximum_hour=createMyJobCardEmployeeDto.max_hour
+      const employee_project_id=createMyJobCardEmployeeDto.project_id
+      const user_id_data = await this.myjobcardemployeemodal.find({employee_id:employe_id,date:date,project_id:employee_project_id})
+      if(user_id_data.length!=0){
+       var emloyee_hour=0
+       for (let index = 0; index < user_id_data.length; index++) {
+        emloyee_hour=emloyee_hour+parseFloat(user_id_data[index].hour)
+       }
+        const total_employe_hours= emloyee_hour+parseFloat(recent_hour)
+        if(total_employe_hours<=parseFloat(maximum_hour)){
+         var remainig_hours= parseFloat(maximum_hour)-total_employe_hours
+          if(remainig_hours>=0){
+            return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto)
+          }
+          else{
+            return new NotFoundException('your limit is exceed')
+          }
+        }else{
+          const remaing = parseFloat(maximum_hour)- emloyee_hour
+          if(remaing===0){
+          return new NotFoundException('you have exceed your limit')
+          }else{
+            if(remaing>0){
+            return new NotFoundException(`your remaing hours is ${remaing}`)
+            }else{
+              return new NotFoundException(`you can not be changed maximum hours`)
+            }
+          }
+        }
+      }
+
+    else{
+        if(parseFloat(createMyJobCardEmployeeDto.hour)<=parseFloat(createMyJobCardEmployeeDto.max_hour)&&user_id_data.length===0){
+            return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto);
+        }else{
+             return {
+                massage:`maximum limit is ${createMyJobCardEmployeeDto.max_hour}`
+                 }
+       }
+      }
+      // return register_employee;
     } catch {
       throw new NotFoundException('employee not found');
     }

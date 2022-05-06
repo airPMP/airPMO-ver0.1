@@ -43,13 +43,11 @@ const JobCards = () => {
   let urlTitle = useLocation();
   useEffect(() => {
     if (urlTitle.pathname === "/daily_task") {
-      setTitle("Daily Task");
+      setTitle("Activities");
     }
   }, [urlTitle.pathname]);
 
-
-  console.log(useperma.id)
-
+ 
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
@@ -347,7 +345,7 @@ const JobCards = () => {
           {/* <Link to={`/daily_task/All-daily-task`}> */}
           <Link to={projectobjectdata?._id ? `/daily_task/JobCardByProjectId/${projectobjectdata?._id}` : `/daily_task`}>
             <Card
-              title={"Daily Task"}
+              title={"Activities"}
               totalNumber={alljobcardapi}
 
               iconn={
@@ -367,9 +365,9 @@ const JobCards = () => {
               }
             />
           </Link>
-          <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
+          {/* <Link to={projectobjectdata?._id ? `/daily_task/AssignById/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
-              title={"Daily Task Assigned"}
+              title={"Activities Assigned"}
               totalNumber={allassignjobcardapi}
               iconn={
                 <svg
@@ -387,10 +385,10 @@ const JobCards = () => {
                 </svg>
               }
             />
-          </Link>
+          </Link> */}
           <Link to={projectobjectdata?._id ? `/daily_task/my_daily_task/${projectobjectdata?._id}` : `/daily_task  `}>
             <Card
-              title={"My  Daily Task"}
+              title={"Activity Log"}
               totalNumber={projectobjectdata?._id ? myjobcardapi : "0"}
               iconn={
                 <div className="bg-[#F4F7FE] w-[58.28px] flex items-center justify-center h-[58.28px] rounded-full">

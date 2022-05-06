@@ -69,8 +69,7 @@ const NewJobCardMultiId = () => {
     }, [urlTitle.pathname])
 
 
-
-
+    
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -85,6 +84,9 @@ const NewJobCardMultiId = () => {
                 console.log(data?.data)
 
                 setAssignCardData(data?.data)
+
+                 
+
 
             } catch (error) {
                 console.log(error)
@@ -181,7 +183,7 @@ const NewJobCardMultiId = () => {
                                         id="jcCreation"
                                         name="jcCreation"
                                         type="text"
-                                        value={assigncarddata?._id}
+                                        value={assigncarddata?.activity_code}
                                         onChange={formik.handleChange}
                                         className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                         placeholder="john@doe.com"
@@ -190,7 +192,7 @@ const NewJobCardMultiId = () => {
                                         htmlFor="jcCreation"
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
-                                        JC Number
+                                        Activity ID
 
                                     </label>
                                 </div>
@@ -274,7 +276,7 @@ const NewJobCardMultiId = () => {
                                             htmlFor="hseRemarks"
                                             className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                         >
-                                            date
+                                            Date
 
                                         </label>
 
@@ -293,7 +295,7 @@ const NewJobCardMultiId = () => {
                                             htmlFor="hseRemarks"
                                             className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                         >
-                                            JC Executed
+                                            Executed Date
 
                                         </label>
 
@@ -304,9 +306,12 @@ const NewJobCardMultiId = () => {
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent
+                                    
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
-                                        assigncarddataId={assigncarddata?._id}
+                                        assigncarddataId={assigncarddata}
+                                        currentdate={currentdate}
+                                         
 
                                     />
                                 </div>
@@ -329,7 +334,7 @@ const NewJobCardMultiId = () => {
                             </div>
 
 
-                            <div className="flex flex-row space-x-20 pb-[30px]">
+                            {/* <div className="flex flex-row space-x-20 pb-[30px]">
                                 <div className=" relative w-[350px]">
 
                                     <input
@@ -346,14 +351,14 @@ const NewJobCardMultiId = () => {
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Comments
-                                        {/* <span className="text-red-700">*</span> */}
+                                        <span className="text-red-700">*</span> 
                                     </label>
                                     {
-                                        //   formik.errors.jcCreation && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.jcCreation}{" "}
-                                        //   </div>
-                                        // )
+                                           formik.errors.jcCreation && (
+                                           <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                             {formik.errors.jcCreation}{" "}
+                                           </div>
+                                         )
                                     }
 
 
@@ -375,22 +380,20 @@ const NewJobCardMultiId = () => {
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Attech Photo
-                                        {/* <span className="text-red-700">*</span> */}
+                                      <span className="text-red-700">*</span>  
                                     </label>
                                     {
-                                        //   formik.errors.jcCreation && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.jcCreation}{" "}
-                                        //   </div>
-                                        // )
+                                            formik.errors.jcCreation && (
+                                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                              {formik.errors.jcCreation}{" "}
+                                            </div>
+                                          )
                                     }
 
 
                                 </div>
 
-                            </div>
-
-
+                            </div>  
                             <div className="flex flex-col mb-10 ">
                                 <div className="relative max-w-[860px]">
                                     <input
@@ -407,18 +410,17 @@ const NewJobCardMultiId = () => {
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         QC Remarks
-                                        {/* <span className="text-red-700">*</span> */}
+                                        <span className="text-red-700">*</span>
                                     </label>
                                     {
-                                        //   formik.errors.qcRemarks && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.qcRemarks}{" "}
-                                        //   </div>
-                                        // )
+                                          formik.errors.qcRemarks && (
+                                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                            {formik.errors.qcRemarks}{" "}
+                                          </div>
+                                        )
                                     }
                                 </div>
-                            </div>
-
+                            </div> 
                             <div className="flex flex-col mb-10 ">
                                 <div className="relative max-w-[860px]">
                                     <input
@@ -435,21 +437,17 @@ const NewJobCardMultiId = () => {
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         HSE Remarks
-                                        {/* <span className="text-red-700">*</span> */}
+                                        <span className="text-red-700">*</span>
                                     </label>
                                     {
-                                        //   formik.errors.hseRemarks && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.hseRemarks}{" "}
-                                        //   </div>
-                                        // )
+                                          formik.errors.hseRemarks && (
+                                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                            {formik.errors.hseRemarks}{" "}
+                                          </div>
+                                        )
                                     }
                                 </div>
-                            </div>
-
-
-
-
+                            </div> 
                             <div className="flex flex-col mb-10 ">
                                 <div className="relative max-w-[860px]">
                                     <input
@@ -466,19 +464,17 @@ const NewJobCardMultiId = () => {
                                         className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Manager Comments
-                                        {/* <span className="text-red-700">*</span> */}
+                                        <span className="text-red-700">*</span>
                                     </label>
                                     {
-                                        //   formik.errors.managerComments && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.managerComments}{" "}
-                                        //   </div>
-                                        // )
+                                          formik.errors.managerComments && (
+                                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                            {formik.errors.managerComments}{" "}
+                                          </div>
+                                        )
                                     }
                                 </div>
-                            </div>
-
-
+                            </div> 
                             <div className="flex flex-col ">
                                 <div className="relative max-w-[860px]">
                                     <input
@@ -495,17 +491,17 @@ const NewJobCardMultiId = () => {
                                         className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Description
-                                        {/* <span className="text-red-700">*</span> */}
+                                        <span className="text-red-700">*</span>
                                     </label>
                                     {
-                                        //   formik.errors.Description && (
-                                        //   <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                        //     {formik.errors.Description}{" "}
-                                        //   </div>
-                                        // )
+                                          formik.errors.Description && (
+                                          <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                                            {formik.errors.Description}{" "}
+                                          </div>
+                                        )
                                     }
                                 </div>
-                            </div>
+                            </div> */}
 
 
 
@@ -514,7 +510,7 @@ const NewJobCardMultiId = () => {
                                 <div className="flex flex-row mr-[-50px]">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
                                         <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                                        My JC
+                                        Activity Log
                                         </button>
                                     </div>
                                     <div>
@@ -523,7 +519,7 @@ const NewJobCardMultiId = () => {
                                             type="submit"
                                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                         >
-                                           Execute JC
+                                         Execute Activity
                                         </button>
                                     </div>
                                 </div>

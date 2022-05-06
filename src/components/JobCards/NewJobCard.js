@@ -398,7 +398,7 @@ const NewJobCard = () => {
               />
             </div>
             <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-              Create new Job Card
+            Create new Activity Log
             </div>
           </div>
           <div className="pl-[140px] pr-[96px] pt-[33.49px]">

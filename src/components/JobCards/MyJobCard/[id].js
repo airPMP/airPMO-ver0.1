@@ -41,8 +41,13 @@ const MyJobCardsId = () => {
   let useperma = useParams()
 
   useEffect(() => {
-    if (urlTitle.pathname === "/daily_task/my-daily-task") {
-      setTitle("Daily Task");
+
+    if (urlTitle.pathname === `/daily_task/my_daily_task/${useperma.id}`) {
+      setTitle("Activities");
+
+
+
+
     }
   }, [urlTitle.pathname])
 
@@ -140,7 +145,7 @@ const MyJobCardsId = () => {
       console.log(error)
     })
 
-    // navigate(`/daily_task/CardAssignId/${itemid._id}`)
+    navigate(`/daily_task/CardAssignId/${itemid._id}`)
   }
 
 
@@ -320,7 +325,7 @@ const MyJobCardsId = () => {
       <div className="flex flex-col">
         <Header title={title} />
         <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px]
-         leading-[53.15px] tracking-[-2%] " > My Daily Task</div>
+         leading-[53.15px] tracking-[-2%] " >Activity Log</div>
         <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] 
         bg-[#FFFFFF] rounded-[31.53px]">
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">

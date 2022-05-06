@@ -32,8 +32,8 @@ const AllJobCardsId = () => {
   let useperma = useParams()
 
   useEffect(() => {
-    if (urlTitle.pathname === "/daily_task/All-daily-task") {
-      setTitle("Daily Task");
+    if (urlTitle.pathname === `/daily_task/JobCardByProjectId/${useperma.id}`) {
+      setTitle("Activities");
     }
     const tokenroles = reactLocalStorage.get("roles", false);
     setAllTokenRoles(tokenroles)
@@ -286,7 +286,7 @@ const AllJobCardsId = () => {
                 </span>
 
                 <span className="pl-2">
-                  New JC
+                New Activities
                 </span>
               </button>
             </Link>
