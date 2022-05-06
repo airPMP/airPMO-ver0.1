@@ -415,12 +415,60 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             .catch((error) => {
                 console.log(error);
             });
+        // setAddToListData([...addtolistdata, AddlistObject]) 
+    }
+
+    const TimeEditCheckFun = (e) => {
 
 
-        // setAddToListData([...addtolistdata, AddlistObject])
+        let AddlistObject = {
+            "project_id": projecttime?._id,
+            "max_hour": projecttime?.max_hours,
+            "jc_id": assigncarddataId?._id,
+            "employee_id": employeeid,
+            "designation": employeedesignation,
+            "employee_name": timesheetname,
+            "hour": e.target.value,
+            "remarks": timesheetremark,
+            "date": Currentdata,
+            "create_employee": false
+        }
 
 
-    } 
+        const token = reactLocalStorage.get("access_token", false);
+
+
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_my_job_card_employee/${editprofileid}`, AddlistObject, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+
+                let Dta = response?.data?.message
+                let splitDta = Dta?.split(" ")
+                console.log(splitDta)
+                setRemaingData(splitDta[0])
+                setHoursData(splitDta[1])
+                setMaxTimeData(splitDta[3])
+
+                if (response.status === 200) {
+
+
+                }
+            })
+            .catch((error) => {
+
+            });
+
+
+
+
+
+    }
+
+
+
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
@@ -510,7 +558,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </thead>
 
                     {empoyeealldata && empoyeealldata?.map((item, i) => {
-                        
+
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
@@ -605,17 +653,20 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     name="FirstName"
                                     type="number"
                                     value={timesheethours}
-                                    onChange={(e) => { setTimeSheetHours(e.target.value); TimeCheckFun(e) }}
-                                    className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                    onChange={(e) => {
+                                        setTimeSheetHours(e.target.value);
+                                        TimeEditCheckFun(e)
+                                    }}
+                                    className={`${ MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
                                     font-medium font-secondaryFont    
                                       focus:outline-none `}
 
                                     placeholder="Hour(s)"
                                 />
-                                {parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ?
+                                {MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ?
 
                                     null : <div className="text-[12px] text-[red]">
-                                        max {projecttime?.max_hours}
+                                        {RemaingData} {HoursData} {MaxTimeData}
                                     </div>
                                 }
 
@@ -639,14 +690,14 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <button className="  text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
                                 onClick={(e) => {
                                     setEditOpen(false);
-                                    setRemaingData('');
-                                    setHoursData('');
-                                    // setMaxTimeData('')
+                                    setRemaingData(null);
+                                    setHoursData(null);
+                                    setMaxTimeData(null)
                                 }}>
                                 CANCEL
                             </button>
-                            <button className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
-                                onClick={(e) => parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? EditAddToList(e) : null}>
+                            <button className={`${MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
+                                onClick={(e) => MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? EditAddToList(e) : null}>
                                 ADD TO LIST
                             </button>
                         </div>
