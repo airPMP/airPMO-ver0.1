@@ -1,15 +1,15 @@
 import axios from "axios";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { EmployeeChangeData } from "../../SimplerR/auth";
+import { EmployeeChangeData, ProjectObjectData } from "../../SimplerR/auth";
 
 
 
 const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown,
-    assigncarddataId, currentdate,   }) => {
+    assigncarddataId, currentdate, }) => {
 
 
 
@@ -35,13 +35,22 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [deleteid, setDeleteId] = useState(null);
     const [deletedatarefrace, setDeleteDataRefrace] = useState(false);
     const [projecttime, setProjectTime] = useState(null);
+    const [Currentdata, setCurrentdata] = useState(null);
+    const [DropDownSelect, setDropDownSelect] = useState(false);
+
+    const [MaxTimeData, setMaxTimeData] = useState(null);
+    const [RemaingData, setRemaingData] = useState(null);
+    const [HoursData, setHoursData] = useState(null);
 
     const employeechangeData = EmployeeChangeData.use()
+
+    const projectobjectdata = ProjectObjectData.use()
+
 
 
     const { addToast } = useToasts();
     let useperma = useParams()
-  
+
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -62,24 +71,32 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         const feach2 = async () => {
-            try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId?._id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-                if (data1?.status === "200") {
-                    setEmpoyeeUpdate(false)
-                }
+            console.log("response", assigncarddataId?._id)
+            axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId?._id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((response) => {
+                    console.log("response")
+                    if (response?.status === 200) {
+                        setEmpoyeeUpdate(false)
+                    }
+                    console.log(response)
+                    setEmpoyeeAllData(response?.data)
+                    EmployeeChangeData.set(response?.data)
 
-                console.log(data1)
-                setEmpoyeeAllData(data1?.data)
-                EmployeeChangeData.set(data1?.data)
+                })
+                .catch((error) => {
+                    console.log("error");
+                    console.log(error.response);
+                    if (error?.response?.data?.message === "employee not found") {
+                        setEmpoyeeAllData('')
+                    }
+                })
 
-            } catch (error) {
-                console.log(error)
-            }
+
         }
 
         feach2();
@@ -110,17 +127,18 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     }, [assigncarddataId, empoyeeupdate, deletedatarefrace]);
 
+
+
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
-
         if (currentdate) {
             let spitData = currentdate?.split("-")
             console.log(spitData)
             let splitDataArange = `${spitData[2]}${spitData[1]}${spitData[0]}`
             console.log(splitDataArange)
 
-
+            setCurrentdata(currentdate)
 
             const feach = async () => {
                 try {
@@ -133,8 +151,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                     console.log(data1)
 
-                    if (data1?.data) {  
-                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1)) 
+                    if (data1?.data) {
+                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
                         setTimeSheetData(PresentEmployeData)
                         setFilterEmpoyeeAllData(PresentEmployeData)
 
@@ -148,7 +166,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         }
     }, [currentdate])
 
-
+    console.log(DropDownSelect)
 
     useEffect(() => {
 
@@ -160,7 +178,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                 })
             }
 
-            ) 
+            )
             setFilterEmpoyeeAllData(timesheetdata)
         }
     }, [empoyeealldata, timesheetdata])
@@ -169,18 +187,13 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     const TimeSelectFun = (e) => {
 
-
-
         let spitData = e.target.value.split(",")
-        console.log(spitData)
-
         setTimeSheetName(spitData[0])
         setEmployeeId(spitData[1])
         setEmployeeDesignation(spitData[2])
 
         if (spitData[1]) {
-            console.log(spitData[1])
-            setOpen(true)  ///open popup
+            setOpen(o => !o)  ///open popup
         }
 
     }
@@ -200,7 +213,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         let AddlistObject = {
-            "project_id":useperma.id,
+            "project_id": projecttime?._id,
             "max_hour": projecttime?.max_hours,
             "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
@@ -208,12 +221,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             "employee_name": timesheetname,
             "hour": timesheethours,
             "remarks": timesheetremark,
-            "organization_id": organizationId
+            "organization_id": organizationId,
+            "date": Currentdata,
+            "create_employee": true
         }
 
-        console.log("jhdhjbk")
-
- 
 
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_employee`, AddlistObject, {
@@ -223,24 +235,28 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         })
             .then((response) => {
                 console.log(response);
-                if (response.status === 201 && response?.data?.status===404) {
-
-                     
+                if (response.status === 201 && response?.data?.status === 404) {
                     addToast(response?.data?.message, {
                         appearance: "error",
                         autoDismiss: true,
                     })
-                     
-                    
+                    setDropDownSelect(true)
+                    setDropDownSelect(false)
                 }
-                else if(response.status === 201){
-                    setTimeSheetHours(null)
+                else if (response.status === 201) {
+                    setTimeSheetHours("")
+                    setRemaingData(null);
+                    setHoursData(null);
+                    setMaxTimeData(null)
                     setTimeSheetRemark(null)
                     addToast(" Employee is add Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
                     setEmpoyeeUpdate(o => !o)
+                    setDropDownSelect(true)
+                    setDropDownSelect(false)
+
                 }
             })
             .catch((error) => {
@@ -270,20 +286,22 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const EditAddToList = () => {
 
         let AddlistObject = {
-            "project_id":useperma.id,
+            "project_id": projecttime?._id,
             "max_hour": projecttime?.max_hours,
             "jc_id": assigncarddataId?._id,
             "employee_id": employeeid,
             "designation": employeedesignation,
             "employee_name": timesheetname,
             "hour": timesheethours,
-            "remarks": timesheetremark
+            "remarks": timesheetremark,
+            "date": Currentdata,
+            "create_employee": true
         }
 
 
         const token = reactLocalStorage.get("access_token", false);
 
-         
+
 
 
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_my_job_card_employee/${editprofileid}`, AddlistObject, {
@@ -294,8 +312,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             .then((response) => {
                 console.log(response);
                 if (response.status === 200) {
-                     
-                   
+
+
                     addToast(" Employee is edit Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
@@ -314,7 +332,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     }
 
+
     const DeleteProfile = (e, alldata) => {
+        console.log(alldata)
         setDeleteId(alldata)
         setCencelDelete(true)
     }
@@ -330,8 +350,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         Authorization: `Bearer ${token}`,
                     },
                 })
+                console.log(data)
                 if (data?.status === 200) {
-                    setDeleteDataRefrace(o => !o) 
+                    setDeleteDataRefrace(o => !o)
                 }
 
             } catch (error) {
@@ -342,8 +363,112 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         setCencelDelete(false)
     }
 
-    console.log(parseInt(projecttime?.max_hours))
-    console.log(timesheethours)
+    const TimeCheckFun = (e) => {
+
+
+        let organizationId = ""
+
+        const token = reactLocalStorage.get("access_token", false);
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+
+        if (organization_Id !== "undefined" && organization_Id !== null) {
+            organizationId = organization_Id
+        }
+
+
+
+        let AddlistObject = {
+            "project_id": projecttime?._id,
+            "max_hour": projecttime?.max_hours,
+            "jc_id": assigncarddataId?._id,
+            "employee_id": employeeid,
+            "designation": employeedesignation,
+            "employee_name": timesheetname,
+            "hour": e.target.value,
+            "remarks": timesheetremark,
+            "organization_id": organizationId,
+            "date": Currentdata,
+            "create_employee": false
+        }
+
+
+
+        axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card_employee`, AddlistObject, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+
+                // if (response?.data) {
+                let Dta = response?.data?.message
+                let splitDta = Dta?.split(" ")
+                console.log(splitDta)
+                setRemaingData(splitDta[0])
+                setHoursData(splitDta[1])
+                setMaxTimeData(splitDta[3])
+                // }
+                // else{ 
+                //     console.log("min 24") 
+                // }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        // setAddToListData([...addtolistdata, AddlistObject]) 
+    }
+
+    const TimeEditCheckFun = (e) => {
+
+
+        let AddlistObject = {
+            "project_id": projecttime?._id,
+            "max_hour": projecttime?.max_hours,
+            "jc_id": assigncarddataId?._id,
+            "employee_id": employeeid,
+            "designation": employeedesignation,
+            "employee_name": timesheetname,
+            "hour": e.target.value,
+            "remarks": timesheetremark,
+            "date": Currentdata,
+            "create_employee": false
+        }
+
+
+        const token = reactLocalStorage.get("access_token", false);
+
+
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_my_job_card_employee/${editprofileid}`, AddlistObject, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then((response) => {
+
+                let Dta = response?.data?.message
+                let splitDta = Dta?.split(" ")
+                console.log(splitDta)
+                setRemaingData(splitDta[0])
+                setHoursData(splitDta[1])
+                setMaxTimeData(splitDta[3])
+
+                if (response.status === 200) {
+
+
+                }
+            })
+            .catch((error) => {
+
+            });
+
+
+
+
+
+    }
+
+
+
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
@@ -361,15 +486,18 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                            tracking-[-0.02em]">
                             {selectDropDown ? <div className=" w-[250px] border-b border-black   ">
                                 <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
+                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59]"
                                     onChange={(e) => TimeSelectFun(e)}
 
                                 >
-                                    <option>Employee ID</option>
-                                    {filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
+                                    <option >Employee ID</option>
+                                    {!DropDownSelect && filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
 
-                                        return <option value={[item.UserName, item.UserID, item.designation]}>
+                                        return <option
+                                            value={[item.UserName, item.UserID, item.designation]}
+                                        >
                                             {`${item.UserID} [${item.designation}]  ${item.UserName}`}
+
                                         </option>
                                     })}
 
@@ -429,7 +557,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {empoyeealldata?.map((item, i) => {
+                    {empoyeealldata && empoyeealldata?.map((item, i) => {
+
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
@@ -524,17 +653,20 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     name="FirstName"
                                     type="number"
                                     value={timesheethours}
-                                    onChange={(e) => setTimeSheetHours(e.target.value)}
-                                    className={`${parseInt(projecttime?.max_hours)  >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                    onChange={(e) => {
+                                        setTimeSheetHours(e.target.value);
+                                        TimeEditCheckFun(e)
+                                    }}
+                                    className={`${ MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
                                     font-medium font-secondaryFont    
                                       focus:outline-none `}
 
                                     placeholder="Hour(s)"
                                 />
-                                {parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ?
+                                {MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ?
 
                                     null : <div className="text-[12px] text-[red]">
-                                        max {projecttime?.max_hours}
+                                        {RemaingData} {HoursData} {MaxTimeData}
                                     </div>
                                 }
 
@@ -556,11 +688,16 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                         <div className="mt-10  float-right ">
                             <button className="  text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
-                                onClick={(e) => setEditOpen(false)}>
+                                onClick={(e) => {
+                                    setEditOpen(false);
+                                    setRemaingData(null);
+                                    setHoursData(null);
+                                    setMaxTimeData(null)
+                                }}>
                                 CANCEL
                             </button>
-                            <button className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
-                                onClick={(e) => parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? EditAddToList(e) : null}>
+                            <button className={`${MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
+                                onClick={(e) => MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? EditAddToList(e) : null}>
                                 ADD TO LIST
                             </button>
                         </div>
@@ -593,16 +730,17 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     name="FirstName"
                                     type="number"
                                     // value={formik.values.FirstName}
-                                    onChange={(e) => setTimeSheetHours(e.target.value)}
-                                    className={`${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                    onChange={(e) => { setTimeSheetHours(e.target.value); TimeCheckFun(e) }}
+                                    className={`${MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
                                      font-medium font-secondaryFont    
                                        focus:outline-none `}
                                     placeholder="Hour(s)"
                                 />
-                                {parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ?
+                                {/* projecttime?.max_hours */}
+                                {MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ?
 
                                     null : <div className="text-[12px] text-[red]">
-                                        max {projecttime?.max_hours}
+                                        {RemaingData} {HoursData} {MaxTimeData}
                                     </div>
                                 }
 
@@ -624,11 +762,16 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                         <div className="mt-10  float-right ">
                             <button className="  text-[#4b75e7] text-[15px]   rounded-[5px] p-2"
-                                onClick={(e) => setOpen(false)}>
+                                onClick={(e) => {
+                                    setOpen(false);
+                                    setRemaingData(null);
+                                    setHoursData(null);
+                                    setMaxTimeData(null)
+                                }}>
                                 CANCEL
                             </button>
-                            <button className={` ${parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
-                                onClick={(e) => parseInt(projecttime?.max_hours) >= parseInt(timesheethours) ? AddToList(e) : null}>
+                            <button className={`${MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "cursor-pointer" : "disabledclass"} text-[#4b75e7] text-[15px]   rounded-[5px] p-2`}
+                                onClick={(e) => MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? AddToList(e) : null}>
                                 ADD TO LIST
                             </button>
                         </div>
