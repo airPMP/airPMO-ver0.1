@@ -15,5 +15,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   controllers: [MyJobCardEmployeeController],
   providers: [MyJobCardEmployeeService],
+  exports: [MyJobCardEmployeeService]
 })
 export class MyJobCardEmployeeModule {}

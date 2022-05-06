@@ -461,6 +461,17 @@ export class JobCardsService {
 
 
 
+  async findjobprojectid( project_id: string){
+    const all_job_card=await this.jobcardmodal.find({project_id:project_id})
+    if(all_job_card.length!=null){
+    return await this.jobcardmodal.find({project_id:project_id})
+    }else{
+      return{
+        massage:'check your project id in this project id data not found'
+      }
+    }
+  }
+
   // async assignjobcard(assignJobCardDto: assignJobCardDto) {
   //   try {
   //     const id = assignJobCardDto.organization_id;

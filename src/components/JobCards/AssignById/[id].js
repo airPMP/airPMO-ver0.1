@@ -40,7 +40,7 @@ const JobCardAssignedId = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === `/daily_task/AssignById/${useperma.id}`) {
-            setTitle("Daily Task");
+            setTitle("Activities");
         }
 
         const tokenroles= reactLocalStorage.get("roles", false);
@@ -318,7 +318,8 @@ const JobCardAssignedId = () => {
             <div className="flex flex-col">
                 <Header title={title} />
 
-                <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >Daily Task Assigned</div>
+                <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >
+                Activities Assigned</div>
                 <div className="flex flex-col w-[100%] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
                     <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
                         <div className="">

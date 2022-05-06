@@ -90,7 +90,10 @@ export class JobCardsController {
   }
 
 
-
+  @Get('get_job_cards_by_project/:project_id')
+  async findjobprojectid(@Param('project_id') project_id: string) {
+    return await this.jobCardsService.findjobprojectid(project_id);
+  }
 
 
   // @Auth('CREATE-ASSIGN-JOB-CARD')

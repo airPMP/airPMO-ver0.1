@@ -34,6 +34,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
     const [textData, settextData] = useState([]);
 
+    const [DropDownSelect, setDropDownSelect] = useState(false);
 
 
 
@@ -169,6 +170,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                         autoDismiss: true,
                     })
                     setEmpoyeeUpdate(o => !o)
+                    setDropDownSelect(true)
+                    setDropDownSelect(false)
                 }
             })
             .catch((error) => {
@@ -285,7 +288,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] "
                                     onChange={(e) => TimeSelectFun(e)}>
                                     <option>Employee ID</option>
-                                    {filterempoyeealldata && filterempoyeealldata?.slice(2).map((item, id) => {
+                                    {!DropDownSelect && filterempoyeealldata && filterempoyeealldata?.slice(2).map((item, id) => {
                                         return <option value={[item[0], item[1], item[2], item[3]]}>
                                             {`${item[0]} [${item[3]}]`}
                                         </option>

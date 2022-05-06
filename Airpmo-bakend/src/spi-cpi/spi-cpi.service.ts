@@ -52,11 +52,11 @@ export class SpiCpiService {
       createSpiCpiDto.productivity[0]['GANG PRODUCTIVIVY (APRVD. BY PM)'];
     createSpiCpiDto.productivity = [new_arr];
     const find_activity_data = await this.spicpiModel.findOne({ activity_code:createSpiCpiDto.activity_code });
-   if(find_activity_data===null){
+  //  if(find_activity_data===null){
     return await this.spicpiModel.create(createSpiCpiDto);
-   }else{
-     throw new NotFoundException('data all ready exist this activiy code')
-   }
+  //  }else{
+  //    throw new NotFoundException('data all ready exist this activiy code')
+  //  }
     
   }
 
