@@ -23,57 +23,69 @@ export class MyJobCardEmployeeService {
 
   async create(createMyJobCardEmployeeDto: CreateMyJobCardEmployeeDto) {
     try {
-      const employe_id=createMyJobCardEmployeeDto.employee_id
-      const date=createMyJobCardEmployeeDto.date
-      const recent_hour=createMyJobCardEmployeeDto.hour
-      const  maximum_hour=createMyJobCardEmployeeDto.max_hour
-      const employee_project_id=createMyJobCardEmployeeDto.project_id
-      const user_id_data = await this.myjobcardemployeemodal.find({employee_id:employe_id,date:date,project_id:employee_project_id})
-      if(user_id_data.length!=0){
-       var emloyee_hour=0
-       for (let index = 0; index < user_id_data.length; index++) {
-        emloyee_hour=emloyee_hour+parseFloat(user_id_data[index].hour)
+      const employe_id = createMyJobCardEmployeeDto.employee_id;
+      const date = createMyJobCardEmployeeDto.date;
+      const recent_hour = createMyJobCardEmployeeDto.hour;
+      const maximum_hour = createMyJobCardEmployeeDto.max_hour;
+      const employee_project_id = createMyJobCardEmployeeDto.project_id;
+      const user_id_data = await this.myjobcardemployeemodal.find({
+        employee_id: employe_id,
+        date: date,
+        project_id: employee_project_id,
+      });
+      if (user_id_data.length != 0) {
+        var emloyee_hour = 0;
+        for (let index = 0; index < user_id_data.length; index++) {
+          emloyee_hour = emloyee_hour + parseFloat(user_id_data[index].hour);
         }
-        const total_employe_hours= emloyee_hour+parseFloat(recent_hour)
-        if(total_employe_hours<=parseFloat(maximum_hour)){
-         var remainig_hours= parseFloat(maximum_hour)-total_employe_hours
-          if(remainig_hours>=0){
-            return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto)
+        const total_employe_hours = emloyee_hour + parseFloat(recent_hour);
+        if (total_employe_hours <= parseFloat(maximum_hour)) {
+          var remainig_hours = parseFloat(maximum_hour) - total_employe_hours;
+          if (remainig_hours >= 0) {
+            if (createMyJobCardEmployeeDto.create_employee === true) {
+              return await this.myjobcardemployeemodal.create(
+                createMyJobCardEmployeeDto,
+              );
+            }
+          } else {
+            return new NotFoundException(`your limit is 0`);
           }
-          else{
-            return new NotFoundException('your limit is exceed')
-          }
-        }else{
-          const remaing = parseFloat(maximum_hour)- emloyee_hour
-          if(remaing===0){
-          return new NotFoundException('you have exceed your limit')
-          }else{
-            if(remaing>0){
-            return new NotFoundException(`your remaing hours is ${remaing}`)
-            }else{
-              return new NotFoundException(`you can not be changed maximum hours`)
+        } else {
+          const remaing = parseFloat(maximum_hour) - emloyee_hour;
+          if (remaing === 0) {
+            return new NotFoundException(`your limit is 0`);
+          } else {
+            if (remaing > 0) {
+              return new NotFoundException(`remaing hrs is ${remaing}`);
+            } else {
+              return new NotFoundException(
+                `maximum limit is ${createMyJobCardEmployeeDto.max_hour}`,
+              );
             }
           }
         }
-      }
-
-    else{
-        if(parseFloat(createMyJobCardEmployeeDto.hour)<=parseFloat(createMyJobCardEmployeeDto.max_hour)&&user_id_data.length===0){
-
-          return await this.myjobcardemployeemodal.create(createMyJobCardEmployeeDto);
-         
-        }else{
-             return {
-                massage:`maximum limit is ${createMyJobCardEmployeeDto.max_hour}`
-                 }
-       }
+      } else {
+        if (
+          parseFloat(createMyJobCardEmployeeDto.hour) <=
+            parseFloat(createMyJobCardEmployeeDto.max_hour) &&
+          user_id_data.length === 0
+        ) {
+          if (createMyJobCardEmployeeDto.create_employee === true) {
+            return await this.myjobcardemployeemodal.create(
+              createMyJobCardEmployeeDto,
+            );
+          }
+        } else {
+          return {
+            message: `maximum limit is ${createMyJobCardEmployeeDto.max_hour}`,
+          };
+        }
       }
       // return register_employee;
     } catch {
       throw new NotFoundException('employee not found');
     }
   }
-
   async findAll(@Req() req) {
     try {
       const new_arr = [];
@@ -128,23 +140,109 @@ export class MyJobCardEmployeeService {
     }
   }
 
-  async update(
-    id: string,
-    updateMyJobCardEmployeeDto: UpdateMyJobCardEmployeeDto,
-  ) {
-    try {
-      const update_employee = await this.myjobcardemployeemodal.updateOne(
-        { _id: id },
-        { ...updateMyJobCardEmployeeDto },
-      );
-      return 'employee update sucessfully';
-    } catch {
-      throw new NotFoundException('employee not updated');
+  // async update(id: string,updateMyJobCardEmployeeDto: UpdateMyJobCardEmployeeDto) {
+  //   const find_emp=  await this.myjobcardemployeemodal.findOne({_id: id,project_id:updateMyJobCardEmployeeDto.project_id})
+  //   if(find_emp!=null){
+  //   const empl_id=find_emp.employee_id
+  //   const project_id=find_emp.project_id
+  //   const date=find_emp.date
+  //   const old_hrs=parseFloat(find_emp.hour)
+  //   const max_hrs=parseFloat(find_emp.max_hour)
+  //   const updated_hrs=parseFloat(updateMyJobCardEmployeeDto.hour)
+  //   const all_emp=await this.myjobcardemployeemodal.find({employee_id:empl_id,project_id:project_id,date:date})
+  
+  //   if(all_emp.length!=0){
+  //     var empl_hour = 0;
+  //       for (let index = 0; index < all_emp.length; index++) {
+  //         empl_hour = empl_hour + parseFloat(all_emp[index].hour);
+  //       } 
+  //      const empl_total_hrs= empl_hour-old_hrs
+  //      const empl_update_total_hrs=empl_total_hrs+updated_hrs
+  //      if(empl_update_total_hrs<= max_hrs){
+  //        if(updateMyJobCardEmployeeDto.create_employee===true){
+  //       const upd =await this.myjobcardemployeemodal.updateOne({ _id: id },{ ...updateMyJobCardEmployeeDto })  
+  //      if(upd.matchedCount!=0) {
+  //      return await this.myjobcardemployeemodal.findOne({_id: id,project_id:updateMyJobCardEmployeeDto.project_id})
+  //      }
+  //     }
+  //     }else{
+  //     const remaing_hrs= max_hrs-empl_total_hrs
+  //     if(remaing_hrs>=0){
+  //       return{
+  //         message:`remaing hrs is ${remaing_hrs}`
+  //       }
+  //     }else{
+  //       return `maximum hrs is ${max_hrs}`
+  //     }
+  //     }
+  //   }
+     
+  
+  // }else{
+  //       return new NotFoundException('data not found')
+  //  }
+   
+  // }
+
+  async update(id: string,updateMyJobCardEmployeeDto: UpdateMyJobCardEmployeeDto) {
+    const find_emp=  await this.myjobcardemployeemodal.findOne({_id: id,project_id:updateMyJobCardEmployeeDto.project_id})
+    if(find_emp!=null){
+    const empl_id=find_emp.employee_id
+    const project_id=find_emp.project_id
+    const date=find_emp.date
+    const old_hrs=parseFloat(find_emp.hour)
+    const max_hrs=parseFloat(find_emp.max_hour)
+    const updated_hrs=parseFloat(updateMyJobCardEmployeeDto.hour)
+    const all_emp=await this.myjobcardemployeemodal.find({employee_id:empl_id,project_id:project_id,date:date})
+  
+    if(all_emp.length!=0){
+      var empl_hour = 0;
+        for (let index = 0; index < all_emp.length; index++) {
+          empl_hour = empl_hour + parseFloat(all_emp[index].hour);
+        } 
+       const empl_total_hrs= empl_hour-old_hrs
+       const empl_update_total_hrs=empl_total_hrs+updated_hrs
+       if(empl_update_total_hrs<= max_hrs){
+         if(updateMyJobCardEmployeeDto.create_employee===true){
+        const upd =await this.myjobcardemployeemodal.updateOne({ _id: id },{ ...updateMyJobCardEmployeeDto })  
+       if(upd.matchedCount!=0) {
+       return await this.myjobcardemployeemodal.findOne({_id: id,project_id:updateMyJobCardEmployeeDto.project_id})
+       }
+      }
+      }else{
+      const remaing_hrs= max_hrs-empl_total_hrs
+      if(remaing_hrs>=0){
+        return{
+          message:`remaing hrs is ${remaing_hrs}`
+        }
+      }else{
+        return `maximum hrs is ${max_hrs}`
+      }
+      }
     }
+     
+  
+  }else{
+        return new NotFoundException('data not found')
+   }
+   
   }
 
+
   async remove(id: string) {
-    return await this.myjobcardemployeemodal.remove({ _id: id });
+    const find_data= await this.myjobcardemployeemodal.findOne({ _id: id })
+    if(find_data!=null){
+     const delete_obj= await this.myjobcardemployeemodal.remove({ _id: id });
+    if(delete_obj.deletedCount!=0){
+      return {
+        message:'delete sucessfully'
+      }
+     }else{
+      return new NotFoundException('!data not found')
+     }
+    }else{
+       return new NotFoundException('check your id.!data not found')
+    }
   }
 
   async findemployeebyjcid(id: string, @Req() req) {

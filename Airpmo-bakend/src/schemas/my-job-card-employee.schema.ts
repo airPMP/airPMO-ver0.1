@@ -41,6 +41,9 @@ export class myjobcardemployee {
   @Prop()
   date: string;
 
+  @Prop({ default: false })
+  create_employee: boolean;
+
   @Prop({ default: Date })
   createdAt: string;
 
@@ -49,4 +52,4 @@ export class myjobcardemployee {
 }
 
 export const myjobcardemployeeschema =
-  SchemaFactory.createForClass(myjobcardemployee).plugin(softDeletePlugin);
+  SchemaFactory.createForClass(myjobcardemployee)

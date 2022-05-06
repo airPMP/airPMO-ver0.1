@@ -43,4 +43,8 @@ export class CreateMyJobCardEmployeeDto {
   @IsNotEmpty()
   @ApiProperty()
   date: string;
+
+  // @IsNotEmpty()
+  @ApiProperty({default:false})
+  create_employee: boolean;
 }
