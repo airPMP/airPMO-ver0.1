@@ -38,13 +38,10 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
         <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th>
         <th className="">{(totaltimegangproductivity * (value / totalgangproductivity * GANG_PRODUCTIVIVY)
         ).toFixed(2)}</th>
-      </tr>
-
-
-
+      </tr> 
     })
 
-    console.log(data1)
+    
   }
 
   const GangProductData = (e, data) => {

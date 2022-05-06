@@ -53,9 +53,9 @@ const NewJobCard = () => {
   const { addToast } = useToasts();
 
   const productivitysheetdata = ProductivitySheetData.use()
-  const quantitytoachivedData = QuantityTOAchivedData.use() 
+  const quantitytoachivedData = QuantityTOAchivedData.use()
 
-  
+
   console.log(useperma.id)
 
   useEffect(() => {
@@ -89,24 +89,24 @@ const NewJobCard = () => {
         console.log(error)
 
       })
- 
-      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        // console.log(response?.data)
+        setProjectObjectData(response?.data)
+
+
       })
-  
-        .then((response) => {
-          // console.log(response?.data)
-          setProjectObjectData(response?.data)
-          
-          
-        })
-        .catch((error) => {
-          console.log(error)
-  
-        })
-  
+      .catch((error) => {
+        console.log(error)
+
+      })
+
 
 
 
@@ -144,9 +144,6 @@ const NewJobCard = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
 
-      console.log(dataData)
-
-
       const organization_Id = reactLocalStorage.get("organization_id", false);
       const permisions_data = reactLocalStorage.get("permisions", false);
 
@@ -155,7 +152,7 @@ const NewJobCard = () => {
         values.permissions = permisions_data
       }
 
-       
+
       values.project_id = projectidperma
       console.log("dataData")
       values.project_name = projectobjectdata.project_name
@@ -168,9 +165,9 @@ const NewJobCard = () => {
       values.quantity_to_be_achieved = quantitytoachivedData
       values.manpower_and_machinary = [productivitysheetobject]
 
-      
 
- 
+
+
       const token = reactLocalStorage.get("access_token", false);
 
       console.log("dataData")
@@ -298,7 +295,7 @@ const NewJobCard = () => {
               />
             </div>
             <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-            Create new Activity Log
+              Create new Activity Log
             </div>
           </div>
           <div className="pl-[140px] pr-[96px] pt-[33.49px]">
