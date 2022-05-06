@@ -6,6 +6,9 @@ export type myjobcardemployeeDocument = myjobcardemployee & Document;
 @Schema()
 export class myjobcardemployee {
   @Prop()
+  activity_id: string;
+
+  @Prop()
   project_id: string;
 
   @Prop()
@@ -38,6 +41,9 @@ export class myjobcardemployee {
   @Prop()
   date: string;
 
+  @Prop({ default: false })
+  create_employee: boolean;
+
   @Prop({ default: Date })
   createdAt: string;
 
@@ -46,4 +52,4 @@ export class myjobcardemployee {
 }
 
 export const myjobcardemployeeschema =
-  SchemaFactory.createForClass(myjobcardemployee).plugin(softDeletePlugin);
+  SchemaFactory.createForClass(myjobcardemployee)
