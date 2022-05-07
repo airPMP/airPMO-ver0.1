@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useEffect, useState, } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
@@ -6,12 +6,7 @@ import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import Multiselect from 'multiselect-react-dropdown';
-import makeAnimated from "react-select/animated";
-// import { colourOptions } from "./data.js";
-// import MySelect from "./MySelect.js"; 
-import { components } from "react-select";
-import { default as ReactSelect } from "react-select"; 
-
+import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
 
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
@@ -34,8 +29,11 @@ const MyJobCardsId = () => {
   const [showmultiselectsubzone, setShowMultiSelectSubzone] = useState(false)
   const [selectallsubzonedata, SetSelectAllSubZoneData] = useState(false)
   const [selectalldata, SetSelectAllData] = useState(false)
+  const [AllCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
+  const [activityid, setActivityId] = useState(null)
+  const [patchapiTrue, setPatchApiTrue] = useState(false)
 
-
+  const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
   let urlTitle = useLocation();
   const { addToast } = useToasts();
@@ -62,7 +60,7 @@ const MyJobCardsId = () => {
 
 
   useEffect(() => {
-    // /api/find_my_all_assign_card_by_user/{id}/{project_id}
+
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
@@ -78,10 +76,10 @@ const MyJobCardsId = () => {
         let zoneFilterData = response?.data.filter((elem => elem.zone))
         setFilterZonesData(zoneFilterData)
         let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
-        setFilterSubZonesData(SubzoneFilterData)
-
+        setFilterSubZonesData(SubzoneFilterData) 
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
+
         if (response.status === 200) {
           setComeZoneData(true)
         }
@@ -100,28 +98,21 @@ const MyJobCardsId = () => {
 
     if (selectallsubzonedata) {
       onSelectSub()
-
       setShowMultiSelectSubzone(o => !o)
       SetSelectAllSubZoneData(false)
     }
-
-
-  }, [selectalldata,selectallsubzonedata])
+  }, [selectalldata, selectallsubzonedata])
 
   const handleSearch = (e) => {
-
     let value = e?.target?.value?.toUpperCase();
     let result = []
-
     result = alljobcarddata?.filter((data) => {
       { console.log(data) }
       if (isNaN(+value)) {
         return data?.activity_code?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(alljobcarddata)
       console.log("alljobcarddata")
@@ -135,7 +126,68 @@ const MyJobCardsId = () => {
 
   const CardAssignIdPage = (e, itemid) => {
     console.log(itemid)
-    navigate(`/daily_task/CardAssignId/${itemid}`)
+    setActivityId(itemid)
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_create_job_card_cal/${itemid?.activity_code}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => {
+      console.log(response)
+      setAllCalcultedMachineryData(response?.data)
+      CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
+      if (response.status === 200) {
+        setPatchApiTrue(true)
+
+
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    navigate(`/daily_task/CardAssignId/${itemid._id}`)
+  }
+
+
+  const PatchCalculatedData = (e) => {  
+    
+    const token = reactLocalStorage.get("access_token", false);
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityid?._id}`, {
+
+      quantity_to_be_achieved: AllCalcultedMachineryData?.quantity_to_be_achived,
+      updated_quantity_to_be_achived: currentquantitytoachivedData,
+      manpower_and_machinary:
+        AllCalcultedMachineryData?.productivity
+      ,
+      actual_employees: [
+
+      ],
+      actual_equipments: [
+
+      ],
+      alanned_vs_allowable_vs_actual: [
+
+      ],
+      hourly_salrey: "10",
+      hourly_standrd_salrey: "10"
+    },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      .then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          navigate(`/daily_task/CardAssignId/${activityid._id}`)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
   }
 
 
@@ -144,9 +196,14 @@ const MyJobCardsId = () => {
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
-  }, [allpermission])
+
+    if (patchapiTrue && activityid) {
+      PatchCalculatedData()
+    }
+  }, [allpermission, patchapiTrue, activityid])
+
+
 
   const getPermision = async () => {
 
@@ -202,7 +259,6 @@ const MyJobCardsId = () => {
 
 
 
-
   const onSelect = (selectedList, selectedItem) => {
 
     let detasome = FilterZonesdata?.filter((item) => {
@@ -229,8 +285,6 @@ const MyJobCardsId = () => {
     setFilteredData(detasome)
 
   }
-
-
 
   const onSelectSub = (selectedList, selectedItem) => {
 
@@ -347,7 +401,7 @@ const MyJobCardsId = () => {
                     <div className=" flex justify-center cursor-pointer "  >
                       <div className="flex justify-center cursor-pointer"
                         onClick={(e) => setShowMultiSelectZone(o => !o)}
-                        >
+                      >
                         <span>Zone</span>
 
                         <span
@@ -388,7 +442,7 @@ const MyJobCardsId = () => {
                     <div className=" flex justify-center cursor-pointer ">
                       <div className="flex justify-center cursor-pointer"
                         onClick={(e) => setShowMultiSelectSubzone(o => !o)}
-                        >
+                      >
                         <span>
                           Subzone
                         </span>
@@ -431,10 +485,11 @@ const MyJobCardsId = () => {
                 </tr>
               </thead>
               {filteredData && filteredData?.map((item, ids) => {
+                
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
-                      onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, item._id) : null}>
+                      onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, item) : null}>
                       {item?.activity_code}</th>
                     {/* <th className=" "  >
                       {item?._id}</th> */}

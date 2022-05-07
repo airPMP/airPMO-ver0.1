@@ -82,6 +82,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                 }
                 console.log(data1?.status)
                 setEmpoyeeAllData(data1?.data)
+                
 
             } catch (error) {
                 console.log(error)

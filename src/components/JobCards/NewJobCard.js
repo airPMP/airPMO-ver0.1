@@ -10,7 +10,7 @@ import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import { useToasts } from "react-toast-notifications";
 import ManpowerAndMachinery from "./ManpowerAndMachinery";
-import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData } from "../../SimplerR/auth";
+import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData, MyJobcardActivityCoard,   } from "../../SimplerR/auth";
 
 const validate = (values) => {
   const errors = {};
@@ -42,7 +42,7 @@ const NewJobCard = () => {
   const [productivitysheetarray, seProductivitySheetArray] = useState([])
   const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
-
+  const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState([null])
   const [dataData, setdataData] = useState(currentdate)
 
   const [projectobjectdata, setProjectObjectData] = useState(null)
@@ -53,10 +53,10 @@ const NewJobCard = () => {
   const { addToast } = useToasts();
 
   const productivitysheetdata = ProductivitySheetData.use()
-  const quantitytoachivedData = QuantityTOAchivedData.use() 
+  const quantitytoachivedData = QuantityTOAchivedData.use()
 
-  
-  console.log(useperma.id)
+   const myJobcardActivityCoard=MyJobcardActivityCoard.use()
+
 
   useEffect(() => {
 
@@ -89,24 +89,24 @@ const NewJobCard = () => {
         console.log(error)
 
       })
- 
-      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        // console.log(response?.data)
+        setProjectObjectData(response?.data)
+
+
       })
-  
-        .then((response) => {
-          // console.log(response?.data)
-          setProjectObjectData(response?.data)
-          
-          
-        })
-        .catch((error) => {
-          console.log(error)
-  
-        })
-  
+      .catch((error) => {
+        console.log(error)
+
+      })
+
 
 
 
@@ -140,12 +140,10 @@ const NewJobCard = () => {
       assign_user_id: "",
       assign_to: "",
       permissions: "",
+      updated_quantity_to_be_achived: ""
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
-
-      console.log(dataData)
-
 
       const organization_Id = reactLocalStorage.get("organization_id", false);
       const permisions_data = reactLocalStorage.get("permisions", false);
@@ -155,25 +153,23 @@ const NewJobCard = () => {
         values.permissions = permisions_data
       }
 
-       
+
       values.project_id = projectidperma
-      console.log("dataData")
       values.project_name = projectobjectdata.project_name
-      console.log("dataData")
       values.activity_code = activitycode
       values.activity_name = activityname
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
-      values.quantity_to_be_achieved = quantitytoachivedData
-      values.manpower_and_machinary = [productivitysheetobject]
+      values.quantity_to_be_achieved = allCalcultedMachineryData?.gang_productivity
+      values.manpower_and_machinary = allCalcultedMachineryData?.productivity
+      values.updated_quantity_to_be_achived = allCalcultedMachineryData?.gang_productivity
 
-      
 
- 
+
+
       const token = reactLocalStorage.get("access_token", false);
 
-      console.log("dataData")
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_job_card`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -204,12 +200,12 @@ const NewJobCard = () => {
 
   const ActivityCode = (e) => {
 
-    console.log(e.target.value)
+    MyJobcardActivityCoard.set(true)
+
     setActivityCode(e.target.value)
 
     let productArray = []
     productivitysheetdata?.map((items, id) => {
-
       if (e.target.value === items["Activity code"]) {
 
         productArray.push(items)
@@ -222,14 +218,9 @@ const NewJobCard = () => {
   }
 
   const ZoneNameFun = (e) => {
-
     const zoneData = e.target.value
     const ZoneDataSplit = zoneData.split(',a,')
-    console.log(e.target.value)
-    console.log(ZoneDataSplit)
     setZoneName(ZoneDataSplit[1])
-
-
 
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
@@ -276,7 +267,116 @@ const NewJobCard = () => {
 
   }, [])
 
-  console.log(useperma)
+
+
+  useEffect(() => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    if (activitycode) {
+      axios.post(`${process.env.REACT_APP_BASE_URL}/api/job_card_create_data`, {
+        activity_code: activitycode,
+        client_name: projectobjectdata?.client_name,
+        project_name: projectobjectdata?.project_name,
+        project_id: projectobjectdata?._id,
+        min_hour: projectobjectdata?.min_hours,
+        productivity: [
+          productivitysheetobject
+        ],
+        gang_productivity: "",
+        quantity_to_be_achived: "",
+
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+        .then((response) => {
+          console.log(response)
+          if (response.status === 201) {
+            GetCalculatedData()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          addToast(error.response.data.message, {
+            appearance: "error",
+            autoDismiss: true,
+          })
+        })
+    }
+
+  }, [activitycode])
+
+
+
+  const GetCalculatedData = (e) => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_create_job_card_cal/${activitycode}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response)
+
+        setAllCalcultedMachineryData(response?.data)
+
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+  }
+
+  useEffect(() => {
+    if (quantitytoachivedData) {
+      PatchCalculatedData()
+    }
+
+  }, [quantitytoachivedData])
+
+
+
+  const PatchCalculatedData = (e) => {
+
+    const token = reactLocalStorage.get("access_token", false);
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`, {
+      activity_code: activitycode,
+      client_name: projectobjectdata?.client_name,
+      project_name: projectobjectdata?.project_name,
+      project_id: projectobjectdata?._id,
+      min_hour: projectobjectdata?.min_hours,
+      productivity: [
+        productivitysheetobject
+      ],
+      gang_productivity: quantitytoachivedData,
+      quantity_to_be_achived: allCalcultedMachineryData?.quantity_to_be_achived,
+      deleted_filed: false
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          GetCalculatedData()
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+  }
 
 
   return (
@@ -405,7 +505,9 @@ const NewJobCard = () => {
               <div style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                 <ManpowerAndMachinery
                   productivitysheetobject={productivitysheetobject}
-                  productivitysheetarray={productivitysheetarray} />
+                  productivitysheetarray={productivitysheetarray}
+                  allCalcultedMachineryData={allCalcultedMachineryData}
+                />
               </div>
 
               <div className="flex flex-col mb-10 ">

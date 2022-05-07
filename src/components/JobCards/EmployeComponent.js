@@ -171,13 +171,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     useEffect(() => {
 
         if (timesheetdata && empoyeealldata) {
-
             let deta = timesheetdata?.filter((item) => {
                 return !empoyeealldata.find((items) => {
                     return item?.UserID === items.employee_id
                 })
             }
-
             )
             setFilterEmpoyeeAllData(timesheetdata)
         }
@@ -197,6 +195,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         }
 
     }
+
 
     const AddToList = () => {
 
