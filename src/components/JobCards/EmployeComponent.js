@@ -176,6 +176,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     return item?.UserID === items.employee_id
                 })
             }
+
             )
             setFilterEmpoyeeAllData(timesheetdata)
         }
@@ -195,7 +196,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         }
 
     }
-
 
     const AddToList = () => {
 

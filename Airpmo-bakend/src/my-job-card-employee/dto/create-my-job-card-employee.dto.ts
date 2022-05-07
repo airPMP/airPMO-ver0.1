@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateMyJobCardEmployeeDto {
   
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   activity_id: string;
 

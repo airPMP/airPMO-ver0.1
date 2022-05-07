@@ -10,7 +10,7 @@ import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import { useToasts } from "react-toast-notifications";
 import ManpowerAndMachinery from "./ManpowerAndMachinery";
-import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData, MyJobcardActivityCoard,   } from "../../SimplerR/auth";
+import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, ProjectObjectData, MyJobcardActivityCoard, } from "../../SimplerR/auth";
 
 const validate = (values) => {
   const errors = {};
@@ -44,8 +44,11 @@ const NewJobCard = () => {
   const [projectidperma, setProjectIdPerma] = useState(null)
   const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState([null])
   const [dataData, setdataData] = useState(currentdate)
+  const [patchResponeData, setpatchResponeData] = useState(null)
 
   const [projectobjectdata, setProjectObjectData] = useState(null)
+  const [JcExcutedTrue, setJcExcutedTrue] = useState(false)
+
 
   let useperma = useParams()
   let urlTitle = useLocation();
@@ -55,7 +58,9 @@ const NewJobCard = () => {
   const productivitysheetdata = ProductivitySheetData.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
 
-   const myJobcardActivityCoard=MyJobcardActivityCoard.use()
+
+  // console.log(patchResponeData?.productivity)
+  const myJobcardActivityCoard = MyJobcardActivityCoard.use()
 
 
   useEffect(() => {
@@ -67,7 +72,7 @@ const NewJobCard = () => {
 
   }, [urlTitle.pathname])
 
-
+  console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
 
   useEffect(() => {
 
@@ -161,11 +166,9 @@ const NewJobCard = () => {
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
-      values.quantity_to_be_achieved = allCalcultedMachineryData?.gang_productivity
-      values.manpower_and_machinary = allCalcultedMachineryData?.productivity
-      values.updated_quantity_to_be_achived = allCalcultedMachineryData?.gang_productivity
-
-
+      values.quantity_to_be_achieved = quantitytoachivedData
+      values.manpower_and_machinary = patchResponeData?.productivity
+      values.updated_quantity_to_be_achived = quantitytoachivedData
 
 
       const token = reactLocalStorage.get("access_token", false);
@@ -182,7 +185,7 @@ const NewJobCard = () => {
               appearance: "success",
               autoDismiss: true,
             })
-
+            setJcExcutedTrue(false)
             naviagte("/daily_task")
 
           }
@@ -209,12 +212,15 @@ const NewJobCard = () => {
       if (e.target.value === items["Activity code"]) {
 
         productArray.push(items)
+        console.log(items)
+
         seProductivitySheetObject(items)
         setActivityName(items["Activity name"])
       }
 
     })
     seProductivitySheetArray(productArray)
+    QuantityTOAchivedData.set('')
   }
 
   const ZoneNameFun = (e) => {
@@ -323,8 +329,8 @@ const NewJobCard = () => {
 
         setAllCalcultedMachineryData(response?.data)
 
-        if (response.status === 201) {
-
+        if (response.status === 200) {
+          PatchCalculatedData()
         }
       })
       .catch((error) => {
@@ -339,9 +345,11 @@ const NewJobCard = () => {
       PatchCalculatedData()
     }
 
-  }, [quantitytoachivedData])
+  }, [quantitytoachivedData, JcExcutedTrue])
 
-
+  console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  console.log(productivitysheetobject)
+  console.log(quantitytoachivedData)
 
   const PatchCalculatedData = (e) => {
 
@@ -355,9 +363,10 @@ const NewJobCard = () => {
       productivity: [
         productivitysheetobject
       ],
-      gang_productivity: quantitytoachivedData,
-      quantity_to_be_achived: allCalcultedMachineryData?.quantity_to_be_achived,
-      deleted_filed: false
+
+      gang_productivity: quantitytoachivedData !== null && quantitytoachivedData !== '' ? quantitytoachivedData : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
+      quantity_to_be_achived: allCalcultedMachineryData?.quantity_to_be_achived !== undefined ? allCalcultedMachineryData?.quantity_to_be_achived : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
+      deleted_filed: JcExcutedTrue
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -365,9 +374,11 @@ const NewJobCard = () => {
     })
 
       .then((response) => {
+
         console.log(response)
+        setpatchResponeData(response?.data)
         if (response.status === 200) {
-          GetCalculatedData()
+          // GetCalculatedData()
 
         }
       })
@@ -377,8 +388,8 @@ const NewJobCard = () => {
       })
 
   }
-
-
+  // productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+  console.log(quantitytoachivedData)
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -398,7 +409,7 @@ const NewJobCard = () => {
               />
             </div>
             <div className=" max-w-[208px] max-h-[89px]  font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] tracking-[-2%] ">
-            Create new Activity Log
+              Create new Activity Log
             </div>
           </div>
           <div className="pl-[140px] pr-[96px] pt-[33.49px]">
@@ -507,6 +518,7 @@ const NewJobCard = () => {
                   productivitysheetobject={productivitysheetobject}
                   productivitysheetarray={productivitysheetarray}
                   allCalcultedMachineryData={allCalcultedMachineryData}
+                  patchResponeData={patchResponeData}
                 />
               </div>
 
@@ -648,8 +660,11 @@ const NewJobCard = () => {
                   </div>
                   <div>
                     <button
+                      onClick={(e) => { setJcExcutedTrue(true) }}
                       type="submit"
-                      className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                      className="w-[110px] h-[25px] rounded btnshadow   
+                      text-sm font-secondaryFont text-[14px] font-medium not-italic 
+                       bg-[#0FCC7C] text-[#000000] "
                     >
                       Issue JC
                     </button>

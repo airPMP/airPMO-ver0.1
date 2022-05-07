@@ -8,10 +8,10 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData } fr
 
 
 
-const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddata }) => {
+const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
 
 
-    console.log(assigncarddata)
+    console.log(assigncarddataA)
 
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
@@ -27,16 +27,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     let useperma = useParams()
 
     useEffect(() => {
-          if (assigncarddata) {
- 
-            setQuantityAchieved(assigncarddata.quantity_to_be_achived)
-          }
+        if (assigncarddataA) {
 
-         
-    }, [ ])
+            setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
+        }
 
+    }, [assigncarddataA])
 
 
+
+    console.log(assigncarddataA)
 
 
     const TimeSelectFun = (e) => {
@@ -49,24 +49,24 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     const QtyAchieved = (e) => {
         setQuantityAchieved(e.target.value)
-        setSpiData((e.target.value) / (quantityachieved))
-        CurrentQuantityTOAchivedData.set(e.target.value)
+        // setSpiData((e.target.value) / (quantityachieved))
+        // CurrentQuantityTOAchivedData.set(e.target.value)
     }
 
+    console.log(quantityachieved) 
 
 
 
     useEffect(() => {
-
+ 
 
         const PatchCalculatedData = (e) => {
 
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
-                quantity_to_be_achieved: assigncarddata?.quantity_to_be_achieved,
-                updated_quantity_to_be_achived: currentquantitytoachivedData,
-                manpower_and_machinary:
-                    assigncarddata?.manpower_and_machinary,
+                quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
+                updated_quantity_to_be_achived: quantityachieved,
+                manpower_and_machinary:  assigncarddataA?.manpower_and_machinary,
                 actual_employees: employeechangeData !== null ? [employeechangeData] : [],
                 actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
                 alanned_vs_allowable_vs_actual: [
@@ -93,11 +93,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 })
 
         }
-        if (currentquantitytoachivedData) {
+
+        if (quantityachieved) {
             PatchCalculatedData()
         }
 
-    }, [currentquantitytoachivedData])
+    }, [quantityachieved])
 
 
 
@@ -131,51 +132,51 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                 </select>
                             </div> :
-                        //         <div className="  flex flex-row  items-center     
-                        // bg-[#FFFFFF] rounded-[0.625rem] float-right" style={{ dropShadow: "(0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25))" }}>
-                        //             <div className="pl-[20px]  pt-2">
-                        //                 <svg
-                        //                     width="11"
-                        //                     height="12"
-                        //                     viewBox="0 0 11 12"
-                        //                     fill="none"
-                        //                     xmlns="http://www.w3.org/2000/svg"
-                        //                 >
-                        //                     <circle
-                        //                         cx="5"
-                        //                         cy="5"
-                        //                         r="4.3"
-                        //                         stroke="#1B2559"
-                        //                         strokeWidth="1.4"
-                        //                     />
-                        //                     <line
-                        //                         x1="10.0101"
-                        //                         y1="11"
-                        //                         x2="8"
-                        //                         y2="8.98995"
-                        //                         stroke="#1B2559"
-                        //                         strokeWidth="1.4"
-                        //                         strokeLinecap="round"
-                        //                     />
-                        //                 </svg>
-                        //             </div>
-                        //             <div className="bg-[#FFFFFF] pl-[7px]  ">
-                        //                 <input type="text" placeholder="Search"
-                        //                     className="outline-none  secrchplace  "
-                        //                     style={{ dropShadow: ("0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25)") }} />
-                        //             </div>
-                        //         </div>
-                        null
-                                }
+                                //         <div className="  flex flex-row  items-center     
+                                // bg-[#FFFFFF] rounded-[0.625rem] float-right" style={{ dropShadow: "(0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25))" }}>
+                                //             <div className="pl-[20px]  pt-2">
+                                //                 <svg
+                                //                     width="11"
+                                //                     height="12"
+                                //                     viewBox="0 0 11 12"
+                                //                     fill="none"
+                                //                     xmlns="http://www.w3.org/2000/svg"
+                                //                 >
+                                //                     <circle
+                                //                         cx="5"
+                                //                         cy="5"
+                                //                         r="4.3"
+                                //                         stroke="#1B2559"
+                                //                         strokeWidth="1.4"
+                                //                     />
+                                //                     <line
+                                //                         x1="10.0101"
+                                //                         y1="11"
+                                //                         x2="8"
+                                //                         y2="8.98995"
+                                //                         stroke="#1B2559"
+                                //                         strokeWidth="1.4"
+                                //                         strokeLinecap="round"
+                                //                     />
+                                //                 </svg>
+                                //             </div>
+                                //             <div className="bg-[#FFFFFF] pl-[7px]  ">
+                                //                 <input type="text" placeholder="Search"
+                                //                     className="outline-none  secrchplace  "
+                                //                     style={{ dropShadow: ("0px 4.70288px 4.70288px rgba(0, 0, 0, 0.25)") }} />
+                                //             </div>
+                                //         </div>
+                                null
+                            }
                         </div>
                     </div>
                 </div>
             </div>
             <div className="flex flex-row mt-[30px] h-[40px] mr-[20px]">
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
-                    <thead className="font-secondaryFont text-[#000000] font-normal  text-[12px]
-                not-italic text-[12px]leading-[20px]tracking-[-2%]">
-                        <tr className="bg-[#ECF1F0]  ">
+                    {/*<thead className="font-secondaryFont text-[#000000] font-normal 
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
+                          <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -192,60 +193,79 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {assigncarddata && assigncarddata?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
+                    {/* {assigncarddataA && assigncarddataAarray?.map((item, id) => {
 
-                        console.log(item)
-                        return <>  {
+                        return <tbody
 
-                            !item[0].startsWith(" Part NO") ?
+                            className=" max-w-[100%] font-secondaryFont   
+                            text-[#000000] font-normal not-italic text-[12px]
+                             leading-[20px] tracking-[-2%]"
+                        >
+                            
+                            {assigncarddataA &&
+                                Object.entries(assigncarddataA?.manpower_and_machinary[0]).
+                                    slice(4, -2).map(([key, value]) => {
+                                        return <tr className=" h-[20px] text-center">
+                                            {value !== 0 ?
+                                                <> <td className="py-[20px]">{id + 1}</td>
+                                                    <td className="py-[20px]">{key}</td>
 
-
-                                <tbody
-                                    className=" max-w-[100%] font-secondaryFont   
-                text-[#000000]font-normal not-italic text-[12px]
-                leading-[20px]tracking-[-2%]"
-                                >
-
-                                    <tr className=" h-[20px] text-center">
-
-                                        <> <td className="py-[20px]">{id + 1}</td>
-                                            <td className="py-[20px]">{item[0]}</td>
-
-                                            <td className="py-[20px]">
-                                                {item[1]}
-                                            </td>
-
-
-                                            <td className="py-[20px]">
-                                                {item[2]}
-                                            </td>
-                                            <td className="py-[20px]">
-                                                {item[3]}
-                                            </td>
-                                            <td className="py-[20px]">
-
-                                                {item[4]}
-
-                                            </td>
-
-                                            <td className="py-[20px]">{item[5]}</td>
-                                            <td className="py-[20px]">{item[6]}</td>
-                                            <td className="py-[20px]">{item[7]} </td>
-                                            <td className="py-[20px]">{item[8]}</td>
-
-                                        </>
+                                                    <td className="py-[20px]">
+                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                            * item?.quantity_to_be_achieved)}
+                                                    </td>
 
 
-                                    </tr>
+                                                    <td className="py-[20px]">
+                                                        {
+                                                            assigncarddataA?.manpower_and_machinary[0]
+                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
+                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                                * item?.quantity_to_be_achieved).toFixed(2)}
+                                                    </td>
+                                                    <td className="py-[20px]">
+                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                            * quantityachieved).toFixed(2)}
+                                                    </td>
+                                                    <td className="py-[20px]">
 
+                                                        {
+                                                            (assigncarddataA?.manpower_and_machinary[0]
+                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
+                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                                * quantityachieved)).toFixed(2)}
 
-                                </tbody>
+                                                    </td>
 
+                                                    <td className="py-[20px]">0</td>
+                                                    <td className="py-[20px]">0</td>
+                                                    <td className="py-[20px]">{(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)}</td>
+                                                    <td className="py-[20px]">CPI</td>
 
-                                : <>
-                                </>
-                        }</>
-                    })}
+                                                </>
+                                                : <>
+                                                </>
+                                            }
+                                        </tr>
+                                    })}
+
+                             
+
+                            <tr className="p-[15px] text-center ">
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]" >    </td>
+                                <td className="py-[20px]">    </td>
+                                <td className="py-[20px]">  {(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)} </td>
+                                <td className="py-[20px]">    </td>
+                            </tr>
+
+                        </tbody>
+                    })} */}
                 </table>
             </div>
 
@@ -253,7 +273,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 <div className="mr-[45px] border-b solid border-black ml-[30px]">
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
-                            <div>  Quantity to be achieved  [ {assigncarddata?.quantity_to_be_achieved}  ]
+                            <div>  Quantity to be achieved  [ {assigncarddataA?.quantity_to_be_achieved}  ]
                                 :
                             </div>
 
@@ -262,10 +282,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                 <input type='number' placeholder="Qty achieved"
                                     className="border-none pl-2  w-[100px]  gang_product_input"
                                     value={quantityachieved}
-                                    // value={assigncarddata?.manpower_and_machinary[0][" UNIT "]}
+                                    // value={assigncarddataA?.manpower_and_machinary[0][" UNIT "]}
                                     onChange={(e) => QtyAchieved(e)}
 
-                                /> <span>{assigncarddata?.manpower_and_machinary[0][" UNIT "]}</span>
+                                /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
                             </div>
                         </div>
 

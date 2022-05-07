@@ -83,19 +83,19 @@ const NewJobCardMultiId = () => {
                 
                 console.log(data?.data)
 
-                setAssignCardData(data?.data)
 
-                 
-
+                setAssignCardData(data?.data)  
 
             } catch (error) {
                 console.log(error)
             }
         }
 
-        feach(); 
-
+        feach();  
     }, [urlTitle.pathname,currentquantitytoachivedData ]);
+
+
+    console.log(assigncarddata) 
 
 
     const formik = useFormik({
@@ -328,7 +328,7 @@ const NewJobCardMultiId = () => {
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
-                                        assigncarddata={assigncarddata}
+                                        assigncarddataA={assigncarddata}
                                     />
                                 </div>  
                             </div>
