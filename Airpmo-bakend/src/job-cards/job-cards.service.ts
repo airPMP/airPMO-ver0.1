@@ -1,7 +1,6 @@
 import {
   Body,
   Injectable,
-  NotAcceptableException,
   NotFoundException,
   Param,
   Post,
@@ -28,6 +27,7 @@ import { UpdateJobCardDto } from './dto/update-job-card.dto';
 import { Base64, encode } from 'js-base64';
 import { assign } from 'nodemailer/lib/shared';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { spicpi, spicpiDocument } from 'src/schemas/spi_cpi.schema';
 
 @Injectable()
 export class JobCardsService {
@@ -38,6 +38,8 @@ export class JobCardsService {
     private assignjobcardmodal: Model<jobcardassignDocuments>,
     @InjectModel(myjobcard.name)
     private myjobcardmodal: Model<myjobcardDocument>,
+    @InjectModel(spicpi.name)
+    private spicpiModel: SoftDeleteModel<spicpiDocument>,
     @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
     @InjectModel(Role.name) private RoleModel: Model<RoleDocument>,
   ) {}
@@ -188,7 +190,7 @@ export class JobCardsService {
           massage: 'update sucessfully',
         };
       } else {
-        throw new UnprocessableEntityException('plz update properly');
+        throw new NotFoundException('not update properly');
       }
     } else {
       throw new NotFoundException('sorry data not found');
@@ -231,6 +233,218 @@ export class JobCardsService {
       throw new NotFoundException('these project id data not found');
     }
   }
+
+  async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
+    const machinary_data = UpdateJobCardDto.manpower_and_machinary[0];
+    const machinary_data_value = Object.values(machinary_data);
+    const employe_data = UpdateJobCardDto.actual_employees;
+    const equipmets_data = UpdateJobCardDto.actual_equipments;
+    var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
+    var update_quantity = parseFloat(
+      UpdateJobCardDto.updated_quantity_to_be_achived,
+    );
+    const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
+    const hourly_standard_sal = parseFloat(
+      UpdateJobCardDto.hourly_standrd_salrey,
+    ).toFixed(2);
+
+    ///actual employee array
+    var data_arr = [];
+    for (let i = 0; i < employe_data.length; i++) {
+      data_arr.push(employe_data[i]);
+    }
+    for (let i = 0; i < equipmets_data.length; i++) {
+      data_arr.push(equipmets_data[i]);
+    }
+    var employe_data_arr = [];
+    for (let index = 0; index < data_arr.length; index++) {
+      if (Object.keys(data_arr[index]).length != 0) {
+        employe_data_arr.push(data_arr[index]);
+      }
+    }
+
+    var machinary_arr = [];
+    for (let i = 0; i < machinary_data_value.length; i++) {
+      machinary_arr.push(machinary_data_value[i]);
+    }
+    /////array 2
+    var new_array = [];
+    var new_array2 = [];
+    for (let j = 0; j < machinary_arr.length; j++) {
+      for (let k = 1; k < machinary_arr[j].length - 1; k++) {
+        const a = machinary_arr[j][k] / current_quantity;
+        var calculated_all = (a * update_quantity).toFixed(2);
+         new_array.push(calculated_all);
+        if (machinary_arr[j].length - 2 === k) {
+          new_array2.push(new_array);
+          new_array = [];
+        }
+      }
+    }
+  
+    //concate array 1 array 2
+    var alwoable_arr = [];
+    var dup = [];
+    var actual_total_hours = 0;
+    for (let i = 0; i < machinary_arr.length; i++) {
+      var popped = machinary_arr[i].pop();
+      var children = machinary_arr[i].concat(new_array2[i]);
+      alwoable_arr.push(children);
+    }
+    //  console.log(alwoable_arr)
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      for (let i = 0; i < employe_data_arr.length; i++) {
+        if (employe_data_arr[i].designation != undefined) {
+          if (
+            alwoable_arr[index][0].toLowerCase() ===
+            employe_data_arr[i].designation.toLowerCase()
+          ) {
+            const cal = parseInt(employe_data_arr[i].hour);
+            actual_total_hours = actual_total_hours + cal;
+          }
+        }
+        if (employe_data_arr.length - 1 === i) {
+          dup.push(alwoable_arr[index][0]);
+          const actual_cost = actual_total_hours * parseInt(hourly_sal);
+          alwoable_arr[index].push(actual_total_hours, actual_cost);
+          actual_total_hours = 0;
+        }
+      }
+    }
+    // console.log(alwoable_arr)
+    const new_arr2 = [];
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      new_arr2.push(alwoable_arr[index][0]);
+    }
+
+    var res = [];
+    res = employe_data_arr?.filter((el) => {
+      return !new_arr2?.find((element, i) => {
+        if (el.designation != undefined) {
+          return element.toLowerCase() === el.designation.toLowerCase();
+        }
+      });
+    });
+    // console.log(res)
+    if (res.length != 0) {
+      var arr1 = [];
+      var arr2 = [];
+      var total = 0;
+      for (let index = 0; index < res.length; index++) {
+        if (res[index].designation != undefined) {
+          arr1.push(res[index].designation);
+        }
+        var uniqueChars = [...new Set(arr1)];
+      }
+
+      if (uniqueChars.length != 0 || uniqueChars.length != null) {
+        for (let index = 0; index < uniqueChars.length; index++) {
+          for (let i = 0; i < res.length; i++) {
+            if (employe_data_arr[i].designation != undefined) {
+              if (
+                uniqueChars[index].toLowerCase() ===
+                res[i].designation.toLowerCase()
+              ) {
+                total = total + parseInt(res[i].hour);
+                var h = res[i].designation;
+              }
+            }
+            if (res.length - 1 === i) {
+              const actual_cos = total * parseInt(hourly_sal);
+              arr2.push([h, total, actual_cos]);
+              total = 0;
+            }
+          }
+        }
+      }
+      // console.log(arr2)
+      for (let m = 0; m < arr2.length; m++) {
+        for (let index = 1; index < 5; index++) {
+          arr2[m].splice(index, 0, '0');
+        }
+        alwoable_arr.push(arr2[m]);
+      }
+    }
+    // console.log(alwoable_arr)
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      if (employe_data_arr.length === 0) {
+        alwoable_arr[index].push(0, 0);
+      }
+    }
+
+    var cpi_array = [];
+    var cpi_array2 = [];
+    for (let index = 0; index < alwoable_arr.length; index++) {
+      for (let j = 0; j < alwoable_arr[index].length; j++) {
+        var allowable_cost = parseFloat(alwoable_arr[index][4]) * parseFloat(hourly_standard_sal);
+        var actual_cost1 = alwoable_arr[index][5];
+        var cpi;
+        var spi;
+        if (actual_cost1 === 0) {
+          cpi = 0;
+        } else {
+          cpi = (allowable_cost / actual_cost1).toFixed(2);
+        }
+        if (update_quantity === 0) {
+          spi = 0;
+        } else {
+          spi = current_quantity / update_quantity;
+        }
+
+        cpi_array.push(alwoable_arr[index][j]);
+        if (alwoable_arr[index].length - 1 === j) {
+          cpi_array.push(spi, cpi);
+          cpi_array2.push(cpi_array);
+          cpi_array = [];
+        }
+      }
+    }
+   
+    var actual_total_cost = 0;
+    var all_allowable_cost = 0;
+    // var all_allowable_cost = 0;
+    for (let i = 0; i < cpi_array2.length; i++) {
+      actual_total_cost = actual_total_cost + cpi_array2[i][6];
+      all_allowable_cost =
+        all_allowable_cost +
+        parseFloat(cpi_array2[i][4]) * parseFloat(hourly_standard_sal);
+    }
+   
+    var tota_overall_cpi = (all_allowable_cost/actual_total_cost ).toFixed(2);
+    var total_overall_spi = (current_quantity / update_quantity).toFixed(2);
+
+    UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
+    UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
+    UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
+    UpdateJobCardDto.hourly_salrey = hourly_sal;
+    UpdateJobCardDto.hourly_standrd_salrey = hourly_standard_sal;
+    // UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString(2);
+    // UpdateJobCardDto.updated_quantity_to_be_achived =update_quantity.toString(2);
+    UpdateJobCardDto.unit = popped;
+
+    const find = await this.jobcardmodal.findOne({ _id: id });
+    if (find != null) {
+      const update = await this.jobcardmodal.updateOne({ _id: id },{ ...UpdateJobCardDto });
+      if (update.modifiedCount != 0) {
+        return await this.jobcardmodal.findOne({ _id: id });
+      } else {
+        return {
+          massage: 'update sucessfully but stil data is not change',
+        };
+      }
+    } else {
+      throw new NotFoundException('data not found');
+    }
+  }
+
+
+
+
+
+
+
+
+
 
   async findjobprojectid( project_id: string){
     const all_job_card=await this.jobcardmodal.find({project_id:project_id})

@@ -3,8 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Console } from 'console';
 import { Model } from 'mongoose';
 import { hrms, hrmsDocuments } from 'src/schemas/hrms.schema';
-import { CreateHrmsApiDto } from './dto/create-hrms-api.dto';
-import { UpdateHrmsApiDto } from './dto/update-hrms-api.dto';
 var axios = require('axios');
 
 @Injectable()
