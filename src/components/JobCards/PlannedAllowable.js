@@ -174,9 +174,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             </div>
             <div className="flex flex-row mt-[30px] h-[40px] mr-[20px]">
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
-                    <thead className="font-secondaryFont text-[#000000] font-normal 
+                    {/*<thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                        {/* <tr className="bg-[#ECF1F0]  h-[40px] ">
+                          <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -187,7 +187,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]"> Actual Total Cost</th>
                             <th className="py-[20px]">SPI</th>
                             <th className="py-[20px]">CPI</th>
-                        </tr> */}
+                        </tr>  
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
