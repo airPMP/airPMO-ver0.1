@@ -36,7 +36,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
 
-    console.log(assigncarddataA)
+
 
 
     const TimeSelectFun = (e) => {
@@ -53,12 +53,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         // CurrentQuantityTOAchivedData.set(e.target.value)
     }
 
-    console.log(quantityachieved) 
+    console.log(quantityachieved)
 
 
 
     useEffect(() => {
- 
+
 
         const PatchCalculatedData = (e) => {
 
@@ -66,7 +66,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
                 updated_quantity_to_be_achived: quantityachieved,
-                manpower_and_machinary:  assigncarddataA?.manpower_and_machinary,
+                manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: employeechangeData !== null ? [employeechangeData] : [],
                 actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
                 alanned_vs_allowable_vs_actual: [
@@ -172,11 +172,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px] h-[40px] mr-[20px]">
+            <div className="flex flex-row mt-[30px] h-[350px] mr-[20px]">
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
-                    {/*<thead className="font-secondaryFont text-[#000000] font-normal 
+                    <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                          <tr className="bg-[#ECF1F0]  h-[40px] ">
+                        <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -187,85 +187,66 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]"> Actual Total Cost</th>
                             <th className="py-[20px]">SPI</th>
                             <th className="py-[20px]">CPI</th>
-                        </tr>  
+                        </tr>
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
 
-                    {/* {assigncarddataA && assigncarddataAarray?.map((item, id) => {
+                    {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
 
-                        return <tbody
+                        console.log(item)
+                        return <>  {
 
-                            className=" max-w-[100%] font-secondaryFont   
-                            text-[#000000] font-normal not-italic text-[12px]
-                             leading-[20px] tracking-[-2%]"
-                        >
-                            
-                            {assigncarddataA &&
-                                Object.entries(assigncarddataA?.manpower_and_machinary[0]).
-                                    slice(4, -2).map(([key, value]) => {
-                                        return <tr className=" h-[20px] text-center">
-                                            {value !== 0 ?
-                                                <> <td className="py-[20px]">{id + 1}</td>
-                                                    <td className="py-[20px]">{key}</td>
-
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * item?.quantity_to_be_achieved)}
-                                                    </td>
+                            // !item[0].startsWith(" Part NO") ?
 
 
-                                                    <td className="py-[20px]">
-                                                        {
-                                                            assigncarddataA?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * item?.quantity_to_be_achieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * quantityachieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
+                                <tbody
+                                    className=" max-w-[100%] font-secondaryFont   
+                                         text-[#000000]font-normal not-italic text-[12px]
+                                            leading-[20px]tracking-[-2%]"
+                                >
 
-                                                        {
-                                                            (assigncarddataA?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * quantityachieved)).toFixed(2)}
+                                    <tr className=" h-[20px] text-center">
 
-                                                    </td>
+                                        <> <td className="py-[20px]">{id + 1}</td>
+                                            <td className="py-[20px]">{item[0]}</td>
 
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">{(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)}</td>
-                                                    <td className="py-[20px]">CPI</td>
+                                            <td className="py-[20px]">
+                                                {item[1]}
+                                            </td>
 
-                                                </>
-                                                : <>
-                                                </>
-                                            }
-                                        </tr>
-                                    })}
 
-                             
+                                            <td className="py-[20px]">
+                                                {item[2]}
+                                            </td>
+                                            <td className="py-[20px]">
+                                                {item[3]}
+                                            </td>
+                                            <td className="py-[20px]">
 
-                            <tr className="p-[15px] text-center ">
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">  {(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)} </td>
-                                <td className="py-[20px]">    </td>
-                            </tr>
+                                                {item[4]}
 
-                        </tbody>
-                    })} */}
+                                            </td>
+
+                                            <td className="py-[20px]">{item[5]}</td>
+                                            <td className="py-[20px]">{item[6]}</td>
+                                            <td className="py-[20px]">{item[7]} </td>
+                                            <td className="py-[20px]">{item[8]}</td>
+
+                                        </>
+
+
+                                    </tr>
+
+
+                                </tbody>
+
+
+                                // : <>
+                                // </>
+                        }</>
+                    })}
                 </table>
             </div>
 
