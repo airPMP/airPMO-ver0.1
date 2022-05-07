@@ -172,10 +172,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px] h-[350px] mr-[20px]">
+            <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
-                    not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
                         <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
@@ -192,19 +192,19 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
+                     
+                        {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
+ 
+                            return <>  {
 
-                    {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
-
-                        console.log(item)
-                        return <>  {
-
-                            // !item[0].startsWith(" Part NO") ?
+                                // !item[0].startsWith(" Part NO") ?
 
 
                                 <tbody
                                     className=" max-w-[100%] font-secondaryFont   
                                          text-[#000000]font-normal not-italic text-[12px]
-                                            leading-[20px]tracking-[-2%]"
+                                            leading-[20px]tracking-[-2%]
+                                             "
                                 >
 
                                     <tr className=" h-[20px] text-center">
@@ -245,8 +245,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                 // : <>
                                 // </>
-                        }</>
-                    })}
+                            }</>
+                        })}
+                     
                 </table>
             </div>
 

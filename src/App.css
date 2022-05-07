@@ -79,6 +79,10 @@ top:-20px
     height: 350px; 
     overflow-y: scroll;
   }
+  .plann_scroll{
+    height: 150px; 
+    overflow-y: scroll;
+  }
   .secrchplace::placeholder{
       font-size: 15px;
   }
