@@ -26,7 +26,7 @@ export class CreateJobCardDto {
   @ApiProperty()
   quantity_to_be_achieved: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   updated_quantity_to_be_achived: string;
 
@@ -47,7 +47,7 @@ export class CreateJobCardDto {
   @ApiProperty()
   min_hours: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 
@@ -72,7 +72,7 @@ export class CreateJobCardDto {
   @ApiProperty()
   alanned_vs_allowable_vs_actual: [{}];
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   hourly_salrey: string;
 

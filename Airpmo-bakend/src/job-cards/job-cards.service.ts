@@ -239,6 +239,7 @@ export class JobCardsService {
     const machinary_data_value = Object.values(machinary_data);
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
+    var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
     var update_quantity = parseFloat(
       UpdateJobCardDto.updated_quantity_to_be_achived,
     );
@@ -246,22 +247,6 @@ export class JobCardsService {
     const hourly_standard_sal = parseFloat(
       UpdateJobCardDto.hourly_standrd_salrey,
     ).toFixed(2);
-
-
-
-    const a = await this.jobcardmodal.findOne({ _id: id });
-    var activity_id = a.activity_code;
-    const findqunaty = await this.spicpiModel.findOne({
-      activity_code: activity_id,
-    });
-
-    if (findqunaty != null) {
-      var current_quantity = parseFloat(findqunaty.gang_productivity);
-    } else {
-      throw new NotFoundException('activity code data not found');
-    }
-   
-
 
     ///actual employee array
     var data_arr = [];
@@ -433,8 +418,8 @@ export class JobCardsService {
     UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
     UpdateJobCardDto.hourly_salrey = hourly_sal;
     UpdateJobCardDto.hourly_standrd_salrey = hourly_standard_sal;
-    UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString(2);
-    UpdateJobCardDto.updated_quantity_to_be_achived =update_quantity.toString(2);
+    // UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString(2);
+    // UpdateJobCardDto.updated_quantity_to_be_achived =update_quantity.toString(2);
     UpdateJobCardDto.unit = popped;
 
     const find = await this.jobcardmodal.findOne({ _id: id });

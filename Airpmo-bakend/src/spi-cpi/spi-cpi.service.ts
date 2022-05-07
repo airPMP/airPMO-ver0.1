@@ -85,7 +85,7 @@ export class SpiCpiService {
     }
 
     const quantity_to_be_achieved = updateSpiCpiDto.quantity_to_be_achived;
-    let min_hour = parseInt(updateSpiCpiDto.min_hour);
+    let min_hour = parseFloat(updateSpiCpiDto.min_hour);
     const productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4);
     var unit = updateSpiCpiDto.productivity[0][' UNIT '] ||updateSpiCpiDto.productivity[0]['UNIT'];
     if (unit === undefined || unit === null) {
@@ -101,7 +101,7 @@ export class SpiCpiService {
         arr.push(productivity_key[index]);
       }
     }
-
+    
     for (let i = 0; i < arr.length; i++) {
    
       if(quantity_to_be_achieved!='0'&&quantity_to_be_achieved!=""){
