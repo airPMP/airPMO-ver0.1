@@ -54,6 +54,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
     console.log(quantityachieved)
+    
 
 
     useEffect(() => {
