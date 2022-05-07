@@ -53,12 +53,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         // CurrentQuantityTOAchivedData.set(e.target.value)
     }
 
-    console.log(quantityachieved)
-    
+    console.log(quantityachieved) 
+
 
 
     useEffect(() => {
-
+ 
 
         const PatchCalculatedData = (e) => {
 
