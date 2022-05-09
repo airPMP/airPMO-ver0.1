@@ -7,7 +7,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
   const quantitytoachivedData = QuantityTOAchivedData.use()
   const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
   const [totaltimegangproductivity, setTotalTimeGangProductivity] = useState(null)
-  const [totalgangproductivity, setTotalGangProductivity] = useState(null)
+  const [ProductivityData, setProductivityData] = useState(null)
   const [data12, setdata12] = useState(true)
   const myJobcardActivityCoard = MyJobcardActivityCoard.use()
 
@@ -44,13 +44,18 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
       // }
       // else{
       setGANG_PRODUCTIVIVY(patchResponeData.gang_productivity)
-      // }  
+      let arryData = []
+      Object.values(patchResponeData?.productivity[0]).map((item, id) => {
+        if (item[1] !== "0.00" && !item[0].startsWith(" Part NO")) {
+          arryData.push(item)
+        }
+      })
+      setProductivityData(arryData)
     }
     // quantity_to_be_achived 
 
 
   }, [patchResponeData, allCalcultedMachineryData])
-  console.log(patchResponeData)
 
   const GangProductData = (e, data) => {
     QuantityTOAchivedData.set(e.target.value)
@@ -87,13 +92,52 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
               <td className="p-[10px]" ></td>
             </tr>
           </thead>
-          {patchResponeData?.productivity?.map((item, index) => (
+
+
+
+
+
+          <>
+            {
+              ProductivityData?.map((items, i) => {
+                console.log(items)
+                return <> {
+                  items[1] !== "0.00" && !items[0].startsWith(" Part NO") ?
+                    <tbody
+                      className=" max-w-[100%] font-secondaryFont   text-[#000000] 
+                                   font-normal not-italic text-[12px]   "
+                    >
+                      <tr className="rounded  bg-[#ECF1F0]   h-[40px]   ">
+                        <th className=" ">{i + 1}</th>
+                        <th className="">{items[0]}</th>
+                        <th className="">{items[3] !== "absents" ? items[3] : "-"}</th>
+                        <th className="">{items[1]}</th>
+                        <th className="">{items[2]}</th>
+
+
+                      </tr>
+                      <tr className="m-0 p-0 h-[20px]"  >
+                        <th  ></th>
+                      </tr>
+
+                    </tbody>
+                    :
+                    <>
+                    </>}
+                </>
+
+              })
+            }
+
+          </>
+
+          {/* {patchResponeData?.productivity?.map((item, index) => (
 
 
             <>
-              {
+              { 
                 Object.entries(patchResponeData?.productivity[0]).map(([key, value], i, items) => {
-                 
+               console.log(item)
                   return <> {
                     value[1] !== "0.00" && !key.startsWith(" Part NO") ? <tbody
                       className=" max-w-[100%] font-secondaryFont   text-[#000000] 
@@ -104,7 +148,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
                         <th className=" ">{i + 1}</th>
                         <th className="">{key}</th>
                         <th className="">{value[3] !== "absents" ? value[3] : "-"}</th>
-                        {/* <th className="">{(value / totalgangproductivity * GANG_PRODUCTIVIVY).toFixed(2)}</th> */}
+                       
                         <th className="">{value[1]}</th>
                         <th className="">{value[2]}</th>
 
@@ -125,7 +169,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
             </>
 
-          ))}
+          ))} */}
         </table>
 
       </div>
