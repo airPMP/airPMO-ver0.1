@@ -3,6 +3,17 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateMyJobCardEquipmentDto {
   @ApiProperty()
+  activity_id: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  project_id: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  max_hour: string;
+
+  @ApiProperty()
   jc_id: string;
 
   @ApiProperty()
@@ -23,4 +34,15 @@ export class CreateMyJobCardEquipmentDto {
   @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  date: string;
+
+ 
+
+
+
+  @ApiProperty({default:false})
+  create_equipments: boolean;
 }

@@ -6,6 +6,15 @@ export type myjobcardequipmentDocument = equipment & Document;
 @Schema()
 export class equipment {
   @Prop()
+  activity_id: string;
+
+  @Prop()
+  project_id: string;
+
+  @Prop()
+  max_hour: string;
+
+  @Prop()
   jc_id: string;
 
   @Prop()
@@ -25,6 +34,13 @@ export class equipment {
 
   @Prop()
   organization_id: string;
+
+  @Prop()
+  date: string;
+
+  // @IsNotEmpty()
+  @Prop()
+  create_equipments: boolean;
 
   @Prop({ default: Date })
   createdAt: string;
