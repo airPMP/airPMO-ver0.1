@@ -9,7 +9,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -53,6 +53,8 @@ const NewJobCardMultiId = () => {
     const [currentdate, setCurrentDate] = useState(null) 
     const [open, setOpen] = useState(false);
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use() 
+    const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
+    const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
@@ -79,10 +81,36 @@ const NewJobCardMultiId = () => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                }) 
+                console.log(data?.data)  
+                setAssignCardData(data?.data)  
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+        feach();  
+    }, [urlTitle.pathname,currentquantitytoachivedData, myjobCardAfterPtachApi ]);
+
+
+
+
+    useEffect(() => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feach = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 })
                 
-                console.log(data?.data)
-
+                
+                if(data.status===200){
+                    MyjobCardAfterPtachApi.set(true)
+                }
+                console.log(data?.data) 
 
                 setAssignCardData(data?.data)  
 
@@ -90,13 +118,11 @@ const NewJobCardMultiId = () => {
                 console.log(error)
             }
         }
-
+        
         feach();  
-    }, [urlTitle.pathname,currentquantitytoachivedData ]);
+    }, [myjobCardAfterPtachApi,myjobCardAfterPtachApiData ]);
 
-
-    console.log(assigncarddata) 
-
+ 
 
     const formik = useFormik({
         initialValues: {
@@ -304,17 +330,6 @@ const NewJobCardMultiId = () => {
 
                             </div>
                             <div>
-                            <div 
-                            // className="mb-6" 
-                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                               >
-                                    <PlannedAllowable
-                                        heading={"Planned vs Allowable vs Actual"}
-                                        selectDropDown={false}
-                                        Quantityachieved={"Quantity to be achieved"}
-                                        assigncarddataA={assigncarddata}
-                                    />
-                                </div>  
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent
                                     
@@ -334,16 +349,14 @@ const NewJobCardMultiId = () => {
                                     />
 
                                 </div>
-                               {/* <div className="mb-6" 
-                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                               >
+                               <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <PlannedAllowable
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
                                         assigncarddataA={assigncarddata}
                                     />
-                                </div>   */}
+                                </div>  
                             </div>
 
 

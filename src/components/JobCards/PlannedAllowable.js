@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from '../../SimplerR/auth'
 
 
 
@@ -22,7 +22,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
     const equipmentallData = EquipmentAllData.use()
-
+    const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
+    const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
+    const jobCardEmplyeData = JobCardEmplyeData.use()
 
     let useperma = useParams()
 
@@ -52,10 +54,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         // setSpiData((e.target.value) / (quantityachieved))
         // CurrentQuantityTOAchivedData.set(e.target.value)
     }
+ 
 
-    console.log(quantityachieved)
-
-
+    console.log(employeechangeData)
 
     useEffect(() => {
 
@@ -64,10 +65,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
+
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
                 updated_quantity_to_be_achived: quantityachieved,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
-                actual_employees: employeechangeData !== null ? [employeechangeData] : [],
+                actual_employees: employeechangeData !== null ? employeechangeData : [],
                 actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
                 alanned_vs_allowable_vs_actual: [
 
@@ -84,7 +86,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
-
+                        // MyjobCardAfterPtachApi.set(true)
+                        // MyjobCardAfterPtachApiData.set(o => !o)
+                        CurrentQuantityTOAchivedData.set(o => !o)
                     }
                 })
                 .catch((error) => {
@@ -94,21 +98,21 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         }
 
-        if (quantityachieved) {
+        if (quantityachieved || myjobCardAfterPtachApi ||jobCardEmplyeData ) {
             PatchCalculatedData()
         }
 
-    }, [quantityachieved])
+    }, [quantityachieved, myjobCardAfterPtachApi,jobCardEmplyeData])
 
+
+    console.log(quantityachieved)
 
 
 
     return (
-        <div 
-        // className="max-w-[100%]     
-        // overflow-hidden bg-[#FFFFFF] justify-center items-center 
-        //  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]"
-         >
+        <div className="max-w-[100%]     
+        overflow-hidden bg-[#FFFFFF] justify-center items-center 
+         my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
                 <div className="grid grid-cols-2  ">
                     <div className="col-span-1">
@@ -174,19 +178,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </div>
                 </div>
             </div>
-            <div 
-            // className="flex flex-row mt-[30px]   mr-[20px]  
-            // scroll_bar_ManpowerMulti1
-            //  " 
-             >
-
-                <table
-                 className="
-                 w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti1">
+            <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
+                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
-                    not-italic text-[12px] leading-[20px] tracking-[-2%]    "
-                    >
-                        {/* <tr className="bg-[#ECF1F0]  h-[40px] ">
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
+                        <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -197,77 +193,72 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]"> Actual Total Cost</th>
                             <th className="py-[20px]">SPI</th>
                             <th className="py-[20px]">CPI</th>
-                        </tr> */}
-                        {/* <tr className="p-[15px] ">
+                        </tr>
+                        <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
-                        </tr> */}
+                        </tr>
                     </thead>
-                     
-                        {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
- 
-                            return <>  {
 
-                                // !item[0].startsWith(" Part NO") ?
+                    {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
 
+                        return <>  {
 
-                                // <tbody
-                                //     className=" max-w-[100%] font-secondaryFont   
-                                //          text-[#000000]font-normal not-italic text-[12px]
-                                //             leading-[20px]tracking-[-2%]
-                                //              "
-                                // >
-
-                                //     <tr className=" h-[20px] text-center">
-
-                                //         <> <td className="py-[20px]">{id + 1}</td>
-                                //             <td className="py-[20px]">{item[0]}</td>
-
-                                //             <td className="py-[20px]">
-                                //                 {item[1]}
-                                //             </td>
+                            // !item[0].startsWith(" Part NO") ?
 
 
-                                //             <td className="py-[20px]">
-                                //                 {item[2]}
-                                //             </td>
-                                //             <td className="py-[20px]">
-                                //                 {item[3]}
-                                //             </td>
-                                //             <td className="py-[20px]">
+                            <tbody
+                                className=" max-w-[100%] font-secondaryFont   
+                                         text-[#000000]font-normal not-italic text-[12px]
+                                            leading-[20px]tracking-[-2%]
+                                             "
+                            >
 
-                                //                 {item[4]}
+                                <tr className=" h-[20px] text-center">
 
-                                //             </td>
+                                    <> <td className="py-[20px]">{id + 1}</td>
+                                        <td className="py-[20px]">{item[0]}</td>
 
-                                //             <td className="py-[20px]">{item[5]}</td>
-                                //             <td className="py-[20px]">{item[6]}</td>
-                                //             <td className="py-[20px]">{item[7]} </td>
-                                //             <td className="py-[20px]">{item[8]}</td>
-
-                                //         </>
+                                        <td className="py-[20px]">
+                                            {item[1]}
+                                        </td>
 
 
-                                //     </tr>
+                                        <td className="py-[20px]">
+                                            {item[2]}
+                                        </td>
+                                        <td className="py-[20px]">
+                                            {item[3]}
+                                        </td>
+                                        <td className="py-[20px]">
+
+                                            {item[4]}
+
+                                        </td>
+
+                                        <td className="py-[20px]">{item[5]}</td>
+                                        <td className="py-[20px]">{item[6]}</td>
+                                        <td className="py-[20px]">{item[7]} </td>
+                                        <td className="py-[20px]">{item[8]}</td>
+
+                                    </>
 
 
-                                // </tbody>
+                                </tr>
 
 
-                                // : <>
-                                // </>
-                            }</>
-                        })}
-                     
+                            </tbody>
+
+
+                            // : <>
+                            // </>
+                        }</>
+                    })}
+
                 </table>
             </div>
 
-            {Quantityachieved && <div 
-            // className="flex flex-row justify-between  px-[50px]  mt-[42px]"
-            >
-                <div 
-                // className="mr-[45px] border-b solid border-black ml-[30px]"
-                className="  border-b solid border-black w-[44%] mb-20"
-                >
+            {Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
+                <div className="mr-[45px] border-b solid border-black ml-[30px]">
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
                             <div>  Quantity to be achieved  [ {assigncarddataA?.quantity_to_be_achieved}  ]

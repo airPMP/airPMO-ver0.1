@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { EmployeeChangeData, ProjectObjectData } from "../../SimplerR/auth";
+import { EmployeeChangeData, JobCardEmplyeData, ProjectObjectData } from "../../SimplerR/auth";
 
 
 
@@ -45,7 +45,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const employeechangeData = EmployeeChangeData.use()
 
     const projectobjectdata = ProjectObjectData.use()
-
+    const jobCardEmplyeData = JobCardEmplyeData.use()
 
 
     const { addToast } = useToasts();
@@ -255,6 +255,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     setEmpoyeeUpdate(o => !o)
                     setDropDownSelect(true)
                     setDropDownSelect(false)
+                    JobCardEmplyeData.set(o => !o)
 
                 }
             })
@@ -656,7 +657,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                                         setTimeSheetHours(e.target.value);
                                         TimeEditCheckFun(e)
                                     }}
-                                    className={`${ MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
+                                    className={`${MaxTimeData == null || parseInt(MaxTimeData) >= parseInt(timesheethours) ? "text-gray-900 border-[#6d6c6c]" : "text-[red] border-[red]"}  h-10 w-full border-b
                                     font-medium font-secondaryFont    
                                       focus:outline-none `}
 

@@ -28,10 +28,14 @@ export const EmployeeChangeData = entity(null)
 export const EquipmentAllData = entity(null)
 
 export const ClientDataFreze = entity(null)
-export const  ProjectDataFreze = entity(null)
+export const ProjectDataFreze = entity(null)
 
 
-export const  MyJobcardActivityCoard = entity(false)
+export const MyJobcardActivityCoard = entity(false)
+
+export const MyjobCardAfterPtachApi = entity(false)
+export const MyjobCardAfterPtachApiData = entity(false)
+export const JobCardEmplyeData = entity(false)
 
 
 
