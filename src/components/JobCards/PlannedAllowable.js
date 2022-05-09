@@ -104,9 +104,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
     return (
-        <div className="max-w-[100%]     
-        overflow-hidden bg-[#FFFFFF] justify-center items-center 
-         my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
+        <div 
+        // className="max-w-[100%]     
+        // overflow-hidden bg-[#FFFFFF] justify-center items-center 
+        //  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]"
+         >
             <div className="flex flex-row justify-Start content-center items-center   ">
                 <div className="grid grid-cols-2  ">
                     <div className="col-span-1">
@@ -172,11 +174,19 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
-                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
+            <div 
+            // className="flex flex-row mt-[30px]   mr-[20px]  
+            // scroll_bar_ManpowerMulti1
+            //  " 
+             >
+
+                <table
+                 className="
+                 w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti1">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
-                    not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
-                        <tr className="bg-[#ECF1F0]  h-[40px] ">
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]    "
+                    >
+                        {/* <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
                             <th className="py-[20px]">P Resources</th>
@@ -187,10 +197,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <th className="py-[20px]"> Actual Total Cost</th>
                             <th className="py-[20px]">SPI</th>
                             <th className="py-[20px]">CPI</th>
-                        </tr>
-                        <tr className="p-[15px] ">
+                        </tr> */}
+                        {/* <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
-                        </tr>
+                        </tr> */}
                     </thead>
                      
                         {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
@@ -200,47 +210,47 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                 // !item[0].startsWith(" Part NO") ?
 
 
-                                <tbody
-                                    className=" max-w-[100%] font-secondaryFont   
-                                         text-[#000000]font-normal not-italic text-[12px]
-                                            leading-[20px]tracking-[-2%]
-                                             "
-                                >
+                                // <tbody
+                                //     className=" max-w-[100%] font-secondaryFont   
+                                //          text-[#000000]font-normal not-italic text-[12px]
+                                //             leading-[20px]tracking-[-2%]
+                                //              "
+                                // >
 
-                                    <tr className=" h-[20px] text-center">
+                                //     <tr className=" h-[20px] text-center">
 
-                                        <> <td className="py-[20px]">{id + 1}</td>
-                                            <td className="py-[20px]">{item[0]}</td>
+                                //         <> <td className="py-[20px]">{id + 1}</td>
+                                //             <td className="py-[20px]">{item[0]}</td>
 
-                                            <td className="py-[20px]">
-                                                {item[1]}
-                                            </td>
-
-
-                                            <td className="py-[20px]">
-                                                {item[2]}
-                                            </td>
-                                            <td className="py-[20px]">
-                                                {item[3]}
-                                            </td>
-                                            <td className="py-[20px]">
-
-                                                {item[4]}
-
-                                            </td>
-
-                                            <td className="py-[20px]">{item[5]}</td>
-                                            <td className="py-[20px]">{item[6]}</td>
-                                            <td className="py-[20px]">{item[7]} </td>
-                                            <td className="py-[20px]">{item[8]}</td>
-
-                                        </>
+                                //             <td className="py-[20px]">
+                                //                 {item[1]}
+                                //             </td>
 
 
-                                    </tr>
+                                //             <td className="py-[20px]">
+                                //                 {item[2]}
+                                //             </td>
+                                //             <td className="py-[20px]">
+                                //                 {item[3]}
+                                //             </td>
+                                //             <td className="py-[20px]">
+
+                                //                 {item[4]}
+
+                                //             </td>
+
+                                //             <td className="py-[20px]">{item[5]}</td>
+                                //             <td className="py-[20px]">{item[6]}</td>
+                                //             <td className="py-[20px]">{item[7]} </td>
+                                //             <td className="py-[20px]">{item[8]}</td>
+
+                                //         </>
 
 
-                                </tbody>
+                                //     </tr>
+
+
+                                // </tbody>
 
 
                                 // : <>
@@ -251,8 +261,13 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </table>
             </div>
 
-            {Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
-                <div className="mr-[45px] border-b solid border-black ml-[30px]">
+            {Quantityachieved && <div 
+            // className="flex flex-row justify-between  px-[50px]  mt-[42px]"
+            >
+                <div 
+                // className="mr-[45px] border-b solid border-black ml-[30px]"
+                className="  border-b solid border-black w-[44%] mb-20"
+                >
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
                             <div>  Quantity to be achieved  [ {assigncarddataA?.quantity_to_be_achieved}  ]

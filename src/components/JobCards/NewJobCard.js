@@ -365,7 +365,7 @@ const NewJobCard = () => {
       ],
 
       gang_productivity: quantitytoachivedData !== null && quantitytoachivedData !== '' ? quantitytoachivedData : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
-      quantity_to_be_achived:productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
+      quantity_to_be_achived:productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "], 
       deleted_filed: JcExcutedTrue
     }, {
       headers: {

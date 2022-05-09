@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateJobCardDto {
-  
   @ApiProperty()
   project_id: string;
 
@@ -27,6 +26,10 @@ export class CreateJobCardDto {
   @ApiProperty()
   quantity_to_be_achieved: string;
 
+  // @IsNotEmpty()
+  @ApiProperty()
+  updated_quantity_to_be_achived: string;
+
   @ApiProperty()
   manpower_and_machinary: [{}];
   @ApiProperty()
@@ -44,7 +47,7 @@ export class CreateJobCardDto {
   @ApiProperty()
   min_hours: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 
@@ -59,4 +62,30 @@ export class CreateJobCardDto {
 
   @ApiProperty()
   permissions: string;
+
+  @ApiProperty()
+  actual_employees: [{}];
+
+  @ApiProperty()
+  actual_equipments: [{}];
+
+  @ApiProperty()
+  alanned_vs_allowable_vs_actual: [{}];
+
+  // @IsNotEmpty()
+  @ApiProperty()
+  hourly_salrey: string;
+
+  // @IsNotEmpty()
+  @ApiProperty()
+  hourly_standrd_salrey: string;
+
+  @ApiProperty()
+  total_overall_cpi: string;
+
+  @ApiProperty()
+  total_overall_spi: string;
+
+  @ApiProperty()
+  unit: string;
 }

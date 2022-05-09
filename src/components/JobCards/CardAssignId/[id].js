@@ -304,6 +304,17 @@ const NewJobCardMultiId = () => {
 
                             </div>
                             <div>
+                            <div 
+                            // className="mb-6" 
+                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
+                               >
+                                    <PlannedAllowable
+                                        heading={"Planned vs Allowable vs Actual"}
+                                        selectDropDown={false}
+                                        Quantityachieved={"Quantity to be achieved"}
+                                        assigncarddataA={assigncarddata}
+                                    />
+                                </div>  
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent
                                     
@@ -323,14 +334,16 @@ const NewJobCardMultiId = () => {
                                     />
 
                                 </div>
-                               <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                               {/* <div className="mb-6" 
+                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
+                               >
                                     <PlannedAllowable
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
                                         assigncarddataA={assigncarddata}
                                     />
-                                </div>  
+                                </div>   */}
                             </div>
 
 
