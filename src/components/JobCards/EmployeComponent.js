@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { EmployeeChangeData, JobCardEmplyeData, ProjectObjectData } from "../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, ProjectObjectData } from "../../SimplerR/auth";
 
 
 
@@ -47,9 +47,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const projectobjectdata = ProjectObjectData.use()
     const jobCardEmplyeData = JobCardEmplyeData.use()
 
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
     const { addToast } = useToasts();
     let useperma = useParams()
+
 
     useEffect(() => {
 
@@ -71,7 +73,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         const feach2 = async () => {
-            console.log("response", assigncarddataId?._id)
+
             axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId?._id}`,
                 {
                     headers: {
@@ -79,13 +81,14 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     },
                 })
                 .then((response) => {
-                    console.log("response")
+                    console.log(response)
                     if (response?.status === 200) {
                         setEmpoyeeUpdate(false)
+                          
                     }
                     console.log(response)
                     setEmpoyeeAllData(response?.data)
-                    EmployeeChangeData.set(response?.data)
+                    EmployeeChangeData.set(response?.data) 
 
                 })
                 .catch((error) => {
@@ -110,12 +113,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         },
                     })
                 setProjectTime(data1?.data)
-                console.log(data1?.data)
-                if (data1?.status === "200") {
-
-                }
-
-                console.log(data1)
 
 
             } catch (error) {
@@ -125,7 +122,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         feach3();
 
-    }, [assigncarddataId, empoyeeupdate, deletedatarefrace]);
+    }, [assigncarddataId, empoyeeupdate, deletedatarefrace,currentquantitytoachivedData]);
 
 
 
@@ -164,9 +161,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
             feach();
         }
-    }, [currentdate])
+    }, [currentdate,  ])
 
-    console.log(DropDownSelect)
+
+   
+
 
     useEffect(() => {
 
@@ -255,8 +254,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     setEmpoyeeUpdate(o => !o)
                     setDropDownSelect(true)
                     setDropDownSelect(false)
-                    JobCardEmplyeData.set(o => !o)
-
+                    JobCardEmplyeData.set(true)
                 }
             })
             .catch((error) => {
@@ -271,6 +269,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         setOpen(false)
     }
+
+
+    useEffect(()=>{
+        JobCardEmplyeData.set(true)
+    })
 
     const EditProfile = (e, alldata) => {
         setEmployeeId(alldata?.employee_id)
@@ -320,6 +323,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     })
                     setEmpoyeeUpdate(o => !o)
                     setEditOpen(false)
+                    JobCardEmplyeData.set(true)
                 }
             })
             .catch((error) => {
@@ -353,6 +357,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                 console.log(data)
                 if (data?.status === 200) {
                     setDeleteDataRefrace(o => !o)
+                    JobCardEmplyeData.set(true)
                 }
 
             } catch (error) {

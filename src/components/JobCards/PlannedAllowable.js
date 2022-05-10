@@ -4,14 +4,14 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from '../../SimplerR/auth'
 
 
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
 
 
-    console.log(assigncarddataA)
+     
 
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
@@ -25,20 +25,18 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
     const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
     const jobCardEmplyeData = JobCardEmplyeData.use()
+    const jobCardEquipmentData = JobCardEquipmentData.use()
 
+    const [spidatat, setSpiDatat] = useState(true)
     let useperma = useParams()
 
+
     useEffect(() => {
-        if (assigncarddataA) {
-
+        if (assigncarddataA && spidatat) { 
             setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
+            setSpiDatat(false)
         }
-
     }, [assigncarddataA])
-
-
-
-
 
 
     const TimeSelectFun = (e) => {
@@ -47,19 +45,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
         setOpen(true) ///open popup
     }
-
-
-    const QtyAchieved = (e) => {
-        setQuantityAchieved(e.target.value)
-        // setSpiData((e.target.value) / (quantityachieved))
-        // CurrentQuantityTOAchivedData.set(e.target.value)
-    }
  
 
-    console.log(employeechangeData)
 
     useEffect(() => {
-
 
         const PatchCalculatedData = (e) => {
 
@@ -70,10 +59,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 updated_quantity_to_be_achived: quantityachieved,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: employeechangeData !== null ? employeechangeData : [],
-                actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
-                alanned_vs_allowable_vs_actual: [
-
-                ],
+                actual_equipments: equipmentallData !== null ? equipmentallData : [],
+                alanned_vs_allowable_vs_actual: [],
                 hourly_salrey: "10",
                 hourly_standrd_salrey: "10"
             },
@@ -86,9 +73,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
-                        // MyjobCardAfterPtachApi.set(true)
-                        // MyjobCardAfterPtachApiData.set(o => !o)
-                        CurrentQuantityTOAchivedData.set(o => !o)
+                        MyjobCardAfterPtachApi.set(true) 
+                        CurrentQuantityTOAchivedData.set(o => !o) 
+
                     }
                 })
                 .catch((error) => {
@@ -98,14 +85,19 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         }
 
-        if (quantityachieved || myjobCardAfterPtachApi ||jobCardEmplyeData ) {
-            PatchCalculatedData()
-        }
-
-    }, [quantityachieved, myjobCardAfterPtachApi,jobCardEmplyeData])
 
 
-    console.log(quantityachieved)
+
+
+        PatchCalculatedData()
+
+
+
+
+    }, [quantityachieved,jobCardEmplyeData,jobCardEquipmentData])
+
+
+ 
 
 
 
@@ -200,10 +192,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </thead>
 
                     {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
-
                         return <>  {
 
-                            // !item[0].startsWith(" Part NO") ?
+                            // item[1]!=="0.00" && !item[0].startsWith(" Part NO") ?
 
 
                             <tbody
@@ -271,12 +262,24 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     className="border-none pl-2  w-[100px]  gang_product_input"
                                     value={quantityachieved}
                                     // value={assigncarddataA?.manpower_and_machinary[0][" UNIT "]}
-                                    onChange={(e) => QtyAchieved(e)}
+                                    onChange={(e) =>
+                                        setQuantityAchieved(e.target.value)
+                                        //  QtyAchieved(e)
+                                        }
 
                                 /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
                             </div>
+
                         </div>
 
+                    </div>
+                </div>
+                <div className="flex ">
+                    <div className="text-[14px] pr-2">
+                        {assigncarddataA?.total_overall_spi}
+                    </div>
+                    <div className="text-[14px] ">
+                        {assigncarddataA?.total_overall_cpi}
                     </div>
                 </div>
 

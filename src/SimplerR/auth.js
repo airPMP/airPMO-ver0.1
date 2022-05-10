@@ -36,6 +36,7 @@ export const MyJobcardActivityCoard = entity(false)
 export const MyjobCardAfterPtachApi = entity(false)
 export const MyjobCardAfterPtachApiData = entity(false)
 export const JobCardEmplyeData = entity(false)
+export const JobCardEquipmentData = entity(false)
 
 
 

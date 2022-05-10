@@ -9,7 +9,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -50,18 +50,21 @@ const NewJobCardMultiId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state 
     const [assigncarddata, setAssignCardData] = useState(null); // the lifted state
-    const [currentdate, setCurrentDate] = useState(null) 
+    const [currentdate, setCurrentDate] = useState(null)
     const [open, setOpen] = useState(false);
-    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use() 
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
     const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
+
+    const jobCardEmplyeData = JobCardEmplyeData.use()
+    const jobCardEquipmentData = JobCardEquipmentData.use()
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
     let naviagte = useNavigate();
     let useperma = useParams()
 
-    
+
 
     useEffect(() => {
 
@@ -69,29 +72,6 @@ const NewJobCardMultiId = () => {
             setTitle("Job Cards");
         }
     }, [urlTitle.pathname])
-
-
-    
-    useEffect(() => {
-
-        const token = reactLocalStorage.get("access_token", false);
-        const feach = async () => {
-            try {
-                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }) 
-                console.log(data?.data)  
-                setAssignCardData(data?.data)  
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        
-        feach();  
-    }, [urlTitle.pathname,currentquantitytoachivedData, myjobCardAfterPtachApi ]);
-
 
 
 
@@ -105,24 +85,54 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                
-                
-                if(data.status===200){
+                console.log(data?.data)
+                setAssignCardData(data?.data) 
+                JobCardEmplyeData.set(false)
+                JobCardEquipmentData.set(false)
+                CurrentQuantityTOAchivedData.set(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        feach();
+    }, [
+        currentquantitytoachivedData,
+         myjobCardAfterPtachApi,
+        // jobCardEmplyeData
+        ]);
+
+console.log(currentquantitytoachivedData)
+
+
+    useEffect(() => {
+
+        const token = reactLocalStorage.get("access_token", false);
+        const feach = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+
+                if (data.status === 200) {
                     MyjobCardAfterPtachApi.set(true)
                 }
-                console.log(data?.data) 
+                console.log(data?.data)
 
-                setAssignCardData(data?.data)  
+                setAssignCardData(data?.data)
 
             } catch (error) {
                 console.log(error)
             }
         }
-        
-        feach();  
-    }, [myjobCardAfterPtachApi,myjobCardAfterPtachApiData ]);
 
- 
+        feach();
+    }, [myjobCardAfterPtachApi, myjobCardAfterPtachApiData]);
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -155,7 +165,7 @@ const NewJobCardMultiId = () => {
             }
         })
 
-            .then((response) => { 
+            .then((response) => {
                 if (response.status === 201) {
                     // addToast("your job card is assign Sucessfully", {
                     //     appearance: "success",
@@ -313,7 +323,7 @@ const NewJobCardMultiId = () => {
                                             name="hseRemarks"
                                             type="date"
                                             value={currentdate}
-                                            onChange={(e)=>{setCurrentDate(e.target.value);formik.handleChange()}}
+                                            onChange={(e) => { setCurrentDate(e.target.value); formik.handleChange() }}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
                                         />
@@ -332,12 +342,12 @@ const NewJobCardMultiId = () => {
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent
-                                    
+
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
                                         assigncarddataId={assigncarddata}
                                         currentdate={currentdate}
-                                         
+
 
                                     />
                                 </div>
@@ -349,14 +359,14 @@ const NewJobCardMultiId = () => {
                                     />
 
                                 </div>
-                               <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <PlannedAllowable
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
                                         assigncarddataA={assigncarddata}
                                     />
-                                </div>  
+                                </div>
                             </div>
 
 
@@ -536,7 +546,7 @@ const NewJobCardMultiId = () => {
                                 <div className="flex flex-row mr-[-50px]">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
                                         <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                                        Activity Log
+                                            Activity Log
                                         </button>
                                     </div>
                                     <div>
@@ -545,7 +555,7 @@ const NewJobCardMultiId = () => {
                                             type="submit"
                                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                         >
-                                         Execute Activity
+                                            Execute Activity
                                         </button>
                                     </div>
                                 </div>
