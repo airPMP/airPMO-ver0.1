@@ -58,6 +58,9 @@ export class users {
 
   @Prop({ default: false })
   is_employee: boolean;
+  
+  @Prop()
+  logo_url: string;
 
   @Prop({ default: Date })
   createdAt: string;

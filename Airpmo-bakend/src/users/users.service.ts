@@ -24,10 +24,13 @@ export class UsersService {
     @InjectModel(users.name) private usersModel:SoftDeleteModel<ussersDocument>,
     @Inject(forwardRef(() => UserRolesService))
     private userRolesService: UserRolesService,
+    
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
+      const find_data= await this.usersModel.findOne({organization_id:createUserDto.organization_id,})
+      
       if (createUserDto.Password) {
         const saltOrRounds = 10;
         const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
@@ -36,6 +39,7 @@ export class UsersService {
       const user = await this.usersModel.findOne({
         Email: createUserDto.Email,
       });
+      
       if (!user) {
         return await this.usersModel.create(createUserDto);
       } else {

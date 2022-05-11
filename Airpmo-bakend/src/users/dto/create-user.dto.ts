@@ -79,4 +79,8 @@ export class CreateUserDto {
 
   @ApiProperty()
   is_employee: boolean;
+
+
+  @ApiProperty()
+  logo_url: string;
 }
