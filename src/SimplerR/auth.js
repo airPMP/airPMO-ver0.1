@@ -4,6 +4,7 @@ import { entity } from 'simpler-state'
 
 export const CategorieLengthSet = entity(null)
 
+export const ProjectLogoSet= entity(false)
 export const SearchClientSet = entity(null)
 export const ProductiveSheetId = entity(null)
 export const WiringQuantitySheetId = entity(null)
@@ -37,6 +38,7 @@ export const MyjobCardAfterPtachApi = entity(false)
 export const MyjobCardAfterPtachApiData = entity(false)
 export const JobCardEmplyeData = entity(false)
 export const JobCardEquipmentData = entity(false)
+export const QuantityToBeAchived = entity(null)
 
 
 

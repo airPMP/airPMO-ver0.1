@@ -73,11 +73,17 @@ const AddUserRole = () => {
     useEffect(() => {
 
         const feachSheetId = async () => {
+            let newDate = new Date().toLocaleString()
+            let curentDta = newDate.split('/')
+            let yearsplit = curentDta[2].split(",") 
+            let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
+            
+
             try {
                 // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
 
                 const token = reactLocalStorage.get("access_token", false);
-                const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
