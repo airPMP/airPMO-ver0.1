@@ -67,7 +67,11 @@ export class JobCardsController {
     @Param('project_id') project_id: string,
     @Body() UpdateJobCardDto: UpdateJobCardDto,
   ) {
-    return await this.jobCardsService.editjobcardbyid(id,project_id,UpdateJobCardDto);
+    return await this.jobCardsService.editjobcardbyid(
+      id,
+      project_id,
+      UpdateJobCardDto,
+    );
   }
 
   @Auth('GET-JOB-CARD')
@@ -86,7 +90,7 @@ export class JobCardsController {
     @Param('id') id: string,
     @Body() UpdateJobCardDto: UpdateJobCardDto,
   ) {
-    return await this.jobCardsService.editspicpi(id,UpdateJobCardDto);
+    return await this.jobCardsService.editspicpi(id, UpdateJobCardDto);
   }
 
 
@@ -94,7 +98,6 @@ export class JobCardsController {
   async findjobprojectid(@Param('project_id') project_id: string) {
     return await this.jobCardsService.findjobprojectid(project_id);
   }
-
 
   // @Auth('CREATE-ASSIGN-JOB-CARD')
   // @Post('assign_job_card')
