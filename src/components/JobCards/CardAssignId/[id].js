@@ -9,7 +9,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -58,6 +58,8 @@ const NewJobCardMultiId = () => {
 
     const jobCardEmplyeData = JobCardEmplyeData.use()
     const jobCardEquipmentData = JobCardEquipmentData.use()
+    const quantityToBeAchived = QuantityToBeAchived.use()
+    const [roleDataLocal, setRoleDataLocal] = useState(null)
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
@@ -71,6 +73,9 @@ const NewJobCardMultiId = () => {
         if (urlTitle.pathname === "/job_cards/new_job_card_multi") {
             setTitle("Job Cards");
         }
+
+        const roleData = reactLocalStorage.get("roles", false);
+        setRoleDataLocal(roleData)
     }, [urlTitle.pathname])
 
 
@@ -97,7 +102,7 @@ const NewJobCardMultiId = () => {
 
         feach();
     }, [
-        currentquantitytoachivedData, 
+        currentquantitytoachivedData,
         // jobCardEmplyeData
     ]);
 
@@ -338,6 +343,32 @@ const NewJobCardMultiId = () => {
                                 </div>
 
                             </div>
+
+
+                            { roleDataLocal === "albannaadmin" && <div className="flex flex-row relative justify-between space-x-2  w-[350px]"> 
+                                <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
+                                    <div className=" ">  Quantity to be achieved
+                                        [ {assigncarddata?.quantity_to_be_achieved}  ]
+                                        :
+                                    </div>
+
+                                    <div>
+                                        <input type='number' placeholder="Qty achieved"
+                                            className="border-none pl-2  w-[100px]  gang_product_input"
+                                            value={quantityToBeAchived}
+                                            onChange={(e) =>
+                                                QuantityToBeAchived.set(e.target.value)
+                                            }
+
+                                        /> <span>
+                                            {assigncarddata?.manpower_and_machinary[0][" UNIT "]}
+                                        </span>
+                                    </div>
+
+                                </div>  
+                            </div>}
+
+
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent

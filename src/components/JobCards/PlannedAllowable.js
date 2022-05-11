@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from '../../SimplerR/auth'
 
 
 
@@ -26,17 +26,23 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
     const jobCardEmplyeData = JobCardEmplyeData.use()
     const jobCardEquipmentData = JobCardEquipmentData.use()
+    const quantityToBeAchived = QuantityToBeAchived.use()
 
     const [spidatat, setSpiDatat] = useState(true)
+    const [roleDataLocal, setRoleDataLocal] = useState(true)
     let useperma = useParams()
 
 
     useEffect(() => {
         if (assigncarddataA && spidatat) {
             setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
+            QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achived)
             setSpiDatat(false)
 
         }
+
+        const roleData = reactLocalStorage.get("roles", false);
+        setRoleDataLocal(roleData)
     }, [assigncarddataA])
 
 
@@ -48,17 +54,18 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
 
-     
+
     useEffect(() => {
 
-        const PatchCalculatedData = (e) => { 
+        const PatchCalculatedData = (e) => {
 
 
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
 
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
-                updated_quantity_to_be_achived: quantityachieved,
+                // updated_quantity_to_be_achived: quantityachieved,
+                updated_quantity_to_be_achived: quantityToBeAchived,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: employeechangeData !== null ? employeechangeData : [],
                 actual_equipments: equipmentallData !== null ? equipmentallData : [],
@@ -86,15 +93,13 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                 })
 
-        }  
+        }
 
-        PatchCalculatedData()  
+        PatchCalculatedData()
 
-    }, [quantityachieved, jobCardEmplyeData, jobCardEquipmentData])
-
-
-    console.log(employeechangeData)
-
+    }, [quantityToBeAchived,
+        // quantityachieved, 
+        jobCardEmplyeData, jobCardEquipmentData])
 
 
     return (
@@ -173,14 +178,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
-                            <th className="py-[20px]">P Resources</th>
-                            <th className="py-[20px]">P Total Hrs</th>
-                            <th className="py-[20px]">Allowable Resources</th>
-                            <th className="py-[20px]">Allowable Total Hrs</th>
-                            <th className="py-[20px]"> Actual Total Hrs</th>
+
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Total Hrs</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Total Hrs</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Hrs</th>}
+
                             <th className="py-[20px]"> Actual Total Cost</th>
-                            <th className="py-[20px]">SPI</th>
-                            <th className="py-[20px]">CPI</th>
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">SPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">CPI</th>}
                         </tr>
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
@@ -205,27 +212,36 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     <> <td className="py-[20px]">{id + 1}</td>
                                         <td className="py-[20px]">{item[0]}</td>
 
-                                        <td className="py-[20px]">
-                                            {item[1]}
-                                        </td>
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[1]}
+                                            </td>}
 
 
-                                        <td className="py-[20px]">
-                                            {item[2]}
-                                        </td>
-                                        <td className="py-[20px]">
-                                            {item[3]}
-                                        </td>
-                                        <td className="py-[20px]">
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[2]}
+                                            </td>}
 
-                                            {item[4]}
 
-                                        </td>
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[3]}
+                                            </td>}
 
-                                        <td className="py-[20px]">{item[5]}</td>
+
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[4]}
+                                            </td>}
+
+                                        {roleDataLocal !== "albannaadmin" &&
+                                        <td className="py-[20px]">{item[5]}</td>}
+
                                         <td className="py-[20px]">{item[6]}</td>
-                                        <td className="py-[20px]">{item[7]} </td>
-                                        <td className="py-[20px]">{item[8]}</td>
+                                        
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[7]} </td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[8]}</td>}
 
                                     </>
 
@@ -243,8 +259,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                 </table>
             </div>
-
-            {Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
+            {roleDataLocal !== "albannaadmin" && Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
                 <div className="mr-[45px] border-b solid border-black ml-[30px]">
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
@@ -253,14 +268,14 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             </div>
 
                             <div>
-                                {/* <p className=" "  >Qty achieved</p> */}
                                 <input type='number' placeholder="Qty achieved"
                                     className="border-none pl-2  w-[100px]  gang_product_input"
-                                    value={quantityachieved}
-                                    // value={assigncarddataA?.manpower_and_machinary[0][" UNIT "]}
-                                    onChange={(e) =>
-                                        setQuantityAchieved(e.target.value)
-                                        //  QtyAchieved(e)
+                                    // value={quantityachieved} 
+                                    value={quantityToBeAchived}
+                                    onChange={(e) => {
+                                        //    setQuantityAchieved(e.target.value);
+                                        QuantityToBeAchived.set(e.target.value)
+                                    }
                                     }
 
                                 /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
