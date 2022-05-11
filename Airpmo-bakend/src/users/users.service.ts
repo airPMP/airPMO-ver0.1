@@ -21,7 +21,8 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(users.name) private usersModel:SoftDeleteModel<ussersDocument>,
+    @InjectModel(users.name)
+    private usersModel: SoftDeleteModel<ussersDocument>,
     @Inject(forwardRef(() => UserRolesService))
     private userRolesService: UserRolesService,
   ) {}
@@ -71,26 +72,30 @@ export class UsersService {
         throw new UnprocessableEntityException('organization not found');
       }
       const users = await this.usersModel.find().lean();
-      for (let i = 0; i < users.length; i++) {
-        if (
-          users[i].organization_id === organizationkey ||
-          airmpo_designation === 'Airpmo Super Admin'
-        ) {
-          const user_designation = await this.userRolesService.userroles(
-            users[i]._id.toString(),
-          );
+      if (users.length != 0) {
+        for (let i = 0; i < users.length; i++) {
+          if (
+            users[i].organization_id === organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            const user_designation = await this.userRolesService.userroles(
+              users[i]._id.toString(),
+            );
 
-          if (user_designation.length != 0 && user_designation[0] != null) {
-            const desig = user_designation[0].name;
-            const ab = { designation: desig };
-            const obj = Object.assign({}, users[i], ab);
-            new_arr.push(obj);
-          } else {
-            new_arr.push(users[i]);
+            if (user_designation.length != 0 && user_designation[0] != null) {
+              const desig = user_designation[0].name;
+              const ab = { designation: desig };
+              const obj = Object.assign({}, users[i], ab);
+              new_arr.push(obj);
+            } else {
+              new_arr.push(users[i]);
+            }
           }
         }
+        return new_arr;
+      } else {
+        return new NotFoundException('user not found');
       }
-      return new_arr;
     } catch {
       throw new UnprocessableEntityException('user not found');
     }
@@ -98,25 +103,35 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      await this.usersModel.updateOne(
-        { _id: id },
-        { $set: { ...updateUserDto } },
-      );
-      let user = await this.usersModel.findOne({ id });
-      return user;
+      const find_particular_user = await this.usersModel.findOne({ _id: id });
+      if (find_particular_user != null) {
+        await this.usersModel.updateOne(
+          { _id: id },
+          { $set: { ...updateUserDto } },
+        );
+        let user = await this.usersModel.findOne({ _id: id });
+        return user;
+      } else {
+        return new NotFoundException('user not found');
+      }
     } catch {
-      throw new NotFoundException('user not exist');
+      throw new NotFoundException('data not found ');
     }
   }
 
   async remove(id: string) {
     try {
-      const user = await this.usersModel.softDelete({ _id: id });
-      return {
-        massage: 'user deleted',
-      };
+      const find_user = await this.usersModel.findOne({ _id: id });
+      if (find_user != null) {
+        await this.usersModel.softDelete({ _id: id });
+        return {
+          massage: 'user deleted sucessfully',
+        };
+      } else {
+        return new NotFoundException('user not found');
+      }
     } catch {
-      throw new NotFoundException('user not exist');
+      throw new NotFoundException('data not found');
     }
   }
 
