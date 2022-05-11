@@ -84,11 +84,11 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     console.log(response)
                     if (response?.status === 200) {
                         setEmpoyeeUpdate(false)
-                          
+
                     }
                     console.log(response)
                     setEmpoyeeAllData(response?.data)
-                    EmployeeChangeData.set(response?.data) 
+                    EmployeeChangeData.set(response?.data)
 
                 })
                 .catch((error) => {
@@ -122,9 +122,13 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         feach3();
 
-    }, [assigncarddataId, empoyeeupdate, deletedatarefrace,currentquantitytoachivedData]);
+    }, [assigncarddataId, empoyeeupdate, deletedatarefrace,
+        // currentquantitytoachivedData
+    ]);
 
-
+    useEffect(() => { 
+        EmployeeChangeData.set(empoyeealldata)
+    }, [empoyeealldata])
 
     useEffect(() => {
 
@@ -161,10 +165,10 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
             feach();
         }
-    }, [currentdate,  ])
+    }, [currentdate,])
 
 
-   
+
 
 
     useEffect(() => {
@@ -240,6 +244,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     })
                     setDropDownSelect(true)
                     setDropDownSelect(false)
+                    JobCardEmplyeData.set(o => !o)
                 }
                 else if (response.status === 201) {
                     setTimeSheetHours("")
@@ -254,7 +259,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     setEmpoyeeUpdate(o => !o)
                     setDropDownSelect(true)
                     setDropDownSelect(false)
-                    JobCardEmplyeData.set(true)
+                    JobCardEmplyeData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -271,9 +276,10 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         JobCardEmplyeData.set(true)
     })
+
 
     const EditProfile = (e, alldata) => {
         setEmployeeId(alldata?.employee_id)
@@ -323,7 +329,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     })
                     setEmpoyeeUpdate(o => !o)
                     setEditOpen(false)
-                    JobCardEmplyeData.set(true)
+                    JobCardEmplyeData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -355,9 +361,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     },
                 })
                 console.log(data)
-                if (data?.status === 200) {
-                    setDeleteDataRefrace(o => !o)
-                    JobCardEmplyeData.set(true)
+                if (data?.status === 200) { 
+                    setDeleteDataRefrace(o => !o) 
+                    JobCardEmplyeData.set(o => !o)  
                 }
 
             } catch (error) {

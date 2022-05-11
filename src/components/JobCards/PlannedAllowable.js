@@ -11,7 +11,7 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, Job
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
 
 
-     
+
 
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
@@ -32,9 +32,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
     useEffect(() => {
-        if (assigncarddataA && spidatat) { 
+        if (assigncarddataA && spidatat) {
             setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
             setSpiDatat(false)
+
         }
     }, [assigncarddataA])
 
@@ -45,12 +46,13 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         setTimeSheetName(`${spitData[1]} ${spitData[2]}`)
         setOpen(true) ///open popup
     }
- 
 
 
+     
     useEffect(() => {
 
-        const PatchCalculatedData = (e) => {
+        const PatchCalculatedData = (e) => { 
+
 
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
@@ -73,8 +75,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
-                        MyjobCardAfterPtachApi.set(true) 
-                        CurrentQuantityTOAchivedData.set(o => !o) 
+                        console.log("jobCardEmplyeData")
+                        MyjobCardAfterPtachApi.set(true)
+                        CurrentQuantityTOAchivedData.set(o => !o)
 
                     }
                 })
@@ -83,21 +86,14 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                 })
 
-        }
+        }  
+
+        PatchCalculatedData()  
+
+    }, [quantityachieved, jobCardEmplyeData, jobCardEquipmentData])
 
 
-
-
-
-        PatchCalculatedData()
-
-
-
-
-    }, [quantityachieved,jobCardEmplyeData,jobCardEquipmentData])
-
-
- 
+    console.log(employeechangeData)
 
 
 
@@ -265,7 +261,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     onChange={(e) =>
                                         setQuantityAchieved(e.target.value)
                                         //  QtyAchieved(e)
-                                        }
+                                    }
 
                                 /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
                             </div>

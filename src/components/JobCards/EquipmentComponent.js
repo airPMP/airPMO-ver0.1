@@ -131,11 +131,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         setEmployeeDesignation(spitData[3])
 
 
-        if (spitData[1]) {
-            
+        if (spitData[1]) { 
             setOpen(true)  ///open popup
-        }
-
+        } 
     }
 
     const AddToList = () => {
@@ -180,7 +178,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     setDropDownSelect(false)
 
 
-                    JobCardEquipmentData.set(true)
+                    JobCardEquipmentData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -234,7 +232,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     })
                     setEmpoyeeUpdate(o => !o)
                     setEditOpen(false)
-                    JobCardEquipmentData.set(true)
+                    JobCardEquipmentData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -264,7 +262,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     },
                 })
                 if (data?.status === 200) {
-                    JobCardEquipmentData.set(true)
+                    JobCardEquipmentData.set(o => !o)
                     window.location.reload(false);
                 }
 

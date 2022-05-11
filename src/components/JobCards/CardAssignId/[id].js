@@ -76,7 +76,7 @@ const NewJobCardMultiId = () => {
 
 
     useEffect(() => {
-
+        ///this api not Run's  for first time 
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -86,7 +86,7 @@ const NewJobCardMultiId = () => {
                     },
                 })
                 console.log(data?.data)
-                setAssignCardData(data?.data) 
+                setAssignCardData(data?.data)
                 JobCardEmplyeData.set(false)
                 JobCardEquipmentData.set(false)
                 CurrentQuantityTOAchivedData.set(false)
@@ -97,16 +97,15 @@ const NewJobCardMultiId = () => {
 
         feach();
     }, [
-        currentquantitytoachivedData,
-         myjobCardAfterPtachApi,
+        currentquantitytoachivedData, 
         // jobCardEmplyeData
-        ]);
+    ]);
 
-console.log(currentquantitytoachivedData)
+
 
 
     useEffect(() => {
-
+        ///this api Run's only for first time 
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
