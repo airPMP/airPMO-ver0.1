@@ -6,6 +6,7 @@ import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
+import dateFormat, { masks } from "dateformat";
 
 const validate = (values) => {
 
@@ -143,11 +144,17 @@ const AddNewUser = () => {
 
 
     useEffect(() => {
+        const now = new Date();
+            let some = dateFormat(now, "paddedShortDate");
+            console.log(some)
+            let curentDta = some.split('/')
+            let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
 
-        let newDate = new Date().toLocaleString()
-        let curentDta = newDate.split('/')
-        let yearsplit = curentDta[2].split(",") 
-        let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
+
+        // let newDate = new Date().toLocaleString()
+        // let curentDta = newDate.split('/')
+        // let yearsplit = curentDta[2].split(",") 
+        // let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
         
 
         const token = reactLocalStorage.get("access_token", false);
