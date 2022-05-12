@@ -68,7 +68,7 @@ const SideBar = ({ sendDataToParent }) => {
       <div className="divide-solid">
 
         <img
-          src={projectLogoSet ? projectLogoSet : "/abe_logo.jpg"}
+          src={projectLogoSet ? projectLogoSet : "/logo1.jpg"}
           alt="logo"
           width="182px"
           height="60.67px"

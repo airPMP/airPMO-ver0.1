@@ -183,9 +183,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Total Hrs</th>}
                             {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Resources</th>}
                             {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Total Hrs</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Hrs</th>}
+                            <th className="py-[20px]"> Actual Total Hrs</th>
 
-                            <th className="py-[20px]"> Actual Total Cost</th>
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Cost</th>}
                             {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">SPI</th>}
                             {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">CPI</th>}
                         </tr>
@@ -235,11 +235,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                                 {item[4]}
                                             </td>}
 
-                                        {roleDataLocal !== "albannaadmin" &&
-                                        <td className="py-[20px]">{item[5]}</td>}
 
-                                        <td className="py-[20px]">{item[6]}</td>
-                                        
+                                        <td className="py-[20px]">{item[5]}</td>
+
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[6]}</td>}
+
                                         {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[7]} </td>}
                                         {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[8]}</td>}
 
