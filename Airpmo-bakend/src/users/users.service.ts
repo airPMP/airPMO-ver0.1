@@ -21,7 +21,8 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(users.name) private usersModel:SoftDeleteModel<ussersDocument>,
+    @InjectModel(users.name)
+    private usersModel: SoftDeleteModel<ussersDocument>,
     @Inject(forwardRef(() => UserRolesService))
     private userRolesService: UserRolesService,
   ) {}
@@ -33,22 +34,23 @@ export class UsersService {
         const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
         createUserDto.Password = hash;
       }
-      const user = await this.usersModel.findOne({
+      const user = await this.usersModel.find({
         Email: createUserDto.Email,
       });
-      if (!user) {
+      if (user[0] === undefined) {
         return await this.usersModel.create(createUserDto);
-      } else {
+      } 
+      else {
         throw new UnauthorizedException('User already rigister');
       }
     } catch {
       throw new NotFoundException('user all ready exist');
     }
   }
-
+  
   async findByEmail(loginusersDto: loginusersDto) {
     const user = await this.usersModel
-      .findOne({
+      .find({
         $or: [
           { username: loginusersDto.Email },
           { Email: loginusersDto.Email },
@@ -56,7 +58,7 @@ export class UsersService {
       })
       .select('Password')
       .select('Email');
-    return user;
+    return user[0];
   }
 
   async findAll(@Req() req) {
