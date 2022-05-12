@@ -3,6 +3,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
+import { CurrentQuantityTOAchivedData, EquipmentAllData, JobCardEquipmentData } from "../../SimplerR/auth";
 
 
 
@@ -34,9 +35,12 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
     const [textData, settextData] = useState([]);
 
-    const [DropDownSelect, setDropDownSelect] = useState(false);
+    const [DropDownSelect, setDropDownSelect] = useState(false);  
+    const equipmentallData = EquipmentAllData.use()
 
+    const jobCardEquipmentData = JobCardEquipmentData.use()
 
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
     const { addToast } = useToasts();
 
@@ -48,7 +52,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
                 // console.log(data1?.data?.values)
                 setTimeSheetData(data1?.data?.values)
-                setFilterEmpoyeeAllData(data1?.data?.values)
+                setFilterEmpoyeeAllData(data1?.data?.values) 
+                
             } catch (error) {
                 console.log(error)
             }
@@ -80,9 +85,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                 if (data1?.status === "200") {
                     setEmpoyeeUpdate(false)
                 }
-                console.log(data1?.status)
-                setEmpoyeeAllData(data1?.data)
                 
+                setEmpoyeeAllData(data1?.data)
+                EquipmentAllData.set(data1?.data)
 
             } catch (error) {
                 console.log(error)
@@ -91,7 +96,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
         feach2();
 
-    }, [assigncarddataId, empoyeeupdate]);
+    }, [assigncarddataId, empoyeeupdate,currentquantitytoachivedData]);
 
 
 
@@ -126,11 +131,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         setEmployeeDesignation(spitData[3])
 
 
-        if (spitData[1]) {
-            console.log(spitData[1])
+        if (spitData[1]) { 
             setOpen(true)  ///open popup
-        }
-
+        } 
     }
 
     const AddToList = () => {
@@ -173,6 +176,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     setEmpoyeeUpdate(o => !o)
                     setDropDownSelect(true)
                     setDropDownSelect(false)
+
+
+                    JobCardEquipmentData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -226,6 +232,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     })
                     setEmpoyeeUpdate(o => !o)
                     setEditOpen(false)
+                    JobCardEquipmentData.set(o => !o)
                 }
             })
             .catch((error) => {
@@ -255,7 +262,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                     },
                 })
                 if (data?.status === 200) {
-
+                    JobCardEquipmentData.set(o => !o)
                     window.location.reload(false);
                 }
 

@@ -4,14 +4,14 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from '../../SimplerR/auth'
 
 
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
 
 
-    console.log(assigncarddataA)
+
 
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
@@ -22,21 +22,28 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
     const equipmentallData = EquipmentAllData.use()
+    const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
+    const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
+    const jobCardEmplyeData = JobCardEmplyeData.use()
+    const jobCardEquipmentData = JobCardEquipmentData.use()
+    const quantityToBeAchived = QuantityToBeAchived.use()
 
-
+    const [spidatat, setSpiDatat] = useState(true)
+    const [roleDataLocal, setRoleDataLocal] = useState(true)
     let useperma = useParams()
 
-    useEffect(() => {
-        if (assigncarddataA) {
 
+    useEffect(() => {
+        if (assigncarddataA && spidatat) {
             setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
+            QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achived)
+            setSpiDatat(false)
+
         }
 
+        const roleData = reactLocalStorage.get("roles", false);
+        setRoleDataLocal(roleData)
     }, [assigncarddataA])
-
-
-
-    console.log(assigncarddataA)
 
 
     const TimeSelectFun = (e) => {
@@ -47,31 +54,22 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     }
 
 
-    const QtyAchieved = (e) => {
-        setQuantityAchieved(e.target.value)
-        // setSpiData((e.target.value) / (quantityachieved))
-        // CurrentQuantityTOAchivedData.set(e.target.value)
-    }
-
-    console.log(quantityachieved) 
-
-
 
     useEffect(() => {
- 
 
         const PatchCalculatedData = (e) => {
 
+
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
-                quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
-                updated_quantity_to_be_achived: quantityachieved,
-                manpower_and_machinary:  assigncarddataA?.manpower_and_machinary,
-                actual_employees: employeechangeData !== null ? [employeechangeData] : [],
-                actual_equipments: equipmentallData !== null ? [equipmentallData] : [],
-                alanned_vs_allowable_vs_actual: [
 
-                ],
+                quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
+                // updated_quantity_to_be_achived: quantityachieved,
+                updated_quantity_to_be_achived: quantityToBeAchived,
+                manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
+                actual_employees: employeechangeData !== null ? employeechangeData : [],
+                actual_equipments: equipmentallData !== null ? equipmentallData : [],
+                alanned_vs_allowable_vs_actual: [],
                 hourly_salrey: "10",
                 hourly_standrd_salrey: "10"
             },
@@ -84,6 +82,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
+                        console.log("jobCardEmplyeData")
+                        MyjobCardAfterPtachApi.set(true)
+                        CurrentQuantityTOAchivedData.set(o => !o)
 
                     }
                 })
@@ -94,13 +95,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
         }
 
-        if (quantityachieved) {
-            PatchCalculatedData()
-        }
+        PatchCalculatedData()
 
-    }, [quantityachieved])
-
-
+    }, [quantityToBeAchived,
+        // quantityachieved, 
+        jobCardEmplyeData, jobCardEquipmentData])
 
 
     return (
@@ -172,104 +171,95 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row mt-[30px] h-[40px] mr-[20px]">
+            <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
                 <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
-                    {/*<thead className="font-secondaryFont text-[#000000] font-normal 
-                    not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
-                          <tr className="bg-[#ECF1F0]  h-[40px] ">
+                    <thead className="font-secondaryFont text-[#000000] font-normal 
+                    not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
+                        <tr className="bg-[#ECF1F0]  h-[40px] ">
                             <th className="py-[20px]">SI No</th>
                             <th className="py-[20px]">Designation</th>
-                            <th className="py-[20px]">P Resources</th>
-                            <th className="py-[20px]">P Total Hrs</th>
-                            <th className="py-[20px]">Allowable Resources</th>
-                            <th className="py-[20px]">Allowable Total Hrs</th>
+
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Total Hrs</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Total Hrs</th>}
                             <th className="py-[20px]"> Actual Total Hrs</th>
-                            <th className="py-[20px]"> Actual Total Cost</th>
-                            <th className="py-[20px]">SPI</th>
-                            <th className="py-[20px]">CPI</th>
-                        </tr>  
+
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Cost</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">SPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">CPI</th>}
+                        </tr>
                         <tr className="p-[15px] ">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
 
-                    {/* {assigncarddataA && assigncarddataAarray?.map((item, id) => {
+                    {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
+                        return <>  {
 
-                        return <tbody
-
-                            className=" max-w-[100%] font-secondaryFont   
-                            text-[#000000] font-normal not-italic text-[12px]
-                             leading-[20px] tracking-[-2%]"
-                        >
-                            
-                            {assigncarddataA &&
-                                Object.entries(assigncarddataA?.manpower_and_machinary[0]).
-                                    slice(4, -2).map(([key, value]) => {
-                                        return <tr className=" h-[20px] text-center">
-                                            {value !== 0 ?
-                                                <> <td className="py-[20px]">{id + 1}</td>
-                                                    <td className="py-[20px]">{key}</td>
-
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * item?.quantity_to_be_achieved)}
-                                                    </td>
+                            // item[1]!=="0.00" && !item[0].startsWith(" Part NO") ?
 
 
-                                                    <td className="py-[20px]">
-                                                        {
-                                                            assigncarddataA?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * item?.quantity_to_be_achieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
-                                                        {(value / assigncarddataA?.manpower_and_machinary[0][" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                            * quantityachieved).toFixed(2)}
-                                                    </td>
-                                                    <td className="py-[20px]">
+                            <tbody
+                                className=" max-w-[100%] font-secondaryFont   
+                                         text-[#000000]font-normal not-italic text-[12px]
+                                            leading-[20px]tracking-[-2%]
+                                             "
+                            >
 
-                                                        {
-                                                            (assigncarddataA?.manpower_and_machinary[0]
-                                                            ["totaltime"] * (value / assigncarddataA?.manpower_and_machinary[0]
-                                                            [" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                * quantityachieved)).toFixed(2)}
+                                <tr className=" h-[20px] text-center">
 
-                                                    </td>
+                                    <> <td className="py-[20px]">{id + 1}</td>
+                                        <td className="py-[20px]">{item[0]}</td>
 
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">0</td>
-                                                    <td className="py-[20px]">{(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)}</td>
-                                                    <td className="py-[20px]">CPI</td>
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[1]}
+                                            </td>}
 
-                                                </>
-                                                : <>
-                                                </>
-                                            }
-                                        </tr>
-                                    })}
 
-                             
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[2]}
+                                            </td>}
 
-                            <tr className="p-[15px] text-center ">
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]" >    </td>
-                                <td className="py-[20px]">    </td>
-                                <td className="py-[20px]">  {(quantityachieved) / (assigncarddataA?.quantity_to_be_achieved)} </td>
-                                <td className="py-[20px]">    </td>
-                            </tr>
 
-                        </tbody>
-                    })} */}
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[3]}
+                                            </td>}
+
+
+                                        {roleDataLocal !== "albannaadmin" &&
+                                            <td className="py-[20px]">
+                                                {item[4]}
+                                            </td>}
+
+
+                                        <td className="py-[20px]">{item[5]}</td>
+
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[6]}</td>}
+
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[7]} </td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[8]}</td>}
+
+                                    </>
+
+
+                                </tr>
+
+
+                            </tbody>
+
+
+                            // : <>
+                            // </>
+                        }</>
+                    })}
+
                 </table>
             </div>
-
-            {Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
+            {roleDataLocal !== "albannaadmin" && Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
                 <div className="mr-[45px] border-b solid border-black ml-[30px]">
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
@@ -278,17 +268,29 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             </div>
 
                             <div>
-                                {/* <p className=" "  >Qty achieved</p> */}
                                 <input type='number' placeholder="Qty achieved"
                                     className="border-none pl-2  w-[100px]  gang_product_input"
-                                    value={quantityachieved}
-                                    // value={assigncarddataA?.manpower_and_machinary[0][" UNIT "]}
-                                    onChange={(e) => QtyAchieved(e)}
+                                    // value={quantityachieved} 
+                                    value={quantityToBeAchived}
+                                    onChange={(e) => {
+                                        //    setQuantityAchieved(e.target.value);
+                                        QuantityToBeAchived.set(e.target.value)
+                                    }
+                                    }
 
                                 /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
                             </div>
+
                         </div>
 
+                    </div>
+                </div>
+                <div className="flex ">
+                    <div className="text-[14px] pr-2">
+                        {assigncarddataA?.total_overall_spi}
+                    </div>
+                    <div className="text-[14px] ">
+                        {assigncarddataA?.total_overall_cpi}
                     </div>
                 </div>
 

@@ -24,6 +24,7 @@ const AllJobCardsId = () => {
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
   const [deletedatarefrace, setDeleteDataRefrace] = useState(false);
+  const [projectDetailsData, setProjectDetailsData] = useState(null);
 
   const projectobjectdata = ProjectObjectData.use()
 
@@ -64,6 +65,29 @@ const AllJobCardsId = () => {
 
       })
     handleSearch()
+
+
+
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setProjectDetailsData(response?.data)
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+
 
   }, [deletedatarefrace])
 
@@ -188,7 +212,7 @@ const AllJobCardsId = () => {
   const EditProfile = (e) => {
     console.log(e)
     if (editpermission === "EDIT-JOB-CARD" || allpermissions === "ALL") {
-    navigate(`/daily_task/update_create_daily_task/${e}`)
+      navigate(`/daily_task/update_create_daily_task/${e}`)
     }
   }
 
@@ -224,7 +248,7 @@ const AllJobCardsId = () => {
                   {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
-                  {alltokenroles === "albannaadmin" ? "J725" : "Shining Towers"}
+                  {projectDetailsData?.project_id ? projectDetailsData?.project_id : "Shining Towers"}
                 </div>
 
               </div>
@@ -286,7 +310,7 @@ const AllJobCardsId = () => {
                 </span>
 
                 <span className="pl-2">
-                New Activities
+                  New Activities
                 </span>
               </button>
             </Link>
@@ -331,7 +355,7 @@ const AllJobCardsId = () => {
                     <th>
 
                       <div className="flex flex-row space-x-xl justify-center">
-                        <div className={` ${editpermission || allpermissions ? 'cursor-pointer':"disabledclass"}   `}
+                        <div className={` ${editpermission || allpermissions ? 'cursor-pointer' : "disabledclass"}   `}
                           onClick={(e) => EditProfile(item._id)}  >
                           <svg
                             width="19"

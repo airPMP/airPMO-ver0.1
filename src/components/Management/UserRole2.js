@@ -175,7 +175,7 @@ const UserRole1 = () => {
                                 </tr>
 
 
-                                {userdata?.slice(1).map((item, id) => {
+                                {userdata?.slice(0).map((item, id) => {
 
 
                                     return <tbody className="  mb-[10px]   " key={id}>

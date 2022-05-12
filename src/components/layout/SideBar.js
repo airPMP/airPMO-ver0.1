@@ -1,12 +1,18 @@
 import React, { useLayoutEffect } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
-import { useState,useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; 
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getUserApiOrgnization_id, getUserApi } from "../../AllApi/Api";
+import axios from "axios";
+import { ProjectLogoSet } from "../../SimplerR/auth";
 
 const SideBar = ({ sendDataToParent }) => {
   const [style, setStyle] = useState(1);
   const [Rolesdata, setRolesdata] = useState(null);
   const [title, setTitle] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [funTrue, setFunTrue] = useState(true);
+  const projectLogoSet=ProjectLogoSet.use()
   let navigate = useNavigate();
   let param = useLocation();
   let urlTitle = useLocation();
@@ -38,36 +44,45 @@ const SideBar = ({ sendDataToParent }) => {
   useEffect(() => {
     const rolesData = reactLocalStorage.get("roles", "roles");
     setRolesdata(rolesData)
-  }) 
+  })
 
-  console.log(Rolesdata)
+  useEffect(() => {
+
+    const token = reactLocalStorage.get("access_token", false)
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((responce) => {
+      console.log(responce)
+      setUserData(responce?.data[0])
+      ProjectLogoSet.set(responce?.data[0]?.logo_url)
+    })  
+
+  }, [Rolesdata])
+
+ 
+
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
 
-        { Rolesdata === "albannaadmin"   ? <img
-          src="/abe_logo.jpg"
+        <img
+          src={projectLogoSet ? projectLogoSet : "/logo1.jpg"}
           alt="logo"
           width="182px"
           height="60.67px"
           className="px-[35px] pt-[26px]"
-        /> : <img
-          src="/logo1.svg"
-          alt="logo"
-          width="182px"
-          height="60.67px"
-          className={`${Rolesdata === "albannaadmin"?"hidden":null}  px-[35px] pt-[26px]`}
         />
-        }
 
         <hr className=" mt-[30.33px] border  border-[#000000] " />
       </div>
 
       {Rolesdata === "Airpmo Super Admin" || urlTitle.pathname === "/dashboard" ? <div
         className={`flex flex-row justify-start mt-[55px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${param.pathname === "/dashboard" ||
-            param.pathname === "/dashboard/user"
-            ? "bg-[#136C57]"
-            : ""
+          param.pathname === "/dashboard/user"
+          ? "bg-[#136C57]"
+          : ""
           } `}
         onClick={() => {
           gotoDashboard();
@@ -84,9 +99,9 @@ const SideBar = ({ sendDataToParent }) => {
             <path
               d="M4.66667 15.1667H11.6667C12.3083 15.1667 12.8333 14.6417 12.8333 14V4.66667C12.8333 4.025 12.3083 3.5 11.6667 3.5H4.66667C4.025 3.5 3.5 4.025 3.5 4.66667V14C3.5 14.6417 4.025 15.1667 4.66667 15.1667ZM4.66667 24.5H11.6667C12.3083 24.5 12.8333 23.975 12.8333 23.3333V18.6667C12.8333 18.025 12.3083 17.5 11.6667 17.5H4.66667C4.025 17.5 3.5 18.025 3.5 18.6667V23.3333C3.5 23.975 4.025 24.5 4.66667 24.5ZM16.3333 24.5H23.3333C23.975 24.5 24.5 23.975 24.5 23.3333V14C24.5 13.3583 23.975 12.8333 23.3333 12.8333H16.3333C15.6917 12.8333 15.1667 13.3583 15.1667 14V23.3333C15.1667 23.975 15.6917 24.5 16.3333 24.5ZM15.1667 4.66667V9.33333C15.1667 9.975 15.6917 10.5 16.3333 10.5H23.3333C23.975 10.5 24.5 9.975 24.5 9.33333V4.66667C24.5 4.025 23.975 3.5 23.3333 3.5H16.3333C15.6917 3.5 15.1667 4.025 15.1667 4.66667Z"
               fill={`${param.pathname === "/dashboard" ||
-                  param.pathname === "/dashboard/user"
-                  ? "white"
-                  : "black"
+                param.pathname === "/dashboard/user"
+                ? "white"
+                : "black"
                 }`}
             />
           </svg>
@@ -96,9 +111,9 @@ const SideBar = ({ sendDataToParent }) => {
 
         <div
           className={`${param.pathname === "/dashboard" ||
-              param.pathname === "/dashboard/user"
-              ? "text-white"
-              : "text-[#000000]"
+            param.pathname === "/dashboard/user"
+            ? "text-white"
+            : "text-[#000000]"
             }  font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
           Dashboard
@@ -133,11 +148,11 @@ const SideBar = ({ sendDataToParent }) => {
         </div>
         <div
           className={` ${param.pathname.includes("/daily_task")
-              ? "text-white"
-              : "text-[#000000]"
+            ? "text-white"
+            : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
-         Activities
+          Activities
         </div>
       </div>
       <div
@@ -218,8 +233,8 @@ const SideBar = ({ sendDataToParent }) => {
         </div>
         <div
           className={`${param.pathname.includes("/timeline")
-              ? "text-white"
-              : "text-[#000000]"
+            ? "text-white"
+            : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
           Timeline
@@ -260,8 +275,8 @@ const SideBar = ({ sendDataToParent }) => {
         </div>
         <div
           className={`${param.pathname.includes("/DataInjestion")
-              ? "text-white"
-              : "text-[#000000]"
+            ? "text-white"
+            : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
           Data Injestion
@@ -293,8 +308,8 @@ const SideBar = ({ sendDataToParent }) => {
         <div></div>
         <div
           className={`${param.pathname.includes("UserManagement")
-              ? "text-white"
-              : "text-[#000000]"
+            ? "text-white"
+            : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
           User&#160;Management
