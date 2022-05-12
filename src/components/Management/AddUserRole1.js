@@ -6,6 +6,7 @@ import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
+import dateFormat, { masks } from "dateformat";
 
 const validate = (values) => {
 
@@ -68,16 +69,29 @@ const AddUserRole = () => {
 
     let navigate = useNavigate();
 
-
+   
 
     useEffect(() => {
 
         const feachSheetId = async () => {
+
+            const now = new Date();
+            let some = dateFormat(now, "paddedShortDate");
+            console.log(some)
+            let curentDta = some.split('/')
+            let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
+
+            // let newDate = new Date().toLocaleString()
+            // let curentDta = newDate.split('/')
+            // let yearsplit = curentDta[2].split(",")
+            // let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
+
+
             try {
                 // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
 
                 const token = reactLocalStorage.get("access_token", false);
-                const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -100,7 +114,7 @@ const AddUserRole = () => {
         feachSheetId();
 
 
-    } )
+    })
 
     useEffect(() => {
         if (designationdata) {
@@ -195,7 +209,7 @@ const AddUserRole = () => {
 
     }
 
-console.log(rolesdata)
+    console.log(rolesdata)
 
     return (
         <>
