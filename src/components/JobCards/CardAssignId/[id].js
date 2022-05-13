@@ -9,7 +9,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -50,28 +50,38 @@ const NewJobCardMultiId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state 
     const [assigncarddata, setAssignCardData] = useState(null); // the lifted state
-    const [currentdate, setCurrentDate] = useState(null) 
+    const [currentdate, setCurrentDate] = useState(null)
     const [open, setOpen] = useState(false);
-    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use() 
+    const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
+    const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
+    const myjobCardAfterPtachApiData = MyjobCardAfterPtachApiData.use()
+
+    const jobCardEmplyeData = JobCardEmplyeData.use()
+    const jobCardEquipmentData = JobCardEquipmentData.use()
+    const quantityToBeAchived = QuantityToBeAchived.use()
+    const [roleDataLocal, setRoleDataLocal] = useState(null)
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
     let naviagte = useNavigate();
     let useperma = useParams()
 
-    
+
 
     useEffect(() => {
 
         if (urlTitle.pathname === "/job_cards/new_job_card_multi") {
             setTitle("Job Cards");
         }
+
+        const roleData = reactLocalStorage.get("roles", false);
+        setRoleDataLocal(roleData)
     }, [urlTitle.pathname])
 
 
-    
-    useEffect(() => {
 
+    useEffect(() => {
+        ///this api not Run's  for first time 
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -80,22 +90,52 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                
+                console.log(data?.data)
+                setAssignCardData(data?.data)
+                JobCardEmplyeData.set(false)
+                JobCardEquipmentData.set(false)
+                CurrentQuantityTOAchivedData.set(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        feach();
+    }, [
+        currentquantitytoachivedData,
+        // jobCardEmplyeData
+    ]);
+
+
+
+
+    useEffect(() => {
+        ///this api Run's only for first time 
+        const token = reactLocalStorage.get("access_token", false);
+        const feach = async () => {
+            try {
+                const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+
+                if (data.status === 200) {
+                    MyjobCardAfterPtachApi.set(true)
+                }
                 console.log(data?.data)
 
-
-                setAssignCardData(data?.data)  
+                setAssignCardData(data?.data)
 
             } catch (error) {
                 console.log(error)
             }
         }
 
-        feach();  
-    }, [urlTitle.pathname,currentquantitytoachivedData ]);
+        feach();
+    }, [myjobCardAfterPtachApi, myjobCardAfterPtachApiData]);
 
-
-    console.log(assigncarddata) 
 
 
     const formik = useFormik({
@@ -129,7 +169,7 @@ const NewJobCardMultiId = () => {
             }
         })
 
-            .then((response) => { 
+            .then((response) => {
                 if (response.status === 201) {
                     // addToast("your job card is assign Sucessfully", {
                     //     appearance: "success",
@@ -287,7 +327,7 @@ const NewJobCardMultiId = () => {
                                             name="hseRemarks"
                                             type="date"
                                             value={currentdate}
-                                            onChange={(e)=>{setCurrentDate(e.target.value);formik.handleChange()}}
+                                            onChange={(e) => { setCurrentDate(e.target.value); formik.handleChange() }}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
                                         />
@@ -303,26 +343,41 @@ const NewJobCardMultiId = () => {
                                 </div>
 
                             </div>
-                            <div>
-                            <div 
-                            // className="mb-6" 
-                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                               >
-                                    <PlannedAllowable
-                                        heading={"Planned vs Allowable vs Actual"}
-                                        selectDropDown={false}
-                                        Quantityachieved={"Quantity to be achieved"}
-                                        assigncarddataA={assigncarddata}
-                                    />
+
+
+                            { roleDataLocal === "albannaadmin" && <div className="flex flex-row relative justify-between space-x-2  w-[350px]"> 
+                                <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
+                                    <div className=" ">  Quantity to be achieved
+                                        [ {assigncarddata?.quantity_to_be_achieved}  ]
+                                        :
+                                    </div>
+
+                                    <div>
+                                        <input type='number' placeholder="Qty achieved"
+                                            className="border-none pl-2  w-[100px]  gang_product_input"
+                                            value={quantityToBeAchived}
+                                            onChange={(e) =>
+                                                QuantityToBeAchived.set(e.target.value)
+                                            }
+
+                                        /> <span>
+                                            {assigncarddata?.manpower_and_machinary[0][" UNIT "]}
+                                        </span>
+                                    </div>
+
                                 </div>  
+                            </div>}
+
+
+                            <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <EmployeComponent
-                                    
+
                                         heading={"Actual Employees"}
                                         selectDropDown={true}
                                         assigncarddataId={assigncarddata}
                                         currentdate={currentdate}
-                                         
+
 
                                     />
                                 </div>
@@ -333,17 +388,16 @@ const NewJobCardMultiId = () => {
                                         assigncarddataId={assigncarddata?._id}
                                     />
 
+
                                 </div>
-                               {/* <div className="mb-6" 
-                            //    style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-                               >
+                                <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     <PlannedAllowable
                                         heading={"Planned vs Allowable vs Actual"}
                                         selectDropDown={false}
                                         Quantityachieved={"Quantity to be achieved"}
                                         assigncarddataA={assigncarddata}
                                     />
-                                </div>   */}
+                                </div>
                             </div>
 
 
@@ -523,7 +577,7 @@ const NewJobCardMultiId = () => {
                                 <div className="flex flex-row mr-[-50px]">
                                     <div className="mr-[45px] shadow-[buttonshadow] ">
                                         <button onClick={() => { naviagte("/daily_task") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
-                                        Activity Log
+                                            Activity Log
                                         </button>
                                     </div>
                                     <div>
@@ -532,7 +586,7 @@ const NewJobCardMultiId = () => {
                                             type="submit"
                                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                                         >
-                                         Execute Activity
+                                            Execute Activity
                                         </button>
                                     </div>
                                 </div>

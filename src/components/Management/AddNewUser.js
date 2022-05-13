@@ -6,6 +6,7 @@ import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
+import dateFormat, { masks } from "dateformat";
 
 const validate = (values) => {
 
@@ -75,7 +76,7 @@ const AddNewUser = () => {
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
     const [refracedata, setRefraceData] = useState(false)
     const [designatiotrue, setDesignatioTrue] = useState(false)
-    
+
 
     // const [hrmsdata, setHRMSData] = useState(null);
     const [spread_sheet, setSpreadSheet] = useState(null);
@@ -98,7 +99,7 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data1) 
+                console.log(data1)
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
@@ -109,11 +110,11 @@ const AddNewUser = () => {
         }
         feachRolls();
 
-        
 
-    }, [ ])
 
-    useEffect(()=>{
+    }, [])
+
+    useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
         const user_id = reactLocalStorage.get("user_id", false);
@@ -125,34 +126,49 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-   
+
                 console.log(data1)
 
                 // setHRMSData(data1?.data[0]?.hrms_api_url)
                 // setSpreadSheet(data1?.data[0]?.spread_sheet_id)
                 // setSpreadSheet_1(data1?.data[0]?.discription)
-                 
-                
+
+
             } catch (error) {
                 console.log(error)
             }
         }
-        feachAddUser();  
+        feachAddUser();
 
     })
 
 
-    useEffect(()=>{
+    useEffect(() => {
+        const now = new Date();
+            let some = dateFormat(now, "paddedShortDate");
+            console.log(some)
+            let curentDta = some.split('/')
+            let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
+
+
+        // let newDate = new Date().toLocaleString()
+        // let curentDta = newDate.split('/')
+        // let yearsplit = curentDta[2].split(",") 
+        // let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
+        
+
         const token = reactLocalStorage.get("access_token", false);
-        const feachSheetId = async () => { 
+        const feachSheetId = async () => {
             try {
-                const data1 = await axios.get(`http://159.65.154.14:8000/api/hrms-api/59`, {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
 
                     headers: {
                         Authorization: `Bearer ${token}`,
-                    }})
-                    setClientIdData(data1?.data)
-                    console.log(data1)
+                    }
+                })
+                setClientIdData(data1?.data)
+                console.log(data1)
+
                 // let ClientIdStore = []
                 // data1?.data?.values.map((items, id) => {
                 //     if (id >= 1) {
@@ -160,7 +176,7 @@ const AddNewUser = () => {
                 //     }
                 // })
 
-                 
+
 
                 // setSpreadSheetIdAllData(data1?.data?.values)
                 // let ClientFirstNameStore = []
@@ -380,20 +396,20 @@ const AddNewUser = () => {
     }
 
     const SpreadFun = (e) => {
-        
+
         console.log(e.target.value)
-         let splitdata =e.target.value
-        let somdata= splitdata.split(",")
-         console.log(somdata)
-         let nameSplit =somdata[0].split(" ")
-         console.log(nameSplit)
-         setSpreadAllData(somdata[2])
+        let splitdata = e.target.value
+        let somdata = splitdata.split(",")
+        console.log(somdata)
+        let nameSplit = somdata[0].split(" ")
+        console.log(nameSplit)
+        setSpreadAllData(somdata[2])
 
         // spreadsheetalldata?.map((item, id) => {
         //     if (e.target.value === item[0]) {
-                setFirstNameData(nameSplit[0])
-                setLastNameData(nameSplit[1])
-                setDesignaionData(somdata[1])
+        setFirstNameData(nameSplit[0])
+        setLastNameData(nameSplit[1])
+        setDesignaionData(somdata[1])
         //     }
         // })
 
@@ -468,7 +484,7 @@ const AddNewUser = () => {
         // setRoleId(designation_data[1]) 
     }
 
-    
+
 
     return (
         <>
@@ -518,9 +534,9 @@ const AddNewUser = () => {
                                                     focus:outline-none "
                                                 >
                                                     <option value="" label="User Id" />
-                                                    {clientiddata ?.map((item, id) => {
+                                                    {clientiddata?.map((item, id) => {
                                                         return <>
-                                                            <option value={[item.UserName,item.designation,item.UserID]} label={item.UserID} key={id} />
+                                                            <option value={[item.UserName, item.designation, item.UserID]} label={item.UserID} key={id} />
                                                         </>
                                                     })}
                                                 </select>

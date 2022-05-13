@@ -32,6 +32,7 @@ const MyJobCardsId = () => {
   const [AllCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
   const [activityid, setActivityId] = useState(null)
   const [patchapiTrue, setPatchApiTrue] = useState(false)
+  const [projectDetailsData, setProjectDetailsData] = useState(null);
 
   const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
@@ -101,6 +102,27 @@ const MyJobCardsId = () => {
       setShowMultiSelectSubzone(o => !o)
       SetSelectAllSubZoneData(false)
     }
+
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      .then((response) => {
+        console.log(response?.data)
+        setProjectDetailsData(response?.data)
+        if (response.status === 201) {
+
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+
+      })
+
+
+
   }, [selectalldata, selectallsubzonedata])
 
   const handleSearch = (e) => {
@@ -347,7 +369,7 @@ const MyJobCardsId = () => {
                   {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
-                  {alltokenroles === "albannaadmin" ? "J725" : "Shining Towers"}
+                  {projectDetailsData?.project_id ? projectDetailsData?.project_id  : "Shining Towers"}
                 </div>
               </div>
               <div

@@ -27,7 +27,7 @@ const JobCards = () => {
   const [productivesheetdata, setProductiveSheetData] = useState(null)
   const searchclientset = SearchClientSet.use()
   const productivesheetid = ProductiveSheetId.use()
-   
+
   const productivitysheetdata = ProductivitySheetData.use()
   const projectobjectdata = ProjectObjectData.use()
   const [alljobcardapi, setAllJobCardApi] = useState(null)
@@ -47,7 +47,7 @@ const JobCards = () => {
     }
   }, [urlTitle.pathname]);
 
- 
+
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false);
@@ -157,13 +157,13 @@ const JobCards = () => {
   }, [productivesheetid])
 
   useEffect(() => {
-     
+
     setopenSearchData(false)
-    
+
   }, [clientdatareze])
 
   const clientidname = (e, Objdata) => {
-    setChooseprojectOpnCls(false) 
+    setChooseprojectOpnCls(false)
     ClientDataFreze.set(Objdata?.client_name)
 
     const token = reactLocalStorage.get("access_token", false);
@@ -253,9 +253,7 @@ const JobCards = () => {
   }
 
 
-  console.log(clientsearchdata)
 
-  console.log(clientdatareze)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -297,7 +295,7 @@ const JobCards = () => {
                     placeholder="Choose Client"
                     value={clientdatareze}
                     className="outline-none w-[332px] h-[46px] rounded-[10px]"
-                    onChange={(e) =>{ClientDataFreze.set(e.target.value); handleChangeForClientData(e)}} //-2a 
+                    onChange={(e) => { ClientDataFreze.set(e.target.value); handleChangeForClientData(e) }} //-2a 
                   />
                 </div>
               </div>
