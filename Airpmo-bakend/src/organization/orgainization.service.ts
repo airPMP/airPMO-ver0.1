@@ -27,16 +27,27 @@ export class OrgainizationService {
     }
   }
 
-  findAll() {
-    return this.orgainizationmodel.find();
+ async findAll() {
+    const data= await  this.orgainizationmodel.find();
+     if(data.length!=0){
+       return data
+     }else{
+       return new NotFoundException('unable to find organization data')
+     }
   }
 
   async findOne(id: string) {
     try {
+      const find_org= await this.orgainizationmodel.findOne({_id: id})
+      console.log(find_org)
+      if(find_org!=null){
       const orgainizationf = await this.orgainizationmodel.findById({
         _id: id,
       });
       return orgainizationf;
+    }else{
+      return new NotFoundException('unable to find organization data')
+    }
     } catch {
       throw new NotFoundException('oraganization is not exist');
     }
@@ -44,25 +55,35 @@ export class OrgainizationService {
 
   async update(id: string, updateOrgainizationDto: UpdateOrgainizationDto) {
     try {
-      const orgainizationu = await this.orgainizationmodel.updateMany(
+      const find_org= await this.orgainizationmodel.findOne({_id: id})
+      if(find_org!=null){
+      const orgainizationu = await this.orgainizationmodel.updateOne(
         { _id: id },
         { ...updateOrgainizationDto },
       );
       return {
         massage: 'oraganization updated',
-      };
+      }
+    }else{
+      return new NotFoundException('unable to find organization data')
+    }
     } catch {
       throw new NotFoundException('oraganization is not exist');
     }
   }
   async remove(id: string) {
     try {
+      const find_org= await this.orgainizationmodel.findOne({_id: id})
+      if(find_org!=null){
       const orgainizationd = await this.orgainizationmodel.softDelete({
         _id: id,
       });
       return {
         massage: 'orgainization Deleted',
-      };
+      }
+    }else{
+      return new NotFoundException('unable to find organization data')
+    }
     } catch {
       throw new NotFoundException('oraganization is not exist');
     }
@@ -70,6 +91,10 @@ export class OrgainizationService {
 
   async finduser(user_id: string) {
     const finduser = await this.orgainizationmodel.find({ user_id: user_id });
-    return finduser;
+    if(finduser.length!=0){
+      return finduser
+    }else{
+      return new NotFoundException('unable to find organization data')
+    }
   }
 }

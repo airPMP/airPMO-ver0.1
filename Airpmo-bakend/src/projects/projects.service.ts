@@ -33,6 +33,7 @@ export class ProjectsService {
       throw new UnprocessableEntityException('organization not found');
     }
     const all_project = await this.projectModel.find();
+     if(all_project.length!=0){
     for (let index = 0; index < all_project.length; index++) {
       if (all_project[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(all_project[index]);
@@ -40,7 +41,10 @@ export class ProjectsService {
     }
     return new_arr;
   }
-
+  else{
+    return new NotFoundException('unable to find project data')
+  }
+  }
   async findOne(id: string, @Req() req) {
     try {
       const payload = req.headers.authorization.split('.')[1];
@@ -52,6 +56,8 @@ export class ProjectsService {
         throw new UnprocessableEntityException('organization not found');
       }
       const find_project = await this.projectModel.findOne({ _id: id });
+      if(find_project!=null){
+
       if (find_project.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return find_project;
       } else {
@@ -59,6 +65,10 @@ export class ProjectsService {
           'its not exist in this orgainization',
         );
       }
+
+    }else{
+      return new NotFoundException('unable to find project data')
+    }
     } catch {
       throw new NotFoundException('project not exist');
     }
@@ -66,23 +76,33 @@ export class ProjectsService {
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
     try {
+      const project_data=await this.projectModel.findOne({_id:id})
+       if(project_data!=null){
       const user = await this.projectModel.updateOne(
         { _id: id },
         { ...updateProjectDto },
       );
       return {
         massage: 'update sucessfully',
-      };
+      }
+    }else{ 
+      return new NotFoundException('unable to find project data');
+    };
     } catch {
       throw new NotFoundException('project not exist');
     }
   }
   async remove(id: string) {
     try {
+      const project_data=await this.projectModel.findOne({_id:id})
+      if(project_data!=null){
       const user = await this.projectModel.softDelete({ _id: id });
       return {
         massage: 'Delete sucessfully',
-      };
+      }
+    }else{
+      return new NotFoundException('unable to find project data');
+    };
     } catch {
       throw new NotFoundException('project not exist');
     }
@@ -115,12 +135,16 @@ export class ProjectsService {
       const catagoriesdata = await this.projectModel.find({
         categories_id: catagories_id,
       });
+      if(catagoriesdata.length!=0){
       for (let index = 0; index < catagoriesdata.length; index++) {
         if (catagoriesdata[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(catagoriesdata[index]);
         }
       }
       return new_arr;
+    }else{
+      return new NotFoundException('unable to find project data');
+    }
     } catch {
       throw new NotFoundException('project not found');
     }
@@ -137,11 +161,16 @@ export class ProjectsService {
       throw new UnprocessableEntityException('organization not found');
     }
     const projectdata = await this.projectModel.find({ client_id: client_id });
+    if(projectdata.length!=0){
     for (let index = 0; index < projectdata.length; index++) {
       if (projectdata[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(projectdata[index]);
       }
     }
     return new_arr;
+  }else{
+    return new NotFoundException('unable to find project data')
   }
+  }
+  
 }

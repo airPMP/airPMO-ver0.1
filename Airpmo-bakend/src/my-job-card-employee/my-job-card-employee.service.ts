@@ -86,6 +86,7 @@ export class MyJobCardEmployeeService {
       throw new NotFoundException('employee not found');
     }
   }
+
   async findAll(@Req() req) {
     try {
       const new_arr = [];
@@ -98,6 +99,7 @@ export class MyJobCardEmployeeService {
         throw new UnprocessableEntityException('organization not found');
       }
       const all_employee = await this.myjobcardemployeemodal.find();
+      if(all_employee.length!=0){
       for (let index = 0; index < all_employee.length; index++) {
         if (
           all_employee[index].organization_id === organizationkey ||
@@ -107,6 +109,9 @@ export class MyJobCardEmployeeService {
         }
       }
       return new_arr;
+    }else{
+      return new NotFoundException('unable to find employeee data')
+    }
     } catch {
       throw new NotFoundException('employee not found');
     }
@@ -125,6 +130,7 @@ export class MyJobCardEmployeeService {
       const find_one_employee = await this.myjobcardemployeemodal.findOne({
         _id: id,
       });
+    if(find_one_employee!=null){
       if (
         find_one_employee.organization_id === organizationkey ||
         airmpo_designation === 'Airpmo Super Admin'
@@ -135,6 +141,9 @@ export class MyJobCardEmployeeService {
           'its not exist in this orgainization',
         );
       }
+    }else{
+      return new NotFoundException('unable to find employeee data')
+    }
     } catch {
       throw new NotFoundException('employee not found');
     }
@@ -257,7 +266,7 @@ export class MyJobCardEmployeeService {
         throw new UnprocessableEntityException('organization not found');
       }
       const employe = await this.myjobcardemployeemodal.find();
-
+       if(employe.length!=0){
       for (let i = 0; i < employe.length; i++) {
         if (employe[i].jc_id === id) {
           if (
@@ -271,8 +280,11 @@ export class MyJobCardEmployeeService {
       if (new_arr.length != 0) {
         return new_arr;
       } else {
-        throw new NotFoundException('not record available');
+       return new NotFoundException('not record available');
       }
+    }else{
+      return new NotFoundException('unable to find employeee data')
+    }
     } catch {
       throw new NotFoundException('employee not found');
     }

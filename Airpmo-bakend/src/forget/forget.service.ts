@@ -26,8 +26,6 @@ export class ForgetService {
 
   async forgetPassword(forgetuserdto: forgetuserdto) {
     const user = await this.usersModel.findOne({ 'Email': forgetuserdto.Email })
-    console.log(user)
-
     if (!user) {
       throw new UnauthorizedException("email not found")
     }
@@ -53,8 +51,6 @@ export class ForgetService {
     if (resetuserdto.Password !== resetuserdto.Confirm_Password) {
       throw new UnauthorizedException('password  not matcted')
     }
-    
-
     else {
       const pass = await resetuserdto.Confirm_Password
       const saltOrRounds = 10;

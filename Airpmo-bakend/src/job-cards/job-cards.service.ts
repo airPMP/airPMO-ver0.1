@@ -61,7 +61,6 @@ export class JobCardsService {
 
   async findjobCard(id: string, @Req() req) {
     try {
-      const new_arr = [];
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
@@ -71,6 +70,7 @@ export class JobCardsService {
         throw new UnprocessableEntityException('organization not found');
       }
       const find_Card = await this.jobcardmodal.findOne({ _id: id });
+      if(find_Card!=null){
       if (
         find_Card.organization_id === organizationkey ||
         airmpo_designation === 'Airpmo Super Admin'
@@ -81,6 +81,9 @@ export class JobCardsService {
           'its not exist in this orgainization',
         );
       }
+    }else{
+      return new NotFoundException('unable to find job card')
+    }
     } catch {
       throw new NotFoundException('Not found data');
     }
@@ -98,6 +101,7 @@ export class JobCardsService {
         throw new UnprocessableEntityException('organization not found');
       }
       const find_all_job_card = await this.jobcardmodal.find().lean();
+      if(find_all_job_card.length!=0){
       for (let index = 0; index < find_all_job_card.length; index++) {
         if (
           find_all_job_card[index].organization_id === organizationkey ||
@@ -106,7 +110,11 @@ export class JobCardsService {
           new_arr.push(find_all_job_card[index]);
         }
       }
+
       return new_arr;
+    }else{
+      return new NotFoundException('unable to find job card')
+    }
     } catch {
       throw new NotFoundException('Not found data');
     }
@@ -125,8 +133,9 @@ export class JobCardsService {
     const job_card_By_project_id = await this.jobcardmodal.find({
       project_id: id,
     });
+    if(job_card_By_project_id.length!=0){
     for (let index = 0; index < job_card_By_project_id.length; index++) {
-      if (
+      if(
         job_card_By_project_id[index].organization_id === organizationkey ||
         airmpo_designation === 'Airpmo Super Admin'
       ) {
@@ -134,6 +143,9 @@ export class JobCardsService {
       }
     }
     return new_arr;
+  }else{
+    return new NotFoundException('unable to find job card')
+  }
   }
 
   async deleteJobcard(@Param('id') id: string) {
@@ -146,7 +158,7 @@ export class JobCardsService {
           const deleted= await this.myjobcardemployeemodal.deleteOne({jc_id:jc_id})
         }
       }
-      if (check_card) {
+      if(check_card!=null) {
         const delete_card = await this.jobcardmodal.softDelete({ _id: id });
         return 'delete sucessfully';
       } else {

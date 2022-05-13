@@ -16,7 +16,8 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 @Injectable()
 export class ClientprofileService {
   constructor(
-    @InjectModel(Client.name) private clientModel:  SoftDeleteModel<ClientDocument>,
+    @InjectModel(Client.name)
+    private clientModel: SoftDeleteModel<ClientDocument>,
   ) {}
 
   async create(createClientprofileDto: CreateClientprofileDto) {
@@ -39,12 +40,19 @@ export class ClientprofileService {
         throw new UnprocessableEntityException('organization not found');
       }
       const find_client = await this.clientModel.find();
-      for (let index = 0; index < find_client.length; index++) {
-        if (find_client[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
-          new_arr.push(find_client[index]);
+      if (find_client.length != 0) {
+        for (let index = 0; index < find_client.length; index++) {
+          if (
+            find_client[index].organization_id === organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            new_arr.push(find_client[index]);
+          }
         }
+        return new_arr;
+      } else {
+        return new NotFoundException('client not exist');
       }
-      return new_arr;
     } catch {
       throw new NotFoundException('client not exist');
     }
@@ -59,12 +67,19 @@ export class ClientprofileService {
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
       const client = await this.clientModel.findOne({ _id: id });
-      if (client.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
-        return client;
+      if (client != null) {
+        if (
+          client.organization_id === organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
+          return client;
+        } else {
+          return new UnprocessableEntityException(
+            'these client  not exist in this orgainization',
+          );
+        }
       } else {
-        throw new UnprocessableEntityException(
-          'these client  not exist in this orgainization',
-        );
+        return new NotFoundException('client not exist');
       }
     } catch {
       throw new NotFoundException('client not exist');
@@ -73,13 +88,18 @@ export class ClientprofileService {
 
   async update(id: string, updateClientprofileDto: UpdateClientprofileDto) {
     try {
-      const client = await this.clientModel.updateOne(
-        { _id: id },
-        { ...updateClientprofileDto },
-      );
-      return {
-        massage: ' Updated ',
-      };
+      const client_find = await this.clientModel.findOne({ _id: id });
+      if (client_find != null) {
+        const client = await this.clientModel.updateOne(
+          { _id: id },
+          { ...updateClientprofileDto },
+        );
+        return {
+          massage: ' Updated ',
+        };
+      }else{
+        return new NotFoundException('unable to update data not found')
+      }
     } catch {
       throw new NotFoundException('client not exist');
     }
@@ -87,13 +107,20 @@ export class ClientprofileService {
 
   async remove(id: string) {
     try {
-      const client = await this.clientModel.softDelete({ _id: id });
+      const find_client=await this.clientModel.findOne({ _id: id })
+       if(find_client!=null){
+      const client =await this.clientModel.softDelete({ _id: id });
       return {
         massage: ' Deleted ',
-      };
+      }
+      
+    }else{
+      return new NotFoundException("unable to delete data not found")
+    };
     } catch {
       throw new NotFoundException('client not exist');
     }
+  
   }
 
   async findorganization(organization_id: string) {

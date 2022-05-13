@@ -25,7 +25,6 @@ export class RolesSeeder implements Seeder {
       { name: 'riyazadmin', permission: 'ALL' },
     ]);
     let user = await this.usersModel.find();
-
     for (let i = 0; i < user.length; i++) {
       var userid = await this.UserRoleModel.insertMany({
         role_id: role[i].id,

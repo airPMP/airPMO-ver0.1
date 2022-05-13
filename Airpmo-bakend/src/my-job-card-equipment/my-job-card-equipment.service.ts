@@ -45,16 +45,20 @@ export class MyJobCardEquipmentService {
       }
       const all_my_job_card_eqipments =
         await this.myjobcardequipmentmodal.find();
-      for (let index = 0; index < all_my_job_card_eqipments.length; index++) {
-        if (
-          all_my_job_card_eqipments[index].organization_id ===
-            organizationkey ||
-          airmpo_designation === 'Airpmo Super Admin'
-        ) {
-          new_arr.push(all_my_job_card_eqipments[index]);
+      if (all_my_job_card_eqipments.length != 0) {
+        for (let index = 0; index < all_my_job_card_eqipments.length; index++) {
+          if (
+            all_my_job_card_eqipments[index].organization_id ===
+              organizationkey ||
+            airmpo_designation === 'Airpmo Super Admin'
+          ) {
+            new_arr.push(all_my_job_card_eqipments[index]);
+          }
         }
+        return new_arr;
+      } else {
+        return new NotFoundException('unable to find euipments data');
       }
-      return new_arr;
     } catch {
       throw new NotFoundException('equipment not found');
     }
@@ -73,15 +77,19 @@ export class MyJobCardEquipmentService {
       const find_one_equipment = await this.myjobcardequipmentmodal.findOne({
         _id: id,
       });
-      if (
-        find_one_equipment.organization_id === organizationkey ||
-        airmpo_designation === 'Airpmo Super Admin'
-      ) {
-        return find_one_equipment;
-      } else {
-        throw new UnprocessableEntityException(
-          'its not exist in this orgainization',
-        );
+      if (find_one_equipment != null) {
+        if (
+          find_one_equipment.organization_id === organizationkey ||
+          airmpo_designation === 'Airpmo Super Admin'
+        ) {
+          return find_one_equipment;
+        } else {
+          throw new UnprocessableEntityException(
+            'its not exist in this orgainization',
+          );
+        }
+      }else{
+        return new NotFoundException('unable to find euipments data')
       }
     } catch {
       throw new NotFoundException('equipment not found');
@@ -93,18 +101,29 @@ export class MyJobCardEquipmentService {
     updateMyJobCardEquipmentDto: UpdateMyJobCardEquipmentDto,
   ) {
     try {
+      const find_emp=await this.myjobcardequipmentmodal.findOne({_id:id})
+      if(find_emp!=null){
       const update_employee = await this.myjobcardequipmentmodal.updateOne(
         { _id: id },
         { ...updateMyJobCardEquipmentDto },
       );
       return 'equipments update sucessfully';
+
+      }else{
+        return new NotFoundException('unable to find euipments data')
+      }
     } catch {
       throw new NotFoundException('equipment not updated');
     }
   }
 
   async remove(id: string) {
-    return await this.myjobcardequipmentmodal.remove({ _id: id });
+    const find_d_emp=await this.myjobcardequipmentmodal.findOne({ _id: id })
+    if(find_d_emp!=null){
+    const delete_emp= await this.myjobcardequipmentmodal.remove({ _id: id });
+    }else{
+      return new NotFoundException('unable to find equipments data')
+    }
   }
 
   async findemployeebyjcid(id: string, @Req() req) {
@@ -119,6 +138,7 @@ export class MyJobCardEquipmentService {
         throw new UnprocessableEntityException('organization not found');
       }
       const equipment = await this.myjobcardequipmentmodal.find();
+      if(equipment.length!=0){
       for (let i = 0; i < equipment.length; i++) {
         if (equipment[i].jc_id === id) {
           if (
@@ -134,6 +154,9 @@ export class MyJobCardEquipmentService {
       } else {
         throw new NotFoundException('not record available');
       }
+    }else{
+      return new NotFoundException('unable to find equipments data')
+    }
     } catch {
       throw new NotFoundException('equipment not found');
     }
