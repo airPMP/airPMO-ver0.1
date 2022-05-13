@@ -14,6 +14,7 @@ import { spicpi, spicpiSchema } from 'src/schemas/spi_cpi.schema';
 import { MyJobCardEmployee } from 'src/my-job-card-employee/entities/my-job-card-employee.entity';
 import { MyJobCardEmployeeModule } from 'src/my-job-card-employee/my-job-card-employee.module';
 import { myjobcardemployee, myjobcardemployeeschema } from 'src/schemas/my-job-card-employee.schema';
+import { equipment, myjobcardequipmentschema } from 'src/schemas/my-job-card-equipment.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: jobcard.name, schema: jobcardSchema },
@@ -22,7 +23,8 @@ import { myjobcardemployee, myjobcardemployeeschema } from 'src/schemas/my-job-c
   { name:UserRole.name,schema:UserRoleSchema, },
   { name: spicpi.name, schema: spicpiSchema },
   { name:Role.name,schema:RoleSchema },
-  { name: myjobcardemployee.name, schema: myjobcardemployeeschema }
+  { name: myjobcardemployee.name, schema: myjobcardemployeeschema },
+  { name: equipment.name, schema: myjobcardequipmentschema}
   ]), ExcelModule,UsersModule],
   controllers: [JobCardsController],
   providers: [JobCardsService]

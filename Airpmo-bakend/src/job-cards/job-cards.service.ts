@@ -29,7 +29,14 @@ import { assign } from 'nodemailer/lib/shared';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { spicpi, spicpiDocument } from 'src/schemas/spi_cpi.schema';
 import { MyJobCardEmployeeService } from 'src/my-job-card-employee/my-job-card-employee.service';
-import { myjobcardemployee, myjobcardemployeeDocument } from 'src/schemas/my-job-card-employee.schema';
+import {
+  myjobcardemployee,
+  myjobcardemployeeDocument,
+} from 'src/schemas/my-job-card-employee.schema';
+import {
+  equipment,
+  myjobcardequipmentDocument,
+} from 'src/schemas/my-job-card-equipment.schema';
 
 @Injectable()
 export class JobCardsService {
@@ -46,8 +53,8 @@ export class JobCardsService {
     @InjectModel(Role.name) private RoleModel: Model<RoleDocument>,
     @InjectModel(myjobcardemployee.name)
     private myjobcardemployeemodal: Model<myjobcardemployeeDocument>,
-    
-  
+    @InjectModel(equipment.name)
+    private myjobcardequipmentmodal: Model<myjobcardequipmentDocument>,
   ) {}
 
   async createjobCard(CreateJobCardDto: CreateJobCardDto) {
@@ -138,14 +145,30 @@ export class JobCardsService {
 
   async deleteJobcard(@Param('id') id: string) {
     try {
-        const check_card = await this.jobcardmodal.findOne({ _id: id })
-        const find_emp= await this.myjobcardemployeemodal.find({jc_id:id})
-        if(find_emp.length!=0){
+      const check_card = await this.jobcardmodal.findOne({ _id: id });
+
+      const find_emp = await this.myjobcardemployeemodal.find({ jc_id: id });
+      if (find_emp.length != 0) {
         for (let index = 0; index < find_emp.length; index++) {
-          const jc_id=find_emp[index].jc_id;
-          const deleted= await this.myjobcardemployeemodal.deleteOne({jc_id:jc_id})
+          const jc_id = find_emp[index].jc_id;
+          const deleted = await this.myjobcardemployeemodal.deleteOne({
+            jc_id: jc_id,
+          });
         }
       }
+
+      const find_equipment = await this.myjobcardequipmentmodal.find({
+        jc_id: id,
+      });
+      if (find_equipment.length != 0) {
+        for (let i = 0; i < find_equipment.length; i++) {
+          const jc_id = find_equipment[i].jc_id;
+          const deleted = await this.myjobcardequipmentmodal.deleteOne({
+            jc_id: jc_id,
+          });
+        }
+      }
+
       if (check_card) {
         const delete_card = await this.jobcardmodal.softDelete({ _id: id });
         return 'delete sucessfully';
@@ -294,7 +317,7 @@ export class JobCardsService {
   //       }
   //     }
   //   }
-  
+
   //   //concate array 1 array 2
   //   var alwoable_arr = [];
   //   var dup = [];
@@ -412,7 +435,7 @@ export class JobCardsService {
   //       }
   //     }
   //   }
-   
+
   //   var actual_total_cost = 0;
   //   var all_allowable_cost = 0;
   //   // var all_allowable_cost = 0;
@@ -422,10 +445,10 @@ export class JobCardsService {
   //       all_allowable_cost +
   //       parseFloat(cpi_array2[i][4]) * parseFloat(hourly_standard_sal);
   //   }
-   
+
   //   var tota_overall_cpi = (all_allowable_cost/actual_total_cost ).toFixed(2);
   //   var total_overall_spi = (current_quantity / update_quantity).toFixed(2);
-  
+
   //   UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
   //   UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
   //   UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
@@ -436,7 +459,7 @@ export class JobCardsService {
   //   // UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString(2);
   //   // UpdateJobCardDto.updated_quantity_to_be_achived =update_quantity.toString(2);
   //   UpdateJobCardDto.unit = popped;
-    
+
   //   const find = await this.jobcardmodal.findOne({ _id: id });
   //   if (find != null) {
   //     const update = await this.jobcardmodal.updateOne({ _id: id },{ ...UpdateJobCardDto });
@@ -452,15 +475,20 @@ export class JobCardsService {
   //   }
   // }
 
-
   async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
     const machinary_data = UpdateJobCardDto.manpower_and_machinary[0];
     const machinary_data_value = Object.values(machinary_data);
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
-    var update_quantity = parseFloat(
-      UpdateJobCardDto.updated_quantity_to_be_achived,
-    );
+    var update_quantity;
+    if (UpdateJobCardDto.updated_quantity_to_be_achived.trim() === '') {
+      update_quantity = 0;
+    } else {
+      update_quantity = parseFloat(
+        UpdateJobCardDto.updated_quantity_to_be_achived.trim(),
+      );
+    }
+
     var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
     const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
     const hourly_standard_sal = parseFloat(
@@ -482,12 +510,12 @@ export class JobCardsService {
         employe_data_arr.push(data_arr[index]);
       }
     }
-    
+
     var machinary_arr = [];
     for (let i = 0; i < machinary_data_value.length; i++) {
       machinary_arr.push(machinary_data_value[i]);
     }
-    
+
     /////array 2
     var new_array = [];
     var new_array2 = [];
@@ -502,7 +530,7 @@ export class JobCardsService {
         }
       }
     }
- 
+
     //concate array 1 array 2
     var alwoable_arr = [];
     var dup = [];
@@ -512,13 +540,13 @@ export class JobCardsService {
       var children = machinary_arr[i].concat(new_array2[i]);
       alwoable_arr.push(children);
     }
-   
+
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let i = 0; i < employe_data_arr.length; i++) {
         if (employe_data_arr[i].designation != undefined) {
           if (
-            ((alwoable_arr[index][0]).trim()).toLowerCase() ===
-           ( (employe_data_arr[i].designation).trim()).toLowerCase()
+            alwoable_arr[index][0].trim().toLowerCase() ===
+            employe_data_arr[i].designation.trim().toLowerCase()
           ) {
             const cal = parseInt(employe_data_arr[i].hour);
             actual_total_hours = actual_total_hours + cal;
@@ -537,16 +565,18 @@ export class JobCardsService {
     for (let index = 0; index < alwoable_arr.length; index++) {
       new_arr2.push(alwoable_arr[index][0]);
     }
-   
+
     var res = [];
     res = employe_data_arr?.filter((el) => {
       return !new_arr2?.find((element, i) => {
         if (el.designation != undefined) {
-          return ((element).trim()).toLowerCase() === ((el.designation).trim()).toLowerCase();
+          return (
+            element.trim().toLowerCase() === el.designation.trim().toLowerCase()
+          );
         }
       });
     });
- 
+
     if (res.length != 0) {
       var arr1 = [];
       var arr2 = [];
@@ -563,8 +593,8 @@ export class JobCardsService {
           for (let i = 0; i < res.length; i++) {
             if (employe_data_arr[i].designation != undefined) {
               if (
-              (( uniqueChars[index]).trim()).toLowerCase() ===
-               ( (res[i].designation).trim()).toLowerCase()
+                uniqueChars[index].trim().toLowerCase() ===
+                res[i].designation.trim().toLowerCase()
               ) {
                 total = total + parseInt(res[i].hour);
                 var h = res[i].designation;
@@ -627,24 +657,25 @@ export class JobCardsService {
     // var all_allowable_cost = 0;
     for (let i = 0; i < cpi_array2.length; i++) {
       actual_total_cost = actual_total_cost + cpi_array2[i][6];
+
       all_allowable_cost =
         all_allowable_cost +
         parseFloat(cpi_array2[i][4]) * parseFloat(hourly_standard_sal);
     }
+
     var tota_overall_cpi;
-    if(actual_total_cost===0){
-      tota_overall_cpi=0;
-    }else{
+    if (actual_total_cost === 0) {
+      tota_overall_cpi = 0;
+    } else {
       tota_overall_cpi = (all_allowable_cost / actual_total_cost).toFixed(2);
     }
-    var total_overall_spi
-    if(total_overall_spi===0){
-      total_overall_spi=0;
-    }
-    else{
+    var total_overall_spi;
+    if (update_quantity === 0) {
+      total_overall_spi = 0;
+    } else {
       total_overall_spi = (current_quantity / update_quantity).toFixed(2);
     }
-   
+
     const productivity_value = Object.values(
       UpdateJobCardDto.manpower_and_machinary[0],
     );
@@ -685,16 +716,17 @@ export class JobCardsService {
       throw new NotFoundException('data not found');
     }
   }
-
-
-  async findjobprojectid( project_id: string){
-    const all_job_card=await this.jobcardmodal.find({project_id:project_id})
-    if(all_job_card.length!=null){
-    return await this.jobcardmodal.find({project_id:project_id})
-    }else{
-      return{
-        massage:'check your project id in this project id data not found'
-      }
+    
+  async findjobprojectid(project_id: string) {
+    const all_job_card = await this.jobcardmodal.find({
+      project_id: project_id,
+    });
+    if (all_job_card.length != null) {
+      return await this.jobcardmodal.find({ project_id: project_id });
+    } else {
+      return {
+        massage: 'check your project id in this project id data not found',
+      };
     }
   }
 
