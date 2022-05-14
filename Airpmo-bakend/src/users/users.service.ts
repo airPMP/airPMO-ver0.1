@@ -104,7 +104,7 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const find_particular_user = await this.usersModel.findOne({ _id: id });
-      if (find_particular_user != null) {
+      if (find_particular_user.deletedAt=== null) {
         await this.usersModel.updateOne(
           { _id: id },
           { $set: { ...updateUserDto } },
@@ -122,7 +122,8 @@ export class UsersService {
   async remove(id: string) {
     try {
       const find_user = await this.usersModel.findOne({ _id: id });
-      if (find_user != null) {
+     
+      if (find_user.deletedAt===null) {
         await this.usersModel.softDelete({ _id: id });
         return {
           massage: 'user deleted sucessfully',
@@ -138,7 +139,11 @@ export class UsersService {
   async findOne(id: string) {
     try {
       const user = await this.usersModel.findOne({ _id: id });
-      return user;
+     if(user.deletedAt===null){
+      return user
+     }else{
+      throw new NotFoundException('user not exist');
+     }
     } catch {
       throw new NotFoundException('user not exist');
     }

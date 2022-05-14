@@ -61,13 +61,13 @@ export class CategoriesService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
-      const user = await this.categoriesModel.findById({ _id: id });
-      if (user != null) {
+      const user = await this.categoriesModel.find({ _id: id })
+      if (user.length!=0) {
         if (
-          user.organization_id === organizationkey ||
+          user[0].organization_id === organizationkey ||
           airmpo_designation === 'Airpmo Super Admin'
         ) {
-          return user;
+          return user[0];
         } else {
           throw new UnprocessableEntityException(
             'these user not exist in this orgainization',
@@ -82,8 +82,8 @@ export class CategoriesService {
   }
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     try {
-      const catagoires_data = await this.categoriesModel.findOne({ _id: id });
-      if (catagoires_data) {
+      const catagoires_data = await this.categoriesModel.find({ _id: id });
+      if (catagoires_data.length!=0) {
         const user = await this.categoriesModel.updateOne(
           { _id: id },
           {
@@ -106,8 +106,8 @@ export class CategoriesService {
 
   async remove(id: string) {
     try {
-      const catagoires_data = await this.categoriesModel.findOne({ _id: id });
-      if (catagoires_data) {
+      const catagoires_data = await this.categoriesModel.find({ _id: id });
+      if (catagoires_data.length!=0) {
       const user = await this.categoriesModel.softDelete({ _id: id });
       return {
         massage: 'categories Deleted',

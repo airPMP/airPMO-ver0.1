@@ -66,13 +66,13 @@ export class ClientprofileService {
       var obj = JSON.parse(encodetoken);
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
-      const client = await this.clientModel.findOne({ _id: id });
-      if (client != null) {
+      const client = await this.clientModel.find({ _id: id });
+      if (client.length != 0) {
         if (
-          client.organization_id === organizationkey ||
+          client[0].organization_id === organizationkey ||
           airmpo_designation === 'Airpmo Super Admin'
         ) {
-          return client;
+          return client[0];
         } else {
           return new UnprocessableEntityException(
             'these client  not exist in this orgainization',
@@ -88,8 +88,8 @@ export class ClientprofileService {
 
   async update(id: string, updateClientprofileDto: UpdateClientprofileDto) {
     try {
-      const client_find = await this.clientModel.findOne({ _id: id });
-      if (client_find != null) {
+      const client_find = await this.clientModel.find({ _id: id });
+      if (client_find.length != 0) {
         const client = await this.clientModel.updateOne(
           { _id: id },
           { ...updateClientprofileDto },
@@ -107,8 +107,8 @@ export class ClientprofileService {
 
   async remove(id: string) {
     try {
-      const find_client=await this.clientModel.findOne({ _id: id })
-       if(find_client!=null){
+      const find_client=await this.clientModel.find({ _id: id })
+       if(find_client.length!=0){
       const client =await this.clientModel.softDelete({ _id: id });
       return {
         massage: ' Deleted ',

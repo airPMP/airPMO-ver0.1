@@ -69,13 +69,13 @@ export class JobCardsService {
       if (organizationkey === undefined || organizationkey === null) {
         throw new UnprocessableEntityException('organization not found');
       }
-      const find_Card = await this.jobcardmodal.findOne({ _id: id });
-      if(find_Card!=null){
+      const find_Card = await this.jobcardmodal.find({ _id: id });
+      if(find_Card.length!=0){
       if (
-        find_Card.organization_id === organizationkey ||
+        find_Card[0].organization_id === organizationkey ||
         airmpo_designation === 'Airpmo Super Admin'
       ) {
-        return find_Card;
+        return find_Card[0];
       } else {
         throw new UnprocessableEntityException(
           'its not exist in this orgainization',
@@ -150,7 +150,7 @@ export class JobCardsService {
 
   async deleteJobcard(@Param('id') id: string) {
     try {
-        const check_card = await this.jobcardmodal.findOne({ _id: id })
+        const check_card = await this.jobcardmodal.find({ _id: id })
         const find_emp= await this.myjobcardemployeemodal.find({jc_id:id})
         if(find_emp.length!=0){
         for (let index = 0; index < find_emp.length; index++) {
@@ -158,7 +158,7 @@ export class JobCardsService {
           const deleted= await this.myjobcardemployeemodal.deleteOne({jc_id:jc_id})
         }
       }
-      if(check_card!=null) {
+      if(check_card.length!=0) {
         const delete_card = await this.jobcardmodal.softDelete({ _id: id });
         return 'delete sucessfully';
       } else {
@@ -172,6 +172,7 @@ export class JobCardsService {
   async updatejobcard(@Body() UpdateJobCardDto: UpdateJobCardDto[]) {
     try {
       const find_all_job = await this.jobcardmodal.find();
+      if(find_all_job.length!=0){
       for (let index = 0; index < UpdateJobCardDto.length; index++) {
         for (let i = 0; i < find_all_job.length; i++) {
           if (
@@ -194,18 +195,20 @@ export class JobCardsService {
           }
         }
       }
+    }else{
+      return new NotFoundException('unable to find a job card')
+    }
     } catch {
       throw new NotFoundException('Not found data');
     }
   }
 
   async editjobcardbyid(id: string, project_id: string, UpdateJobCardDto) {
-    const find_all_job = await this.jobcardmodal.findOne({
+    const find_all_job = await this.jobcardmodal.find({
       _id: id,
       project_id: project_id,
     });
-
-    if (find_all_job != null) {
+    if (find_all_job.length != 0) {
       const update_obj = await this.jobcardmodal.updateOne(
         { _id: id },
         { ...UpdateJobCardDto },

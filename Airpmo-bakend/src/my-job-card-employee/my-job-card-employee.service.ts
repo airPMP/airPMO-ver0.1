@@ -127,15 +127,15 @@ export class MyJobCardEmployeeService {
       if (organizationkey === undefined || organizationkey === null) {
         throw new UnprocessableEntityException('organization not found');
       }
-      const find_one_employee = await this.myjobcardemployeemodal.findOne({
+      const find_one_employee = await this.myjobcardemployeemodal.find({
         _id: id,
       });
-    if(find_one_employee!=null){
+    if(find_one_employee.length!=0){
       if (
-        find_one_employee.organization_id === organizationkey ||
+        find_one_employee[0].organization_id === organizationkey ||
         airmpo_designation === 'Airpmo Super Admin'
       ) {
-        return find_one_employee;
+        return find_one_employee[0];
       } else {
         throw new UnprocessableEntityException(
           'its not exist in this orgainization',
