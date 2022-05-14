@@ -44,7 +44,7 @@ export class CreateUserDto {
   @ApiProperty()
   Password: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 

@@ -12,7 +12,7 @@ export class CreateRoleDto {
   @ApiProperty()
   permission: [];
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   organization_id: string;
 
