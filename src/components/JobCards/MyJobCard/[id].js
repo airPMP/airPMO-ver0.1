@@ -417,7 +417,10 @@ const MyJobCardsId = () => {
                   {/* <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th> */}
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Date(YY/MM/DD)</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Description</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">UOM</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Qty achieved</th> 
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">% achieved </th> 
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]      ">
 
                     <div className=" flex justify-center cursor-pointer "  >
@@ -500,10 +503,10 @@ const MyJobCardsId = () => {
                     </div>
 
                   </th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[5%]">Assign To</th>
+                  {/* <th className="whitespace-nowrap pb-[15.39px] w-[5%]">Assign To</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">SPI</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[5%]">CPI</th>
-                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Status</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Status</th> */}
                 </tr>
               </thead>
               {filteredData && filteredData?.map((item, ids) => {
@@ -517,13 +520,16 @@ const MyJobCardsId = () => {
                       {item?._id}</th> */}
                     <th className=" ">{item?.jc_creation}</th>
                     <th className=" ">{item?.activity_name}</th>
+                    <th className=" ">{item?.unit}</th>
+                    <th className=" ">{item?.quantity_to_be_achieved}</th>
+                    <th className=" ">{item?.updated_quantity_to_be_achived}</th>
                     <th className=" ">{item?.quantity_to_be_achieved}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
-                    <th className=" "> {item?.assign ? item.assign : "no"}</th>
+                    {/* <th className=" "> {item?.assign ? item.assign : "no"}</th>
                     <th className=" "> {item?.spi ? item.spi : "0"}</th>
                     <th className=" ">{item?.cpi ? item.cpi : "0"}</th>
-                    <th className=" ">{item?.status ? item.status : "No Status"}</th>
+                    <th className=" ">{item?.status ? item.status : "No Status"}</th> */}
 
                     {/* <th className="">
                       <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
