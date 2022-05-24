@@ -41,6 +41,17 @@ const DashBoard = () => {
       setMyJobCardApi(data?.data?.length) 
     })
 
+    setTimeout(function(){
+	if(reactLocalStorage.get("organization_id") == "6256bea8e25e1ec36f021392"){
+		document.getElementById("dashboardCards").style.display = "none";
+	} else {
+		document.getElementById("reportFrame").style.display = "none";
+	}
+	document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
+	window.onresize = function(event) {
+		document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
+	};
+    },100);
 
   }, [])
 
@@ -96,7 +107,7 @@ const DashBoard = () => {
                   value={project}
                 /> */}
               </div>
-              <div className="grid grid-cols-4 gap-4 mt-[62px]  px-[20px] ">
+              <div id="dashboardCards" className="grid grid-cols-4 gap-4 mt-[62px]  px-[20px] ">
                 <Card
                   title={"Total JC"}
                   totalNumber={alljobcardapi?alljobcardapi:"0"}
@@ -186,6 +197,7 @@ const DashBoard = () => {
                   }
                 />
               </div>
+		<iframe id="reportFrame" frameborder="0" width="1330" height="1700" src="https://analytics.zoho.com/open-view/2402102000000483592"></iframe>
             </>
           )}
         </div>
