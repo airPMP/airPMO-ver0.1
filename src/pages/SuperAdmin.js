@@ -16,7 +16,7 @@ const SuperAdmin = () => {
     const [address, setAddress] = useState('')
     const [organizationid, setOrganizationId] = useState(null)
     // const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
-    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
+    const [hrmsdata, setHRMSData] = useState(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/`);
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
     // const [spread_sheet_id_1, setSpreadSheet_1] = useState('AT - HRMS format');
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('59');
