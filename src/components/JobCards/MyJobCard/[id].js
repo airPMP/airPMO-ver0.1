@@ -75,7 +75,16 @@ const MyJobCardsId = () => {
 
 
         let zoneFilterData = response?.data.filter((elem => elem.zone))
-        setFilterZonesData(zoneFilterData)
+        const keys = ['zone']
+        const filteredZonedata = zoneFilterData.filter(
+          (s => o => 
+              (k => !s.has(k) && s.add(k))
+              (keys.map(k => o[k]).join('|'))
+          )
+          (new Set)
+        );  
+        setFilterZonesData(filteredZonedata)
+        console.log("zoneFilterData",zoneFilterData);
         let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
         setFilterSubZonesData(SubzoneFilterData) 
         setFilteredData(response?.data)
@@ -344,12 +353,12 @@ const MyJobCardsId = () => {
       <div>
         <SideBar />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col" style={{overflow: 'auto'}}>
         <Header title={title} />
         <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px]
          leading-[53.15px] tracking-[-2%] " >Activity Log</div>
         <div className="flex flex-col max-w-[100%]   mt-[20px] pl-[22px] pr-[44px] ml-[20px] 
-        bg-[#FFFFFF] rounded-[31.53px]">
+        bg-[#FFFFFF] rounded-[31.53px]" style={{overflow: 'auto'}}>
           <div className="flex flex-row items-center space-x-[24.67px] pt-[27.29px]">
             <div className="">
               <svg
@@ -410,7 +419,7 @@ const MyJobCardsId = () => {
             </div>
           </div>
           <div className="ml-[95px]">
-            <table className="table-auto pt-[24px] w-[100%]  ">
+            <table className="table-auto pt-[24px]" style={{overflow: 'auto'}}>
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
                   <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
@@ -421,7 +430,7 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Qty achieved</th> 
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">% achieved </th> 
-                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]      ">
+                  <th className="whitespace-nowrap pb-[15.39px] w-[15%]">
 
                     <div className=" flex justify-center cursor-pointer "  >
                       <div className="flex justify-center cursor-pointer"
@@ -523,7 +532,7 @@ const MyJobCardsId = () => {
                     <th className=" ">{item?.unit}</th>
                     <th className=" ">{item?.quantity_to_be_achieved}</th>
                     <th className=" ">{item?.updated_quantity_to_be_achived}</th>
-                    <th className=" ">{item?.quantity_to_be_achieved}</th>
+                    <th className=" ">{Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) == 'Infinity' || isNaN(Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved)) ? 0 : (Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) * 100).toFixed(2)}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
                     {/* <th className=" "> {item?.assign ? item.assign : "no"}</th>
