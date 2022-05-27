@@ -39,8 +39,8 @@ const UpdateCreateJCId = () => {
   const [subzonedata, setSubZoneData] = useState(null)
   const [zonename, setZoneName] = useState(null)
   const [subzonename, setSubZoneName] = useState(null)
-  const [productivitysheetobject, seProductivitySheetObject] = useState([])
-  const [productivitysheetarray, seProductivitySheetArray] = useState([])
+  const [productivitysheetobject, setProductivitySheetObject] = useState([])
+  const [productivitysheetarray, setProductivitySheetArray] = useState([])
   // const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
   const [zonedata, setZoneData] = useState(null)
@@ -90,6 +90,20 @@ const UpdateCreateJCId = () => {
         setdataData(response?.data?.jc_creation)
         setZoneName(response?.data?.zone)
         setSubZoneName(response?.data?.sub_zone)
+        if(response?.data?.activity_code){
+          let productArray = []
+          productivitysheetdata?.map((items, id) => {
+      
+            if (response?.data?.activity_code === items["Activity code"]) {
+      
+              productArray.push(items)
+              setProductivitySheetObject(items)
+            }
+      
+          })
+          setProductivitySheetArray(productArray)
+
+        }
 
         formik.values.qc_remark = response?.data?.qc_remark
         formik.values.hse_remark = response?.data?.hse_remark
@@ -156,7 +170,7 @@ const UpdateCreateJCId = () => {
         // values.permissions = permisions_data
       }
 
-
+      console.log('pr',productivitysheetobject)
       // values.project_id = projectidperma
       // values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
@@ -164,6 +178,7 @@ const UpdateCreateJCId = () => {
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
+      values.unit = productivitysheetobject[" UNIT "]
       // values.quantity_to_be_achieved = quantitytoachivedData
       // values.manpower_and_machinary = [productivitysheetobject]
 
@@ -172,7 +187,7 @@ const UpdateCreateJCId = () => {
 
       const token = reactLocalStorage.get("access_token", false);
 
-      console.log("dataData")
+      console.log("dataData",values)
       axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}/${updatedata?.project_id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -215,12 +230,12 @@ const UpdateCreateJCId = () => {
       if (e.target.value === items["Activity code"]) {
 
         productArray.push(items)
-        seProductivitySheetObject(items)
+        setProductivitySheetObject(items)
         setActivityName(items["Activity name"])
       }
 
     })
-    seProductivitySheetArray(productArray)
+    setProductivitySheetArray(productArray)
   }
 
   const ZoneNameFun = (e) => {

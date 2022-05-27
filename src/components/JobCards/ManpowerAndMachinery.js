@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { MyJobcardActivityCoard, ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
 const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray,
   allCalcultedMachineryData, patchResponeData }) => {
-
+ 
   const projectobjectdata = ProjectObjectData.use()
+ 
   const quantitytoachivedData = QuantityTOAchivedData.use()
   const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
   const [totaltimegangproductivity, setTotalTimeGangProductivity] = useState(null)
   const [ProductivityData, setProductivityData] = useState(null)
   const [data12, setdata12] = useState(true)
   const myJobcardActivityCoard = MyJobcardActivityCoard.use()
-
 
 
   //   useEffect(() => {

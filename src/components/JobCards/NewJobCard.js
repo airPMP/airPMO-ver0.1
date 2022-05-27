@@ -38,8 +38,8 @@ const NewJobCard = () => {
   const [subzonedata, setSubZoneData] = useState(null)
   const [zonename, setZoneName] = useState(null)
   const [subzonename, setSubZoneName] = useState(null)
-  const [productivitysheetobject, seProductivitySheetObject] = useState([])
-  const [productivitysheetarray, seProductivitySheetArray] = useState([])
+  const [productivitysheetobject, setProductivitySheetObject] = useState([])
+  const [productivitysheetarray, setProductivitySheetArray] = useState([])
   const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
   const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState([null])
@@ -157,8 +157,6 @@ const NewJobCard = () => {
         values.organization_id = organization_Id
         values.permissions = permisions_data
       }
-
-
       values.project_id = projectidperma
       values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
@@ -169,8 +167,7 @@ const NewJobCard = () => {
       values.quantity_to_be_achieved = quantitytoachivedData
       values.manpower_and_machinary = patchResponeData?.productivity
       values.updated_quantity_to_be_achived = quantitytoachivedData
-
-
+      values.unit = productivitysheetobject[" UNIT "]
       const token = reactLocalStorage.get("access_token", false);
 
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_job_card`, values, {
@@ -202,7 +199,7 @@ const NewJobCard = () => {
   });
 
   const ActivityCode = (e) => {
-
+   
     MyJobcardActivityCoard.set(true)
 
     setActivityCode(e.target.value)
@@ -212,14 +209,13 @@ const NewJobCard = () => {
       if (e.target.value === items["Activity code"]) {
 
         productArray.push(items)
-        console.log(items)
 
-        seProductivitySheetObject(items)
+        setProductivitySheetObject(items)
         setActivityName(items["Activity name"])
       }
 
     })
-    seProductivitySheetArray(productArray)
+    setProductivitySheetArray(productArray)
     QuantityTOAchivedData.set('')
   }
 
