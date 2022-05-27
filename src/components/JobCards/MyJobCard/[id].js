@@ -8,6 +8,40 @@ import { useToasts } from "react-toast-notifications";
 import Multiselect from 'multiselect-react-dropdown';
 import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
 
+
+const sortTypes = {
+	up: {
+		class: 'sort-up',
+		fn: (a, b) => new Date(a.jc_creation) - new Date(b.jc_creation)
+	},
+	down: {
+		class: 'sort-down',
+		fn: (a, b) => new Date(b.jc_creation) - new Date(a.jc_creation)
+	},
+	default: {
+		class: 'sort',
+		fn: (a, b) => a
+	}
+}
+
+function sortByColumn(a, colIndex, reverse) {
+  if (reverse == true) {
+    a.sort(sortFunction).reverse();
+  } else {
+    a.sort(sortFunction);
+  }
+
+  function sortFunction(a, b) {
+    if (a[colIndex] === b[colIndex]) {
+      return 0;
+    } else {
+      return (a[colIndex] < b[colIndex]) ? -1 : 1;
+    }
+  }
+  return a;
+}
+
+
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState([null]);
@@ -29,10 +63,11 @@ const MyJobCardsId = () => {
   const [showmultiselectsubzone, setShowMultiSelectSubzone] = useState(false)
   const [selectallsubzonedata, SetSelectAllSubZoneData] = useState(false)
   const [selectalldata, SetSelectAllData] = useState(false)
-  const [AllCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
+  const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
   const [activityid, setActivityId] = useState(null)
   const [patchapiTrue, setPatchApiTrue] = useState(false)
   const [projectDetailsData, setProjectDetailsData] = useState(null);
+  const [currentSort, setCurrentSort] = useState('default')
 
   const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
@@ -51,6 +86,18 @@ const MyJobCardsId = () => {
 
     }
   }, [urlTitle.pathname])
+
+
+
+  const onSortChange = () => {
+		let nextSort;
+		
+		if(currentSort === 'down') nextSort = 'up';
+		else if(currentSort === 'up') nextSort = 'down';
+		else if(currentSort === 'default') nextSort = 'down';
+	  setCurrentSort(nextSort);
+	}
+
 
   useEffect(() => {
     let tokenroles = reactLocalStorage.get("roles", false);
@@ -164,7 +211,6 @@ const MyJobCardsId = () => {
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
-      console.log(response)
       setAllCalcultedMachineryData(response?.data)
       CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
       if (response.status === 200) {
@@ -185,10 +231,10 @@ const MyJobCardsId = () => {
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityid?._id}`, {
 
-      quantity_to_be_achieved: AllCalcultedMachineryData?.quantity_to_be_achived,
+      quantity_to_be_achieved: allCalcultedMachineryData?.quantity_to_be_achived,
       updated_quantity_to_be_achived: currentquantitytoachivedData,
       manpower_and_machinary:
-        AllCalcultedMachineryData?.productivity
+      allCalcultedMachineryData?.productivity
       ,
       actual_employees: [
 
@@ -424,7 +470,9 @@ const MyJobCardsId = () => {
                 <tr>
                   <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
                   {/* <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th> */}
-                  <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Date(YY/MM/DD)</th>
+                  <th className="whitespace-nowrap pb-[15.39px] w-[10%] cursor-pointer" onClick={() => onSortChange()}>
+                    Date(YY/MM/DD)
+                  </th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">Description</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[15%]">UOM</th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[6%]">Qty</th>
@@ -518,8 +566,7 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Status</th> */}
                 </tr>
               </thead>
-              {filteredData && filteredData?.map((item, ids) => {
-                
+              {filteredData && filteredData.sort(sortTypes[currentSort].fn)?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}

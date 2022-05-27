@@ -7,6 +7,8 @@ import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 
 
+
+
 const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
@@ -18,6 +20,8 @@ const AllJobCards = () => {
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
 
+
+
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -27,6 +31,7 @@ const AllJobCards = () => {
       setTitle("Daily Task");
     }
   }, [urlTitle.pathname]);
+
 
 
   useEffect(() => {
@@ -230,7 +235,9 @@ const AllJobCards = () => {
                 <tr>
                   <th className="pb-[15.39px]">Activity ID</th>
                   <th className="pb-[15.39px]"> Daily Task No.</th>
-                  <th className="pb-[15.39px]">Date(YY/MM/DD)</th>
+                  <th className="pb-[15.39px]">Date(YY/MM/DD)
+                  
+                  </th>
                   <th className="pb-[15.39px]">Description</th>
                   <th className="pb-[15.39px]">Qty</th>
                   <th className="pb-[15.39px]">Zone</th>

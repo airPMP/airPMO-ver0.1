@@ -40,7 +40,7 @@ const UpdateCreateJCId = () => {
   const [zonename, setZoneName] = useState(null)
   const [subzonename, setSubZoneName] = useState(null)
   const [productivitysheetobject, setProductivitySheetObject] = useState([])
-  const [productivitysheetarray, setProductivitySheetArray] = useState([])
+  const [productivitysheetarray, setProductivitysheetarray] = useState([])
   // const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
   const [zonedata, setZoneData] = useState(null)
@@ -82,7 +82,7 @@ const UpdateCreateJCId = () => {
     })
 
       .then((response) => {
-        console.log(response?.data)
+        console.log('set',response?.data)
         setUpdateData(response?.data)
 
         setActivityCode(response?.data?.activity_code)
@@ -90,6 +90,13 @@ const UpdateCreateJCId = () => {
         setdataData(response?.data?.jc_creation)
         setZoneName(response?.data?.zone)
         setSubZoneName(response?.data?.sub_zone)
+
+       if(response?.data?.quantity_to_be_achieved){
+         QuantityTOAchivedData.set(response?.data?.quantity_to_be_achieved)
+
+       }
+
+
         if(response?.data?.activity_code){
           let productArray = []
           productivitysheetdata?.map((items, id) => {
@@ -101,7 +108,7 @@ const UpdateCreateJCId = () => {
             }
       
           })
-          setProductivitySheetArray(productArray)
+          setProductivitysheetarray(productArray)
 
         }
 
@@ -169,8 +176,6 @@ const UpdateCreateJCId = () => {
         // values.organization_id = organization_Id
         // values.permissions = permisions_data
       }
-
-      console.log('pr',productivitysheetobject)
       // values.project_id = projectidperma
       // values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
@@ -179,7 +184,7 @@ const UpdateCreateJCId = () => {
       values.zone = zonename
       values.sub_zone = subzonename
       values.unit = productivitysheetobject[" UNIT "]
-      // values.quantity_to_be_achieved = quantitytoachivedData
+      values.quantity_to_be_achieved = quantitytoachivedData
       // values.manpower_and_machinary = [productivitysheetobject]
 
 
@@ -235,7 +240,7 @@ const UpdateCreateJCId = () => {
       }
 
     })
-    setProductivitySheetArray(productArray)
+    setProductivitysheetarray(productArray)
   }
 
   const ZoneNameFun = (e) => {

@@ -6,13 +6,12 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
   const projectobjectdata = ProjectObjectData.use()
  
   const quantitytoachivedData = QuantityTOAchivedData.use()
-  const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
+  const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(quantitytoachivedData)
   const [totaltimegangproductivity, setTotalTimeGangProductivity] = useState(null)
   const [ProductivityData, setProductivityData] = useState(null)
   const [data12, setdata12] = useState(true)
   const myJobcardActivityCoard = MyJobcardActivityCoard.use()
-
-
+  
   //   useEffect(() => {
   // console.log(patchResponeData)
 
