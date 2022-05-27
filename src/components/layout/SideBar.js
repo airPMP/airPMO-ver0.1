@@ -78,7 +78,7 @@ const SideBar = ({ sendDataToParent }) => {
         <hr className=" mt-[30.33px] border  border-[#000000] " />
       </div>
 
-      {Rolesdata === "Airpmo Super Admin" || urlTitle.pathname === "/dashboard" ? <div
+      {Rolesdata === "Airpmo Super Admin" || urlTitle.pathname === "/dashboard" || true ? <div
         className={`flex flex-row justify-start mt-[55px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${param.pathname === "/dashboard" ||
           param.pathname === "/dashboard/user"
           ? "bg-[#136C57]"

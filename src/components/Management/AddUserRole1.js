@@ -63,7 +63,7 @@ const AddUserRole = () => {
     const [rolesalldata, setRolesAllData] = useState(null)
     const [hierarchydata, setHierarchyData] = useState(null)
     const [errrolesalldata, setErrRolesAllData] = useState(false)
-    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
+    const [hrmsdata, setHRMSData] = useState(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/`);
 
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('59');
 

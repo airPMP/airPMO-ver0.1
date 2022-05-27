@@ -82,7 +82,7 @@ const AddNewUser = () => {
     const [spread_sheet, setSpreadSheet] = useState(null);
     // const [spread_sheet_id_1, setSpreadSheet_1] = useState(null);
 
-    const [hrmsdata, setHRMSData] = useState("http://159.65.154.14:8000/api/hrms-api/");
+    const [hrmsdata, setHRMSData] = useState(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/`);
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('59');
 
 

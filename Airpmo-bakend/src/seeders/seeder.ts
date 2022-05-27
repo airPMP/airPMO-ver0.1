@@ -12,12 +12,6 @@ import { Permission, PermissionSchema } from "src/schemas/permission.schema";
 
  
 seeder({
-    imports: [  MongooseModule.forRoot('mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT, {
-        user:process.env.DB_USERNAME,
-        pass:process.env.DB_PASSWORD,
-        dbName:process.env.DATABASE,
-        w: 'majority',
-        retryWrites: true
-      }),MongooseModule.forFeature([{ name: users.name, schema: usersSchema },{ name:Role.name,schema:RoleSchema },{ name:UserRole.name,schema:UserRoleSchema },{ name:Permission.name,schema:PermissionSchema}])],
+    imports: [  MongooseModule.forRoot(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}?tls=true&authSource=admin&replicaSet=db-mongodb-blr1-99511&tlsCAFile=${process.env.DB_CERTIFICATE}`),MongooseModule.forFeature([{ name: users.name, schema: usersSchema },{ name:Role.name,schema:RoleSchema },{ name:UserRole.name,schema:UserRoleSchema },{ name:Permission.name,schema:PermissionSchema}])],
 
 }).run([UsersSeeder,RolesSeeder,PermissionsSeeder]);

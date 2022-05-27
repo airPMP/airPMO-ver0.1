@@ -23,13 +23,7 @@ import { HrmsApiModule } from './hrms-api/hrms-api.module';
 import { SpiCpiModule } from './spi-cpi/spi-cpi.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://'+process.env.DB_HOST+':'+process.env.DB_PORT, {
-    user:process.env.DB_USERNAME,
-    pass:process.env.DB_PASSWORD,
-    dbName:process.env.DATABASE,
-    w: 'majority',
-    retryWrites: true
-  }), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule, JobCardsModule, MyJobCardEmployeeModule, MyJobCardEquipmentModule, HrmsApiModule, SpiCpiModule],
+  imports: [MongooseModule.forRoot(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}?tls=true&authSource=admin&replicaSet=db-mongodb-blr1-99511&tlsCAFile=${process.env.DB_CERTIFICATE}`), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule, JobCardsModule, MyJobCardEmployeeModule, MyJobCardEquipmentModule, HrmsApiModule, SpiCpiModule],
 
 })
 export class AppModule {}
