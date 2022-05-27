@@ -215,6 +215,7 @@ const NewJobCard = () => {
       }
 
     })
+   
     setProductivitySheetArray(productArray)
     QuantityTOAchivedData.set('')
   }
