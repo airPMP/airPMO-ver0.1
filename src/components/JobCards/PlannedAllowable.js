@@ -10,9 +10,6 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, Job
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
 
-
-
-
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetid, setTimeSheetId] = useState(null);
@@ -58,8 +55,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     useEffect(() => {
 
         const PatchCalculatedData = (e) => {
-
-
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
 
@@ -259,15 +254,15 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                 </table>
             </div>
-            {roleDataLocal !== "albannaadmin" && Quantityachieved && <div className="flex flex-row justify-between  px-[50px]  mt-[42px]">
-                <div className="mr-[45px] border-b solid border-black ml-[30px]">
+            {roleDataLocal !== "albannaadmin" && Quantityachieved && <div className="flex flex-row justify-end  px-[50px]  mt-[42px]">
+                {/* <div className="mr-[45px] border-b solid border-black ml-[30px]">
                     <div className="w-[300px]  h-[25px] rounded text-sm font-secondaryFont text-[12px]  font-medium not-italic    text-[#000000] ">
                         <div className="flex">
                             <div>  Quantity to be achieved  [ {assigncarddataA?.quantity_to_be_achieved}  ]
                                 :
                             </div>
 
-                            <div>
+                            <div className="relative">
                                 <input type='number' placeholder="Qty achieved"
                                     className="border-none pl-2  w-[100px]  gang_product_input"
                                     // value={quantityachieved} 
@@ -278,13 +273,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                                     }
                                     }
 
-                                /> <span>{assigncarddataA?.manpower_and_machinary[0][" UNIT "]}</span>
+                                /> 
+                            <div className="absolute right-0 top-0">  
+                                [ {assigncarddataA?.manpower_and_machinary.length > 0 && assigncarddataA.manpower_and_machinary[0][" UNIT "] ?assigncarddataA.manpower_and_machinary[0][" UNIT "]: assigncarddataA?.unit} ]
+                            </div>
                             </div>
 
                         </div>
 
                     </div>
-                </div>
+                </div> */}
                 <div className="flex ">
                     <div className="text-[14px] pr-2">
                         {assigncarddataA?.total_overall_spi}

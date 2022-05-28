@@ -195,8 +195,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
     }
 
     const EditProfile = (e, alldata) => {
-        setEmployeeId(alldata?.employee_id)
-        setTimeSheetName(alldata.employee_name)
+        setEmployeeId(alldata?.equipment_id)
+        setTimeSheetName(alldata.equipment_name)
         setTimeSheetHours(alldata.hour)
         setTimeSheetRemark(alldata.remarks)
         setEmployeeDesignation(alldata.designation)

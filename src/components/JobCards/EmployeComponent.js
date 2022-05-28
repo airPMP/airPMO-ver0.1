@@ -10,9 +10,6 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, Pr
 
 const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown,
     assigncarddataId, currentdate, }) => {
-
-
-
     const [open, setOpen] = useState(false);
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
@@ -73,7 +70,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
         const feach2 = async () => {
-
             axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_employee_by_jc_no/${assigncarddataId?._id}`,
                 {
                     headers: {

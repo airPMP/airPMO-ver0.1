@@ -64,7 +64,7 @@ const MyJobCardsId = () => {
   const [selectallsubzonedata, SetSelectAllSubZoneData] = useState(false)
   const [selectalldata, SetSelectAllData] = useState(false)
   const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState(null)
-  const [activityid, setActivityId] = useState(null)
+  const [activityId, setActivityId] = useState(null)
   const [patchapiTrue, setPatchApiTrue] = useState(false)
   const [projectDetailsData, setProjectDetailsData] = useState(null);
   const [currentSort, setCurrentSort] = useState('default')
@@ -118,8 +118,6 @@ const MyJobCardsId = () => {
     })
 
       .then((response) => {
-        console.log(response?.data)
-
 
         let zoneFilterData = response?.data.filter((elem => elem.zone))
         const keys = ['zone']
@@ -212,6 +210,7 @@ const MyJobCardsId = () => {
       },
     }).then((response) => {
       setAllCalcultedMachineryData(response?.data)
+      console.log('dev',response?.data?.quantity_to_be_achived)
       CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
       if (response.status === 200) {
         setPatchApiTrue(true)
@@ -229,7 +228,7 @@ const MyJobCardsId = () => {
   const PatchCalculatedData = (e) => {  
     
     const token = reactLocalStorage.get("access_token", false);
-    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityid?._id}`, {
+    axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityId?._id}`, {
 
       quantity_to_be_achieved: allCalcultedMachineryData?.quantity_to_be_achived,
       updated_quantity_to_be_achived: currentquantitytoachivedData,
@@ -257,7 +256,7 @@ const MyJobCardsId = () => {
       .then((response) => {
         console.log(response)
         if (response.status === 200) {
-          navigate(`/daily_task/CardAssignId/${activityid._id}`)
+          navigate(`/daily_task/CardAssignId/${activityId._id}`)
         }
       })
       .catch((error) => {
@@ -275,10 +274,10 @@ const MyJobCardsId = () => {
     setAllPermission(permissionData)
     getPermision()
 
-    if (patchapiTrue && activityid) {
+    if (patchapiTrue && activityId) {
       PatchCalculatedData()
     }
-  }, [allpermission, patchapiTrue, activityid])
+  }, [allpermission, patchapiTrue, activityId])
 
 
 
