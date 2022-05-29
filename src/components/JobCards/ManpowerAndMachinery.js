@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { MyJobcardActivityCoard, ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
 const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray,
-  allCalcultedMachineryData, patchResponeData }) => {
- 
+  allCalcultedMachineryData, patchResponeData,updateData }) => {
+  
   const projectobjectdata = ProjectObjectData.use()
- 
   const quantitytoachivedData = QuantityTOAchivedData.use()
-  const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(quantitytoachivedData)
+  const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(updateData?.quantity_to_be_achieved)
   const [totaltimegangproductivity, setTotalTimeGangProductivity] = useState(null)
   const [ProductivityData, setProductivityData] = useState(null)
   const [data12, setdata12] = useState(true)
@@ -181,11 +180,14 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
               <span className="pb-2"> Quantity to be achieved  :
               </span>
               {/* 15  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nos */}
-              <span className=" "> <input type='number' placeholder="Gang Productivity"
+              <span className="relative"> <input type='number' placeholder="Gang Productivity"
                 className="border-none  px-2  gang_product_input"
                 value={GANG_PRODUCTIVIVY}
                 onChange={(e) => { setGANG_PRODUCTIVIVY(e.target.value); GangProductData(e) }}
               />
+              <div className='absolute left-75 right-0 top-0' >
+                 [ {updateData?updateData.unit: productivitysheetobject && productivitysheetobject[" UNIT "]} ]
+              </div>
               </span>
             </div>
 

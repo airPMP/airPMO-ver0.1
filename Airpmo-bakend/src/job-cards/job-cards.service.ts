@@ -455,7 +455,11 @@ export class JobCardsService {
 
   async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
     const machinary_data = UpdateJobCardDto.manpower_and_machinary[0];
-    const machinary_data_value = Object.values(machinary_data);
+    let machinary_data_value = [];
+    if(machinary_data != undefined){
+      machinary_data_value = Object.values(machinary_data);
+    }
+
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
     var update_quantity = parseFloat(
@@ -484,8 +488,11 @@ export class JobCardsService {
     }
     
     var machinary_arr = [];
-    for (let i = 0; i < machinary_data_value.length; i++) {
-      machinary_arr.push(machinary_data_value[i]);
+    if(machinary_data_value.length > 0){
+      for (let i = 0; i < machinary_data_value.length; i++) {
+        machinary_arr.push(machinary_data_value[i]);
+      }
+
     }
     
     /////array 2
@@ -644,10 +651,12 @@ export class JobCardsService {
     else{
       total_overall_spi = (current_quantity / update_quantity).toFixed(2);
     }
-   
-    const productivity_value = Object.values(
-      UpdateJobCardDto.manpower_and_machinary[0],
-    );
+    let productivity_value = [];
+    if(UpdateJobCardDto.manpower_and_machinary.length > 0){
+      productivity_value = Object.values(
+        UpdateJobCardDto.manpower_and_machinary[0],
+      );
+    }
 
     const productivity = [];
     const productivity1 = {};

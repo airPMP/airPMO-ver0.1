@@ -49,7 +49,7 @@ const validate = (values) => {
 const NewJobCardMultiId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state 
-    const [assigncarddata, setAssignCardData] = useState(null); // the lifted state
+    const [assignCardData, setAssignCardData] = useState(null); // the lifted state
     const [currentdate, setCurrentDate] = useState(null)
     const [open, setOpen] = useState(false);
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
@@ -161,7 +161,7 @@ const NewJobCardMultiId = () => {
         const token = reactLocalStorage.get("access_token", false);
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card`,
             {
-                "jc_number": assigncarddata?._id,
+                "jc_number": assignCardData?._id,
                 "current_quantity_to_be_achieved": currentquantitytoachivedData
             }, {
             headers: {
@@ -223,7 +223,7 @@ const NewJobCardMultiId = () => {
                                         id="jcCreation"
                                         name="jcCreation"
                                         type="text"
-                                        value={assigncarddata?.activity_code}
+                                        value={assignCardData?.activity_code}
                                         onChange={formik.handleChange}
                                         className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                         placeholder="john@doe.com"
@@ -243,7 +243,7 @@ const NewJobCardMultiId = () => {
                                             id="hseRemarks"
                                             name="hseRemarks"
                                             type="text"
-                                            value={assigncarddata?.zone}
+                                            value={assignCardData?.zone}
                                             onChange={formik.handleChange}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
@@ -263,7 +263,7 @@ const NewJobCardMultiId = () => {
                                             id="hseRemarks"
                                             name="hseRemarks"
                                             type="text"
-                                            value={assigncarddata?.sub_zone}
+                                            value={assignCardData?.sub_zone}
                                             onChange={formik.handleChange}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
@@ -287,7 +287,7 @@ const NewJobCardMultiId = () => {
                                         id="jcCreation"
                                         name="jcCreation"
                                         type="text"
-                                        value={assigncarddata?.activity_name}
+                                        value={assignCardData?.activity_name}
                                         onChange={formik.handleChange}
                                         className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                         placeholder="john@doe.com"
@@ -307,7 +307,7 @@ const NewJobCardMultiId = () => {
                                             id="hseRemarks"
                                             name="hseRemarks"
                                             type="text"
-                                            value={assigncarddata?.jc_creation}
+                                            value={assignCardData?.jc_creation}
                                             onChange={formik.handleChange}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
@@ -345,14 +345,14 @@ const NewJobCardMultiId = () => {
                             </div>
 
 
-                            { roleDataLocal === "albannaadmin" && <div className="flex flex-row relative justify-between space-x-2  w-[350px]"> 
+                            {/* { roleDataLocal === "albannaadmin" && <div className="flex flex-row relative justify-between space-x-2  w-[350px]"> 
                                 <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
                                     <div className=" ">  Quantity to be achieved
-                                        [ {assigncarddata?.quantity_to_be_achieved}  ]
+                                        [ {assignCardData?.quantity_to_be_achieved}  ]
                                         :
                                     </div>
 
-                                    <div>
+                                    <div className="relative">
                                         <input type='number' placeholder="Qty achieved"
                                             className="border-none pl-2  w-[100px]  gang_product_input"
                                             value={quantityToBeAchived}
@@ -360,43 +360,98 @@ const NewJobCardMultiId = () => {
                                                 QuantityToBeAchived.set(e.target.value)
                                             }
 
-                                        /> <span>
-                                            {assigncarddata?.manpower_and_machinary[0][" UNIT "]}
+                                        /> 
+                                        <span className="absolute right-0 top-0">
+                                            {assignCardData?.unit}
                                         </span>
                                     </div>
 
                                 </div>  
-                            </div>}
+                            </div>} */}
+                            <div className="flex flex-row space-x-20 pb-[30px]">
+                                <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                                    <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
+                                        <div className=" ">  Quantity to be achieved
+                                            [ {assignCardData?.quantity_to_be_achieved}  ]
+                                            :
+                                        </div>
 
+                                        <div className="relative">
+                                            <input type='number' placeholder="Qty achieved"
+                                                className="border-none pl-2  w-[100px]  gang_product_input"
+                                                value={quantityToBeAchived}
+                                                onChange={(e) =>
+                                                    QuantityToBeAchived.set(e.target.value)
+                                                }
+
+                                            />
+                                            <span className="absolute right-0 top-0">
+                                                [ {assignCardData?.unit} ]
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
+                                    <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
+                                        <div className="">  Cumilative Quantity to be achieved
+                                            [ {assignCardData?.updated_quantity_to_be_achived}  ]  
+                                            
+                                        </div>
+
+                                        <div className="relative">
+                                        [ {assignCardData?.unit} ]
+                                            {/* <input type='number' placeholder="Cumilative Qty achieved"
+                                                className="border-none pl-2  w-[100px]  gang_product_input"
+                                                value={quantityToBeAchived}
+                                                onChange={(e) =>
+                                                    QuantityToBeAchived.set(e.target.value)
+                                                }
+
+                                            /> */}
+                                            {/* <span className="absolute right-0 top-0">
+                                                [ {assignCardData?.unit} ]
+                                            </span> */}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
 
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    <EmployeComponent
+                                    {assignCardData && (
+                                        <EmployeComponent
 
-                                        heading={"Actual Employees"}
-                                        selectDropDown={true}
-                                        assigncarddataId={assigncarddata}
-                                        currentdate={currentdate}
+                                            heading={"Actual Employees"}
+                                            selectDropDown={true}
+                                            assigncarddataId={assignCardData}
+                                            currentdate={currentdate}
 
 
-                                    />
+                                        />
+
+                                    )}
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    <EquipmentComponent
-                                        heading={"Actual Equipments"}
-                                        selectDropDown={true}
-                                        assigncarddataId={assigncarddata?._id}
-                                    />
-
+                                    {assignCardData && (
+                                        <EquipmentComponent
+                                            heading={"Actual Equipments"}
+                                            selectDropDown={true}
+                                            assigncarddataId={assignCardData?._id}
+                                        />
+                                    )}
 
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-                                    <PlannedAllowable
-                                        heading={"Planned vs Allowable vs Actual"}
-                                        selectDropDown={false}
-                                        Quantityachieved={"Quantity to be achieved"}
-                                        assigncarddataA={assigncarddata}
-                                    />
+                                    {assignCardData && (
+                                        <PlannedAllowable
+                                            heading={"Planned vs Allowable vs Actual"}
+                                            selectDropDown={false}
+                                            Quantityachieved={"Quantity to be achieved"}
+                                            assigncarddataA={assignCardData}
+                                        />
+                                    )}
                                 </div>
                             </div>
 
