@@ -80,7 +80,7 @@ const DashBoard = () => {
 
   return (
     <>
-      <div className="flex flex-row justify-start overflow-hidden  ">
+      <div className="flex flex-row justify-start overflow-hidden  " style={{overflow: 'auto'}}>
         <div>
           <SideBar />
         </div>
