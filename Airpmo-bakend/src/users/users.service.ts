@@ -71,26 +71,25 @@ export class UsersService {
         throw new UnprocessableEntityException('organization not found');
       }
       const users = await this.usersModel.find().lean();
-      for (let i = 0; i < users.length; i++) {
-        if (
-          users[i].organization_id === organizationkey ||
-          airmpo_designation === 'Airpmo Super Admin'
-        ) {
-          const user_designation = await this.userRolesService.userroles(
-            users[i]._id.toString(),
-          );
+      // for (let i = 0; i < users.length; i++) {
+      //   if (
+      //     airmpo_designation === 'Airpmo Super Admin'
+      //   ) {
+      //     const user_designation = await this.userRolesService.userroles(
+      //       users[i]._id.toString(),
+      //     );
 
-          if (user_designation.length != 0 && user_designation[0] != null) {
-            const desig = user_designation[0].name;
-            const ab = { designation: desig };
-            const obj = Object.assign({}, users[i], ab);
-            new_arr.push(obj);
-          } else {
-            new_arr.push(users[i]);
-          }
-        }
-      }
-      return new_arr;
+      //     if (user_designation.length != 0 && user_designation[0] != null) {
+      //       const desig = user_designation[0].name;
+      //       const ab = { designation: desig };
+      //       const obj = Object.assign({}, users[i], ab);
+      //       new_arr.push(obj);
+      //     } else {
+      //       new_arr.push(users[i]);
+      //     }
+      //   }
+      // }
+      return users;
     } catch {
       throw new UnprocessableEntityException('user not found');
     }
