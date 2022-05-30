@@ -80,11 +80,11 @@ const DashBoard = () => {
 
   return (
     <>
-      <div className="flex flex-row justify-start overflow-hidden  " style={{overflow: 'auto'}}>
+      <div className="flex flex-row justify-start overflow-hidden">
         <div>
           <SideBar />
         </div>
-        <div className="flex flex-col ">
+        <div className="flex flex-col " style={{overflow: 'auto'}}>
           <Header title={title} sendPage={sendPage} />
           {page === "user" ? (
             <SignUpTemplate />
