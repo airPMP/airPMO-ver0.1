@@ -39,7 +39,6 @@ export class JobCardsController {
     return await this.jobCardsService.findjob(req);
   }
 
-  @Auth('GET-JOB-CARD')
   @Get('find_job_card_by_project/:id')
   async getjobcardbyprojectid(@Param('id') id: string, @Req() req) {
     return await this.jobCardsService.jobcardbyprojectid(id, req);
