@@ -114,24 +114,24 @@ export class JobCardsService {
 
   async jobcardbyprojectid(id: string, @Req() req) {
     const new_arr = [];
-    const payload = req.headers.authorization.split('.')[1];
-    const encodetoken = Base64.decode(payload);
-    var obj = JSON.parse(encodetoken);
-    var organizationkey = obj.organization_id;
-    var airmpo_designation = obj.roles[0];
-    if (organizationkey === undefined || organizationkey === null) {
-      throw new UnprocessableEntityException('organization not found');
-    }
+    // const payload = req.headers.authorization.split('.')[1];
+    // const encodetoken = Base64.decode(payload);
+    // var obj = JSON.parse(encodetoken);
+    // var organizationkey = obj.organization_id;
+    // var airmpo_designation = obj.roles[0];
+    // if (organizationkey === undefined || organizationkey === null) {
+      // throw new UnprocessableEntityException('organization not found');
+    // }
     const job_card_By_project_id = await this.jobcardmodal.find({
       project_id: id,
     });
     for (let index = 0; index < job_card_By_project_id.length; index++) {
-      if (
-        job_card_By_project_id[index].organization_id === organizationkey ||
-        airmpo_designation === 'Airpmo Super Admin'
-      ) {
+      // if (
+        // job_card_By_project_id[index].organization_id === organizationkey ||
+        // airmpo_designation === 'Airpmo Super Admin'
+      // ) {
         new_arr.push(job_card_By_project_id[index]);
-      }
+      // }
     }
     return new_arr;
   }
