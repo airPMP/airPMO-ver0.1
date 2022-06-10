@@ -9,7 +9,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived,CumilativeQuntity,ExceCuteDate } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -50,7 +50,7 @@ const NewJobCardMultiId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state 
     const [assignCardData, setAssignCardData] = useState(null); // the lifted state
-    const [currentdate, setCurrentDate] = useState(null)
+    const [currentdate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
     const [open, setOpen] = useState(false);
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const myjobCardAfterPtachApi = MyjobCardAfterPtachApi.use()
@@ -59,6 +59,7 @@ const NewJobCardMultiId = () => {
     const jobCardEmplyeData = JobCardEmplyeData.use()
     const jobCardEquipmentData = JobCardEquipmentData.use()
     const quantityToBeAchived = QuantityToBeAchived.use()
+    const cumilativeQuntity = CumilativeQuntity.use()
     const [roleDataLocal, setRoleDataLocal] = useState(null)
 
     const closeModal = () => setOpen(false);
@@ -90,7 +91,7 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data?.data)
+                console.log('mainget',data?.data)
                 setAssignCardData(data?.data)
                 JobCardEmplyeData.set(false)
                 JobCardEquipmentData.set(false)
@@ -327,7 +328,7 @@ const NewJobCardMultiId = () => {
                                             name="hseRemarks"
                                             type="date"
                                             value={currentdate}
-                                            onChange={(e) => { setCurrentDate(e.target.value); formik.handleChange() }}
+                                            onChange={(e) => { setCurrentDate(e.target.value); ExceCuteDate.set(e.target.value);  formik.handleChange() }}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
                                         />
@@ -380,8 +381,14 @@ const NewJobCardMultiId = () => {
                                             <input type='number' placeholder="Qty achieved"
                                                 className="border-none pl-2  w-[100px]  gang_product_input"
                                                 value={quantityToBeAchived}
-                                                onChange={(e) =>
-                                                    QuantityToBeAchived.set(e.target.value)
+                                                onChange={(e) =>{
+                                                    QuantityToBeAchived.set(e.target.value);
+                                                    if(cumilativeQuntity){
+                                                        CumilativeQuntity.set(parseInt(cumilativeQuntity)+parseInt(e.target.value))
+                                                    }else{
+                                                        CumilativeQuntity.set(e.target.value)
+                                                    }
+                                                }
                                                 }
 
                                             />
@@ -395,7 +402,7 @@ const NewJobCardMultiId = () => {
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
                                     <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
                                         <div className="">  Cumilative Quantity to be achieved
-                                            [ {assignCardData?.updated_quantity_to_be_achived}  ]  
+                                            [ {cumilativeQuntity}  ]  
                                             
                                         </div>
 

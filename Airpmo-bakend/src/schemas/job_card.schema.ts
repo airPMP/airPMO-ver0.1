@@ -33,6 +33,13 @@ export class jobcard {
   @Prop()
   updated_quantity_to_be_achived: string;
 
+
+  @Prop()
+  cumilative_quantity_to_be_achived:string;
+
+  @Prop()
+  cumilative_quantity_log:[]
+
   @Prop()
   manpower_and_machinary: [];
 

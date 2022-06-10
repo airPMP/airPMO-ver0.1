@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived } from '../../SimplerR/auth'
+import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived, CumilativeQuntity, ExceCuteDate } from '../../SimplerR/auth'
 
 
 
@@ -24,6 +24,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const jobCardEmplyeData = JobCardEmplyeData.use()
     const jobCardEquipmentData = JobCardEquipmentData.use()
     const quantityToBeAchived = QuantityToBeAchived.use()
+    const cumilativeQuntity = CumilativeQuntity.use()
+    const exceCuteDate = ExceCuteDate.use()
 
     const [spidatat, setSpiDatat] = useState(true)
     const [roleDataLocal, setRoleDataLocal] = useState(true)
@@ -34,6 +36,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         if (assigncarddataA && spidatat) {
             setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
             QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achived)
+            CumilativeQuntity.set(assigncarddataA.cumilative_quantity_to_be_achived ? assigncarddataA.cumilative_quantity_to_be_achived : assigncarddataA?.updated_quantity_to_be_achived)
             setSpiDatat(false)
 
         }
@@ -50,17 +53,47 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         setOpen(true) ///open popup
     }
 
-
+    const onlyUnique = (value, index, self) => {
+        return self.indexOf(value) === index;
+      }
 
     useEffect(() => {
 
         const PatchCalculatedData = (e) => {
+            let assign_arr = []
+            if (assigncarddataA.cumilative_quantity_log && assigncarddataA.cumilative_quantity_log.length > 0) {
+                assigncarddataA.cumilative_quantity_log.forEach((item) => {
+
+                    if (item.date && item.date == exceCuteDate) {
+                        assign_arr.push({
+                            ...item,
+                            'cumilative_quantity_to_be_achived': cumilativeQuntity
+                        })
+                    } else {
+                        assign_arr.push(item,{
+                            'date': exceCuteDate,
+                            'cumilative_quantity_to_be_achived': cumilativeQuntity
+                        })
+                    }
+                })
+            } else {
+               
+                assign_arr.push({
+                    'date': exceCuteDate,
+                    'cumilative_quantity_to_be_achived': cumilativeQuntity
+                })
+            }
+            const key = 'date';
+            assign_arr = [...new Map(assign_arr.map(item =>
+                [item[key], item])).values()];
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
 
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
                 // updated_quantity_to_be_achived: quantityachieved,
                 updated_quantity_to_be_achived: quantityToBeAchived,
+                cumilative_quantity_log: assign_arr.length > 0 ? assign_arr : [],
+                cumilative_quantity_to_be_achived: cumilativeQuntity,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: employeechangeData !== null ? employeechangeData : [],
                 actual_equipments: equipmentallData !== null ? equipmentallData : [],

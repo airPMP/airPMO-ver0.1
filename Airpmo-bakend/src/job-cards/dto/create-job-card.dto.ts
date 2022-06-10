@@ -31,6 +31,12 @@ export class CreateJobCardDto {
   updated_quantity_to_be_achived: string;
 
   @ApiProperty()
+  cumilative_quantity_to_be_achived:string;
+
+  @ApiProperty()
+  cumilative_quantity_log:[]
+
+  @ApiProperty()
   manpower_and_machinary: [{}];
   @ApiProperty()
   qc_remark: string;
