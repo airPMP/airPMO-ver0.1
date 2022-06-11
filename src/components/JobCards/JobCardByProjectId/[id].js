@@ -17,6 +17,7 @@ const AllJobCardsId = () => {
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
+  const [deletePermission,setDeletePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
   const [alltokenroles, setAllTokenRoles] = useState(null)
@@ -146,6 +147,14 @@ const AllJobCardsId = () => {
       }
     });
 
+    let value3 = "DELETE-JOB-CARD".toUpperCase();
+    let result3 = []
+    result3 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value3) !== -1;
+      }
+    });
+
 
 
 
@@ -153,10 +162,12 @@ const AllJobCardsId = () => {
 
     if (result[0] === "EDIT-JOB-CARD" ||
       result1[0] === "CREATE-JOB-CARD" ||
-      result2[0] === "GET-JOB-CARD") {
+      result2[0] === "GET-JOB-CARD" ||
+      result3[0] === "DELETE-JOB-CARD") {
       setEditPermission(result[0])
       setCreatePermission(result1[0])
       setViewPermission(result2[0])
+      setDeletePermission(result3[0])
     }
     else {
       let value = "ALL".toUpperCase();
@@ -172,8 +183,11 @@ const AllJobCardsId = () => {
   }
 
   const DeleteProfile = (e) => {
-    setDeleteId(e)
-    setOpen(o => !o)
+    if(deletePermission === "DELETE-JOB-CARD" || allpermissions === "ALL"){
+      setDeleteId(e)
+      setOpen(o => !o)
+    }
+    
 
   }
 
@@ -370,7 +384,7 @@ const AllJobCardsId = () => {
                             />
                           </svg>
                         </div>
-                        <div className="cursor-pointer"
+                        <div className={` ${deletePermission || allpermissions ? 'cursor-pointer' : "disabledclass"}   `}
                           onClick={(e) => DeleteProfile(item._id)}
                         >
                           <svg

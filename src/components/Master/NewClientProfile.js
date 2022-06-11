@@ -44,9 +44,17 @@ const NewClientProfile = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
   const [organization_id_data, setOrganization_Id] = useState(null);
+  const [loginId,setLoginId] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
+
+  useEffect(() => {
+    const uid = reactLocalStorage.get("user_id", false);
+    if(uid){
+      setLoginId(uid)
+    }
+  },[])
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
@@ -76,6 +84,9 @@ const NewClientProfile = () => {
     onSubmit: (values, { resetForm }) => { 
       if (organization_id_data !== "undefined" && organization_id_data !== null && organization_id_data !== false) { 
         values.organization_id = organization_id_data
+      }
+      if(loginId){
+        values.createdBy = loginId
       }
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {

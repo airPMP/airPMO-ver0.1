@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { JobCardsService } from './job-cards.service';
 import { UpdateJobCardDto } from './dto/update-job-card.dto';
@@ -14,6 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateJobCardDto } from './dto/create-job-card.dto';
 import { assignJobCardDto } from './dto/assign-job-card.dto';
 import { Auth } from 'src/decorator/auth.decorator';
+import { AuthGuard } from '@nestjs/passport';
 import { createmyjobcardDto } from './dto/my-job-card-dto';
 
 @ApiTags('JOB CARDS')
@@ -40,7 +42,9 @@ export class JobCardsController {
   }
 
   // @Auth('GET-JOB-CARD')
+  
   @Get('find_job_card_by_project/:id')
+  // @UseGuards(AuthGuard('local'))
   async getjobcardbyprojectid(@Param('id') id: string, @Req() req) {
     return await this.jobCardsService.jobcardbyprojectid(id, req);
   }

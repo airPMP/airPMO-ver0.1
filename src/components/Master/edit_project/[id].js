@@ -56,7 +56,7 @@ const EditProject = () => {
     const [responcedata, setResponceData] = useState(true)
     const [showeye, setShowEye] = useState(" ");
     const [sheetdata, setSheetData] = useState(null)
-    
+
 
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
@@ -72,7 +72,7 @@ const EditProject = () => {
     let naviagte = useNavigate();
     const { addToast } = useToasts();
 
-console.log(viewzonedata)
+    console.log(viewzonedata)
 
     useEffect(() => {
         if (urlTitle.pathname === "/master/projects/new_project") {
@@ -195,8 +195,6 @@ console.log(viewzonedata)
         },
         validate,
         onSubmit: async (values, { resetForm }) => {
-            console.log(`Form data`, values);
-
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, values, {
                 headers: {
@@ -372,7 +370,7 @@ console.log(viewzonedata)
                                                    text-[14px] text-center font-medium not-italic items-center 
                                                    bg-[#FFFFFF] text-[#2E3A59] `}
                                         >
-                                            Add Zones & Subzone  
+                                            Add Zones & Subzone
                                         </button>
 
                                     </div>

@@ -176,6 +176,10 @@ const NewProject = () => {
         values.organization_id = organization_id_data
       }
 
+      if(reactLocalStorage.get("user_id", false)){
+        values.createdBy = reactLocalStorage.get("user_id", false)
+      }
+
       values.category = categorydata
       values.categories_id = categoryid
       values.client_name = clientdata

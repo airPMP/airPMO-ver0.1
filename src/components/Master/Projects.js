@@ -14,6 +14,7 @@ const Projects = () => {
   const [open, setOpen] = useState(false);
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
+  const [deletePermission,setDeletePermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
@@ -88,16 +89,27 @@ const Projects = () => {
     });
 
 
+    let value3 = "DELETE-PROJECTS".toUpperCase();
+    let result3 = []
+    result3 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value3) !== -1;
+      }
+    });
+
+
 
 
 
 
     if (result[0] === "EDIT-PROJECTS" ||
       result1[0] === "CREATE-PROJECTS" ||
-      result2[0] === "GET-PROJECTS") {
+      result2[0] === "GET-PROJECTS" ||
+      result3[0] === "DELETE-PROJECTS") {
       setEditPermission(result[0])
       setCreatePermission(result1[0])
       setViewPermission(result2[0])
+      setDeletePermission(result3[0])
     }
     else {
       let value = "ALL".toUpperCase();
@@ -302,7 +314,7 @@ const Projects = () => {
                             />
                           </svg>
                         </div>
-                        <div className="cursor-pointer"
+                        <div className={`${deletePermission === "DELETE-PROJECTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                           onClick={(e) => DeleteProfile(item._id)}
                         >
                           <svg

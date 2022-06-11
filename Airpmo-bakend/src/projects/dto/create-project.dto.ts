@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiOAuth2, ApiProperty } from "@nestjs/swagger";
 import { IsJSON, IsNotEmpty, IsString } from "class-validator";
 export class CreateProjectDto {
 
@@ -72,5 +72,8 @@ export class CreateProjectDto {
 
     @ApiProperty()
     spread_sheet_id: string;
+
+    @ApiProperty()
+    createdBy:string;
 
 }

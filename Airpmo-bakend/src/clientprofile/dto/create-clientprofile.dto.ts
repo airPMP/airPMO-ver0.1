@@ -21,7 +21,8 @@ export class CreateClientprofileDto {
     @ApiProperty()
     add_new_feild:string;
 
-  
+    @ApiProperty()
+    createdBy:string;
     
     
     @ApiProperty()

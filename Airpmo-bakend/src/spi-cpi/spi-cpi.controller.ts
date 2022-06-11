@@ -18,19 +18,19 @@ import { Auth } from 'src/decorator/auth.decorator';
 export class SpiCpiController {
   constructor(private readonly spiCpiService: SpiCpiService) {}
 
-  @Auth()
+  @Auth('CREATE-JOB-CARD')
   @Post('/job_card_create_data')
   create(@Body() createSpiCpiDto: CreateSpiCpiDto) {
     return this.spiCpiService.create(createSpiCpiDto);
   }
 
-  @Auth()
+  @Auth('GET-JOB-CARD')
   @Get('/get_create_job_card_cal/:id')
   getjobcardcal(@Param('id') id: string) {
     return this.spiCpiService.getjobcardcal(id);
   }
 
-  @Auth()
+  @Auth('EDIT-JOB-CARD')
   @Patch('update_create_job_card_cal/:id/:activity_code')
   update(
     @Param('id') id: string,
