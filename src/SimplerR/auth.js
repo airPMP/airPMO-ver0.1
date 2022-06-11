@@ -39,6 +39,8 @@ export const MyjobCardAfterPtachApiData = entity(false)
 export const JobCardEmplyeData = entity(false)
 export const JobCardEquipmentData = entity(false)
 export const QuantityToBeAchived = entity(null)
+export const CumilativeQuntity = entity(null)
+export const ExceCuteDate = entity(new Date().toISOString().split('T')[0])
 
 
 

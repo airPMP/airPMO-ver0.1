@@ -9,8 +9,7 @@ import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserRolesModule } from 'src/user-roles/user-roles.module';
-
-
+import { LocalStrategy } from './local.strategy'
 @Module({
   imports: [UsersModule,PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({
     
@@ -22,9 +21,10 @@ import { UserRolesModule } from 'src/user-roles/user-roles.module';
     AuthService,
     JwtStrategy,
    JwtAuthGuard,
+   LocalStrategy
   ],
   controllers: [UsersController, AuthController,],
-  exports:[AuthService,PassportModule]
+  exports:[AuthService,PassportModule,LocalStrategy]
  
 })
 export class AuthModule {}

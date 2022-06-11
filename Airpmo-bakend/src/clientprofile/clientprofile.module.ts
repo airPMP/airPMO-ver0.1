@@ -7,7 +7,7 @@ import { UsersModule } from 'src/users/users.module';
 
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name:Client.name,schema:ClientSchema }])],
+  imports: [MongooseModule.forFeature([{ name:Client.name,schema:ClientSchema }]),UsersModule],
   controllers: [ClientprofileController],
   providers: [ClientprofileService],
   

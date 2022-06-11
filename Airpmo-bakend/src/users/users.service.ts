@@ -59,6 +59,19 @@ export class UsersService {
     return user;
   }
 
+  async findBasicAuth(username){
+    const user = await this.usersModel
+    .findOne({
+      $or: [
+        { username: username},
+        { Email: username },
+      ],
+    })
+    .select('Password')
+    .select('Email');
+  return user;
+  }
+
   async findAll(@Req() req) {
     try {
       var new_arr = [];
@@ -122,6 +135,15 @@ export class UsersService {
   async findOne(id: string) {
     try {
       const user = await this.usersModel.findOne({ _id: id });
+      return user;
+    } catch {
+      throw new NotFoundException('user not exist');
+    }
+  }
+
+  async findOneByEmail(Email:string){
+    try{
+      const user = await this.usersModel.findOne({ Email: Email });
       return user;
     } catch {
       throw new NotFoundException('user not exist');

@@ -18,6 +18,7 @@ const Clients = ({ addNewCliient }) => {
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
+  const [deletePermission,setDeletePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
 
@@ -88,6 +89,14 @@ const Clients = ({ addNewCliient }) => {
       }
     });
 
+    let value3 = "DELETE-CLIENTS".toUpperCase();
+    let result3 = []
+    result3 = database?.filter((data) => {
+      if (isNaN(+value)) {
+        return data?.toUpperCase().search(value3) !== -1;
+      }
+    });
+
 
 
 
@@ -97,10 +106,12 @@ const Clients = ({ addNewCliient }) => {
 
     if (result[0] === "EDIT-CLIENTS" ||
       result1[0] === "CREATE-CLIENTS" ||
-      result2[0] === "GET-CLIENTS") {
+      result2[0] === "GET-CLIENTS" ||
+      result3[0] === "DELETE-CLIENTS") {
       setEditPermission(result[0])
       setCreatePermission(result1[0])
       setViewPermission(result2[0])
+      setDeletePermission(result3[0])
     }
     else {
       let value = "ALL".toUpperCase();
@@ -147,8 +158,11 @@ const Clients = ({ addNewCliient }) => {
   }
 
   const DeleteProfile = (e) => {
-    setDeleteId(e)
-    setOpen(o => !o)
+    if(deletePermission === "DELETE-CLIENTS" || allpermission === "ALL"){
+      setDeleteId(e)
+      setOpen(o => !o)
+
+    }
   }
 
   const conformDelete = () => {
@@ -302,7 +316,7 @@ const Clients = ({ addNewCliient }) => {
                                 />
                               </svg>
                             </div>
-                            <div className="cursor-pointer"
+                            <div className={`${deletePermission === "DELETE-CLIENTS" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
                               onClick={(e) => DeleteProfile(item._id)}
                             >
                               <svg

@@ -11,11 +11,13 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Base64, encode } from 'js-base64';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectModel(project.name) private projectModel:SoftDeleteModel<projectDocument>,
+    private userService: UsersService
   ) {}
 
   async create(createProjectDto: CreateProjectDto) {
@@ -27,6 +29,7 @@ export class ProjectsService {
     const payload = req.headers.authorization.split('.')[1];
     const encodetoken = Base64.decode(payload);
     var obj = JSON.parse(encodetoken);
+    const user = await this.userService.findOneByEmail(obj.Email)
     var organizationkey = obj.organization_id;
     var airmpo_designation = obj.roles[0];
     if (organizationkey === undefined || organizationkey === null) {
@@ -36,6 +39,10 @@ export class ProjectsService {
     for (let index = 0; index < all_project.length; index++) {
       if (all_project[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         new_arr.push(all_project[index]);
+      }else{
+        if(user._id == all_project[index].createdBy){
+          new_arr.push(all_project[index]);
+        }
       }
     }
     return new_arr;
@@ -46,6 +53,7 @@ export class ProjectsService {
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
+      const user = await this.userService.findOneByEmail(obj.Email)
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
       if (organizationkey === undefined || organizationkey === null) {
@@ -54,7 +62,10 @@ export class ProjectsService {
       const find_project = await this.projectModel.findOne({ _id: id });
       if (find_project.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return find_project;
-      } else {
+      }else if(user._id == find_project.createdBy){
+        return find_project;
+      } 
+      else {
         throw new UnprocessableEntityException(
           'its not exist in this orgainization',
         );

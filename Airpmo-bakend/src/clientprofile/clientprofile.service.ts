@@ -12,11 +12,14 @@ import { CreateClientprofileDto } from './dto/create-clientprofile.dto';
 import { UpdateClientprofileDto } from './dto/update-clientprofile.dto';
 import { Base64, encode } from 'js-base64';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ClientprofileService {
   constructor(
-    @InjectModel(Client.name) private clientModel:  SoftDeleteModel<ClientDocument>,
+    private userService: UsersService,
+    @InjectModel(Client.name) private clientModel:  SoftDeleteModel<ClientDocument>
+   
   ) {}
 
   async create(createClientprofileDto: CreateClientprofileDto) {
@@ -33,6 +36,7 @@ export class ClientprofileService {
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
+      const user = await this.userService.findOneByEmail(obj.Email)
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
       if (organizationkey === undefined || organizationkey === null) {
@@ -42,6 +46,10 @@ export class ClientprofileService {
       for (let index = 0; index < find_client.length; index++) {
         if (find_client[index].organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
           new_arr.push(find_client[index]);
+        }else{
+          if(user._id == find_client[index].createdBy){
+            new_arr.push(find_client[index]);
+          }
         }
       }
       return new_arr;
@@ -56,12 +64,16 @@ export class ClientprofileService {
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
+      const user = await this.userService.findOneByEmail(obj.Email)
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
       const client = await this.clientModel.findOne({ _id: id });
       if (client.organization_id === organizationkey||airmpo_designation==="Airpmo Super Admin") {
         return client;
-      } else {
+      }else if(user._id == client.createdBy){
+        return client;
+      } 
+      else {
         throw new UnprocessableEntityException(
           'these client  not exist in this orgainization',
         );

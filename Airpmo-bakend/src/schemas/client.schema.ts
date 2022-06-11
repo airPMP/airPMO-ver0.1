@@ -39,6 +39,9 @@ export class Client {
 
     @Prop()
     sub_category:string;
+
+    @Prop()
+    createdBy:string;
     
    @Prop({default:Date})
    createdAt: string;

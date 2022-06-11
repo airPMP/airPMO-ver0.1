@@ -66,6 +66,8 @@ export class project {
 
   @Prop()
   spread_sheet_key: string;
+  @Prop()
+  createdBy: string;
 
   @Prop({ default: Date })
   createdAt: string;

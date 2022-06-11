@@ -12,6 +12,7 @@ const SideBar = ({ sendDataToParent }) => {
   const [title, setTitle] = useState(null);
   const [userData, setUserData] = useState(null);
   const [funTrue, setFunTrue] = useState(true);
+  const [permissionData,setPermissionData] = useState([])
   const projectLogoSet=ProjectLogoSet.use()
   let navigate = useNavigate();
   let param = useLocation();
@@ -41,6 +42,16 @@ const SideBar = ({ sendDataToParent }) => {
     navigate("/timeline");
   };
 
+
+  const permisions_data = reactLocalStorage.get("permisions", false);
+  useEffect(()=>{
+    if(permisions_data && permisions_data != "ALL"){
+      setPermissionData(permisions_data.substring(1).split(","))
+    }else{
+      setPermissionData(permisions_data?[permisions_data]:[])
+    }
+  },[permisions_data])
+
   useEffect(() => {
     const rolesData = reactLocalStorage.get("roles", "roles");
     setRolesdata(rolesData)
@@ -49,6 +60,7 @@ const SideBar = ({ sendDataToParent }) => {
   useEffect(() => {
 
     const token = reactLocalStorage.get("access_token", false)
+    
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -78,7 +90,7 @@ const SideBar = ({ sendDataToParent }) => {
         <hr className=" mt-[30.33px] border  border-[#000000] " />
       </div>
 
-      {Rolesdata === "Airpmo Super Admin" || urlTitle.pathname === "/dashboard" || true ? <div
+      {Rolesdata === "Airpmo Super Admin" || urlTitle.pathname === "/dashboard" || (permissionData && permissionData.includes("ALL"))  ? <div
         className={`flex flex-row justify-start mt-[55px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${param.pathname === "/dashboard" ||
           param.pathname === "/dashboard/user"
           ? "bg-[#136C57]"
@@ -119,6 +131,7 @@ const SideBar = ({ sendDataToParent }) => {
           Dashboard
         </div>
       </div> : null}
+      { (permissionData && permissionData.includes("ALL")) || (permissionData && permissionData.includes("CREATE-JOB-CARD")) || (permissionData && permissionData.includes("EDIT-JOB-CARD"))?
       <div
         className={` flex flex-row justify-start mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-4 ${param.pathname.includes("/daily_task") ? "bg-[#136C57]" : ""
           }`}
@@ -155,6 +168,9 @@ const SideBar = ({ sendDataToParent }) => {
           Activities
         </div>
       </div>
+      :null
+      }
+      { (permissionData && permissionData.includes("ALL")) || true ?
       <div
         className={`flex flex-row justify-start greenball mt-[15px] max-w-[200px] max-h-[50px] px-[15px] py-[11px]   rounded cursor-pointer space-x-4 ${param.pathname.includes("/master") ? "bg-[#136C57]" : ""
           } `}
@@ -209,6 +225,9 @@ const SideBar = ({ sendDataToParent }) => {
           Master
         </div>
       </div>
+      :null
+      }
+       { (permissionData && permissionData.includes("ALL")) ||  (permissionData && permissionData.includes("CREATE-USERS")) ||  (permissionData && permissionData.includes("EDIT-USERS")) ?
       <div
         className={`flex flex-row justify-start mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[12px]  rounded cursor-pointer space-x-4 ${param.pathname.includes("/timeline") ? "bg-[#136C57]" : ""
           } `}
@@ -240,6 +259,8 @@ const SideBar = ({ sendDataToParent }) => {
           Timeline
         </div>
       </div>
+      :null
+       }
       <div
         className={`flex flex-row justify-start mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px] rounded cursor-pointer space-x-4 ${param.pathname.includes("/DataInjestion") ? "bg-[#136C57]" : ""
           }`}
@@ -298,6 +319,7 @@ const SideBar = ({ sendDataToParent }) => {
           QA/QC
         </div>
       </div> */}
+       { (permissionData && permissionData.includes("ALL")) ||  (permissionData && permissionData.includes("CREATE-ROLES")) ||  (permissionData && permissionData.includes("EDIT-ROLES")) ?
       <div
         className={`flex flex-row justify-center mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-12 ${param.pathname.includes("UserManagement") ? "bg-[#136C57]" : ""
           }`}
@@ -314,7 +336,8 @@ const SideBar = ({ sendDataToParent }) => {
         >
           User&#160;Management
         </div>
-      </div>
+      </div>:null
+       }
     </div>
   );
 };

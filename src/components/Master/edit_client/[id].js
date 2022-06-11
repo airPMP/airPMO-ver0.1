@@ -19,7 +19,7 @@ const EditClientProfile = () => {
   const { addToast } = useToasts();
   const [editdata, setEditData] = useState(null)
   const [truedata, setTrueData] = useState(false)
-
+  const [loginId,setLoginId] = useState();
   const [clintnamedata, setClintName] = useState("")
   const [location, setLocation] = useState("")
   const [uploadlogofile, setUploadLogoFile] = useState("")
@@ -30,7 +30,13 @@ const EditClientProfile = () => {
 
   let useperma = useParams()
 
-  console.log(useperma)
+ 
+  useEffect(() => {
+    const uid = reactLocalStorage.get("user_id", false);
+    if(uid){
+      setLoginId(uid)
+    }
+  },[])
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
@@ -83,7 +89,7 @@ const EditClientProfile = () => {
       location: location,
       organization_id: " ",
       updatedAt: " ",
-      upload_logo_file: uploadlogofile,
+      upload_logo_file: uploadlogofile
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
