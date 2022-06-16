@@ -79,7 +79,24 @@ const NewJobCardMultiId = () => {
         setRoleDataLocal(roleData)
     }, [urlTitle.pathname])
 
-
+    useEffect(() => {
+        let metch = false
+        if(assignCardData?.cumilative_quantity_log){
+            assignCardData.cumilative_quantity_log.filter((item) =>{
+                if(item.date == currentdate){ 
+                    if(item?.updated_quantity_to_be_achived){
+                        metch = true
+                        let quntity = Number(item.updated_quantity_to_be_achived)
+                        QuantityToBeAchived.set(quntity);
+                    }
+                   
+                }
+            })
+        }
+        if(!metch){
+            QuantityToBeAchived.set(0);
+        }
+    },[currentdate])
 
     useEffect(() => {
         ///this api not Run's  for first time 
@@ -328,7 +345,7 @@ const NewJobCardMultiId = () => {
                                             name="hseRemarks"
                                             type="date"
                                             value={currentdate}
-                                            onChange={(e) => { setCurrentDate(e.target.value); ExceCuteDate.set(e.target.value);  formik.handleChange() }}
+                                            onChange={(e) => { setCurrentDate(e.target.value);  ExceCuteDate.set(e.target.value);  formik.handleChange() }}
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="john@doe.com"
                                         />
@@ -379,15 +396,23 @@ const NewJobCardMultiId = () => {
 
                                         <div className="relative">
                                             <input type='number' placeholder="Qty achieved"
-                                                className="border-none pl-2  w-[100px]  gang_product_input"
+                                                className="border-none pl-2  w-[100px]  gang_product_input quntity_input"
                                                 value={quantityToBeAchived}
                                                 onChange={(e) =>{
-                                                    QuantityToBeAchived.set(e.target.value);
+                                                    let main_quntity = quantityToBeAchived
+                                                    let event_val = e.target.value?Number(e.target.value):0;
                                                     if(cumilativeQuntity){
-                                                        CumilativeQuntity.set(parseInt(cumilativeQuntity)+parseInt(e.target.value))
+                                                        if(Number(main_quntity) > event_val){
+                                                            let diff = Number(main_quntity) - event_val
+                                                            CumilativeQuntity.set(parseInt(cumilativeQuntity)-parseInt(diff))
+                                                        }else{
+                                                            let diff = event_val - Number(main_quntity)
+                                                            CumilativeQuntity.set(parseInt(cumilativeQuntity)+parseInt(diff))
+                                                        }
                                                     }else{
-                                                        CumilativeQuntity.set(e.target.value)
+                                                        CumilativeQuntity.set(event_val)
                                                     }
+                                                    QuantityToBeAchived.set(e.target.value);
                                                 }
                                                 }
 
@@ -401,7 +426,7 @@ const NewJobCardMultiId = () => {
                                 </div>
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
                                     <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
-                                        <div className="">  Cumilative Quantity to be achieved
+                                        <div className="">  Cumilative Quantity to be achieve
                                             [ {cumilativeQuntity}  ]  
                                             
                                         </div>

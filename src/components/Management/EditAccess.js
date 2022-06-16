@@ -501,14 +501,13 @@ const EditAccess = () => {
 
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
 
                 if (item.permission[27] === `EDIT-USERS`) {
                     return item.permission[27] = '', item.permission[28] = '', item.permission[29] = ''
                 }
                 else {
-                    return item.permission[27] = `EDIT-USERS`, item.permission[28] = `EDIT-USERS`, item.permission[29] = `GET-USERS`
+                    return item.permission[27] = `EDIT-USERS`, item.permission[28] = `CREATE-USERS`, item.permission[29] = `GET-USERS`
                 }
             }
             else {
@@ -609,25 +608,39 @@ const EditAccess = () => {
         let roles_all_data = rolesdata?.map((item, id) => {
             return {
                 "id": item?._id,
-                "permission": item?.permission
+                "permission": item?.permission && [...new Set(item.permission)]
             }
         })
+        let final_data = []
+        roles_all_data.forEach((item)=>{
+            if(item.permission.includes('CREATE-ROLES')){
+                if(item.permission.includes('GET-PERMISSIONS') == false){
+                    item.permission.push('GET-PERMISSIONS')  
+                }
+                if(item.permission.includes('GET-ORGANIZATION') == false){
+                    item.permission.push('GET-ORGANIZATION')
+                }
+              
+               final_data.push(item)
+            }else{
+                final_data.push(item)
+            }
+           
 
-
-
+        })
+      
         const token = reactLocalStorage.get("access_token", false);
         const feachPermission = async () => {
 
             try {
                 const data = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_roles_permission/`, {
-                    roles_permission: roles_all_data
+                    roles_permission: final_data
 
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data)
                 if (data?.status === 200) {
                     addToast("All Permission Assign Sucessfully", {
                         appearance: "success",
@@ -812,7 +825,7 @@ const EditAccess = () => {
 
                                                                 onClick={(e) => UserEditCreate(e, items._id)}
                                                                 className={` 
-                                                            ${items.permission[27] === `EDIT-USERS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                            ${items.permission.includes("EDIT-USERS") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                 style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                 Edit/Create
@@ -821,7 +834,7 @@ const EditAccess = () => {
                                                         <div className="px-[2px]">
                                                             <button
                                                                 onClick={(e) => UserView(e, items._id)}
-                                                                className={`${items.permission[29] === `GET-USERS` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                className={`${items.permission.includes("GET-USERS") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                 style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                 View
                                                             </button>
@@ -867,7 +880,7 @@ const EditAccess = () => {
 
                                                                     onClick={(e) => RolesEditCreate(e, items._id)}
                                                                     className={` 
-                                                            ${items.permission[30] === `CREATE-ROLES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                            ${items.permission.includes("CREATE-ROLES") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     Edit/Create
@@ -876,7 +889,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => RolesView(e, items._id)}
-                                                                    className={`${items.permission[32] === `GET-ROLES` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission.includes("GET-ROLES") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>
@@ -1289,7 +1302,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => AssignJobCardView(e, items._id)}
-                                                                    className={`${items.permission[23] === `GET-ASSIGN-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission.includes("GET-ASSIGN-JOB-CARD") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>
@@ -1330,7 +1343,7 @@ const EditAccess = () => {
                                                                 <button
                                                                     onClick={(e) => MyobCardEditCreate(e, items._id)}
                                                                     className={` 
-                                                            ${items.permission[24] === `CREATE-MY-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                            ${items.permission.includes("CREATE-MY-JOB-CARD") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
                                                              text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     Edit/Create
@@ -1339,7 +1352,7 @@ const EditAccess = () => {
                                                             <div className="px-[2px]">
                                                                 <button
                                                                     onClick={(e) => MyJobCardView(e, items._id)}
-                                                                    className={`${items.permission[26] === `GET-MY-JOB-CARD` ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    className={`${items.permission.includes("GET-MY-JOB-CARD") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
                                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                                     View
                                                                 </button>
@@ -1376,7 +1389,7 @@ const EditAccess = () => {
                         <div className="flex mt-10  ml-[70%]  ">
                             <div className="mr-[45px] shadow-[buttonshadow] ">
                                 <button
-                                    // onClick={() => { naviagte("/master/projects") }}
+                                    onClick={() => { navigate("/UserManagement/UserRole") }}
                                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                     Cancel
                                 </button>

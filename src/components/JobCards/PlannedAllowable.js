@@ -67,11 +67,13 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     if (item.date && item.date == exceCuteDate) {
                         assign_arr.push({
                             ...item,
-                            'cumilative_quantity_to_be_achived': cumilativeQuntity
+                            'cumilative_quantity_to_be_achived': cumilativeQuntity,
+                            updated_quantity_to_be_achived: quantityToBeAchived
                         })
                     } else {
                         assign_arr.push(item,{
                             'date': exceCuteDate,
+                            updated_quantity_to_be_achived: quantityToBeAchived,
                             'cumilative_quantity_to_be_achived': cumilativeQuntity
                         })
                     }
