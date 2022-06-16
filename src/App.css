@@ -118,6 +118,10 @@ top:-20px
     outline: none;
    }
 
+   .quntity_input{
+    font-weight: bold;
+   }
+
    @media (min-width: 1140px) and (max-width: 1290px) {
     .responcev_btn{
 width: 120px !important;
