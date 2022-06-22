@@ -27,6 +27,7 @@ const EditClientProfile = () => {
   const [contactno, setContactNo] = useState("")
   const [discription, setDiscription] = useState("")
   const [client_id, setClient_Id] = useState("")
+  const [organizationId,setOrganizationId] = useState("")
 
   let useperma = useParams()
 
@@ -60,7 +61,7 @@ const EditClientProfile = () => {
         setContactNo(data?.data?.contact_no)
         setDiscription(data?.data?.discription)
         setClient_Id(data?.data?.client_id)
-
+        setOrganizationId(data?.data?.organization_id)
       } catch (error) {
         console.log(error)
       }
@@ -87,7 +88,7 @@ const EditClientProfile = () => {
       createdAt: " ",
       discription: discription,
       location: location,
-      organization_id: " ",
+      organization_id: organizationId,
       updatedAt: " ",
       upload_logo_file: uploadlogofile
     }, {
