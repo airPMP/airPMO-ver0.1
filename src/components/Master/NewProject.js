@@ -84,7 +84,7 @@ const NewProject = () => {
   const [clientnullerror, setClientNullError] = useState(true)
   const [clientnullerror1, setClientNullError1] = useState(false)
   const [showeye, setShowEye] = useState(" ");
-  const [organization_id_data, setOrganization_Id] = useState();
+  const [organizationIdData, setOrganizationIdData] = useState();
 
 
   const [allpermission, setAllPermission] = useState(null)
@@ -138,7 +138,7 @@ const NewProject = () => {
     feach1();
 
     const organization_Id = reactLocalStorage.get("organization_id", false);
-    setOrganization_Id(organization_Id)
+    setOrganizationIdData(organization_Id)
 
   }, [urlTitle.pathname]);
 
@@ -172,8 +172,8 @@ const NewProject = () => {
     validate,
     onSubmit: async (values, { resetForm }) => {
 
-      if (organization_id_data !== "undefined" && organization_id_data !== null) {
-        values.organization_id = organization_id_data
+      if (organizationIdData !== "undefined" && organizationIdData !== null) {
+        values.organization_id = organizationIdData
       }
 
       if(reactLocalStorage.get("user_id", false)){

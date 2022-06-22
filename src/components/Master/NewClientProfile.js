@@ -9,9 +9,6 @@ import { reactLocalStorage } from "reactjs-localstorage";
 
 
 const validate = (values) => {
-
-  console.log(values)
-
   const errors = {};
 
   if (!values.client_name) {
@@ -43,7 +40,7 @@ const NewClientProfile = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
   const [fileName, setFileName] = useState();
-  const [organization_id_data, setOrganization_Id] = useState(null);
+  const [organizatioIdData, setOrganizationIdData] = useState(null);
   const [loginId,setLoginId] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -62,7 +59,7 @@ const NewClientProfile = () => {
     }
 
     const organization_Id = reactLocalStorage.get("organization_id", false);
-    setOrganization_Id(organization_Id)
+    setOrganizationIdData(organization_Id)
 
   }, [urlTitle.pathname]);
 
@@ -82,8 +79,8 @@ const NewClientProfile = () => {
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
-      if (organization_id_data !== "undefined" && organization_id_data !== null && organization_id_data !== false) { 
-        values.organization_id = organization_id_data
+      if (organizatioIdData !== "undefined" && organizatioIdData !== null && organizatioIdData !== false) { 
+        values.organization_id = organizatioIdData
       }
       if(loginId){
         values.createdBy = loginId

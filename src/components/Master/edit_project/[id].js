@@ -127,8 +127,6 @@ const EditProject = () => {
             })
 
                 .then((response) => {
-
-
                     formik.values.category = response?.data?.category
                     formik.values.sub_category = response?.data?.sub_category
                     formik.values.project_name = response?.data?.project_name
@@ -143,7 +141,7 @@ const EditProject = () => {
                     formik.values.time_sheet_id = response?.data?.time_sheet_id
                     formik.values.spread_sheet_id = response?.data?.spread_sheet_id
                     formik.values.spread_sheet_key = response?.data?.spread_sheet_key
-
+                    formik.values.organization_id = response?.data?.organization_id
                     if (response?.data?.category) {
                         setResponceData(false)//this condition will stop the in finite loop
                     }
@@ -191,7 +189,8 @@ const EditProject = () => {
             client: "",
             time_sheet_id: "",
             spread_sheet_id: "",
-            spread_sheet_key: ""
+            spread_sheet_key: "",
+            organization_id:'',
         },
         validate,
         onSubmit: async (values, { resetForm }) => {
