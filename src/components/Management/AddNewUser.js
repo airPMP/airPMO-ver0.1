@@ -62,7 +62,7 @@ const AddNewUser = () => {
     const [registoruserdetails, setRegisterUserDetails] = useState(null)
     const [userid_designation, setUserId_Designation] = useState(null)
     const [designationdata, setDesignationData] = useState(null)
-    const [roleid, setRoleId] = useState(null)
+    const [roleId, setRoleId] = useState(null)
     const [rolename, setRoleName] = useState(null)
     const [firstnamedata, setFirstNameData] = useState(null)
     const [lastnamedata, setLastNameData] = useState(null)
@@ -74,7 +74,7 @@ const AddNewUser = () => {
     const [spreadsheetalldata, setSpreadSheetIdAllData] = useState(null)
     const [spreadalldata, setSpreadAllData] = useState(null)
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
-    const [refracedata, setRefraceData] = useState(false)
+    const [refraceData, setRefraceData] = useState(false)
     const [designatiotrue, setDesignatioTrue] = useState(false)
 
 
@@ -99,7 +99,7 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data1)
+               
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
@@ -127,7 +127,7 @@ const AddNewUser = () => {
                     },
                 })
 
-                console.log(data1)
+            
 
                 // setHRMSData(data1?.data[0]?.hrms_api_url)
                 // setSpreadSheet(data1?.data[0]?.spread_sheet_id)
@@ -167,7 +167,7 @@ const AddNewUser = () => {
                     }
                 })
                 setClientIdData(data1?.data)
-                console.log(data1)
+              
 
                 // let ClientIdStore = []
                 // data1?.data?.values.map((items, id) => {
@@ -213,10 +213,10 @@ const AddNewUser = () => {
     }, [designationdata, spreadalldata])
 
     useEffect(() => {
-        if (refracedata) {
+        if (refraceData) {
             AssignUserRole()
         }
-    }, [refracedata])
+    }, [refraceData])
 
     useEffect(() => {
         if (designationedata) {
@@ -224,12 +224,12 @@ const AddNewUser = () => {
         }
     }, [designationedata])
 
-    useEffect(() => {
-        if (designatiotrue) {
-            RolePostApi()
-            setDesignatioTrue(false)
-        }
-    }, [designatiotrue])
+    // useEffect(() => {
+    //     if (designatiotrue) {
+    //         RolePostApi()
+    //         setDesignatioTrue(false)
+    //     }
+    // }, [designatiotrue])
 
     const CancelButton = () => {
         navigate('/UserManagement/UserRole2')
@@ -268,8 +268,7 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     }
                 })
-                    .then((response) => {
-                        console.log(response)
+                    .then(async (response) => {
                         setUserId_Designation(response?.data._id)
                         if (response.status === 201) {
 
@@ -277,11 +276,12 @@ const AddNewUser = () => {
                                 appearance: "success",
                                 autoDismiss: true,
                             })
-
-
-                            UserDetails()
-                            AssignRoles()
-
+                            if (designatiotrue) {
+                                await RolePostApi()
+                                setDesignatioTrue(false)
+                            }else{
+                                await UserDetails()
+                            }
                         }
                         resetForm()
                     })
@@ -304,9 +304,9 @@ const AddNewUser = () => {
 
 
     const AssignRoles = () => {
-
+       
         const token = reactLocalStorage.get("access_token", false);
-        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/roles/${roleid}`, {
+        axios.patch(`${process.env.REACT_APP_BASE_URL}/api/roles/${roleId}`, {
             is_assign_to_all_project: assignproject
         }, {
             headers: {
@@ -316,7 +316,7 @@ const AddNewUser = () => {
 
         )
             .then((response) => {
-                console.log(response)
+                
                 if (response.status === 200) {
                     addToast("Role Assign  Sucessfully", {
                         appearance: "success",
@@ -326,7 +326,7 @@ const AddNewUser = () => {
 
             })
             .catch((error) => {
-                console.log("patch api")
+                
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -349,6 +349,7 @@ const AddNewUser = () => {
                 let lastlengh = data1?.data[data1?.data.length - 1]
                 // setUserId_Designation(lastlengh?._id)
                 setRefraceData(o => !o)
+               
             } catch (error) {
 
             }
@@ -361,7 +362,6 @@ const AddNewUser = () => {
     const AssignUserRole = () => {
         const organization_Id = reactLocalStorage.get("organization_id", false);
         const token = reactLocalStorage.get("access_token", false);
-
         let organizationid = ""
         if (organization_Id !== "undefined" && organization_Id !== null) {
             organizationid = organization_Id
@@ -369,7 +369,7 @@ const AddNewUser = () => {
 
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles`, {
             user_id: userid_designation,
-            role_id: roleid,
+            role_id: roleId,
             organization_id: organizationid
         }, {
             headers: {
@@ -377,12 +377,12 @@ const AddNewUser = () => {
             }
         })
             .then((response) => {
-                console.log(response)
                 if (response.status === 201) {
                     addToast("Designation Selected Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
+                    AssignRoles()
                 }
 
             })
@@ -396,13 +396,9 @@ const AddNewUser = () => {
     }
 
     const SpreadFun = (e) => {
-
-        console.log(e.target.value)
         let splitdata = e.target.value
         let somdata = splitdata.split(",")
-        console.log(somdata)
         let nameSplit = somdata[0].split(" ")
-        console.log(nameSplit)
         setSpreadAllData(somdata[2])
 
         // spreadsheetalldata?.map((item, id) => {
@@ -440,12 +436,12 @@ const AddNewUser = () => {
     }
 
 
-    const RolePostApi = () => {
+    const RolePostApi = async () => {
 
         const organization_Id = reactLocalStorage.get("organization_id", false);
 
         const token = reactLocalStorage.get("access_token", false);
-        axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
             "name": rolename,
             "organization_id": organization_Id
         }, {
@@ -454,8 +450,8 @@ const AddNewUser = () => {
             },
         }
         )
-            .then((response) => {
-                console.log(response?.data._id)
+            .then(async(response) => {
+              
                 setRoleId(response?.data._id)
                 if (response.status === 201) {
 
@@ -463,13 +459,15 @@ const AddNewUser = () => {
                         appearance: "success",
                         autoDismiss: true,
                     })
-
+                  
+                    await UserDetails()
+                   
                 }
 
             })
 
             .catch((error) => {
-                console.log("post api")
+              
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -533,19 +531,20 @@ const AddNewUser = () => {
                                                     37.83px] border-none bg-[#ffffff] w-full 
                                                     focus:outline-none "
                                                 >
-                                                    <option value="" label="User Id" />
+                                                    <option value="" label="Designation" />
                                                     {clientiddata?.map((item, id) => {
                                                         return <>
-                                                            <option value={[item.UserName, item.designation, item.UserID]} label={item.UserID} key={id} />
+                                                            <option value={[item.UserName, item.designation, item.UserID]} label={item.designation} key={id} />
                                                         </>
                                                     })}
                                                 </select>
                                             </div>
-                                            {errspreadalldata && (
+                                            {errdesignation && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                                    User Id  Required
+                                                    {nodesignationedata}
                                                 </div>
-                                            )}
+                                            )
+                                            }
 
                                         </div>
 
@@ -582,7 +581,8 @@ const AddNewUser = () => {
                                                 id="Designation"
                                                 name="Designation"
                                                 type="text"
-                                                value={designationedata}
+                                                readOnly
+                                                value={spreadalldata}
                                                 onChange={(e) => ChangeDesignation(e)}
                                                 className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                                                 placeholder="john@doe.com"
@@ -591,15 +591,15 @@ const AddNewUser = () => {
                                                 htmlFor="lastName"
                                                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
-                                                Designation
+                                                User Id
 
                                             </label>
-                                            {errdesignation && (
+                                            {errspreadalldata && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                                                    {nodesignationedata}
+                                                    User Id Is  Required
                                                 </div>
-                                            )
-                                            }
+                                            )}
+                                           
                                         </div>
                                     </div>
                                     <div className="flex flex-row  lg:space-x-40 md:space-x-20 sm:space-x-10 pb-[36px]">
