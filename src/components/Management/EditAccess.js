@@ -564,17 +564,11 @@ const EditAccess = () => {
         })
         setClientId(e)
 
-
-
-
     }
 
 
     const RolesView = (e, id) => {
-
-
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
 
                 if (item.permission.includes(`GET-ROLES`)) {
@@ -590,8 +584,48 @@ const EditAccess = () => {
 
         })
         setClientId(e)
+    }
 
 
+    const createEditUserRole = (e, id) => {
+
+
+        let comedata = rolesdata?.map((item, id1) => {
+
+            if (id === item._id) {
+
+                if (item.permission.includes(`CREATE-USER_ROLES`)) {
+                    return item.permission = item.permission.filter(v => v != 'CREATE-USER_ROLES' && v != 'EDIT-USER_ROLES' && v != 'GET-USER_ROLES');
+                }
+                else {
+                    return item.permission.push("CREATE-USER_ROLES", "EDIT-USER_ROLES", "GET-USER_ROLES")
+                }
+            }
+            else {
+                return "nothing"
+            }
+        })
+        setClientId(e)
+
+    }
+
+    const userRoleView = (e, id) => {
+        let comedata = rolesdata?.map((item, id1) => {
+            if (id === item._id) {
+
+                if (item.permission.includes(`GET-USER_ROLES`)) {
+                    return item.permission = item.permission.filter(v => v != 'GET-USER_ROLES')
+                }
+                else {
+                    return item.permission.push(`GET-USER_ROLES`)
+                }
+            }
+            else {
+                return "nothing"
+            }
+
+        })
+        setClientId(e)
     }
 
 
@@ -893,6 +927,14 @@ const EditAccess = () => {
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                         Permission
+                                        <br />
+                                        Dashboards 1
+                                    </button>
+                                </div>
+                                <div className="pt-10">
+                                    <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
+                                        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                        User Role
                                         <br />
                                         Dashboards 1
                                     </button>
@@ -1558,6 +1600,56 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
+
+                                <div>
+                                    <div className="flex mt-5">
+                                        {rolesdata?.map((items, id) => {
+                                            if (id >= 1) {
+                                                return <div className="p-3" key={id}>
+
+                                                    <div className=" ">
+                                                        <div className="flex">
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => createEditUserRole(e, items._id)}
+                                                                    className={` 
+                                                            ${items.permission.includes("CREATE-USER_ROLES") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
+                                                             text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Edit/Create
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button
+                                                                    onClick={(e) => userRoleView(e, items._id)}
+                                                                    className={`${items.permission.includes("GET-USER_ROLES") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} text-[13.5px] py-2 w-[75px] rounded-[5px]`}
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex mt-3">
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Comment
+                                                                </button>
+                                                            </div>
+                                                            <div className="px-[2px]">
+                                                                <button className=" bg-[#ffffff] text-[13.5px] py-2 w-[75px] rounded-[5px]"
+                                                                    style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        })}
+                                    </div>
+                                </div>
+
 
 
                             </div>
