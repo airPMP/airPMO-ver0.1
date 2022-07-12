@@ -941,7 +941,6 @@ const EditAccess = () => {
                                 </div>
                             </div>
 
-
                             <div className="col-span-10 editAccess_flow ">
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
