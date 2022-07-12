@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const UserRolesCard = ({title, iconn, totalNumber, cardTitles,pathSet}) => {
   //console.log(cardTitles);
   //console.log(cardTitles(title));
  
 
+  useEffect(()=>{
+       console.log("fewf",cardTitles);
+  })
   return (
-    <div onClick={()=> {cardTitles(title)}} className=" flex flex-row cursor-pointer
+    <div className=" flex flex-row cursor-pointer
      max-w-[346.16px] max-h-[130.65px] py-[30px]  justify-around  bg-[#FFFFFF]  rounded-[26.94px] ">
       <div className=" basis-1/4 ml-[20px] flex justify-center items-center 
       max-w-[75.43px]  rounded-full max-h-[75.43px]">

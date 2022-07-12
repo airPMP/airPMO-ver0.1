@@ -120,9 +120,25 @@ const Header = ({ title, sendPage }) => {
                 fill="black"
               />
             </svg>
-            <div className="  " style={{ marginBottom: "-40px" }}>
+            <div className="relative" style={{ marginBottom: "-40px" }}>
               {logoutbtn && (
                 <>
+                <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1" role="none">
+                  <div href="#" class="font-secondaryFont font-medium block px-4 py-2 text-sm cursor-pointer" role="menuitem" onClick={(e) => navigate("/userProfile")}>Account settings</div>
+                  <div href="#" class="font-secondaryFont font-medium block px-4 py-2 text-sm cursor-pointer" role="menuitem" onClick={(e) => Logout(e)}>Logout</div>
+                </div>
+                </div>
+                  {/* <div>
+                    <button
+                      style={{ border: "2px solid red", background: "red" }}
+                      className="text-[white] px-3 rounded-[3px]"
+                      onClick={(e) => Logout(e)}
+                    >
+                      <b>Profile</b>
+                    </button>
+                  </div>
+
                   <div>
                     <button
                       style={{ border: "2px solid red", background: "red" }}
@@ -131,7 +147,7 @@ const Header = ({ title, sendPage }) => {
                     >
                       <b>LogOut</b>
                     </button>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>

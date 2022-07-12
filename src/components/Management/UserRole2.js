@@ -6,7 +6,7 @@ import Popup from "reactjs-popup";
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { getUserApi, getRoleApi } from '../../AllApi/Api'
+import { getUserApi, getRoleApi, getUserByOrgId } from '../../AllApi/Api'
 
 const UserRole1 = () => {
 
@@ -34,9 +34,21 @@ const UserRole1 = () => {
             setTitle("User Mgmt");
         }
 
-        const userData = getUserApi().then((data) => {
-            setUserData(data?.data)
-        })
+        const role_name = reactLocalStorage.get("roles", false);
+        const org_id = reactLocalStorage.get("organization_id", false);
+        if(role_name == "Airpmo Super Admin"){
+            const user = getUserApi().then((data) => {
+                setUserData(data?.data)
+            })
+        }else{
+            const user = getUserByOrgId(org_id).then((data) => {
+                setUserData(data?.data)
+            })
+        }
+
+        // const userData = getUserApi().then((data) => {
+        //     setUserData(data?.data)
+        // })
 
         const rolesData = getRoleApi().then((data) => {
             setRolesData(data?.data)
@@ -86,11 +98,6 @@ const UserRole1 = () => {
 
         setEditOpen(true)
     }
-
-
-
-    console.log(userdata)
-
 
     return (
         <>

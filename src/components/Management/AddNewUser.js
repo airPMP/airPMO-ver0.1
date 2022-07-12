@@ -146,7 +146,6 @@ const AddNewUser = () => {
     useEffect(() => {
         const now = new Date();
             let some = dateFormat(now, "paddedShortDate");
-            console.log(some)
             let curentDta = some.split('/')
             let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
 

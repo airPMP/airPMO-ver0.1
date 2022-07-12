@@ -93,7 +93,24 @@ export const getMyJobCardApi = async () => {
     });
 };
 
+export const getAllOrganization = async () => {
+    const token = reactLocalStorage.get("access_token", false);
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/organization`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
 
+export const getUserByOrgId = async (org_id) => {
+    const token = reactLocalStorage.get("access_token", false);
 
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/organization/${org_id}/user`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+};
 
 

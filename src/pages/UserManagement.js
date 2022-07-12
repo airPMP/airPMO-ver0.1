@@ -6,12 +6,16 @@ import SearchBox from "../components/layout/SearchBox";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import UserRolesCard from "../components/layout/UserRolesCard";
 import UserRolesCardCreate from "../components/layout/UserRolesCardCreate";
+import { getRoleApi, getUserApi, getUserByOrgId } from "../AllApi/Api";
+import { reactLocalStorage } from "reactjs-localstorage";
 
 const UserManagement = () => {
   const [title, setTitle] = useState(null);
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [page, setPage] = useState(null);
+  const [rolesNum, setRolesNum] = useState(null);
+  const [userNum, setUserNum] = useState(null);
   let urlTitle = useLocation();
 
   useEffect(() => {
@@ -31,7 +35,25 @@ const UserManagement = () => {
     setPage(pagename);
   };
 
-  console.log("DashBoard", urlTitle.pathname);
+  useEffect(()=>{
+    const roles = getRoleApi().then((data) => {
+      setRolesNum(data?.data.length)
+    })
+
+    const role_name = reactLocalStorage.get("roles", false);
+    const org_id = reactLocalStorage.get("organization_id", false);
+    if(role_name == "Airpmo Super Admin"){
+      const user = getUserApi().then((data) => {
+        setUserNum(data?.data.length)
+      })
+    }else{
+      const user = getUserByOrgId(org_id).then((data) => {
+        setUserNum(data?.data ? data?.data.length : 0)
+      })
+    }
+  },[])
+
+
   return (
     <>
       <div className="flex flex-row justify-start overflow-hidden">
@@ -60,7 +82,7 @@ const UserManagement = () => {
                 <Link to={`/UserManagement/UserRole`}>
                   <UserRolesCard
                     title={"Role 1"}
-                    totalNumber={"2 roles"}
+                    totalNumber={`${rolesNum} roles`}
                     pathSet={"User Roles"}
                     iconn={
                       <svg
@@ -84,7 +106,7 @@ const UserManagement = () => {
                 <Link to={`/UserManagement/UserRole2`}>
                   <UserRolesCard
                     title={"Users"}
-                    totalNumber={"100 users"}
+                    totalNumber={`${userNum} users`}
                     iconn={
                       <svg
                         width="58"

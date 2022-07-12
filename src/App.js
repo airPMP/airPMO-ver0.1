@@ -57,6 +57,7 @@ import JobCardAssignedId from "./components/JobCards/AssignById/[id]";
 import MyJobCardsId from "./components/JobCards/MyJobCard/[id]";
 import UpdateCreateJCId from "./components/JobCards/UpdateCreateJC.js/[id]";
 import UserProfile from "./components/UserProfile/UserProfile";
+import Organization from "./components/Organization/Organization";
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
         <Route path="/ResetPassword" element={<ResetPassword />} />
 
         {/* organization */}
+        <Route path="/organization" element={<Organization />} />
         <Route path="/userProfile" element={<UserProfile/>} />
         {
           // JobCards Routes

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
+import Header from "../components/layout/Header";
+import SideBar from "../components/layout/SideBar";
 
 const SuperAdmin = () => {
   const { addToast } = useToasts();
@@ -32,6 +34,24 @@ const SuperAdmin = () => {
     "AT - HRMS Std Rentals"
   );
 
+  const [title, setTitle] = useState(null);
+  let urlTitle = useLocation();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    if (urlTitle.pathname === "/super_admin") {
+      setTitle("Super Admin");
+    }
+  }, [urlTitle.pathname]);
+  
+  useEffect(()=>{
+    const role_name = reactLocalStorage.get("roles", false);
+    if(role_name !== "Airpmo Super Admin"){
+      console.log("role_namerole_namerole_namerole_name",role_name);
+      navigate("/dashboard")
+    }
+  },[])
+
   const [sheetdata, setSheetData] = useState(null);
   const [sheetdata_2, setSheetData_2] = useState(null);
   const [sheetdata_3, setSheetData_3] = useState(null);
@@ -51,7 +71,7 @@ const SuperAdmin = () => {
   const [assignproject, setAssignProject] = useState(false);
   const [designationdata, setDesignationData] = useState(null);
 
-  let navigate = useNavigate();
+  const [rolesdata, setRolesData] = useState(null)
   const Login = () => {
     navigate("/dashboard");
   };
@@ -234,532 +254,642 @@ const SuperAdmin = () => {
   const formik = useFormik({
     initialValues: initialValue,
     validate,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const token = reactLocalStorage.get("access_token", false);
       const user_id = reactLocalStorage.get("user_id", false);
+      let user_payload = {
+        "Email": values?.email,
+        "Password": values?.password,
+        "PhoneNumber": values?.phoneNumber,
+        "FirstName": "",
+        "LastName": "",
+        "organization_id": "",
+        "spread_sheet_user_id": ""
+    }
 
-      if (name && location && address) {
-        console.log("done");
-        axios
-          .post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, values, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+      if (values && values.email) {
+        let role_id = null;
+        try {
+          const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
           })
-          .then((response) => {
-            console.log(response);
-            reactLocalStorage.set("organization_id", response?.data?._id);
-            setOrganizationId(response?.data?._id);
-            console.log(response?.data?._id);
-            if (response.status === 201) {
-              // navigate("/UserManagement/AddNewUser")
-              addToast("form submitted Sucessfully", {
-                appearance: "success",
-                autoDismiss: true,
-              });
+          data?.data?.filter((role)=>{
+            if(role.name.toLowerCase() == "super admin"){
+              setRolesData(role)
+              role_id = role._id
             }
           })
-          .catch((error) => {
-            console.log(error);
-            addToast(error.response.data.message, {
-              appearance: "error",
-              autoDismiss: true,
-            });
-          });
+        } catch (error) {
+            console.log(error)
+        }
+
+        let newAdminUser = await AddNewAdminUser(user_payload, token)
+        if(newAdminUser){
+          let role_payload = {
+            role_id: role_id,
+            user_id: newAdminUser.data._id
+          }
+          let role_data = await  AddNewRole(role_payload, token);
+          let org_payload ={
+            hrms_api_url: values.hrms,
+            location: values.location,
+            discription: "",
+            logo_url: "",
+            spread_sheet_id: values.spreadsheetID1,
+            user_id: newAdminUser.data._id,
+            address: values.address,
+            contact_details: values.phoneNumber,
+            name: values.companyName,
+            hrms_format: "",
+            equipments_list: "", 
+            hrms_salary: "",
+            hrms_rental: "",
+            hrms_url_api: "",
+            hrms_api_url_id: "",
+            hrms_api_or_sheet: false,
+            organization_image_url: ""
+          }
+          let newOrganization = await AddNewOrganization(org_payload, token)
+          if(newOrganization){
+            let user_up_payload = {
+              organization_id: newOrganization?.data?._id
+            }
+            await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/${newAdminUser.data._id}`, user_up_payload, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              }
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                addToast("organization created Sucessfully", {
+                    appearance: "success",
+                    autoDismiss: true,
+                })
+                navigate('/organization')
+            }
+            })
+            .catch((error) => {
+              addToast(error.response.data.message, {
+                  appearance: "error",
+                  autoDismiss: true,
+              })
+            })
+          }
+        }
       }
     },
   });
 
-  // const dataqwe  = rolleiddata?.map((item, id) => {
-  //      return{
-  //     "id": item[0],
-  //     "firstname":item[1]  ,
-  //     "lastname":item[2]
-  //     }
-  // })
-  // console.log(dataqwe)
+
+  const AddNewAdminUser = async (user_payload, token) => {
+    let user_res;
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, user_payload, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      user_res = response
+    })
+    .catch((error) => {
+      addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+      })
+    })
+    return user_res
+  }
+
+  const AddNewOrganization = async (org_payload, token) => {
+    let org_res;
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, org_payload, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      org_res = response
+    })
+    .catch((error) => {
+      addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+      })
+    })
+    return org_res
+  }
+
+  const AddNewRole = async (role_payload, token) => {
+    let role_res;
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles/`, role_payload, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      role_res = response
+    })
+    .catch((error) => {
+      addToast(error.response.data.message, {
+          appearance: "error",
+          autoDismiss: true,
+      })
+    })
+    return role_res
+  }
 
   return (
     <>
-      <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%]">
-        <div className="flex flex-row  place-items-start">
-          <img
-            src="/logo1.svg"
-            alt="logo"
-            className="ml-[4.313rem] mt-[48px]  w-[150px] h-[50px]  right-[765px]"
-          />
+    <div className="flex flex-row justify-start overflow-hidden">
+        <div>
+          <SideBar />
         </div>
-        <div
-          className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center 
-                 lg:ml-[171px] md:ml-[100px] lg:mr-[170px] md:mr-[100px]  mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]"
-        >
-          <div className="flex flex-row items-center ">
-            <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
-              Super Admin
-            </div>
-          </div>
-          <div className="pl-[120px] pr-[96px] pt-[33.49px]">
-            <form>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className="relative w-[350px]">
-                  <input
-                    id="companyName"
-                    name="companyName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.companyName}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="companyName"
-                    className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Company Name
-                  </label>
-                  {formik.errors.companyName && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.companyName}
-                    </div>
-                  )}
-                </div>
-                <div className="relative w-[350px]">
-                  <input
-                    id="location"
-                    name="location"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.location}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="location"
-                    className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Location
-                  </label>
-                  {formik.errors.location && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.location}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className=" relative w-[350px]">
-                  <input
-                    id="address"
-                    type="text"
-                    name="address"
-                    onChange={formik.handleChange}
-                    value={formik.values.address}
-                    className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="Password"
-                  />
-                  <label
-                    htmlFor="address"
-                    className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Address
-                  </label>
-                  {formik.errors.address && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.address}
-                    </div>
-                  )}
-                </div>
-                <div className="relative w-[350px]">
-                  <input
-                    id="hrms"
-                    name="hrms"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.hrms}
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="hrms"
-                    className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    HRMS (API)
-                  </label>
+        <div className="flex flex-col">
+          <Header title={title} />
 
-                  <div></div>
-                </div>
-              </div>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className="relative w-[350px]">
-                  <input
-                    id="spreadsheetURL"
-                    onChange={formik.handleChange}
-                    value={formik.values.spreadsheetURL}
-                    name="spreadsheetURL"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
+              <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%]">
+                <div className="flex flex-row  place-items-start">
+                  <img
+                    src="/logo1.svg"
+                    alt="logo"
+                    className="ml-[4.313rem] mt-[48px]  w-[150px] h-[50px]  right-[765px]"
                   />
-                  <label
-                    htmlFor="spreadsheetURL"
-                    className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    SpreadsheetURL
-                  </label>
-                  {formik.errors.spreadsheetURL && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.spreadsheetURL}{" "}
+                </div>
+                <div
+                  className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center 
+                        lg:ml-[171px] md:ml-[100px] lg:mr-[170px] md:mr-[100px]  mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]"
+                >
+                  <div className="flex flex-row items-center ">
+                    <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
+                      Super Admin
                     </div>
-                  )}
-                </div>
-                <div className="relative w-[350px]">
-                  <input
-                    id="spreadsheetID1"
-                    onChange={formik.handleChange}
-                    value={formik.values.spreadsheetID1}
-                    name="spreadsheetID1"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="spreadsheetID1"
-                    className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Spreadsheet ID 1
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className="relative w-[350px]">
-                  <input
-                    id="spreadsheetID2"
-                    onChange={formik.handleChange}
-                    value={formik.values.spreadsheetID2}
-                    name="spreadsheetID2"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="spreadsheetID2"
-                    className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Spreadsheet ID 2
-                  </label>
-                </div>
-                <div className="relative w-[350px]">
-                  <input
-                    id="spreadsheetID3"
-                    onChange={formik.handleChange}
-                    value={formik.values.spreadsheetID3}
-                    name="spreadsheetID3"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="spreadsheetID3"
-                    className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Spreadsheet ID 3
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className="relative w-[350px]">
-                  <input
-                    id="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    name="password"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="password"
-                    className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Password
-                  </label>
-                  {formik.errors.password && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.password}
-                    </div>
-                  )}
-                </div>
-                <div className="relative w-[350px]">
-                  <input
-                    id="phoneNumber"
-                    onChange={formik.handleChange}
-                    value={formik.values.phoneNumber}
-                    name="phoneNumber"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="phoneNumber"
-                    className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Phone Number
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-row space-x-40 pb-9">
-                <div className="relative w-[350px]">
-                  <input
-                    id="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                    name="email"
-                    type="text"
-                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
-                    placeholder="john@doe.com"
-                  />
-                  <label
-                    htmlFor="email"
-                    className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                  >
-                    Email
-                  </label>
-                  {formik.errors.email && (
-                    <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                      {formik.errors.email}
-                    </div>
-                  )}
-                </div>
-                {/* <div className=" relative w-[350px]">
-                                    <input
-                                        id="spread_sheet"
-                                        type="text"
-                                        name="spread_sheet"
-                                        value={spread_sheet}
-                                        onChange={(e) => setSpreadSheet(e.target.value)}
-                                        className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                        placeholder="Password"
-                                    />
-                                    <label
-                                        htmlFor="spread_sheet"
-                                        className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                                    >
-                                        Spreadsheet URL
-
-
-                                    </label>
-
-                                </div>  */}
-                {/* <div className="relative w-[350px]"> */}
-                <div className="flex relative w-[350px]">
-                  <input
-                    id="spread_sheet_id_1"
-                    name="spread_sheet_id_1"
-                    type="text"
-                    value={spread_sheet_id_1}
-                    onChange={(e) => setSpreadSheet_1(e.target.value)}
-                    className="peer h-10 w-full border-b font-medium 
-                                            font-secondaryFont border-[#000000] text-[#000000] 
-                                                focus:outline-none focus:border-[#000000]"
-                    placeholder="Spreadsheet ID 1"
-                  />
-                  <div>
-                    {showeye ? (
-                      <div
-                        onClick={(e) => ShowPasswordButton(e)}
-                        className="cursor-pointer"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                  </div>
+                  <div className="pl-[120px] pr-[96px] pt-[33.49px]">
+                    <form onSubmit={formik.handleSubmit}>
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className="relative w-[350px]">
+                          <input
+                            id="companyName"
+                            name="companyName"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.companyName}
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
                           />
-                        </svg>
+                          <label
+                            htmlFor="companyName"
+                            className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Company Name
+                          </label>
+                          {formik.errors.companyName && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.companyName}
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative w-[350px]">
+                          <input
+                            id="location"
+                            name="location"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.location}
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="location"
+                            className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Location
+                          </label>
+                          {formik.errors.location && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.location}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      <div
-                        onClick={(e) => ShowPasswordButton(e)}
-                        className="cursor-pointer"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className=" relative w-[350px]">
+                          <input
+                            id="address"
+                            type="text"
+                            name="address"
+                            onChange={formik.handleChange}
+                            value={formik.values.address}
+                            className="peer h-10 w-full font-medium font-secondaryFont border-b border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="Password"
                           />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          <label
+                            htmlFor="address"
+                            className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Address
+                          </label>
+                          {formik.errors.address && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.address}
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative w-[350px]">
+                          <input
+                            id="hrms"
+                            name="hrms"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.hrms}
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
                           />
-                        </svg>
+                          <label
+                            htmlFor="hrms"
+                            className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            HRMS (API)
+                          </label>
+
+                          <div></div>
+                        </div>
                       </div>
-                    )}
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className="relative w-[350px]">
+                          <input
+                            id="spreadsheetURL"
+                            onChange={formik.handleChange}
+                            value={formik.values.spreadsheetURL}
+                            name="spreadsheetURL"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="spreadsheetURL"
+                            className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            SpreadsheetURL
+                          </label>
+                          {formik.errors.spreadsheetURL && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.spreadsheetURL}{" "}
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative w-[350px]">
+                          <input
+                            id="spreadsheetID1"
+                            onChange={formik.handleChange}
+                            value={formik.values.spreadsheetID1}
+                            name="spreadsheetID1"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="spreadsheetID1"
+                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Spreadsheet ID 1
+                          </label>
+                        </div>
+                      </div>
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className="relative w-[350px]">
+                          <input
+                            id="spreadsheetID2"
+                            onChange={formik.handleChange}
+                            value={formik.values.spreadsheetID2}
+                            name="spreadsheetID2"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="spreadsheetID2"
+                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Spreadsheet ID 2
+                          </label>
+                        </div>
+                        <div className="relative w-[350px]">
+                          <input
+                            id="spreadsheetID3"
+                            onChange={formik.handleChange}
+                            value={formik.values.spreadsheetID3}
+                            name="spreadsheetID3"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="spreadsheetID3"
+                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Spreadsheet ID 3
+                          </label>
+                        </div>
+                      </div>
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className="relative w-[350px]">
+                          <input
+                            id="password"
+                            onChange={formik.handleChange}
+                            value={formik.values.password}
+                            name="password"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="password"
+                            className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Password
+                          </label>
+                          {formik.errors.password && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.password}
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative w-[350px]">
+                          <input
+                            id="phoneNumber"
+                            onChange={formik.handleChange}
+                            value={formik.values.phoneNumber}
+                            name="phoneNumber"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="phoneNumber"
+                            className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Phone Number
+                          </label>
+                        </div>
+                      </div>
+                      <div className="flex flex-row space-x-40 pb-9">
+                        <div className="relative w-[350px]">
+                          <input
+                            id="email"
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            name="email"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="john@doe.com"
+                          />
+                          <label
+                            htmlFor="email"
+                            className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Email
+                          </label>
+                          {formik.errors.email && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.email}
+                            </div>
+                          )}
+                        </div>
+                        {/* <div className=" relative w-[350px]">
+                                            <input
+                                                id="spread_sheet"
+                                                type="text"
+                                                name="spread_sheet"
+                                                value={spread_sheet}
+                                                onChange={(e) => setSpreadSheet(e.target.value)}
+                                                className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                                placeholder="Password"
+                                            />
+                                            <label
+                                                htmlFor="spread_sheet"
+                                                className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                                            >
+                                                Spreadsheet URL
+
+
+                                            </label>
+
+                                        </div>  */}
+                        {/* <div className="relative w-[350px]"> */}
+                        <div className="flex relative w-[350px]">
+                          <input
+                            id="spread_sheet_id_1"
+                            name="spread_sheet_id_1"
+                            type="text"
+                            value={spread_sheet_id_1}
+                            onChange={(e) => setSpreadSheet_1(e.target.value)}
+                            className="peer h-10 w-full border-b font-medium 
+                                                    font-secondaryFont border-[#000000] text-[#000000] 
+                                                        focus:outline-none focus:border-[#000000]"
+                            placeholder="Spreadsheet ID 1"
+                          />
+                          <div>
+                            {showeye ? (
+                              <div
+                                onClick={(e) => ShowPasswordButton(e)}
+                                className="cursor-pointer"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-5 w-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                  />
+                                </svg>
+                              </div>
+                            ) : (
+                              <div
+                                onClick={(e) => ShowPasswordButton(e)}
+                                className="cursor-pointer"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-5 w-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* <div className="flex flex-row space-x-40 pb-[36px]">
+                                        <div className="relative w-[350px]">
+                                            <div className="flex">
+                                                <input
+                                                    id="spread_sheet_id_2"
+                                                    name="spread_sheet_id_2"
+                                                    type="text"
+                                                    value={spread_sheet_id_2}
+                                                    onChange={(e) => setSpreadSheet_2(e.target.value)}
+                                                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                                    placeholder="Spreadsheet ID 2"
+                                                />
+
+                                                <div>
+                                                    {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_2")}
+                                                        className="cursor-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                        </svg>
+                                                    </div>)
+                                                        :
+                                                        (<div onClick={(e) => ShowPasswordButton(e, "sheet_2")} className="cursor-pointer">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            </svg>
+                                                        </div>
+                                                        )}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className=" relative w-[350px]">
+                                            <div className="flex">
+                                                <input
+                                                    id="spread_sheet_id_3"
+                                                    type="text"
+                                                    name="spread_sheet_id_3"
+                                                    value={spread_sheet_id_3}
+                                                    onChange={(e) => setSpreadSheet_3(e.target.value)}
+                                                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                                    placeholder="Password"
+                                                />
+                                                <div>
+                                                    {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_3")}
+                                                        className="cursor-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                        </svg>
+                                                    </div>)
+                                                        :
+                                                        (<div onClick={(e) => ShowPasswordButton(e, "sheet_3")} className="cursor-pointer">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            </svg>
+                                                        </div>
+                                                        )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> */}
+
+                      {/* <div className="flex flex-row space-x-40 ">
+                                        <div className="relative w-[350px]">
+                                            <div className="flex">
+
+                                                <input
+                                                    id="spread_sheet_id_4"
+                                                    name="spread_sheet_id_4"
+                                                    type="text"
+                                                    value={spread_sheet_id_4}
+                                                    onChange={(e) => setSpreadSheet_4(e.target.value)}
+                                                    className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                                    placeholder="john@doe.com"
+                                                />
+                                                <div>
+                                                    {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_4")}
+                                                        className="cursor-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                        </svg>
+                                                    </div>)
+                                                        :
+                                                        (<div onClick={(e) => ShowPasswordButton(e, "sheet_4")} className="cursor-pointer">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            </svg>
+                                                        </div>
+                                                        )}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className=" relative w-[350px]">
+                                            <input
+                                                id="spread_sheet_id_5"
+                                                type="text"
+                                                name="spread_sheet_id_5"
+                                                // value={spread_sheet_id_4}
+                                                // onChange={(e) => setSpreadSheet_4(e.target.value)}
+                                                className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
+                                                placeholder="Password"
+                                            />
+                                            <label
+                                                htmlFor="spread_sheet_id_5"
+                                                className="   after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                                            >
+                                                Spreadsheet ID 5
+
+                                            </label>
+
+                                        </div>
+                                    </div> */}
+
+                      <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
+                        <div className="mr-[45px] shadow-[buttonshadow] ">
+                          <button
+                            onClick={() => Login()}
+                            type="button"
+                            className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            type="submit"
+                            className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
-
-              {/* <div className="flex flex-row space-x-40 pb-[36px]">
-                                <div className="relative w-[350px]">
-                                    <div className="flex">
-                                        <input
-                                            id="spread_sheet_id_2"
-                                            name="spread_sheet_id_2"
-                                            type="text"
-                                            value={spread_sheet_id_2}
-                                            onChange={(e) => setSpreadSheet_2(e.target.value)}
-                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                            placeholder="Spreadsheet ID 2"
-                                        />
-
-                                        <div>
-                                            {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_2")}
-                                                className="cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                                </svg>
-                                            </div>)
-                                                :
-                                                (<div onClick={(e) => ShowPasswordButton(e, "sheet_2")} className="cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </div>
-                                                )}
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div className=" relative w-[350px]">
-                                    <div className="flex">
-                                        <input
-                                            id="spread_sheet_id_3"
-                                            type="text"
-                                            name="spread_sheet_id_3"
-                                            value={spread_sheet_id_3}
-                                            onChange={(e) => setSpreadSheet_3(e.target.value)}
-                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                            placeholder="Password"
-                                        />
-                                        <div>
-                                            {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_3")}
-                                                className="cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                                </svg>
-                                            </div>)
-                                                :
-                                                (<div onClick={(e) => ShowPasswordButton(e, "sheet_3")} className="cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </div>
-                                                )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
-              {/* <div className="flex flex-row space-x-40 ">
-                                <div className="relative w-[350px]">
-                                    <div className="flex">
-
-                                        <input
-                                            id="spread_sheet_id_4"
-                                            name="spread_sheet_id_4"
-                                            type="text"
-                                            value={spread_sheet_id_4}
-                                            onChange={(e) => setSpreadSheet_4(e.target.value)}
-                                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                            placeholder="john@doe.com"
-                                        />
-                                        <div>
-                                            {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_4")}
-                                                className="cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                                </svg>
-                                            </div>)
-                                                :
-                                                (<div onClick={(e) => ShowPasswordButton(e, "sheet_4")} className="cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </div>
-                                                )}
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div className=" relative w-[350px]">
-                                    <input
-                                        id="spread_sheet_id_5"
-                                        type="text"
-                                        name="spread_sheet_id_5"
-                                        // value={spread_sheet_id_4}
-                                        // onChange={(e) => setSpreadSheet_4(e.target.value)}
-                                        className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
-                                        placeholder="Password"
-                                    />
-                                    <label
-                                        htmlFor="spread_sheet_id_5"
-                                        className="   after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
-                                    >
-                                        Spreadsheet ID 5
-
-                                    </label>
-
-                                </div>
-                            </div> */}
-
-              <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
-                <div className="mr-[45px] shadow-[buttonshadow] ">
-                  <button
-                    onClick={() => Login()}
-                    type="button"
-                    className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
-                  >
-                    Cancel
-                  </button>
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
-      </div>
+    </div>
       <Popup open={open} position="right center" model>
         <div className="p-7 ">
           <div className="flex pb-3">
