@@ -56,7 +56,6 @@ export const getProjectApi = async () => {
     });
 };
 
-
 export const getCategorieApi = async () => {
     const token = reactLocalStorage.get("access_token", false);
 
@@ -66,8 +65,6 @@ export const getCategorieApi = async () => {
         },
     });
 };
-
-
 
 
 export const getAllJobCardApi = async () => {
@@ -110,7 +107,24 @@ export const getUserByOrgId = async (org_id) => {
             Authorization: `Bearer ${token}`,
         },
     });
-
 };
 
+export const getUserById = async (user_id) => {
+    const token = reactLocalStorage.get("access_token", false);
 
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/${user_id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const getOrganizationById = async (user_id) => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${user_id}/organization`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};

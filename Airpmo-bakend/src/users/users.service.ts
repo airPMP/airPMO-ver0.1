@@ -33,15 +33,23 @@ export class UsersService {
         const hash = await bcrypt.hash(createUserDto.Password, saltOrRounds);
         createUserDto.Password = hash;
       }
+      
       const user = await this.usersModel.findOne({
         Email: createUserDto.Email,
+        organization_id: createUserDto.organization_id,
       });
+      console.log("user",user);
+      
       if (!user) {
+        console.log("user--not already");
+        
         return await this.usersModel.create(createUserDto);
       } else {
         throw new UnauthorizedException('User already rigister');
       }
-    } catch {
+    } catch(e) {
+        console.log("user",e);
+        
       throw new NotFoundException('user all ready exist');
     }
   }

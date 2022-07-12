@@ -1,55 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { getOrganizationById, getUserById } from "../../AllApi/Api";
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.first_name) {
-    errors.first_name = "Name Required";
-  }
-  if (!values.last_name) {
-    errors.last_name = "Last Name Required";
-  }
-  if (!values.phone_number) {
-    errors.phone_number = "Phone Number is Required";
-  }
-  if (!values.email) {
-    errors.email = "Email Required";
-  }
-  if (!values.comment) {
-    errors.comment = "Comment Required";
-  }
-  if (!values.job_title) {
-    errors.job_title = "Job Title is Required";
-  }
-  if (!values.location) {
-    errors.location = "location Required";
-  }
-  if (!values.address) {
-    errors.address = "address Required";
-  }
-  if (!values.blood_group) {
-    errors.blood_group = "blood group Required";
-  }
-  if (!values.address) {
-    errors.address = "Address Required";
-  }
-  if (!values.district) {
-    errors.district = "District Required";
-  }
-  if (!values.hrms) {
-    errors.hrms = "HRMS Required";
-  }
-  if (!values.companyName) {
-    errors.companyName = "Company Name Required";
-  }
-  if (!values.spreadsheetURL) {
-    errors.spreadsheetURL = "Spreadsheet URL Required";
-  }
-  return errors;
-};
 
 const initialValue = {
   first_name: "",
@@ -75,6 +31,7 @@ const initialValue = {
 const UserProfile = () => {
   let urlTitle = useLocation();
   const [title, setTitle] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     if (urlTitle.pathname === "/userProfile") {
@@ -82,13 +39,121 @@ const UserProfile = () => {
     }
   }, [urlTitle.pathname]);
 
+  const [initialAddress, setInitialAddress] = useState();
+  const [formikUser, setFormikUser] = useState();
+  const [formikOrganization, setFormikOrganization] = useState();
+  const [errorData, setErrorData] = useState();
+
   const formik = useFormik({
     initialValues: initialValue,
-    validate,
+    // validate,
     onSubmit: (values) => {
-      console.log(values);
+      let dd = validate(values)
+      console.log("errors", dd);
+      // return errors
     },
   });
+
+  useEffect(()=>{
+    const user_id = reactLocalStorage.get("user_id", false);
+    getUserById(user_id).then((data) => {
+      console.log("user_id",data?.data);
+      setUserData(data?.data)
+      let user = data?.data
+      setInitialAddress({
+        first_name: user.FirstName,
+        last_name: user.LastName,
+        phone_number: user.PhoneNumber,
+        email: user.Email,
+        job_title: "",
+        location: "",
+        comment: "",
+        address: user.Email,
+        blood_group: "",
+        district: "",
+        hrms: "",
+        companyName: "",
+        spreadsheetURL: "",
+        spreadsheetID1: "",
+        spreadsheetID2: "",
+        spreadsheetID3: "",
+        spreadsheetID4: "",
+        companyLogoURL: "",
+      })
+      setFormikUser({
+        first_name: user.FirstName,
+        last_name: user.LastName,
+        phone_number: user.PhoneNumber,
+        email: user.Email,
+
+      })
+    })
+
+    getOrganizationById(user_id).then((o_data)=>{
+      console.log("o_data",o_data?.data);
+    })
+  },[])
+
+  useEffect(()=>{
+    if(initialAddress){
+      console.log("initialAddress--",initialAddress);
+
+      formik.setValues({
+        ...initialAddress
+      });
+    }
+  },[initialAddress])
+
+  const validate = (values) => {
+    console.log("values---",values);
+    const errors = {};
+    if (!values.first_name) {
+      errors.first_name = "Name Required";
+    }
+    if (!values.last_name) {
+      errors.last_name = "Last Name Required";
+    }
+    if (!values.phone_number) {
+      errors.phone_number = "Phone Number is Required";
+    }
+    if (!values.email) {
+      errors.email = "Email Required";
+    }
+    if (!values.comment) {
+      errors.comment = "Comment Required";
+    }
+    if (!values.job_title) {
+      errors.job_title = "Job Title is Required";
+    }
+    if (!values.location) {
+      errors.location = "location Required";
+    }
+    if (!values.address) {
+      errors.address = "address Required";
+    }
+    if (!values.blood_group) {
+      errors.blood_group = "blood group Required";
+    }
+    if (!values.address) {
+      errors.address = "Address Required";
+    }
+    if (!values.district) {
+      errors.district = "District Required";
+    }
+    if (!values.hrms) {
+      errors.hrms = "HRMS Required";
+    }
+    if (!values.companyName) {
+      errors.companyName = "Company Name Required";
+    }
+    if (!values.spreadsheetURL) {
+      errors.spreadsheetURL = "Spreadsheet URL Required";
+    }
+    setErrorData(errors)
+    return errors;
+  };
+
+
   return (
     <>
       <div className="flex flex-row justify-start overflow-hidden">
@@ -139,7 +204,7 @@ const UserProfile = () => {
                     <input
                       id="first_name"
                       onChange={formik.handleChange}
-                      value={formik.values.first_name}
+                      value={formik.values?.first_name}
                       name="first_name"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -151,9 +216,9 @@ const UserProfile = () => {
                     >
                       First Name
                     </label>
-                    {formik.errors.first_name && (
+                    {errorData?.first_name && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.first_name}{" "}
+                        {errorData?.first_name}{" "}
                       </div>
                     )}
                   </div>
@@ -161,7 +226,7 @@ const UserProfile = () => {
                     <input
                       id="last_name"
                       onChange={formik.handleChange}
-                      value={formik.values.last_name}
+                      value={formik.values?.last_name}
                       name="last_name"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -173,9 +238,9 @@ const UserProfile = () => {
                     >
                       Last Name
                     </label>
-                    {formik.errors.last_name && (
+                    {errorData?.last_name && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.last_name}{" "}
+                        {errorData?.last_name}{" "}
                       </div>
                     )}
                   </div>
@@ -185,7 +250,7 @@ const UserProfile = () => {
                     <input
                       id="phone_number"
                       onChange={formik.handleChange}
-                      value={formik.values.phone_number}
+                      value={formik.values?.phone_number}
                       name="phone_number"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -197,9 +262,9 @@ const UserProfile = () => {
                     >
                       Phone Number
                     </label>
-                    {formik.errors.phone_number && (
+                    {errorData?.phone_number && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.phone_number}{" "}
+                        {errorData?.phone_number}{" "}
                       </div>
                     )}
                   </div>
@@ -207,7 +272,7 @@ const UserProfile = () => {
                     <input
                       id="email"
                       onChange={formik.handleChange}
-                      value={formik.values.email}
+                      value={formik.values?.email}
                       name="email"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -219,9 +284,9 @@ const UserProfile = () => {
                     >
                       Email
                     </label>
-                    {formik.errors.email && (
+                    {errorData?.email && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.email}{" "}
+                        {errorData?.email}{" "}
                       </div>
                     )}
                   </div>
@@ -233,7 +298,7 @@ const UserProfile = () => {
                       name="job_title"
                       type="text"
                       onChange={formik.handleChange}
-                      value={formik.values.job_title}
+                      value={formik.values?.job_title}
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                       placeholder="john@doe.com"
                     />
@@ -243,9 +308,9 @@ const UserProfile = () => {
                     >
                       Job Title
                     </label>
-                    {formik.errors.job_title && (
+                    {errorData?.job_title && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.job_title}{" "}
+                        {errorData?.job_title}{" "}
                       </div>
                     )}
                   </div>
@@ -253,7 +318,7 @@ const UserProfile = () => {
                     <input
                       id="location"
                       onChange={formik.handleChange}
-                      value={formik.values.location}
+                      value={formik.values?.location}
                       name="location"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -272,7 +337,7 @@ const UserProfile = () => {
                     <input
                       id="comment"
                       onChange={formik.handleChange}
-                      value={formik.values.comment}
+                      value={formik.values?.comment}
                       name="comment"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -284,9 +349,9 @@ const UserProfile = () => {
                     >
                       Comment
                     </label>
-                    {formik.errors.comment && (
+                    {errorData?.comment && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.comment}{" "}
+                        {errorData?.comment}{" "}
                       </div>
                     )}
                   </div>
@@ -294,7 +359,7 @@ const UserProfile = () => {
                     <input
                       id="address"
                       onChange={formik.handleChange}
-                      value={formik.values.address}
+                      value={formik.values?.address}
                       name="address"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -306,9 +371,9 @@ const UserProfile = () => {
                     >
                       Address
                     </label>
-                    {formik.errors.address && (
+                    {errorData?.address && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.address}{" "}
+                        {errorData?.address}{" "}
                       </div>
                     )}
                   </div>
@@ -318,7 +383,7 @@ const UserProfile = () => {
                     <input
                       id="blood_group"
                       onChange={formik.handleChange}
-                      value={formik.values.blood_group}
+                      value={formik.values?.blood_group}
                       name="blood_group"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -330,9 +395,9 @@ const UserProfile = () => {
                     >
                       Blood Group
                     </label>
-                    {formik.errors.blood_group && (
+                    {errorData?.blood_group && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.blood_group}{" "}
+                        {errorData?.blood_group}{" "}
                       </div>
                     )}
                   </div>
@@ -340,7 +405,7 @@ const UserProfile = () => {
                     <input
                       id="district"
                       onChange={formik.handleChange}
-                      value={formik.values.district}
+                      value={formik.values?.district}
                       name="district"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -352,9 +417,9 @@ const UserProfile = () => {
                     >
                       District
                     </label>
-                    {formik.errors.district && (
+                    {errorData?.district && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.district}{" "}
+                        {errorData?.district}{" "}
                       </div>
                     )}
                   </div>
@@ -368,7 +433,7 @@ const UserProfile = () => {
                     <input
                       id="hrms"
                       onChange={formik.handleChange}
-                      value={formik.values.hrms}
+                      value={formik.values?.hrms}
                       name="hrms"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -380,9 +445,9 @@ const UserProfile = () => {
                     >
                       HRMS (API)
                     </label>
-                    {formik.errors.hrms && (
+                    {errorData?.hrms && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.hrms}{" "}
+                        {errorData?.hrms}{" "}
                       </div>
                     )}
                   </div>
@@ -390,7 +455,7 @@ const UserProfile = () => {
                     <input
                       id="companyName"
                       onChange={formik.handleChange}
-                      value={formik.values.companyName}
+                      value={formik.values?.companyName}
                       name="companyName"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -402,9 +467,9 @@ const UserProfile = () => {
                     >
                       Company Name
                     </label>
-                    {formik.errors.companyName && (
+                    {errorData?.companyName && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.companyName}{" "}
+                        {errorData?.companyName}{" "}
                       </div>
                     )}
                   </div>
@@ -414,7 +479,7 @@ const UserProfile = () => {
                     <input
                       id="spreadsheetURL"
                       onChange={formik.handleChange}
-                      value={formik.values.spreadsheetURL}
+                      value={formik.values?.spreadsheetURL}
                       name="spreadsheetURL"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -426,9 +491,9 @@ const UserProfile = () => {
                     >
                       SpreadsheetURL
                     </label>
-                    {formik.errors.spreadsheetURL && (
+                    {errorData?.spreadsheetURL && (
                       <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
-                        {formik.errors.spreadsheetURL}{" "}
+                        {errorData?.spreadsheetURL}{" "}
                       </div>
                     )}
                   </div>
@@ -436,7 +501,7 @@ const UserProfile = () => {
                     <input
                       id="spreadsheetID1"
                       onChange={formik.handleChange}
-                      value={formik.values.spreadsheetID1}
+                      value={formik.values?.spreadsheetID1}
                       name="spreadsheetID1"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -455,7 +520,7 @@ const UserProfile = () => {
                     <input
                       id="spreadsheetID2"
                       onChange={formik.handleChange}
-                      value={formik.values.spreadsheetID2}
+                      value={formik.values?.spreadsheetID2}
                       name="spreadsheetID2"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -472,7 +537,7 @@ const UserProfile = () => {
                     <input
                       id="spreadsheetID3"
                       onChange={formik.handleChange}
-                      value={formik.values.spreadsheetID3}
+                      value={formik.values?.spreadsheetID3}
                       name="spreadsheetID3"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -491,7 +556,7 @@ const UserProfile = () => {
                     <input
                       id="spreadsheetID4"
                       onChange={formik.handleChange}
-                      value={formik.values.spreadsheetID4}
+                      value={formik.values?.spreadsheetID4}
                       name="spreadsheetID4"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
@@ -508,7 +573,7 @@ const UserProfile = () => {
                     <input
                       id="companyLogoURL"
                       onChange={formik.handleChange}
-                      value={formik.values.companyLogoURL}
+                      value={formik.values?.companyLogoURL}
                       name="companyLogoURL"
                       type="text"
                       className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
