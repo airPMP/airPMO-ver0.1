@@ -39,7 +39,7 @@ const SuperAdmin = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (urlTitle.pathname === "/super_admin") {
+    if (urlTitle.pathname === "organization/super_admin") {
       setTitle("Super Admin");
     }
   }, [urlTitle.pathname]);
@@ -47,8 +47,7 @@ const SuperAdmin = () => {
   useEffect(()=>{
     const role_name = reactLocalStorage.get("roles", false);
     if(role_name !== "Airpmo Super Admin"){
-      console.log("role_namerole_namerole_namerole_name",role_name);
-      navigate("/dashboard")
+      navigate("/dashboard")  
     }
   },[])
 
@@ -91,21 +90,35 @@ const SuperAdmin = () => {
     licenceKey: "",
     projects: "",
     password: "",
+    domain: ""
   };
 
   const validate = (values) => {
     const errors = {};
     if (!values.companyName) {
       errors.companyName = "Please fill company name ";
-    } else if (!values.location) {
+    } if (!values.location) {
       errors.location = "Please fill location";
-    } else if (!values.address) {
+    } if (!values.address) {
       errors.address = "Please fill address ";
-    } else if (!values.hrms) {
+    } if (!values.hrms) {
       errors.hrms = "Please fill HRMS(API) ";
-    } else if (!values.spreadsheetURL) {
+    } if (!values.domain) {
+      errors.domain = "Please fill Domain ";
+    } if (!values.spreadsheetURL) {
       errors.spreadsheetURL = "Please fill Spreadsheet URL ";
-    }    
+    }  if (!values.email) {
+      errors.email = "Please fill Email ";
+    }  if (!values.password) {
+      errors.password = "Please fill Password ";
+    }  if(values.domain){
+      let urlPattern = /^(?:(http(s)?)?(sftp)?(ftp)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+      values.domain.match(urlPattern)
+      if(!values.domain.match(urlPattern)) { 
+        errors.domain = "Please fill Domain In Url Format "; 
+      }
+    } 
+    return errors
   };
 
   //   const SubmitForm = (e) => {};
@@ -266,7 +279,6 @@ const SuperAdmin = () => {
         "organization_id": "",
         "spread_sheet_user_id": ""
     }
-
       if (values && values.email) {
         let role_id = null;
         try {
@@ -295,13 +307,18 @@ const SuperAdmin = () => {
           let org_payload ={
             hrms_api_url: values.hrms,
             location: values.location,
-            discription: "",
-            logo_url: "",
-            spread_sheet_id: values.spreadsheetID1,
+            spread_sheet_id: "",
+            spread_sheet_id1: values.spreadsheetID1,
+            spread_sheet_id2: values.spreadsheetID2,
+            spread_sheet_id3: values.spreadsheetID3,
             user_id: newAdminUser.data._id,
             address: values.address,
             contact_details: values.phoneNumber,
             name: values.companyName,
+            spread_sheet_url: values.spreadsheetURL,
+            domain: values.domain,
+            discription: "",
+            logo_url: "",
             hrms_format: "",
             equipments_list: "", 
             hrms_salary: "",
@@ -513,8 +530,11 @@ const SuperAdmin = () => {
                           >
                             HRMS (API)
                           </label>
-
-                          <div></div>
+                          {formik.errors.hrms && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.hrms}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-row space-x-40 pb-9">
@@ -658,6 +678,29 @@ const SuperAdmin = () => {
                             </div>
                           )}
                         </div>
+
+                        <div className="relative w-[350px]">
+                          <input
+                            id="link"
+                            onChange={formik.handleChange}
+                            value={formik.values.domain}
+                            name="domain"
+                            type="text"
+                            className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
+                            placeholder="https://"
+                          />
+                          <label
+                            htmlFor="domain"
+                            className="after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
+                          >
+                            Domain
+                          </label>
+                          {formik.errors.domain && (
+                            <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
+                              {formik.errors.domain}
+                            </div>
+                          )}
+                        </div>
                         {/* <div className=" relative w-[350px]">
                                             <input
                                                 id="spread_sheet"
@@ -679,7 +722,7 @@ const SuperAdmin = () => {
 
                                         </div>  */}
                         {/* <div className="relative w-[350px]"> */}
-                        <div className="flex relative w-[350px]">
+                        {/* <div className="flex relative w-[350px]">
                           <input
                             id="spread_sheet_id_1"
                             name="spread_sheet_id_1"
@@ -740,7 +783,7 @@ const SuperAdmin = () => {
                               </div>
                             )}
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       {/* <div className="flex flex-row space-x-40 pb-[36px]">
@@ -868,7 +911,7 @@ const SuperAdmin = () => {
                       <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
                         <div className="mr-[45px] shadow-[buttonshadow] ">
                           <button
-                            onClick={() => Login()}
+                            onClick={() => navigate('/organization')}
                             type="button"
                             className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] "
                           >
@@ -880,7 +923,7 @@ const SuperAdmin = () => {
                             type="submit"
                             className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
                           >
-                            Next
+                            save
                           </button>
                         </div>
                       </div>

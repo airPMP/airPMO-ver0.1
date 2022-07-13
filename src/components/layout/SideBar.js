@@ -375,7 +375,7 @@ const SideBar = ({ sendDataToParent }) => {
       {permissionData && permissionData.includes("ALL") ? (
         <div
           className={`flex flex-row justify-center mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-12 ${
-            param.pathname.includes("organization") || param.pathname.includes("super_admin") ? "bg-[#136C57]" : ""
+            param.pathname.includes("organization") ? "bg-[#136C57]" : ""
           }`}
           onClick={() => {
             navigate("/organization");
@@ -384,7 +384,7 @@ const SideBar = ({ sendDataToParent }) => {
           <div></div>
           <div
             className={`${
-              param.pathname.includes("organization") || param.pathname.includes("super_admin")
+              param.pathname.includes("organization")
                 ? "text-white"
                 : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}

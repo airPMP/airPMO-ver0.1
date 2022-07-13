@@ -99,7 +99,7 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-               
+               console.log("data1--",data1?.data);
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
@@ -231,7 +231,7 @@ const AddNewUser = () => {
     // }, [designatiotrue])
 
     const CancelButton = () => {
-        navigate('/UserManagement/UserRole2')
+        navigate('/UserManagement')
     }
 
     const formik = useFormik({
@@ -259,7 +259,7 @@ const AddNewUser = () => {
                 values.organization_id = organization_Id
             }
 
-
+            console.log("values",values);
             // if (designationdata && spreadalldata) {
             if (spreadalldata) {
                 axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values, {
@@ -269,6 +269,7 @@ const AddNewUser = () => {
                 })
                     .then(async (response) => {
                         setUserId_Designation(response?.data._id)
+                        console.log("user aded - ", response);
                         if (response.status === 201) {
 
                             addToast("User Created Sucessfully", {
@@ -399,6 +400,7 @@ const AddNewUser = () => {
         let somdata = splitdata.split(",")
         let nameSplit = somdata[0].split(" ")
         setSpreadAllData(somdata[2])
+        console.log("subOrg1e---",somdata[1]);
 
         // spreadsheetalldata?.map((item, id) => {
         //     if (e.target.value === item[0]) {
@@ -420,11 +422,10 @@ const AddNewUser = () => {
             }
         });
 
-
         if (result?.length === 0) {
+            console.log("result--",result, designationedata);
             setRoleName(designationedata)
             setDesignatioTrue(true)
-
         }
         else {
             // console.log(result[0]._id)
@@ -450,7 +451,7 @@ const AddNewUser = () => {
         }
         )
             .then(async(response) => {
-              
+              console.log("response--usr--",response);
                 setRoleId(response?.data._id)
                 if (response.status === 201) {
 

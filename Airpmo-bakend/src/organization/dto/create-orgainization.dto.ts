@@ -64,4 +64,19 @@ export class CreateOrgainizationDto {
 
   @ApiProperty()
   organization_image_url: string;
+
+  @ApiProperty()
+  spread_sheet_id1: string;
+
+  @ApiProperty()
+  spread_sheet_id2: string;
+
+  @ApiProperty()
+  spread_sheet_id3: string;
+
+  @ApiProperty()
+  spread_sheet_id4: string;
+
+  @ApiProperty()
+  domain: string;
 }

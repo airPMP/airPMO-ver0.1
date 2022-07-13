@@ -38,17 +38,17 @@ export class UsersService {
         Email: createUserDto.Email,
         organization_id: createUserDto.organization_id,
       });
-      console.log("user",user);
+      console.log("user find same email org id ",user);
       
       if (!user) {
         console.log("user--not already");
         
         return await this.usersModel.create(createUserDto);
       } else {
-        throw new UnauthorizedException('User already rigister');
+        throw new UnauthorizedException('User already register');
       }
     } catch(e) {
-        console.log("user",e);
+        console.log("user-added -> ",e);
         
       throw new NotFoundException('user all ready exist');
     }

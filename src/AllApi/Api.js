@@ -119,10 +119,20 @@ export const getUserById = async (user_id) => {
     });
 };
 
-export const getOrganizationById = async (user_id) => {
+export const getOrganizationByUserId = async (user_id) => {
     const token = reactLocalStorage.get("access_token", false);
 
     return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${user_id}/organization`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const getOrganizationById = async (org_id) => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/organization/${org_id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

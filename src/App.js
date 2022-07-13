@@ -58,6 +58,7 @@ import MyJobCardsId from "./components/JobCards/MyJobCard/[id]";
 import UpdateCreateJCId from "./components/JobCards/UpdateCreateJC.js/[id]";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Organization from "./components/Organization/Organization";
+import EditOrganization from "./components/Master/edit_organization/[id]";
 
 function App() {
   return (
@@ -160,7 +161,8 @@ function App() {
         <Route path="/DataInjestion/FireQuantity" element={<FireQuantity />} />
 
         {/* superAmin pages */}
-        <Route path="super_admin" element={<SuperAdmin/>}/>
+        <Route path="organization/super_admin" element={<SuperAdmin/>}/>
+        <Route path="organization/edit/:id" element={<EditOrganization />}/>
         <Route path="user_empolyee" element={<UserEmpolyee/>}/>
         <Route path="/SuperAdmin/:id" element={<SuperAdminId />} />
           {

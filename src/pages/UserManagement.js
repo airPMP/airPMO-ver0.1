@@ -14,8 +14,8 @@ const UserManagement = () => {
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [page, setPage] = useState(null);
-  const [rolesNum, setRolesNum] = useState(null);
-  const [userNum, setUserNum] = useState(null);
+  const [rolesNum, setRolesNum] = useState(0);
+  const [userNum, setUserNum] = useState(0);
   let urlTitle = useLocation();
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const UserManagement = () => {
   };
 
   useEffect(()=>{
+    console.log("call---");
     const roles = getRoleApi().then((data) => {
       setRolesNum(data?.data.length)
     })

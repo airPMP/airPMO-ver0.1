@@ -9,6 +9,7 @@ const Organization = () => {
 
   const [title, setTitle] = useState(null);
   const [orgData, setOrgData] = useState(null);
+  const [orgSerachData, setOrgSerachData] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const Organization = () => {
 
     const orgData = getAllOrganization().then((data) => {
       setOrgData(data?.data)
+      setOrgSerachData(data?.data)
     })
 
   }, [urlTitle.pathname]);
@@ -26,13 +28,16 @@ const Organization = () => {
   useEffect(()=>{
     const role_name = reactLocalStorage.get("roles", false);
     if(role_name !== "Airpmo Super Admin"){
-      console.log("role_namerole_namerole_namerole_name",role_name);
       navigate("/dashboard")
     }
   },[])
 
-  const EditOrganization = (e ,item) => {
-    console.log("edit--",e, item);
+  const EditOrganization = (item) => {
+    navigate(`/organization/edit/${item._id}`)
+  }
+
+  const searchOrgData = (val) => {
+    setOrgData(orgSerachData.filter((item)=> (item.name.toLowerCase()).includes(val.toLowerCase())))
   }
 
   return (
@@ -73,12 +78,38 @@ const Organization = () => {
                             type="text"
                             placeholder="Search "
                             className="outline-none w-[273.87px] h-[36.94px]"
+                            onChange={(e)=>searchOrgData(e.target.value)}
                         />
                     </div>
                 </div>
             </div>
 
             <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] pb-[20px]">
+              <div className="flex  float-right">
+                  <div
+                    style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
+                    className=" rounded-[0.625rem] w-[200px]"
+                  >
+                    <div className="flex justify-center">
+                      <svg
+                        width="31"
+                        height="31"
+                        viewBox="0 0 31 31"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z"
+                          fill="#2E3A59"
+                        />
+                      </svg>
+
+                      <span className="text-[15px] pt-1">
+                        <Link to={`/organization/super_admin`}>New Organization</Link>
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <table className="table-auto   text-center font-secondaryFont text-[#000000]
                     font-normal not-italic text-[12px " style={{ width: "100%" }}>
 
@@ -100,7 +131,7 @@ const Organization = () => {
                                   <td className="pt-[15px] pb-[14.83px]">{item?.name}</td>
                                   <td className="pt-[15px] pb-[14.83px]">
                                       <div className="flex flex-row justify-center  space-x-xl">
-                                          <div onClick={(e) => EditOrganization(e, item)} >
+                                          <div onClick={() => EditOrganization(item)} >
                                               <svg
                                                   width="19"
                                                   height="20"
@@ -124,32 +155,6 @@ const Organization = () => {
                       })}
 
                   </table>
-                  
-              <div className="flex  float-right">
-                <div
-                  style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                  className=" rounded-[0.625rem] w-[200px]"
-                >
-                  <div className="flex justify-center">
-                    <svg
-                      width="31"
-                      height="31"
-                      viewBox="0 0 31 31"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z"
-                        fill="#2E3A59"
-                      />
-                    </svg>
-
-                    <span className="text-[15px] pt-1">
-                      <Link to={`/super_admin`}>New Organization</Link>
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

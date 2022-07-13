@@ -137,7 +137,7 @@ const AddUserRole = () => {
     ]
 
     const CancelButton = () => {
-        navigate('/UserManagement/UserRole')
+        navigate('/UserManagement')
     }
 
 
@@ -174,7 +174,7 @@ const AddUserRole = () => {
                 .then((response) => {
                     console.log(response)
                     if (response.status === 201) {
-                        navigate('/UserManagement/UserRole')
+                        navigate('/UserManagement')
                         addToast("User Created Sucessfully", {
                             appearance: "success",
                             autoDismiss: true,

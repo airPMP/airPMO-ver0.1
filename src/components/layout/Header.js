@@ -1,20 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationBar from "./NotificationBar";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
+import { getOrganizationByUserId } from "../../AllApi/Api";
 
 const Header = ({ title, sendPage }) => {
   let navigate = useNavigate();
   const [dp, setDp] = useState(false);
   const [logoutbtn, setLogOutBtn] = useState(false);
+  const [userOrg, setUserOrg] = useState(false);
   const { addToast } = useToasts();
 
   let param = useLocation();
   const sendStyle = (name) => {
     setDp(name);
   };
+
+  useEffect(()=>{
+    const user_id = reactLocalStorage.get("user_id", false);
+    getOrganizationByUserId(user_id).then((o_data)=>{
+      console.log("o_data==",o_data);
+      if(o_data?.data[0]){
+        setUserOrg(o_data?.data[0])
+      }
+    })
+  },[])
 
   const Logout = (e) => {
     reactLocalStorage.clear();
@@ -125,7 +137,7 @@ const Header = ({ title, sendPage }) => {
                 <>
                 <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div class="py-1" role="none">
-                  <div href="#" class="font-secondaryFont font-medium block px-4 py-2 text-sm cursor-pointer" role="menuitem" onClick={(e) => navigate("/userProfile")}>Account settings</div>
+                  {userOrg && <div href="#" class="font-secondaryFont font-medium block px-4 py-2 text-sm cursor-pointer" role="menuitem" onClick={(e) => navigate("/userProfile")}>Account settings</div> }
                   <div href="#" class="font-secondaryFont font-medium block px-4 py-2 text-sm cursor-pointer" role="menuitem" onClick={(e) => Logout(e)}>Logout</div>
                 </div>
                 </div>

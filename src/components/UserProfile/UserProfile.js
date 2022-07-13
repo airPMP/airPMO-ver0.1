@@ -4,7 +4,9 @@ import { useLocation } from "react-router-dom";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
-import { getOrganizationById, getUserById } from "../../AllApi/Api";
+import { getOrganizationByUserId, getUserById } from "../../AllApi/Api";
+import axios from "axios";
+import { useToasts } from "react-toast-notifications";
 
 
 const initialValue = {
@@ -31,7 +33,13 @@ const initialValue = {
 const UserProfile = () => {
   let urlTitle = useLocation();
   const [title, setTitle] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [organizationId, setOrganizationId] = useState(null);
+  const [initialFormValues, setInitialFormValues] = useState();
+  const [formikUser, setFormikUser] = useState();
+  const [formikOrganization, setFormikOrganization] = useState();
+  const [errorData, setErrorData] = useState();
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (urlTitle.pathname === "/userProfile") {
@@ -39,73 +47,143 @@ const UserProfile = () => {
     }
   }, [urlTitle.pathname]);
 
-  const [initialAddress, setInitialAddress] = useState();
-  const [formikUser, setFormikUser] = useState();
-  const [formikOrganization, setFormikOrganization] = useState();
-  const [errorData, setErrorData] = useState();
-
   const formik = useFormik({
     initialValues: initialValue,
     // validate,
-    onSubmit: (values) => {
-      let dd = validate(values)
-      console.log("errors", dd);
-      // return errors
+    onSubmit: async (values) => {
+      const token = reactLocalStorage.get("access_token", false);
+      let error = validate(values)
+      if(Object.keys(error).length !== 0){
+        console.log("error--is");
+      }else{
+        console.log("error--null",values);
+        let user_payload = {
+          FirstName: values?.first_name,
+          LastName: values?.last_name,
+          PhoneNumber: values?.phone_number,
+          Email: values?.email,
+          job_title: values?.job_title,
+          location: values?.location,
+          Comments: values?.comment,
+          address: values?.address,
+          blood_group: values?.blood_group,
+          district: values?.district
+        }
+        console.log("user_payload---",user_payload);
+        let userUp = await UpdateUser(user_payload, token)
+        let org_payload = {
+          hrms_api_url: values?.hrms,
+          name: values?.companyName,
+          spread_sheet_url: values?.spreadsheetURL,
+          spread_sheet_id1: values?.spreadsheetID1,
+          spread_sheet_id2: values?.spreadsheetID2,
+          spread_sheet_id3: values?.spreadsheetID3,
+          spread_sheet_id4: values?.spreadsheetID4,
+          logo_url: values?.companyLogoURL
+        }
+        console.log("org_payload---",org_payload);
+        let orgUp = await UpdateOrganization(org_payload, token)
+      }
     },
   });
 
+  const UpdateUser = async (user_payload, token) => {
+    let updateUser
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/${userId}`, user_payload, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        updateUser = response?.data
+    }
+    })
+    .catch((error) => {
+      addToast(error.response?.data?.message, {
+          appearance: "error",
+          autoDismiss: true,
+      })
+    })
+    return updateUser;
+  }
+  const UpdateOrganization = async (org_payload, token) => {
+    let updateOrg
+    await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/organization/${organizationId}`, org_payload, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        updateOrg = response?.data
+        if(response?.data){
+          addToast("Profile Updated Sucessfully", {
+              appearance: "success",
+              autoDismiss: true,
+          })
+        }
+    }
+    })
+    .catch((error) => {
+      addToast(error.response?.data?.message, {
+          appearance: "error",
+          autoDismiss: true,
+      })
+    })
+    return updateOrg;
+  }
+
   useEffect(()=>{
     const user_id = reactLocalStorage.get("user_id", false);
+    setUserId(user_id)
+    const organization_id = reactLocalStorage.get("organization_id", false);
+    setOrganizationId(organization_id)
     getUserById(user_id).then((data) => {
-      console.log("user_id",data?.data);
-      setUserData(data?.data)
       let user = data?.data
-      setInitialAddress({
-        first_name: user.FirstName,
-        last_name: user.LastName,
-        phone_number: user.PhoneNumber,
-        email: user.Email,
-        job_title: "",
-        location: "",
-        comment: "",
-        address: user.Email,
-        blood_group: "",
-        district: "",
-        hrms: "",
-        companyName: "",
-        spreadsheetURL: "",
-        spreadsheetID1: "",
-        spreadsheetID2: "",
-        spreadsheetID3: "",
-        spreadsheetID4: "",
-        companyLogoURL: "",
-      })
       setFormikUser({
-        first_name: user.FirstName,
-        last_name: user.LastName,
-        phone_number: user.PhoneNumber,
-        email: user.Email,
-
+        first_name: user?.FirstName,
+        last_name: user?.LastName,
+        phone_number: user?.PhoneNumber,
+        email: user?.Email,
+        job_title: user?.job_title,
+        location: user?.location,
+        comment: user?.Comments,
+        address: user?.address,
+        blood_group: user?.blood_group,
+        district: user?.district
       })
     })
 
-    getOrganizationById(user_id).then((o_data)=>{
-      console.log("o_data",o_data?.data);
+    getOrganizationByUserId(user_id).then((o_data)=>{
+      let org = o_data?.data[0]
+      setFormikOrganization({
+        hrms: org?.hrms_api_url,
+        companyName: org?.name,
+        spreadsheetURL: org?.spread_sheet_url,
+        spreadsheetID1: org?.spread_sheet_id1,
+        spreadsheetID2: org?.spread_sheet_id2,
+        spreadsheetID3: org?.spread_sheet_id3,
+        spreadsheetID4: org?.spread_sheet_id4,
+        companyLogoURL: org?.logo_url
+      })
     })
   },[])
 
   useEffect(()=>{
-    if(initialAddress){
-      console.log("initialAddress--",initialAddress);
+    let formData = [{...formikUser, ...formikOrganization}]
+    setInitialFormValues(formData[0])
+  },[formikUser, formikOrganization])
 
+  useEffect(()=>{
+    if(initialFormValues){
       formik.setValues({
-        ...initialAddress
+        ...initialFormValues
       });
     }
-  },[initialAddress])
+  },[initialFormValues])
 
   const validate = (values) => {
-    console.log("values---",values);
     const errors = {};
     if (!values.first_name) {
       errors.first_name = "Name Required";
@@ -124,9 +202,6 @@ const UserProfile = () => {
     }
     if (!values.job_title) {
       errors.job_title = "Job Title is Required";
-    }
-    if (!values.location) {
-      errors.location = "location Required";
     }
     if (!values.address) {
       errors.address = "address Required";

@@ -79,4 +79,10 @@ export class CreateUserDto {
 
   @ApiProperty()
   is_employee: boolean;
+
+  @ApiProperty()
+  job_title: string;
+
+  @ApiProperty()
+  location: string;
 }
