@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [MongooseModule.forFeature([{ name:orgainization.name,schema:orgainizationSchema }])],
   controllers: [OrgainizationController],
-  providers: [OrgainizationService]
+  providers: [OrgainizationService],
+  exports:[OrgainizationService]
 })
 export class OrgainizationModule {}

@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getUserApiOrgnization_id, getUserApi } from "../../AllApi/Api";
+import { getUserApiOrgnization_id, getUserApi, getOrganizationById } from "../../AllApi/Api";
 import axios from "axios";
 import { ProjectLogoSet } from "../../SimplerR/auth";
 
@@ -13,6 +13,7 @@ const SideBar = ({ sendDataToParent }) => {
   const [userData, setUserData] = useState(null);
   const [funTrue, setFunTrue] = useState(true);
   const [permissionData, setPermissionData] = useState([]);
+  const [sidebarlogo, setSidebarlogo] = useState();
   const projectLogoSet = ProjectLogoSet.use();
   let navigate = useNavigate();
   let param = useLocation();
@@ -40,6 +41,7 @@ const SideBar = ({ sendDataToParent }) => {
   };
 
   const permisions_data = reactLocalStorage.get("permisions", false);
+  const organization_id = reactLocalStorage.get("organization_id", false);
   useEffect(() => {
     if (permisions_data && permisions_data != "ALL") {
       setPermissionData(permisions_data.substring(1).split(","));
@@ -47,6 +49,14 @@ const SideBar = ({ sendDataToParent }) => {
       setPermissionData(permisions_data ? [permisions_data] : []);
     }
   }, [permisions_data]);
+
+  useEffect(()=>{
+    const orgData = getOrganizationById(organization_id).then((data) => {
+      if(data?.data?.logo_url){
+        setSidebarlogo(data?.data?.logo_url)
+      }
+    })
+  },[organization_id])
 
   useEffect(() => {
     const rolesData = reactLocalStorage.get("roles", "roles");
@@ -63,7 +73,7 @@ const SideBar = ({ sendDataToParent }) => {
         },
       })
       .then((responce) => {
-        console.log(responce);
+        // console.log(responce);
         setUserData(responce?.data[0]);
         ProjectLogoSet.set(responce?.data[0]?.logo_url);
       });
@@ -73,7 +83,7 @@ const SideBar = ({ sendDataToParent }) => {
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
         <img
-          src={projectLogoSet ? projectLogoSet : "/logo1.jpg"}
+          src={sidebarlogo ? sidebarlogo : projectLogoSet ? projectLogoSet : "/logo1.jpg"}
           alt="logo"
           width="182px"
           height="60.67px"
@@ -393,6 +403,16 @@ const SideBar = ({ sendDataToParent }) => {
           </div>
         </div>
       ) : null}
+
+      <div className="bottom-logo absolute bottom-10 opacity-50">
+        <img
+          src={projectLogoSet ? projectLogoSet : "/logo1.jpg"}
+          alt="logo"
+          width="182px"
+          height="60.67px"
+          className="px-[35px] pt-[26px]"
+        />
+      </div>
     </div>
   );
 };

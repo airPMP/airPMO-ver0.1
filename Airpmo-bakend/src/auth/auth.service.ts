@@ -4,12 +4,13 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
+import { OrgainizationService } from 'src/organization/orgainization.service';
 
 
 @Injectable()
 export class AuthService {
 
-  constructor(private usersService: UsersService, private jwtService: JwtService, private userroleService: UserRolesService) { }
+  constructor(private usersService: UsersService, private jwtService: JwtService, private userroleService: UserRolesService, private orgainizationService:OrgainizationService) { }
 
   async validateUser(loginusersDto: loginusersDto): Promise<any> {
 
@@ -40,6 +41,20 @@ export class AuthService {
         var permission = this.arrayUnique(per);
 
         const payload = { FirstName: user.FirstName, Email: user.Email, roles: role_name, permission: permission,organization_id:userdata.organization_id };
+
+        if(userdata.organization_id == '1'){
+
+        }else{
+          let domain_match = await this.orgainizationService.findOne(userdata.organization_id);
+          
+          if(domain_match){
+            if(domain_match?.domain != loginusersDto.domain_name){
+              
+              throw new UnauthorizedException("Domain not Match")
+            }
+          }
+        }
+
         const token = this.jwtService.sign(payload)
 
         if (!token) {

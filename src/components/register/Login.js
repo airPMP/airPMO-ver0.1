@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 
@@ -24,11 +24,12 @@ const Login = () => {
     navigate('/sign-up');
   };
 
+  const location = useLocation();   
   useEffect(()=>{
     const user_id = reactLocalStorage.get("user_id", false);
-    if(user_id){
-      navigate('/dashboard');
-    }
+    // if(user_id){
+    //   navigate('/dashboard');
+    // }
   },[])
 
   const submit = (e) => {
@@ -41,6 +42,8 @@ const Login = () => {
 
         Email: userName,
         Password: userpassword,
+        domain_name: window.location.origin
+        
       })
       .then((response) => {
         console.log(response)

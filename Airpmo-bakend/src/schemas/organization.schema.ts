@@ -75,6 +75,9 @@ export class orgainization {
   @Prop({ default: Date })
   domain: string;
 
+  @Prop()
+  abd_name: string;
+
   @Prop({ default: Date })
   createdAt: string;
 

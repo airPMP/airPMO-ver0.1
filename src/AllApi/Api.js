@@ -138,3 +138,13 @@ export const getOrganizationById = async (org_id) => {
         },
     });
 };
+
+export const getAllLocation = async (org_id) => {
+    const token = reactLocalStorage.get("access_token", false);
+
+    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/location`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};

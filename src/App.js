@@ -59,8 +59,20 @@ import UpdateCreateJCId from "./components/JobCards/UpdateCreateJC.js/[id]";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Organization from "./components/Organization/Organization";
 import EditOrganization from "./components/Master/edit_organization/[id]";
+import { useEffect } from "react";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { getOrganizationById } from "./AllApi/Api";
 
 function App() {
+  useEffect(() => {
+    document.title = "Airpmo";
+    let org_id = reactLocalStorage.get("organization_id")
+    getOrganizationById(org_id).then((data)=>{
+      document.title = (data?.data) ? data?.data?.abd_name+" - airpmo" : "Airpmo"          
+    })
+    
+  }, [reactLocalStorage])
+
   return (
     <div className="bg-[#ECF1F0]">
       <Routes>
