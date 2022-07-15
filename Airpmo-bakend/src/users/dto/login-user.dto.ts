@@ -6,6 +6,9 @@ export class loginusersDto {
   @IsNotEmpty()
   @ApiProperty()
   Email: string;
+  
+  @ApiProperty()
+  domain_name: string
 
   @IsString()
   @MinLength(4, { message: 'Password is too short (4 characters min)' })

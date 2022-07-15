@@ -10,13 +10,16 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserRolesModule } from 'src/user-roles/user-roles.module';
 import { LocalStrategy } from './local.strategy'
+import { OrgainizationModule } from 'src/organization/orgainization.module';
 @Module({
   imports: [UsersModule,PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({
     
     secret: jwtConstants.secret,
     signOptions: { expiresIn: '24h' },
       }),
-   UserRolesModule],
+   UserRolesModule,
+   OrgainizationModule
+  ],
   providers: [
     AuthService,
     JwtStrategy,

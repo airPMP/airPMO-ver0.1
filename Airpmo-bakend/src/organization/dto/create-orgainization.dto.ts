@@ -79,4 +79,7 @@ export class CreateOrgainizationDto {
 
   @ApiProperty()
   domain: string;
+
+  @ApiProperty()
+  abd_name: string;
 }

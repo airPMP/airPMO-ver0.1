@@ -164,7 +164,6 @@ const MyJobCardsId = () => {
     })
 
       .then((response) => {
-        console.log(response?.data)
         setProjectDetailsData(response?.data)
         if (response.status === 201) {
 
@@ -183,7 +182,6 @@ const MyJobCardsId = () => {
     let value = e?.target?.value?.toUpperCase();
     let result = []
     result = alljobcarddata?.filter((data) => {
-      { console.log(data) }
       if (isNaN(+value)) {
         return data?.activity_code?.toUpperCase().search(value) !== -1;
       }
@@ -419,8 +417,8 @@ const MyJobCardsId = () => {
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
-
-                  {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"}
+                  {projectDetailsData?.project_name}
+                  {/* {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"} */}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
                   {projectDetailsData?.project_id ? projectDetailsData?.project_id  : "Shining Towers"}

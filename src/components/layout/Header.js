@@ -31,7 +31,7 @@ const Header = ({ title, sendPage }) => {
   const Logout = (e) => {
     reactLocalStorage.clear();
     navigate("/");
-
+    document.title = "Airpmo";
     addToast("Logout  Sucessfully ", {
       appearance: "success",
       autoDismiss: true,
