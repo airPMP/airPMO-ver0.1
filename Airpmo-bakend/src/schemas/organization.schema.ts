@@ -57,6 +57,24 @@ export class orgainization {
   @Prop()
   organization_image_url: string;
 
+  @Prop()
+  spread_sheet_id1: string;
+
+  @Prop()
+  spread_sheet_id2: string;
+
+  @Prop()
+  spread_sheet_id3: string;
+
+  @Prop()
+  spread_sheet_id4: string;
+
+  @Prop()
+  spread_sheet_url: string;
+
+  @Prop({ default: Date })
+  domain: string;
+
   @Prop({ default: Date })
   createdAt: string;
 

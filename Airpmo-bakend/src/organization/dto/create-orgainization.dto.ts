@@ -3,12 +3,12 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateOrgainizationDto {
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   hrms_api_url: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   location: string;
 
@@ -29,7 +29,7 @@ export class CreateOrgainizationDto {
   user_id: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   address: string;
 
@@ -37,7 +37,7 @@ export class CreateOrgainizationDto {
   contact_details: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   name: string;
 
@@ -64,4 +64,19 @@ export class CreateOrgainizationDto {
 
   @ApiProperty()
   organization_image_url: string;
+
+  @ApiProperty()
+  spread_sheet_id1: string;
+
+  @ApiProperty()
+  spread_sheet_id2: string;
+
+  @ApiProperty()
+  spread_sheet_id3: string;
+
+  @ApiProperty()
+  spread_sheet_id4: string;
+
+  @ApiProperty()
+  domain: string;
 }

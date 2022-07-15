@@ -13,12 +13,12 @@ export class CreateUserDto {
   username: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   FirstName: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @ApiProperty()
   LastName: string;
 
@@ -79,4 +79,10 @@ export class CreateUserDto {
 
   @ApiProperty()
   is_employee: boolean;
+
+  @ApiProperty()
+  job_title: string;
+
+  @ApiProperty()
+  location: string;
 }

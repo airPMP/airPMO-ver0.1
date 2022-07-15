@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,13 @@ const Login = () => {
   const signUp = () => {
     navigate('/sign-up');
   };
+
+  useEffect(()=>{
+    const user_id = reactLocalStorage.get("user_id", false);
+    if(user_id){
+      navigate('/dashboard');
+    }
+  },[])
 
   const submit = (e) => {
     e.preventDefault();
@@ -51,7 +58,7 @@ const Login = () => {
               }
              }
              else{
-              navigate('/super_admin')
+              navigate('organization/super_admin')
              }
              
           

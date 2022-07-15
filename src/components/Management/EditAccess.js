@@ -33,6 +33,7 @@ const EditAccess = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
+                console.log("all----",data?.data);
                 setRolesData(data?.data)
             } catch (error) {
                 console.log(error)
@@ -768,11 +769,6 @@ const EditAccess = () => {
 
     }
 
-
-
-
-
-
     return (
         <>
             <div className="flex flex-row justify-start overflow-hidden  ">
@@ -941,11 +937,10 @@ const EditAccess = () => {
                                 </div>
                             </div>
 
-
                             <div className="col-span-10 editAccess_flow ">
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
-                                        if (id >= 1) {
+                                        if (id >= 0) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
 
                                                 <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
@@ -1004,7 +999,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
 
@@ -1056,7 +1051,7 @@ const EditAccess = () => {
 
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
-                                        if (id >= 1) {
+                                        if (id >= 0) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
 
 
@@ -1108,7 +1103,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1158,7 +1153,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1207,7 +1202,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1256,7 +1251,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
 
@@ -1308,7 +1303,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1358,7 +1353,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1408,7 +1403,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1458,7 +1453,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1507,7 +1502,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1555,7 +1550,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className=" p-3    " key={id}>
 
                                                     <div className=" ">
@@ -1604,7 +1599,7 @@ const EditAccess = () => {
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
-                                            if (id >= 1) {
+                                            if (id >= 0) {
                                                 return <div className="p-3" key={id}>
 
                                                     <div className=" ">
@@ -1660,7 +1655,7 @@ const EditAccess = () => {
                         <div className="flex mt-10  ml-[70%]  ">
                             <div className="mr-[45px] shadow-[buttonshadow] ">
                                 <button
-                                    onClick={() => { navigate("/UserManagement/UserRole") }}
+                                    onClick={() => { navigate("/UserManagement") }}
                                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
                                     Cancel
                                 </button>

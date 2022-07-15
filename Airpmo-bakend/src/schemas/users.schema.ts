@@ -17,7 +17,7 @@ export class users {
   @Prop()
   PhoneNumber: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true , unique: false})
   Email: string;
 
   @Prop()
@@ -58,6 +58,12 @@ export class users {
 
   @Prop({ default: false })
   is_employee: boolean;
+
+  @Prop()
+  job_title: string;
+
+  @Prop()
+  location: string;
 
   @Prop({ default: Date })
   createdAt: string;

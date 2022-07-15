@@ -6,12 +6,13 @@ import Popup from "reactjs-popup";
 import Header from '../layout/Header'
 import SideBar from '../layout/SideBar'
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { getUserApi, getRoleApi } from '../../AllApi/Api'
+import { getUserApi, getRoleApi, getUserByOrgId } from '../../AllApi/Api'
 
 const UserRole1 = () => {
 
     const [title, setTitle] = useState(null);
     const [userdata, setUserData] = useState(null);
+    const [userSearchdata, setSearchUserData] = useState(null);
     const [deleteid, setDeleteId] = useState(null);
     const [rolesdata, setRolesData] = useState([]);
   
@@ -34,9 +35,23 @@ const UserRole1 = () => {
             setTitle("User Mgmt");
         }
 
-        const userData = getUserApi().then((data) => {
-            setUserData(data?.data)
-        })
+        const role_name = reactLocalStorage.get("roles", false);
+        const org_id = reactLocalStorage.get("organization_id", false);
+        if(role_name == "Airpmo Super Admin"){
+            const user = getUserApi().then((data) => {
+                setUserData(data?.data)
+                setSearchUserData(data?.data)
+            })
+        }else{
+            const user = getUserByOrgId(org_id).then((data) => {
+                setUserData(data?.data)
+                setSearchUserData(data?.data)
+            })
+        }
+
+        // const userData = getUserApi().then((data) => {
+        //     setUserData(data?.data)
+        // })
 
         const rolesData = getRoleApi().then((data) => {
             setRolesData(data?.data)
@@ -87,10 +102,9 @@ const UserRole1 = () => {
         setEditOpen(true)
     }
 
-
-
-    console.log(userdata)
-
+    const searchUserData = (val) => {
+        setUserData(userSearchdata.filter((item)=> (item.Email.toLowerCase()).includes(val.toLowerCase())))
+    }
 
     return (
         <>
@@ -158,6 +172,7 @@ const UserRole1 = () => {
                                         type="text"
                                         placeholder="Search "
                                         className="outline-none w-[273.87px] h-[36.94px]"
+                                        onChange={(e)=>searchUserData(e.target.value)}
                                     />
                                 </div>
                             </div>
