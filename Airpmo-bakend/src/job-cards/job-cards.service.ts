@@ -30,7 +30,7 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { spicpi, spicpiDocument } from 'src/schemas/spi_cpi.schema';
 import { MyJobCardEmployeeService } from 'src/my-job-card-employee/my-job-card-employee.service';
 import { myjobcardemployee, myjobcardemployeeDocument } from 'src/schemas/my-job-card-employee.schema';
-
+import { project, projectDocument } from 'src/schemas/projects.schema';
 @Injectable()
 export class JobCardsService {
   constructor(
@@ -42,6 +42,7 @@ export class JobCardsService {
     private myjobcardmodal: Model<myjobcardDocument>,
     @InjectModel(spicpi.name)
     private spicpiModel: SoftDeleteModel<spicpiDocument>,
+    @InjectModel(project.name) private projectModel:SoftDeleteModel<projectDocument>,
     @InjectModel(UserRole.name) private UserRoleModel: Model<UserRoleDocument>,
     @InjectModel(Role.name) private RoleModel: Model<RoleDocument>,
     @InjectModel(myjobcardemployee.name)
@@ -694,6 +695,26 @@ export class JobCardsService {
       throw new NotFoundException('data not found');
     }
   }
+
+ async findProjectData(project_id:string){
+  const find_project = await this.projectModel.findOne({ _id: project_id });
+  let status = "";
+  let todateDate = new Date().getTime() / 1000
+  if(find_project){
+    if(todateDate < (new Date(find_project.start_date).getTime() / 1000)){
+      status =  "not started";
+    }else if(todateDate < (new Date(find_project.start_date).getTime() / 1000) && (new Date(find_project.end_date).getTime() / 1000) > todateDate){
+      status = "in progress"
+    }else{
+      if((new Date(find_project.end_date).getTime() / 1000) > todateDate){
+        status = "in progress"
+      }
+      
+    }
+  }
+  return status;
+ }
+
 
 
   async findjobprojectid( project_id: string){
