@@ -26,8 +26,6 @@ export class ForgetService {
 
   async forgetPassword(forgetuserdto: forgetuserdto) {
     const user = await this.usersModel.findOne({ 'Email': forgetuserdto.Email })
-    console.log(user)
-
     if (!user) {
       throw new UnauthorizedException("email not found")
     }
@@ -35,6 +33,7 @@ export class ForgetService {
       const payload = {'Email':user.Email}
       const token = this.jwtservice.sign(payload)
       const url = `http://${process.env.HOST_NAME}/ResetPassword?token=${token}`
+      // console.log('ddd',url)
       await this.mailerService.sendMail
         ({
           to: user.Email,
@@ -53,16 +52,16 @@ export class ForgetService {
     if (resetuserdto.Password !== resetuserdto.Confirm_Password) {
       throw new UnauthorizedException('password  not matcted')
     }
-    
-
     else {
-      const pass = await resetuserdto.Confirm_Password
       const saltOrRounds = 10;
-      const hash = await bcrypt.hash(pass, saltOrRounds)
-      const find = req.user
-      const users = await this.usersModel.findOne({ "Email": find.Email })
-      
-     const updatepass = await this.usersModel.updateOne({Password:users.Password },{ Password:hash })
+      const hash = await bcrypt.hash(resetuserdto.Password, saltOrRounds)
+     // const users = await this.usersModel.findOne({ "Email": find.Email })
+      await this.usersModel.updateOne(
+        { Email: req.user.Email },
+        { $set: { Password:hash } },
+      );
+      let user = await this.usersModel.findOne({ Email:req.user.Email });
+    //  const updatepass = await this.usersModel.updateOne({ Password:hash })
      
       return {
         massage: "password updatetd"
