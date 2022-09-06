@@ -600,7 +600,7 @@ export class JobCardsService {
         alwoable_arr[index].push(0, 0);
       }
     }
-
+    console.log('ddd',alwoable_arr,update_quantity)
     var cpi_array = [];
     var cpi_array2 = [];
     for (let index = 0; index < alwoable_arr.length; index++) {
