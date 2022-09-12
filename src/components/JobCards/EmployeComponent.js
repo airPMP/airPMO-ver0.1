@@ -53,20 +53,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
-        // const feach = async () => {
-        //     try {
-        //         const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-        //         // console.log(data1?.data?.values)
-        //         setTimeSheetData(data1?.data?.values)
-
-        //         setFilterEmpoyeeAllData(data1?.data?.values)
-        //         console.log(data1?.data)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-
-        // feach();
+        
 
 
         const feach2 = async () => {
@@ -136,30 +123,66 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             console.log(splitDataArange)
 
             setCurrentdata(currentdate)
-
             const feach = async () => {
                 try {
-                    const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${splitDataArange}-${splitDataArange}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-
-
-                    console.log(data1)
-
-                    if (data1?.data) {
-                        let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
-                        setTimeSheetData(PresentEmployeData)
-                        setFilterEmpoyeeAllData(PresentEmployeData)
-
+                    const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
+                    // console.log(data1?.data?.values)
+                   
+                    let final_arr = []
+                    if(data1?.data?.values.length > 0){
+                        for(let i=0;i<data1?.data?.values.length;i++){
+                            if(i > 0){
+                                let res = {}
+                                data1.data.values[i].forEach((item,index) => {
+                                    if(data1.data.values[0][index] == "Id"){
+                                        res["UserID"] = item
+                                    }
+                                    if(data1.data.values[0][index] == "Employee First Name"){
+                                        res["UserName"] = item +" "+data1.data.values[i][index+1]
+                                    }
+                                    if(data1.data.values[0][index] == "Designation"){
+                                        res["designation"] = item
+                                    }
+                                    if(data1.data.values[0][index] == "Attendence"){
+                                        res["attendence"] = item
+                                    }
+                                })
+                                final_arr.push(res)
+                            }
+                        }
                     }
-
+                    setTimeSheetData(final_arr)
+                    setFilterEmpoyeeAllData(final_arr)
+                    console.log(data1?.data)
                 } catch (error) {
                     console.log(error)
                 }
             }
+    
             feach();
+            // const feach = async () => {
+            //     try {
+            //         const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${splitDataArange}-${splitDataArange}`, {
+            //             headers: {
+            //                 Authorization: `Bearer ${token}`,
+            //             },
+            //         })
+
+
+            //         console.log(data1)
+
+            //         if (data1?.data) {
+            //             let PresentEmployeData = data1?.data.filter((elem => elem.Punch1))
+            //             setTimeSheetData(PresentEmployeData)
+            //             setFilterEmpoyeeAllData(PresentEmployeData)
+
+            //         }
+
+            //     } catch (error) {
+            //         console.log(error)
+            //     }
+            // }
+            // feach();
         }
     }, [currentdate,])
 
