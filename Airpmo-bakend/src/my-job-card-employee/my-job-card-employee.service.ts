@@ -257,7 +257,6 @@ export class MyJobCardEmployeeService {
         throw new UnprocessableEntityException('organization not found');
       }
       const employe = await this.myjobcardemployeemodal.find();
-
       for (let i = 0; i < employe.length; i++) {
         if (employe[i].jc_id === id) {
           if (

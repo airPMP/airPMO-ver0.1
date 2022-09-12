@@ -142,7 +142,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         <div className="  font-secondaryFont ml-[18.65px]  mt-[11.51px] text-[#000000]
                           font-medium not-italic text-[20.09px] tracking-[-0.02em]">
                             {/* Manpower&#160;&&#160;Machinery */}
-                            {/* {heading} */}
+                            {heading}
 
                         </div>
                     </div>
@@ -223,7 +223,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
-
                     {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
                         return <>  {
 

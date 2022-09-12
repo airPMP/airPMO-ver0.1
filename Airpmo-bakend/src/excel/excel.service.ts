@@ -79,6 +79,7 @@ export class ExcelService {
       const payload = req.headers.authorization.split('.')[1];
       const encodetoken = Base64.decode(payload);
       var obj = JSON.parse(encodetoken);
+     
       var organizationkey = obj.organization_id;
       var airmpo_designation = obj.roles[0];
       if (organizationkey === undefined || organizationkey === null) {

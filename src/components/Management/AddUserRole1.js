@@ -63,9 +63,9 @@ const AddUserRole = () => {
     const [rolesalldata, setRolesAllData] = useState(null)
     const [hierarchydata, setHierarchyData] = useState(null)
     const [errrolesalldata, setErrRolesAllData] = useState(false)
-    const [hrmsdata, setHRMSData] = useState(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/`);
-
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('59');
+    const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
+    const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
 
     let navigate = useNavigate();
 
@@ -77,7 +77,6 @@ const AddUserRole = () => {
 
             const now = new Date();
             let some = dateFormat(now, "paddedShortDate");
-            console.log(some)
             let curentDta = some.split('/')
             let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
 
@@ -88,24 +87,52 @@ const AddUserRole = () => {
 
 
             try {
-                // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
+                const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
 
-                const token = reactLocalStorage.get("access_token", false);
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                })
-
-                // let ClientIdStore = []
-                // data1?.data?.values.map((items, id) => {
-                //     if (id >= 1) {
-                //         ClientIdStore.push(items[0])
+                // const token = reactLocalStorage.get("access_token", false);
+                // const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
                 //     }
                 // })
-                // setRolesData(ClientIdStore)
 
-                setRolesData(data1?.data)
+              //  const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
+                // console.log(data1?.data?.values)
+               
+                // let final_arr = []
+                // if(data1?.data?.values.length > 0){
+                //     for(let i=0;i<data1?.data?.values.length;i++){
+                //         if(i > 0){
+                //             let res = {}
+                //             data1.data.values[i].forEach((item,index) => {
+                //                 if(data1.data.values[0][index] === "Id"){
+                //                     res["UserID"] = item
+                //                 }
+                //                 if(data1.data.values[0][index] === "Employee First Name"){
+                //                     res["UserName"] = item +" "+data1.data.values[i][index+1]
+                //                 }
+                //                 if(data1.data.values[0][index] === "Designation"){
+                //                     res["designation"] = item
+                //                 }
+                //                 if(data1.data.values[0][index] === "Attendence"){
+                //                     res["attendence"] = item
+                //                 }
+                //             })
+                //             final_arr.push(res)
+                //         }
+                //     }
+                // }
+                // setRolesData(final_arr)
+                let ClientIdStore = []
+                data1?.data?.values.map((items, id) => {
+                    if (id >= 1) {
+                        ClientIdStore.push(items[0])
+                    }
+                })
+                //console.log('dddd',ClientIdStore);
+                setRolesData(ClientIdStore)
+
+                //setRolesData(data1?.data)
 
             } catch (error) {
                 console.log(error)
@@ -261,7 +288,7 @@ const AddUserRole = () => {
                                                     <option value="" label="Role" />
                                                     {rolesdata?.map((item, id) => {
                                                         return <>
-                                                            <option value={item.designation} label={item.designation} key={id} />
+                                                            <option value={item} label={item    } key={id} />
                                                         </>
                                                     })}
                                                 </select>
