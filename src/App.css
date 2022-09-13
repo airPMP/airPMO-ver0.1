@@ -79,6 +79,12 @@ top:-20px
     height: 350px; 
     overflow-y: scroll;
   }
+
+  .planned_table thead tr:first-child th{
+    position: sticky;
+    top: 0;
+  }
+
   .plann_scroll{
     height: 150px; 
     overflow-y: scroll;

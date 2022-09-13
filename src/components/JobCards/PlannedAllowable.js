@@ -16,6 +16,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [timesheetname, setTimeSheetName] = useState(null);
     const [quantityachieved, setQuantityAchieved] = useState(null);
     const [spidata, setSpiData] = useState(null)
+    const [stdSalaries,setStdSalaries] = useState(null)
+    const [stdRentals,setStdRentals] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
     const equipmentallData = EquipmentAllData.use()
@@ -27,10 +29,45 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const cumilativeQuntity = CumilativeQuntity.use()
     const exceCuteDate = ExceCuteDate.use()
 
+
     const [spidatat, setSpiDatat] = useState(true)
     const [roleDataLocal, setRoleDataLocal] = useState(true)
     let useperma = useParams()
 
+    useEffect(() => {
+        const fetchSalary = async () =>{
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setStdSalaries(ClientIdStore)
+        }
+        fetchSalary()
+        const fetchStdRentals = async () =>{
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Rentals?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setStdRentals(ClientIdStore)
+        }
+        fetchStdRentals()
+    },[])
 
     useEffect(() => {
         if (assigncarddataA && spidatat) {
@@ -112,7 +149,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
-                        console.log("jobCardEmplyeData")
                         MyjobCardAfterPtachApi.set(true)
                         CurrentQuantityTOAchivedData.set(o => !o)
 
@@ -202,24 +238,24 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </div>
             </div>
             <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
-                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
+                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti planned_table">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
                         <tr className="bg-[#ECF1F0]  h-[40px] ">
-                            <th className="py-[20px]">SI No</th>
-                            <th className="py-[20px]">Designation</th>
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">SI No</th>
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Designation</th>
 
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Resources</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Total Hrs</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Resources</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Total Hrs</th>}
-                            <th className="py-[20px]"> Actual Total Hrs</th>
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">P Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">P Total Hrs</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Allowable Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Allowable Total Hrs</th>}
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]"> Actual Total Hrs</th>
 
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Cost</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">SPI</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">CPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]"> Actual Total Cost</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">SPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">CPI</th>}
                         </tr>
-                        <tr className="p-[15px] ">
+                        <tr className="p-[15px]">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
