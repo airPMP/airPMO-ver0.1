@@ -460,7 +460,7 @@ export class JobCardsService {
     if(machinary_data != undefined){
       machinary_data_value = Object.values(machinary_data);
     }
-
+ 
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
     var update_quantity = parseFloat(
@@ -471,7 +471,7 @@ export class JobCardsService {
     const hourly_standard_sal = parseFloat(
       UpdateJobCardDto.hourly_standrd_salrey,
     ).toFixed(2);
-
+    
     ///actual employee array
 
     var data_arr = [];
@@ -494,8 +494,7 @@ export class JobCardsService {
         machinary_arr.push(machinary_data_value[i]);
       }
 
-    }
-    
+    }    
     /////array 2
     var new_array = [];
     var new_array2 = [];
@@ -510,11 +509,14 @@ export class JobCardsService {
         }
       }
     }
- 
+  
+    
     //concate array 1 array 2
     var alwoable_arr = [];
     var dup = [];
     var actual_total_hours = 0;
+    var ht_std_sal = []
+    var hr_salary:any = 0;
     for (let i = 0; i < machinary_arr.length; i++) {
       var popped = machinary_arr[i].pop();
       var children = machinary_arr[i].concat(new_array2[i]);
@@ -528,19 +530,26 @@ export class JobCardsService {
             ((alwoable_arr[index][0]).trim()).toLowerCase() ===
            ( (employe_data_arr[i].designation).trim()).toLowerCase()
           ) {
+           
             const cal = parseInt(employe_data_arr[i].hour);
             actual_total_hours = actual_total_hours + cal;
+            hr_salary = parseFloat(
+              employe_data_arr[i]?.hourly_salrey
+            ).toFixed(2);
+            ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat(
+              employe_data_arr[i]?.hourly_standrd_salrey
+            ).toFixed(2)})
           }
         }
         if (employe_data_arr.length - 1 === i) {
           dup.push(alwoable_arr[index][0]);
-          const actual_cost = actual_total_hours * parseInt(hourly_sal);
-          alwoable_arr[index].push(actual_total_hours, actual_cost);
+          const actual_cost:any = actual_total_hours * hr_salary; 
+          alwoable_arr[index].push(actual_total_hours,parseFloat(actual_cost).toFixed(2));
           actual_total_hours = 0;
+          hr_salary =0;
         }
       }
     }
-    // console.log(alwoable_arr)
     const new_arr2 = [];
     for (let index = 0; index < alwoable_arr.length; index++) {
       new_arr2.push(alwoable_arr[index][0]);
@@ -559,6 +568,7 @@ export class JobCardsService {
       var arr1 = [];
       var arr2 = [];
       var total = 0;
+      let hRate:any = 0
       for (let index = 0; index < res.length; index++) {
         if (res[index].designation != undefined) {
           arr1.push(res[index].designation);
@@ -576,17 +586,20 @@ export class JobCardsService {
               ) {
                 total = total + parseInt(res[i].hour);
                 var h = res[i].designation;
+                hRate = parseFloat(
+                  res[i]?.hourly_salrey
+                ).toFixed(2);
               }
             }
             if (res.length - 1 === i) {
-              const actual_cos = total * parseInt(hourly_sal);
-              arr2.push([h, total, actual_cos]);
+              const actual_cos:any = total * hRate;
+              arr2.push([h, total, parseFloat(actual_cos).toFixed(2)]);
               total = 0;
+              hRate = 0
             }
           }
         }
       }
-      // console.log(arr2)
       for (let m = 0; m < arr2.length; m++) {
         for (let index = 1; index < 5; index++) {
           arr2[m].splice(index, 0, '0');
@@ -602,11 +615,21 @@ export class JobCardsService {
     }
     var cpi_array = [];
     var cpi_array2 = [];
+    const arrayUniqueByKey = [...new Map(ht_std_sal.map(item =>
+      [item['designation'], item])).values()];
+  
+    let h_sal:any = 0
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let j = 0; j < alwoable_arr[index].length; j++) {
+        arrayUniqueByKey.forEach((itm) => {
+          if(itm.designation.toLowerCase() === alwoable_arr[index][0].toLowerCase().trim()){
+            h_sal = itm.salary
+          }
+        })
         var allowable_cost =
-          parseFloat(alwoable_arr[index][4]) * parseFloat(hourly_standard_sal);
+        parseFloat(alwoable_arr[index][4]) * parseFloat(h_sal);
         var actual_cost1 = alwoable_arr[index][5];
+        h_sal = 0;
         var cpi;
         var spi;
         if (actual_cost1 === 0) {
@@ -617,7 +640,7 @@ export class JobCardsService {
         if (update_quantity === 0) {
           spi = 0;
         } else {
-          spi = (current_quantity / update_quantity).toFixed(2);
+          spi = (update_quantity / current_quantity).toFixed(2);
         }
 
         cpi_array.push(alwoable_arr[index][j]);
@@ -629,27 +652,36 @@ export class JobCardsService {
       }
     }
 
-    var actual_total_cost = 0;
+    var actual_total_cost:any = 0;
     var all_allowable_cost = 0;
     // var all_allowable_cost = 0;
+    let hstd_sal:any =0
     for (let i = 0; i < cpi_array2.length; i++) {
-      actual_total_cost = actual_total_cost + cpi_array2[i][6];
+      arrayUniqueByKey.forEach((itm) => {
+        if(itm.designation.toLowerCase() === cpi_array2[i][0].toLowerCase().trim()){
+          hstd_sal = itm.salary
+        }
+      })
+      actual_total_cost = parseFloat(actual_total_cost) + parseFloat(cpi_array2[i][6]);
       all_allowable_cost =
         all_allowable_cost +
-        parseFloat(cpi_array2[i][4]) * parseFloat(hourly_standard_sal);
+        parseFloat(cpi_array2[i][4]) * parseFloat(hstd_sal);  
+        hstd_sal = 0;
+        
     }
     var tota_overall_cpi;
     if(actual_total_cost===0){
       tota_overall_cpi=0;
     }else{
+     
       tota_overall_cpi = (all_allowable_cost / actual_total_cost).toFixed(2);
-    }
+    } 
     var total_overall_spi
     if(total_overall_spi===0){
       total_overall_spi=0;
     }
     else{
-      total_overall_spi = (current_quantity / update_quantity).toFixed(2);
+      total_overall_spi = (update_quantity / current_quantity).toFixed(2);
     }
     let productivity_value = [];
     if(UpdateJobCardDto.manpower_and_machinary.length > 0){

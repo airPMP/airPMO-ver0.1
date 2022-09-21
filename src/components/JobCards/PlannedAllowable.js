@@ -16,6 +16,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [timesheetname, setTimeSheetName] = useState(null);
     const [quantityachieved, setQuantityAchieved] = useState(null);
     const [spidata, setSpiData] = useState(null)
+    const [stdSalaries,setStdSalaries] = useState(null)
+    const [hrmsFormat,setHrmsFormat] = useState(null)
+    const [stdRentals,setStdRentals] = useState(null)
+    const [hrmsEquipment,setHrmsEquipment] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
     const equipmentallData = EquipmentAllData.use()
@@ -27,10 +31,79 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const cumilativeQuntity = CumilativeQuntity.use()
     const exceCuteDate = ExceCuteDate.use()
 
+
     const [spidatat, setSpiDatat] = useState(true)
     const [roleDataLocal, setRoleDataLocal] = useState(true)
     let useperma = useParams()
 
+    useEffect(() => {
+        const fetchSalary = async () =>{
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setStdSalaries(ClientIdStore)
+        }
+        fetchSalary()
+        const fetchStdRentals = async () =>{
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Rentals?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setStdRentals(ClientIdStore)
+        }
+        fetchStdRentals()
+
+        const fetchHrmsEmployee = async () =>{
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setHrmsFormat(ClientIdStore)
+        }
+        fetchHrmsEmployee()
+
+        const hEquipment = async () => {
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20Equipment%20List%20format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setHrmsEquipment(ClientIdStore)
+        }
+        hEquipment()
+    },[])
 
     useEffect(() => {
         if (assigncarddataA && spidatat) {
@@ -89,6 +162,51 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             assign_arr = [...new Map(assign_arr.map(item =>
                 [item[key], item])).values()];
             const token = reactLocalStorage.get("access_token", false);
+            // let empCheck = employeechangeData &&  employeechangeData[employeechangeData.length - 1]
+            let hourly_salrey = 0
+            let hourly_standrd_salrey = 0
+            const final_employee = []
+            if(hrmsFormat && stdSalaries){
+                employeechangeData && employeechangeData.forEach((empCheck) =>{
+
+                    let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
+                    let stdSalary = stdSalaries && stdSalaries.find(item => item.Designation.toLowerCase() === empCheck.designation.toLowerCase())
+                    let ctc = ogEmployee?.CTC
+                    let std = stdSalary?.CTC
+                    var date = new Date();
+                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    // To calculate the time difference of two dates
+                    var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
+      
+                    // To calculate the no. of days between two dates
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
+                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
+
+                    final_employee.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                })
+
+            }
+            const eqData = []
+            if(stdRentals && hrmsEquipment){
+                equipmentallData && equipmentallData.forEach((empCheck) =>{
+                    let ogEmployee = hrmsEquipment && hrmsEquipment.find(item => item.Id === empCheck.equipment_id)
+                    let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type'].toLowerCase() === empCheck.designation.toLowerCase())
+                    let ctc = ogEmployee?.CTC
+                    let std = stdSalary?.CTC
+                    var date = new Date();
+                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    // To calculate the time difference of two dates
+                    var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
+      
+                    // To calculate the no. of days between two dates
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
+                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
+
+                    eqData.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                })
+            }
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
 
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
@@ -97,11 +215,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 cumilative_quantity_log: assign_arr.length > 0 ? assign_arr : [],
                 cumilative_quantity_to_be_achived: cumilativeQuntity,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
-                actual_employees: employeechangeData !== null ? employeechangeData : [],
-                actual_equipments: equipmentallData !== null ? equipmentallData : [],
+                actual_employees: final_employee ? final_employee : [],
+                actual_equipments: eqData? eqData : [],
                 alanned_vs_allowable_vs_actual: [],
-                hourly_salrey: "10",
-                hourly_standrd_salrey: "10"
+                hourly_salrey: hourly_salrey,
+                hourly_standrd_salrey: hourly_standrd_salrey
             },
                 {
                     headers: {
@@ -112,7 +230,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 .then((response) => {
                     console.log(response)
                     if (response.status === 200) {
-                        console.log("jobCardEmplyeData")
                         MyjobCardAfterPtachApi.set(true)
                         CurrentQuantityTOAchivedData.set(o => !o)
 
@@ -202,24 +319,24 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </div>
             </div>
             <div className="flex flex-row mt-[30px]   mr-[20px]  scroll_bar_ManpowerMulti " >
-                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti">
+                <table className=" w-[100%]  pt-[24px] ml-[40px]  scroll_bar_ManpowerMulti planned_table">
                     <thead className="font-secondaryFont text-[#000000] font-normal 
                     not-italic text-[12px] leading-[20px] tracking-[-2%]    ">
                         <tr className="bg-[#ECF1F0]  h-[40px] ">
-                            <th className="py-[20px]">SI No</th>
-                            <th className="py-[20px]">Designation</th>
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">SI No</th>
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Designation</th>
 
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Resources</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">P Total Hrs</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Resources</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">Allowable Total Hrs</th>}
-                            <th className="py-[20px]"> Actual Total Hrs</th>
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">P Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">P Total Hrs</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Allowable Resources</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">Allowable Total Hrs</th>}
+                            <th className="py-[20px] bg-[#ECF1F0]  h-[40px]"> Actual Total Hrs</th>
 
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]"> Actual Total Cost</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">SPI</th>}
-                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px]">CPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]"> Actual Total Cost</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">SPI</th>}
+                            {roleDataLocal !== "albannaadmin" && <th className="py-[20px] bg-[#ECF1F0]  h-[40px]">CPI</th>}
                         </tr>
-                        <tr className="p-[15px] ">
+                        <tr className="p-[15px]">
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
