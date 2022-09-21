@@ -19,6 +19,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [stdSalaries,setStdSalaries] = useState(null)
     const [hrmsFormat,setHrmsFormat] = useState(null)
     const [stdRentals,setStdRentals] = useState(null)
+    const [hrmsEquipment,setHrmsEquipment] = useState(null)
     const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
     const employeechangeData = EmployeeChangeData.use()
     const equipmentallData = EquipmentAllData.use()
@@ -85,6 +86,23 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             setHrmsFormat(ClientIdStore)
         }
         fetchHrmsEmployee()
+
+        const hEquipment = async () => {
+            const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20Equipment%20List%20format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
+            let ClientIdStore = []
+            
+            data1?.data?.values.map((items, index) => {
+                if (index >= 1) {
+                    let res={}
+                    items.forEach((val,i) =>{
+                        res[data1.data.values[0][i]] = val
+                    })
+                    ClientIdStore.push(res)
+                }
+            })
+            setHrmsEquipment(ClientIdStore)
+        }
+        hEquipment()
     },[])
 
     useEffect(() => {
@@ -144,25 +162,50 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             assign_arr = [...new Map(assign_arr.map(item =>
                 [item[key], item])).values()];
             const token = reactLocalStorage.get("access_token", false);
-            let empCheck = employeechangeData &&  employeechangeData[employeechangeData.length - 1]
+            // let empCheck = employeechangeData &&  employeechangeData[employeechangeData.length - 1]
             let hourly_salrey = 0
             let hourly_standrd_salrey = 0
-            if(empCheck && hrmsFormat && stdSalaries){
-                let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
-                let stdSalary = stdSalaries && stdSalaries.find(item => item.Designation.toLowerCase() === empCheck.designation.toLowerCase())
-                console.log('ddd',ogEmployee);
-                let ctc = ogEmployee?.CTC
-                let std = stdSalary?.CTC
-                var date = new Date();
-                var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-                // To calculate the time difference of two dates
-                var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
-  
-                // To calculate the no. of days between two dates
-                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
-                hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
+            const final_employee = []
+            if(hrmsFormat && stdSalaries){
+                employeechangeData && employeechangeData.forEach((empCheck) =>{
 
+                    let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
+                    let stdSalary = stdSalaries && stdSalaries.find(item => item.Designation.toLowerCase() === empCheck.designation.toLowerCase())
+                    let ctc = ogEmployee?.CTC
+                    let std = stdSalary?.CTC
+                    var date = new Date();
+                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    // To calculate the time difference of two dates
+                    var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
+      
+                    // To calculate the no. of days between two dates
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
+                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
+
+                    final_employee.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                })
+
+            }
+            const eqData = []
+            if(stdRentals && hrmsEquipment){
+                equipmentallData && equipmentallData.forEach((empCheck) =>{
+                    let ogEmployee = hrmsEquipment && hrmsEquipment.find(item => item.Id === empCheck.equipment_id)
+                    let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type'].toLowerCase() === empCheck.designation.toLowerCase())
+                    let ctc = ogEmployee?.CTC
+                    let std = stdSalary?.CTC
+                    var date = new Date();
+                    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    // To calculate the time difference of two dates
+                    var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
+      
+                    // To calculate the no. of days between two dates
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
+                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
+
+                    eqData.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                })
             }
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
 
@@ -172,8 +215,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 cumilative_quantity_log: assign_arr.length > 0 ? assign_arr : [],
                 cumilative_quantity_to_be_achived: cumilativeQuntity,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
-                actual_employees: employeechangeData !== null ? employeechangeData : [],
-                actual_equipments: equipmentallData !== null ? equipmentallData : [],
+                actual_employees: final_employee ? final_employee : [],
+                actual_equipments: eqData? eqData : [],
                 alanned_vs_allowable_vs_actual: [],
                 hourly_salrey: hourly_salrey,
                 hourly_standrd_salrey: hourly_standrd_salrey
