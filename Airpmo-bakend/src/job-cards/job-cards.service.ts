@@ -607,7 +607,7 @@ export class JobCardsService {
         alwoable_arr.push(arr2[m]);
       }
     }
-    // console.log(alwoable_arr)
+    
     for (let index = 0; index < alwoable_arr.length; index++) {
       if (employe_data_arr.length === 0) {
         alwoable_arr[index].push(0, 0);
@@ -628,6 +628,7 @@ export class JobCardsService {
         })
         var allowable_cost =
         parseFloat(alwoable_arr[index][4]) * parseFloat(h_sal);
+        
         var actual_cost1 = alwoable_arr[index][5];
         h_sal = 0;
         var cpi;

@@ -9,7 +9,7 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, Job
 
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
-
+    console.log('main_data',assigncarddataA);
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetid, setTimeSheetId] = useState(null);
@@ -30,7 +30,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const quantityToBeAchived = QuantityToBeAchived.use()
     const cumilativeQuntity = CumilativeQuntity.use()
     const exceCuteDate = ExceCuteDate.use()
-
+    const [projectDetailsData, setProjectDetailsData] = useState(null);
 
     const [spidatat, setSpiDatat] = useState(true)
     const [roleDataLocal, setRoleDataLocal] = useState(true)
@@ -103,6 +103,23 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             setHrmsEquipment(ClientIdStore)
         }
         hEquipment()
+        const token = reactLocalStorage.get("access_token", false);
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${assigncarddataA.project_id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+      
+            .then((response) => {
+              setProjectDetailsData(response?.data)
+              if (response.status === 201) {
+      
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+      
+            })
     },[])
 
     useEffect(() => {
@@ -130,7 +147,17 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         return self.indexOf(value) === index;
       }
 
+    const getDaysInCurrentMonth = () => {
+        const date = new Date();
+      
+        return new Date(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          0
+        ).getDate();
+      }
     useEffect(() => {
+
 
         const PatchCalculatedData = (e) => {
             let assign_arr = []
@@ -163,10 +190,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 [item[key], item])).values()];
             const token = reactLocalStorage.get("access_token", false);
             // let empCheck = employeechangeData &&  employeechangeData[employeechangeData.length - 1]
-            let hourly_salrey = 0
-            let hourly_standrd_salrey = 0
+         
             const final_employee = []
             if(hrmsFormat && stdSalaries){
+                let hourly_salrey = 0
+                let hourly_standrd_salrey = 0
                 employeechangeData && employeechangeData.forEach((empCheck) =>{
 
                     let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
@@ -180,15 +208,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
       
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
-                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
-
+                    hourly_salrey = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    hourly_standrd_salrey = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     final_employee.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
                 })
 
             }
             const eqData = []
             if(stdRentals && hrmsEquipment){
+                let hourly_salrey = 0
+                let hourly_standrd_salrey = 0
                 equipmentallData && equipmentallData.forEach((empCheck) =>{
                     let ogEmployee = hrmsEquipment && hrmsEquipment.find(item => item.Id === empCheck.equipment_id)
                     let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type'].toLowerCase() === empCheck.designation.toLowerCase())
@@ -201,9 +230,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
       
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                    hourly_salrey = ctc / Number(Difference_In_Days) / Number(empCheck.hour)
-                    hourly_standrd_salrey = std / Number(Difference_In_Days) / Number(empCheck.hour)
-
+                    hourly_salrey = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    hourly_standrd_salrey = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     eqData.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
                 })
             }
@@ -218,8 +246,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 actual_employees: final_employee ? final_employee : [],
                 actual_equipments: eqData? eqData : [],
                 alanned_vs_allowable_vs_actual: [],
-                hourly_salrey: hourly_salrey,
-                hourly_standrd_salrey: hourly_standrd_salrey
+                hourly_salrey: 0,
+                hourly_standrd_salrey: 0
             },
                 {
                     headers: {
