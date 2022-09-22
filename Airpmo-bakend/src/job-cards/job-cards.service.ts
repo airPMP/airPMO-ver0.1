@@ -613,7 +613,6 @@ export class JobCardsService {
         alwoable_arr[index].push(0, 0);
       }
     }
-    console.log('allowable',alwoable_arr);
     
     var cpi_array = [];
     var cpi_array2 = [];
