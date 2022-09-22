@@ -57,7 +57,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
 
   const GangProductData = (e, data) => {
     QuantityTOAchivedData.set(e.target.value)
-    console.log(e.target.value)
+    console.log('demo',e.target.value)
     // MyJobcardActivityCoard.set(false)
   }
 

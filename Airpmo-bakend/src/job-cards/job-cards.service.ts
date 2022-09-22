@@ -613,6 +613,7 @@ export class JobCardsService {
         alwoable_arr[index].push(0, 0);
       }
     }
+    
     var cpi_array = [];
     var cpi_array2 = [];
     const arrayUniqueByKey = [...new Map(ht_std_sal.map(item =>
@@ -627,9 +628,10 @@ export class JobCardsService {
           }
         })
         var allowable_cost =
-        parseFloat(alwoable_arr[index][4]) * parseFloat(h_sal);
+        parseFloat(alwoable_arr[index][5]) * parseFloat(h_sal);
+       
         
-        var actual_cost1 = alwoable_arr[index][5];
+        var actual_cost1 = alwoable_arr[index][6];
         h_sal = 0;
         var cpi;
         var spi;
@@ -637,6 +639,10 @@ export class JobCardsService {
           cpi = 0;
         } else {
           cpi = (allowable_cost / actual_cost1).toFixed(2);
+          if(cpi == 'NaN'){
+            cpi = 0
+          }
+          
         }
         if (update_quantity === 0) {
           spi = 0;
