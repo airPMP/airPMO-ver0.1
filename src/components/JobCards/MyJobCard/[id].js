@@ -576,7 +576,7 @@ const MyJobCardsId = () => {
                     <th className=" ">{item?.unit}</th>
                     <th className=" ">{item?.quantity_to_be_achieved}</th>
                     <th className=" ">{item?.cumilative_quantity_to_be_achived}</th>
-                    <th className=" ">{Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) == 'Infinity' || isNaN(Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved)) ? 0 : (Number(item?.updated_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) * 100).toFixed(2)}</th>
+                    <th className=" ">{Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) == 'Infinity' || isNaN(Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved)) ? 0 : (Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) * 100).toFixed(2)}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
                     {/* <th className=" "> {item?.assign ? item.assign : "no"}</th>
