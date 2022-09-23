@@ -533,9 +533,14 @@ export class JobCardsService {
            
             const cal = parseInt(employe_data_arr[i].hour);
             actual_total_hours = actual_total_hours + cal;
-            hr_salary = parseFloat(
-              employe_data_arr[i]?.hourly_salrey
-            ).toFixed(2);
+            
+            
+            let t_sal:any =  employe_data_arr[i]?.hourly_salrey * cal
+            
+            hr_salary = Number(hr_salary) + Number(parseFloat(
+              t_sal
+              ).toFixed(2));
+            let stds:any =  employe_data_arr[i]?.hourly_standrd_salrey * cal
             ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat(
               employe_data_arr[i]?.hourly_standrd_salrey
             ).toFixed(2)})
@@ -543,7 +548,8 @@ export class JobCardsService {
         }
         if (employe_data_arr.length - 1 === i) {
           dup.push(alwoable_arr[index][0]);
-          const actual_cost:any = actual_total_hours * hr_salary; 
+          // const actual_cost:any = actual_total_hours * hr_salary; 
+          const actual_cost:any = hr_salary; 
           alwoable_arr[index].push(actual_total_hours,parseFloat(actual_cost).toFixed(2));
           actual_total_hours = 0;
           hr_salary =0;
@@ -563,7 +569,8 @@ export class JobCardsService {
         }
       });
     });
- 
+  
+    
     if (res.length != 0) {
       var arr1 = [];
       var arr2 = [];
@@ -586,8 +593,9 @@ export class JobCardsService {
               ) {
                 total = total + parseInt(res[i].hour);
                 var h = res[i].designation;
+                let tsal:any =  res[i]?.hourly_salrey * parseInt(res[i].hour)
                 hRate = parseFloat(
-                  res[i]?.hourly_salrey
+                  tsal
                 ).toFixed(2);
               }
             }
@@ -613,9 +621,12 @@ export class JobCardsService {
         alwoable_arr[index].push(0, 0);
       }
     }
+ 
     
     var cpi_array = [];
     var cpi_array2 = [];
+   
+    
     const arrayUniqueByKey = [...new Map(ht_std_sal.map(item =>
       [item['designation'], item])).values()];
   
@@ -627,11 +638,13 @@ export class JobCardsService {
             h_sal = itm.salary
           }
         })
+        
         var allowable_cost =
         parseFloat(alwoable_arr[index][5]) * parseFloat(h_sal);
        
         
         var actual_cost1 = alwoable_arr[index][6];
+        
         h_sal = 0;
         var cpi;
         var spi;
@@ -658,7 +671,8 @@ export class JobCardsService {
         }
       }
     }
-
+    
+    
     var actual_total_cost:any = 0;
     var all_allowable_cost = 0;
     // var all_allowable_cost = 0;
