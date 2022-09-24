@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { MyJobcardActivityCoard, ProjectObjectData, QuantityTOAchivedData } from "../../SimplerR/auth";
 const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivitysheetarray,
   allCalcultedMachineryData, patchResponeData,updateData }) => {
-  
+  console.log('deccccccc',updateData);
   const projectobjectdata = ProjectObjectData.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
   const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(updateData?.quantity_to_be_achieved)
@@ -30,7 +30,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
   //   }, [allCalcultedMachineryData])
 
   useEffect(() => {
-    console.log(patchResponeData)
+    console.log('patch',patchResponeData)
     if (patchResponeData !== undefined
       &&
       // patchResponeData?.length !== 0 &&
@@ -42,6 +42,7 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
       // }
       // else{
       setGANG_PRODUCTIVIVY(patchResponeData.gang_productivity)
+      QuantityTOAchivedData.set(patchResponeData.gang_productivity)
       let arryData = []
       Object.values(patchResponeData?.productivity[0]).map((item, id) => {
         if (item[1] !== "0.00" && !item[0].startsWith(" Part NO")) {
@@ -49,11 +50,27 @@ const ManpowerAndMachinery = ({ closeModal, productivitysheetobject, productivit
         }
       })
       setProductivityData(arryData)
+    }else{
+      
+          // if(updateData && updateData.manpower_and_machinary && updateData.manpower_and_machinary.length > 0){
+          //   let arryData = []
+          //   setGANG_PRODUCTIVIVY(updateData.quantity_to_be_achieved)
+          //   QuantityTOAchivedData.set(updateData.quantity_to_be_achieved)
+          //   Object.values(updateData?.manpower_and_machinary[0]).map((item, id) => {
+          //     if (item[1] !== "0.00" && !item[0].startsWith(" Part NO")) {
+          //       arryData.push(item)
+          //     }
+          //   })
+          //   setProductivityData(arryData)
+          // }
+
     }
     // quantity_to_be_achived 
 
 
   }, [patchResponeData, allCalcultedMachineryData])
+
+
 
   const GangProductData = (e, data) => {
     QuantityTOAchivedData.set(e.target.value)
