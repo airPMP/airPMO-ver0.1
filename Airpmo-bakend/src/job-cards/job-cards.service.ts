@@ -496,20 +496,20 @@ export class JobCardsService {
 
     }    
     /////array 2
+    
     var new_array = [];
     var new_array2 = [];
     for (let j = 0; j < machinary_arr.length; j++) {
       for (let k = 1; k < machinary_arr[j].length - 1; k++) {
         const a = machinary_arr[j][k] / current_quantity;
         var calculated_all = (a * update_quantity).toFixed(2);
-        new_array.push(calculated_all);
+        new_array.push(calculated_all); 
         if (machinary_arr[j].length - 2 === k) {
           new_array2.push(new_array);
           new_array = [];
         }
       }
     }
-  
     
     //concate array 1 array 2
     var alwoable_arr = [];
@@ -582,7 +582,7 @@ export class JobCardsService {
         }
         var uniqueChars = [...new Set(arr1)];
       }
-
+     
       if (uniqueChars.length != 0 || uniqueChars.length != null) {
         for (let index = 0; index < uniqueChars.length; index++) {
           for (let i = 0; i < res.length; i++) {
@@ -626,6 +626,7 @@ export class JobCardsService {
     var cpi_array = [];
     var cpi_array2 = [];
    
+  
     
     const arrayUniqueByKey = [...new Map(ht_std_sal.map(item =>
       [item['designation'], item])).values()];
@@ -671,7 +672,6 @@ export class JobCardsService {
         }
       }
     }
-    
     
     var actual_total_cost:any = 0;
     var all_allowable_cost = 0;

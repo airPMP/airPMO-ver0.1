@@ -44,7 +44,7 @@ const UpdateCreateJCId = () => {
   // const [currentdate, setCurrentDate] = useState(null)
   const [projectidperma, setProjectIdPerma] = useState(null)
   const [zonedata, setZoneData] = useState(null)
-
+  const [menPower,setMenPower] = useState([])
   const [dataData, setdataData] = useState("")
 
 
@@ -90,12 +90,13 @@ const UpdateCreateJCId = () => {
         setdataData(response?.data?.jc_creation)
         setZoneName(response?.data?.zone)
         setSubZoneName(response?.data?.sub_zone)
-
+        setMenPower(response?.manpower_and_machinary)
        if(response?.data?.quantity_to_be_achieved){
          QuantityTOAchivedData.set(response?.data?.quantity_to_be_achieved)
 
        }
 
+       
 
         if(response?.data?.activity_code){
           let productArray = []
@@ -185,7 +186,7 @@ const UpdateCreateJCId = () => {
       values.sub_zone = subzonename
       values.unit = productivitysheetobject[" UNIT "]
       values.quantity_to_be_achieved = quantitytoachivedData
-      // values.manpower_and_machinary = [productivitysheetobject]
+      values.manpower_and_machinary = menPower
 
 
 
@@ -242,6 +243,8 @@ const UpdateCreateJCId = () => {
     })
     setProductivitysheetarray(productArray)
   }
+
+
 
   const ZoneNameFun = (e) => {
 
@@ -305,10 +308,31 @@ const UpdateCreateJCId = () => {
       })
 
         .then((response) => {
-          console.log(response?.data)
-          setZoneData(response?.data)
-          if (response.status === 201) {
+          if (response.status === 200) {
+            setZoneData(response?.data)
+            let sub_zone = '';
+            if(response?.data){
+              sub_zone = response.data.find(item => item.zone_name === zonename)
+              if(sub_zone !== ''){
+                axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${sub_zone._id}/subzone`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+            
+                  .then((res) => {
+                    setSubZoneData(res?.data)
+                    if (res.status === 200) {
+            
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err)
+            
+                  })
 
+              }
+            }
           }
         })
         .catch((error) => {
@@ -337,7 +361,7 @@ const UpdateCreateJCId = () => {
 
     }
 
-  }, [updatedata])
+  }, [updatedata,zonename])
 
 
   console.log(dataData)
