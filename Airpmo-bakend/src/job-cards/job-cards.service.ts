@@ -496,7 +496,6 @@ export class JobCardsService {
 
     }    
     /////array 2
-    console.log('man',machinary_arr);
     
     var new_array = [];
     var new_array2 = [];
@@ -504,10 +503,7 @@ export class JobCardsService {
       for (let k = 1; k < machinary_arr[j].length - 1; k++) {
         const a = machinary_arr[j][k] / current_quantity;
         var calculated_all = (a * update_quantity).toFixed(2);
-        new_array.push(calculated_all);
-        console.log('dev',new_array,a,update_quantity);
-        console.log('qun',machinary_arr[j][k],current_quantity);
-        
+        new_array.push(calculated_all); 
         if (machinary_arr[j].length - 2 === k) {
           new_array2.push(new_array);
           new_array = [];
@@ -676,8 +672,6 @@ export class JobCardsService {
         }
       }
     }
-    
-    console.log('cpi_arr',cpi_array2);
     
     var actual_total_cost:any = 0;
     var all_allowable_cost = 0;
