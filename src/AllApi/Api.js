@@ -5,12 +5,19 @@ import { ProjectObjectData } from "../SimplerR/auth";
 
 export const getUserApi = async () => {
     const token = reactLocalStorage.get("access_token", false);
+    const permisions = reactLocalStorage.get("permisions", false);
 
-    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    if (permisions == "ALL" || permisions.includes('GET-USERS') || permisions.includes('CREATE-USERS') || permisions.includes('EDIT-USERS')) {
+
+        return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+    } else {
+        return false
+    }
 
 };
 
@@ -39,11 +46,18 @@ export const getRoleApi = async () => {
 export const getClientApi = async () => {
     const token = reactLocalStorage.get("access_token", false);
 
-    return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    const permisions = reactLocalStorage.get("permisions", false);
+
+    if (permisions == "ALL" || permisions.includes('GET-CLIENTS') || permisions.includes('CREATE-CLIENTS') || permisions.includes('EDIT-CLIENTS')) {
+        return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    } else {
+        return false
+    }
+
 };
 
 export const getProjectApi = async () => {
@@ -92,11 +106,15 @@ export const getMyJobCardApi = async () => {
 
 export const getAllOrganization = async () => {
     const token = reactLocalStorage.get("access_token", false);
+    const permisions = reactLocalStorage.get("permisions", false);
+
+    if (permisions == "ALL" || permisions.includes('GET-ORGANIZATION') || permisions.includes('CREATE-ORGANIZATION') || permisions.includes('EDIT-ORGANIZATION')) {
     return await axios.get(`${process.env.REACT_APP_BASE_URL}/api/organization`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+}
 };
 
 export const getUserByOrgId = async (org_id) => {
