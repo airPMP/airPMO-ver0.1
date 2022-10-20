@@ -17,8 +17,8 @@ const DataInjestion = () => {
   let urlTitle = useLocation();
 
   useEffect(() => {
-    if (urlTitle.pathname === "/DataInjestion") {
-      setTitle("Data Injestion");
+    if (urlTitle.pathnameIngesion === "/DataInjestion") {
+      setTitle("Data Ingesion");
       // window.location.reload(false)
     }
     // window.location.reload(false)

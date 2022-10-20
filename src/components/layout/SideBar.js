@@ -340,7 +340,7 @@ const SideBar = ({ sendDataToParent }) => {
               : "text-[#000000]"
           } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
         >
-          Data Injestion
+          Data Ingesion
         </div>
       </div>
       {/* <div

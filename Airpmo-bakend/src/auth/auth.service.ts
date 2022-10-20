@@ -42,18 +42,18 @@ export class AuthService {
 
         const payload = { FirstName: user.FirstName, Email: user.Email, roles: role_name, permission: permission,organization_id:userdata.organization_id };
 
-        if(userdata.organization_id == '1'){
+        // if(userdata.organization_id == '1'){
 
-        }else{
-          let domain_match = await this.orgainizationService.findOne(userdata.organization_id);
+        // }else{
+        //   let domain_match = await this.orgainizationService.findOne(userdata.organization_id);
           
-          if(domain_match){
-            if(domain_match?.domain != loginusersDto.domain_name){
+        //   if(domain_match){
+        //     if(domain_match?.domain != loginusersDto.domain_name){
               
-              throw new UnauthorizedException("Domain not Match")
-            }
-          }
-        }
+        //       throw new UnauthorizedException("Domain not Match")
+        //     }
+        //   }
+        // }
 
         const token = this.jwtService.sign(payload)
 
