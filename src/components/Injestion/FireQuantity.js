@@ -46,7 +46,7 @@ const FireQuantity = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
-            setTitle("Data Injestion");
+            setTitle("Data Ingesion");
         }
     }, [urlTitle.pathname])
 
@@ -253,7 +253,7 @@ const FireQuantity = () => {
                     <SideBar />
                 </div>
                 <div className="flex flex-col">
-                    <Header title="Data&nbsp;Injestion" />
+                    <Header title="Data&nbsp;Ingesion" />
 
                     <div className=" flex  justify-center ">
                         <button onClick={() => { navigate("/DataInjestion/QuantitySheet"); window.location.reload(false); }}
