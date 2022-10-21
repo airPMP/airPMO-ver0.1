@@ -48,7 +48,7 @@ const QuantitySheet = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
-            setTitle("Data Ingesion");
+            setTitle("Data Ingestion");
         }
     }, [urlTitle.pathname])
 
@@ -244,7 +244,7 @@ console.log(filteredsheetdata)
                     <SideBar />
                 </div>
                 <div className="flex flex-col">
-                    <Header title="Data&nbsp;Ingesion" />
+                    <Header title="Data&nbsp;Ingestion" />
 
                     <div className=" flex  justify-center ">
                         <button onClick={() => { navigate("/DataInjestion/QuantitySheet"); window.location.reload(false); }}

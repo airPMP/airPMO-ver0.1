@@ -329,7 +329,7 @@ const ProductivitySheet = () => {
                     <SideBar />
                 </div>
                 <div className="flex flex-col">
-                    <Header title="Data&nbsp;Ingesion" />
+                    <Header title="Data&nbsp;Ingestion" />
 
 
                     <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">

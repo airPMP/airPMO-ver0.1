@@ -11,7 +11,7 @@ const HRMS = () => {
     useEffect(() => {
 
         if (urlTitle.pathname === "/DataInjestion/HRMS") {
-            setTitle("Data Ingesion");
+            setTitle("Data Ingestion");
         }
     }, [urlTitle.pathname])
 
