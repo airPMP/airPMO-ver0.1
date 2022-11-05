@@ -37,7 +37,7 @@ export class ExcelService {
     var arr = workBook.SheetNames;
     for (let i = 0; i < arr.length; i++) {
       var element = arr[i];
-      if (element == 'productive_sheet')
+      // if (element == 'productive_sheet')
         var sheet: xlsx.WorkSheet = await workBook.Sheets[element];
     }
     if (sheet) {
