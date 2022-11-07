@@ -8,7 +8,7 @@ import SideBar from '../layout/SideBar'
 import { useLocation } from "react-router-dom";
 import ProductSearch from './ProductSearch';
 import { getClientApi } from '../../AllApi/Api'
-import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye } from '../../SimplerR/auth'
+import { SearchClientSet, ProductiveSheetId, ProductiveNameActive, UpdateSheetData, EntityShowProductiveEye, ProjectObjectData } from '../../SimplerR/auth'
 
 const ProductivitySheet = () => {
 
@@ -25,7 +25,6 @@ const ProductivitySheet = () => {
     const [activenamedata, setActiveNameData] = useState(null)
     const [activenamedatacode, setActiveNameDataCode] = useState(null)
 
-
     const [UNIT, setUNIT] = useState(null)
     const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
 
@@ -38,15 +37,13 @@ const ProductivitySheet = () => {
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
 
-
-
     const { addToast } = useToasts();
     const searchclientset = SearchClientSet.use()
     const productivesheetid = ProductiveSheetId.use()
     const projectnameactive = ProductiveNameActive.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
-
+    const projectObjectData = ProjectObjectData.use()
 
 
     useEffect(() => {
@@ -108,7 +105,6 @@ const ProductivitySheet = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data)
                 setProjectSearchData(response?.data)
 
                 if (response?.data.length === 0) {
@@ -139,7 +135,6 @@ const ProductivitySheet = () => {
         let value = e.target.value.toUpperCase();
         let result = []
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
-            console.log(data)
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
             }
@@ -158,9 +153,6 @@ const ProductivitySheet = () => {
             }
         })
             .then((response) => {
-                console.log(response?.data)
-
-
 
                 if (response?.data?.productivitysheet.length !== 0) {
                     setProductiveSheetAllData(response?.data?.productivitysheet)
@@ -415,10 +407,10 @@ const ProductivitySheet = () => {
                                     <div className=" grid grid-cols-2">
                                         <div>
                                             <p className="text-[#A3AED0] text-[24px] font-medium font-sans">
-                                                Productivity Sheet
+                                                {projectObjectData?.project_name}
                                             </p>
                                             <div className="text-[#1B2559] text-[18px] font-bold">
-                                                Shining Towers
+                                                {projectObjectData?.project_id ? projectObjectData?.project_id : 'Shining Towers'}
                                             </div>
                                         </div>
                                         <div className="ml-[110px]">
