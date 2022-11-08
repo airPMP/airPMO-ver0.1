@@ -504,8 +504,9 @@ const ProductivitySheet = () => {
                          font-normal not-italic  " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  ">
-                                    <th className="w-[25%] py-[13px]">Activity&nbsp;Code</th>
-                                    <th className="w-[35%] py-[13px]">Activity&nbsp;Name</th>
+                                    <th className="w-[15%] py-[13px]">Activity&nbsp;Code</th>
+                                    <th className="w-[25%] py-[13px]">Activity&nbsp;Name</th>
+                                    <th className="w-[25%] py-[13px]">Sub Activity&nbsp;Name</th>
                                     <th className="w-[20%] py-[13px]">Unit of Measure</th>
                                     <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
@@ -517,6 +518,7 @@ const ProductivitySheet = () => {
                                         <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
                                             <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity name"]}</td>
+                                            <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Sub Activity Name"]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
 
@@ -613,7 +615,8 @@ const ProductivitySheet = () => {
                          font-normal not-italic ">
                             <tr className="max-h-[52.84px] text-center  ">
                                 <th className="w-[15%] py-[13px]">Activity Code</th>
-                                <th className="w-[25%] py-[13px]">Activity Name</th>
+                                <th className="w-[15%] py-[13px]">Activity Name</th>
+                                <th className="w-[15%] py-[13px]">Sub Activity Name</th>
                                 <th className="w-[20%] py-[13px]">Unit of Measure</th>
                                 <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
@@ -625,6 +628,7 @@ const ProductivitySheet = () => {
                                         <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity name"]}</td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity Name"]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
 
