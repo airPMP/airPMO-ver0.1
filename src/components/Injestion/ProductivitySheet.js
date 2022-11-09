@@ -24,6 +24,7 @@ const ProductivitySheet = () => {
     const [filteredsheetdata, setFilteredSheetData] = useState(null);
     const [activenamedata, setActiveNameData] = useState(null)
     const [activenamedatacode, setActiveNameDataCode] = useState(null)
+    const [dropDown, setDropDown] = useState()
 
     const [UNIT, setUNIT] = useState(null)
     const [GANG_PRODUCTIVIVY, setGANG_PRODUCTIVIVY] = useState(null)
@@ -93,6 +94,14 @@ const ProductivitySheet = () => {
 
         UpdateSheetData.set(false)
     }, [productivesheetsllsata, sheetupdateddata, updatesheetdata])
+
+    useEffect(()=>{
+        let temp = {}
+        filteredsheetdata?.forEach(i => {
+        temp = {...temp,...{[i['Activity code']]: true}}
+        })
+    setDropDown(temp)
+    },[filteredsheetdata])
 
     const clientidname = (e, Objdata) => {
         setChooseprojectOpnCls(false)
@@ -310,9 +319,17 @@ const ProductivitySheet = () => {
     }
 
 
+    const storedropDown = (item) => {
+        let data = dropDown
+        data[item] = !data[item]
+        console.log("data==",data);
+        setDropDown(data)
+    }
+    useEffect(()=>{
 
 
-
+        console.log("dropDown==",dropDown);
+    },[dropDown])
     return (
         <>
 
@@ -367,7 +384,7 @@ const ProductivitySheet = () => {
                                     {openSearchData && <ul className="searchList productiveSeacrhch"  >
 
                                         {
-                                            searchdata.map((item, id) => { // get Search client data c-2 -5a
+                                            searchdata?.map((item, id) => { // get Search client data c-2 -5a
 
                                                 return <li onClick={(e) => clientidname(e, item)}>
                                                     {
@@ -504,75 +521,109 @@ const ProductivitySheet = () => {
                          font-normal not-italic  " style={{ width: "100%" }}>
 
                                 <tr className="max-h-[52.84px] text-center  ">
-                                    <th className="w-[15%] py-[13px]">Activity&nbsp;Code</th>
-                                    <th className="w-[25%] py-[13px]">Activity&nbsp;Name</th>
-                                    <th className="w-[25%] py-[13px]">Sub Activity&nbsp;Name</th>
-                                    <th className="w-[20%] py-[13px]">Unit of Measure</th>
-                                    <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
+                                    <th className="w-[2%] py-[13px]"></th>
+                                    <th className="w-[10%] py-[13px]">Activity&nbsp;Code</th>
+                                    <th className="w-[10%] py-[13px]">Sub Activity&nbsp;Code</th>
+                                    <th className="w-[15%] py-[13px]">Activity&nbsp;Name</th>
+                                    <th className="w-[15%] py-[13px]">Sub Activity&nbsp;Name</th>
+                                    <th className="w-[10%] py-[13px]">Unit of Measure</th>
+                                    <th className="w-[10%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
                                 </tr>
 
 
-                                {sheetupdateddata && filteredsheetdata?.map((item, i) => (
-                                    <tbody className="  mb-[10px]   ">
-                                        <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
-                                            <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
-                                            <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity name"]}</td>
-                                            <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Sub Activity Name"]}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
-                                            <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td className="p-[10px]"></td>
-                                        </tr>
-                                        {activenamedata && activenamedatacode === item["Activity code"] ?
-
-                                            <tr className="mb-4"
-                                                style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
-
-                                                <tr className="h-[35px]   " >
-                                                    <div className="flex" style={{ borderBottom: "1px solid black" }}>
-                                                        <input type='number' placeholder="Gang Productivity"
-                                                            className="border-none pt-2  gang_product_input"
-                                                            value={GANG_PRODUCTIVIVY}
-                                                            onChange={(e) => GangProductData(e, item)}
-
-                                                        />
-                                                        <span className="pl-2 pt-2 text-[15px]" >{UNIT}</span>
-                                                    </div>
+                                {sheetupdateddata && filteredsheetdata?.map((item, i) => {
+                                    // if(item["Activity code"]){
+                                        return(
+                                          <tbody className="mb-[10px]">
+                                           <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
+                                               <td style={{'cursor':'pointer'}} onClick={()=>storedropDown(item['Activity code'])} >{item["subActitvity"]?.length ? <svg height="20" viewBox="0 0 1792 1792" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z"/></svg> : ''}</td>
+                                               <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
+                                               <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity code"]} </td>
+                                               <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity name"]}</td>
+                                               <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Sub Activity Name"]}</td>
+                                               <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
+                                               <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
+                                           </tr>
+                                           <tr>
+                                               <td className="p-[10px]"></td>
+                                           </tr>
+                                           {/* <tr> */}
+                                           {dropDown[item['Activity code']] && item?.subActitvity && item?.subActitvity?.length > 0 ? 
+                                           <>
+                                           {
+                                               item["subActitvity"]?.map((element)=>{
+                                                   return(
+                                                    <>
+                                                        <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
+                                                            <td></td>
+                                                            <td className="pt-[15px] pb-[14.83px]"></td>
+                                                       <td className="pt-[15px] pb-[14.83px]">{element?.['Sub Activity code']}</td>
+                                                       <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity name"]}</td>
+                                                       <td className="pt-[15px] pb-[14.83px]">{element?.['Sub Activity Name']}</td>
+                                                       <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
+                                               <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
+                                                   </tr>
+                                                    <tr>
+                                                    <td className="p-[10px]"></td>
                                                 </tr>
-
-
-                                                {Object.entries(item).slice(4).map(([key, value]) => {
-                                                    return <> {
-                                                        value !== 0 ?
-                                                            <>
-                                                                <tr className="h-[35px]  float-left">
-                                                                    <div className="p-[10px]   cursor-pointer whitespace-nowrap">
-                                                                        <span className="p-3">
-                                                                            {key}</span>
-                                                                        =
-                                                                        <span className="pl-5">
-                                                                            {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                                * GANG_PRODUCTIVIVY).toFixed(2)}
-                                                                        </span>
-                                                                    </div>
-                                                                </tr>
-                                                                <br />
-                                                            </>
-                                                            : <>
-                                                            </>
-                                                    }
-                                                    </>
-                                                })}
-                                            </tr> : <>
-                                            </>}
-                                        <tr>
-                                            <td className="p-[10px]"></td>
-                                        </tr>
-                                    </tbody>
-                                ))}
+                                                </>
+                                                   )
+                                               })
+                                           }
+                                      </>
+                                           : '' }
+                                           {/* </tr> */}
+                                           {activenamedata && activenamedatacode === (item["Activity code"] || item["Sub Activity code"]) ?
+   
+                                               <tr className="mb-4"
+                                                   style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+   
+                                                   <tr className="h-[35px]   " >
+                                                       <div className="flex" style={{ borderBottom: "1px solid black" }}>
+                                                           <input type='number' placeholder="Gang Productivity"
+                                                               className="border-none pt-2  gang_product_input"
+                                                               value={GANG_PRODUCTIVIVY}
+                                                               onChange={(e) => GangProductData(e, item)}
+   
+                                                           />
+                                                           <span className="pl-2 pt-2 text-[15px]" >{UNIT}</span>
+                                                       </div>
+                                                   </tr>
+   
+   
+                                                   {Object.entries(item).slice(4).map(([key, value]) => {
+                                                       return <> {
+                                                           value !== 0 ?
+                                                               <>
+                                                                   <tr className="h-[35px]  float-left">
+                                                                       <div className="p-[10px]   cursor-pointer whitespace-nowrap">
+                                                                           <span className="p-3">
+                                                                               {key}</span>
+                                                                           =
+                                                                           <span className="pl-5">
+                                                                               {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                                                   * GANG_PRODUCTIVIVY).toFixed(2)}
+                                                                           </span>
+                                                                       </div>
+                                                                   </tr>
+                                                                   <br />
+                                                               </>
+                                                               : <>
+                                                               </>
+                                                       }
+                                                       </>
+                                                   })}
+                                               </tr> : <>
+                                               </>}
+                                           <tr>
+                                               <td className="p-[10px]"></td>
+                                           </tr>
+                                       </tbody> 
+                                       )
+                                    // }
+                                    
+                                } )}
 
                             </table>
                         </div>
@@ -614,11 +665,12 @@ const ProductivitySheet = () => {
                             text-[#8F9BBA] text-[12px] font-sans
                          font-normal not-italic ">
                             <tr className="max-h-[52.84px] text-center  ">
-                                <th className="w-[15%] py-[13px]">Activity Code</th>
+                                <th className="w-[10%] py-[13px]">Activity Code</th>
+                                <th className="w-[10%] py-[13px]">Sub Activity Code</th>
                                 <th className="w-[15%] py-[13px]">Activity Name</th>
                                 <th className="w-[15%] py-[13px]">Sub Activity Name</th>
-                                <th className="w-[20%] py-[13px]">Unit of Measure</th>
-                                <th className="w-[20%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
+                                <th className="w-[10%] py-[13px]">Unit of Measure</th>
+                                <th className="w-[10%] py-[13px]">GANG Productivity (Aprvd by PM)</th>
 
                             </tr>
                             {productivesheetsllsata?.map((item, i) => {
@@ -627,6 +679,7 @@ const ProductivitySheet = () => {
                                     <tbody className="  mb-[10px]   ">
                                         <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
+                                            <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity Code"]} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item["Activity name"]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity Name"]}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
