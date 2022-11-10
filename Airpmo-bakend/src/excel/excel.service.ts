@@ -41,17 +41,34 @@ export class ExcelService {
         var sheet: xlsx.WorkSheet = await workBook.Sheets[element];
     }
     if (sheet) {
-      var jsonData = await xlsx.utils.sheet_to_json(sheet, {
+      var jsonData :any = await xlsx.utils.sheet_to_json(sheet, {
         dateNF: 'YYYY-MM-DD',
-      });;
+      });
     } else {
       throw new NotFoundException('sheet  not found');
     }
+
+    var store = 0;
+    let new_ary = []
+        
+    jsonData.map((item, index)=>{
+        
+      if(item['Activity code']){
+          store = 0
+          new_ary.push(item)
+          store = index
+          jsonData[store].subActitvity = []
+      }else{
+            jsonData[store].subActitvity.push(item)
+      }
+        
+    })
+
     var user = await this.excelModel.findOne({ project_id: projectid });
     if (!user) {
       if (files[0].fieldname === 'productivity' && projectid) {
         var pr = await this.excelModel.create({
-          productivitysheet: jsonData,
+          productivitysheet: new_ary,
           project_id: projectid,
           organization_id: organization_id,
         });
