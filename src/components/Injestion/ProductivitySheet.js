@@ -98,9 +98,9 @@ const ProductivitySheet = () => {
     useEffect(()=>{
         let temp = {}
         filteredsheetdata?.forEach(i => {
-        temp = {...temp,...{[i['Activity code']]: true}}
+            temp = {...temp,...{[i['Activity code']]: false}}
         })
-    setDropDown(temp)
+        setDropDown(temp)
     },[filteredsheetdata])
 
     const clientidname = (e, Objdata) => {
@@ -318,18 +318,10 @@ const ProductivitySheet = () => {
 
     }
 
-
-    const storedropDown = (item) => {
-        let data = dropDown
-        data[item] = !data[item]
-        console.log("data==",data);
-        setDropDown(data)
+    const storedropDown = (code) => {
+        setDropDown({...dropDown, [code]:!dropDown[code]})
     }
-    useEffect(()=>{
 
-
-        console.log("dropDown==",dropDown);
-    },[dropDown])
     return (
         <>
 
@@ -537,7 +529,10 @@ const ProductivitySheet = () => {
                                         return(
                                           <tbody className="mb-[10px]">
                                            <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
-                                               <td style={{'cursor':'pointer'}} onClick={()=>storedropDown(item['Activity code'])} >{item["subActitvity"]?.length ? <svg height="20" viewBox="0 0 1792 1792" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z"/></svg> : ''}</td>
+                                               <td style={{'cursor':'pointer'}} onClick={()=>storedropDown(item['Activity code'])} >
+                                                {item["subActitvity"]?.length ? 
+                                                    <svg style={{transform: dropDown[item['Activity code']] ? 'rotate(180deg)': ''}} height="20" viewBox="0 0 1792 1792" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z"/></svg> : ''}
+                                                </td>
                                                <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
                                                <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity code"]} </td>
                                                <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity name"]}</td>
