@@ -36,6 +36,19 @@ export class ExcelController {
   }
 
   @Auth('CREATE-SHEET')
+  @Post("check_multiple_file")
+  @UseInterceptors(AnyFilesInterceptor())
+  async uploadMultiFile(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Req() req,
+  ) {
+    return await this.excelService.checkSheet(files, req);
+  }
+  // get(@Req() req) {
+  //   return this.excelService.checkSheet(req);
+  // }
+
+  @Auth('CREATE-SHEET')
   @Post('upload_quantity_file')
   @UseInterceptors(AnyFilesInterceptor())
   async quantityFile(

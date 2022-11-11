@@ -35,11 +35,13 @@ export class ExcelService {
     }
     
     var arr = workBook.SheetNames;
-    for (let i = 0; i < arr.length; i++) {
-      var element = arr[i];
-      // if (element == 'productive_sheet')
-        var sheet: xlsx.WorkSheet = await workBook.Sheets[element];
+    var sheet: xlsx.WorkSheet;
+    if(req.body.file_name){
+      sheet = await workBook.Sheets[req.body.file_name];
+    }else{
+      sheet = await workBook.Sheets[arr[0]];
     }
+    
     if (sheet) {
       var jsonData :any = await xlsx.utils.sheet_to_json(sheet, {
         dateNF: 'YYYY-MM-DD',
@@ -64,7 +66,9 @@ export class ExcelService {
         
     })
 
+    
     var user = await this.excelModel.findOne({ project_id: projectid });
+
     if (!user) {
       if (files[0].fieldname === 'productivity' && projectid) {
         var pr = await this.excelModel.create({
@@ -80,12 +84,29 @@ export class ExcelService {
       if (files[0].fieldname === 'productivity' && projectid) {
         var pro = await this.excelModel.updateOne(
           { project_id: projectid },
-          { productivitysheet: jsonData },
+          { productivitysheet: new_ary },
         );
         return 'update sucessfully';
       } else {
         throw new UnprocessableEntityException('file not match');
       }
+    }
+  }
+
+  // CHECK Multiple sheet
+
+  async checkSheet(files: any, @Req() req) {
+    try{
+      if(req){
+        var workBook: xlsx.WorkBook = await xlsx.read(files[0].buffer, {
+          type: 'buffer',
+          cellDates: true,
+          cellNF: false,
+        });
+        return workBook.SheetNames
+      }
+    }catch {
+      throw new NotFoundException('sheet not exist');
     }
   }
 

@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
-
+import Popup from "reactjs-popup";
 
 const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     , sheetData }) => {
@@ -18,6 +18,8 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
     const [searchdata, setSearchData] = useState(null);
     const [projectsearchdata, setProjectSearchData] = useState(null);
     const [projectsheetid, setProjectSheetId] = useState(null);
+    const [checkMultiFiles, setCheckMultiFiles] = useState()
+    const [isMultiFiles, setIsMultiFiles] = useState(false)
 
     const productivesheetid = ProductiveSheetId.use()
     const searchclientset = SearchClientSet.use()
@@ -122,38 +124,72 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
             organizationId = organization_Id
         }
 
+
         const formData = new FormData();
         formData.append("productivity", sheetData);
         formData.append("projectid", projectsheetid);
         formData.append("organization_id", organizationId);
         const token = reactLocalStorage.get("access_token", false);
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file`,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            },
 
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/check_multiple_file`,
+            formData, { headers: { Authorization: `Bearer ${token}`, } },
         )
             .then((response) => {
-                if (response.status === 201) {
-                    UpdateSheetData.set(true)
-                    EntityShowProductiveEye.set(o => !o)
-                    addToast("Upload Sucessfully", {
-                        appearance: "success",
-                        autoDismiss: true,
-                    })
+
+                if(response && response?.data?.length > 1){
+                    setCheckMultiFiles(response?.data)
+                    setIsMultiFiles(true)
+                }else if(response && response?.data?.length == 1){
+                    commonUploadApi(response?.data[0])
                 }
             })
-            .catch((error) => {
-                console.log(error)
-                addToast(error.response.data.message, {
-                    appearance: "error",
+        
+    }
+
+    const commonUploadApi = async (file_name) => {
+        let organizationId = ""
+
+        const organization_Id = reactLocalStorage.get("organization_id", false);
+
+        if (organization_Id !== "undefined" && organization_Id !== null) {
+            organizationId = organization_Id
+        }
+
+        const formData = new FormData();
+        formData.append("productivity", sheetData);
+        formData.append("projectid", projectsheetid);
+        formData.append("organization_id", organizationId);
+        formData.append("file_name", file_name);
+        const token = reactLocalStorage.get("access_token", false);
+
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file`,
+        formData, { headers: { Authorization: `Bearer ${token}`, } }, )
+        .then((response) => {
+            if (response.status === 201) {
+                UpdateSheetData.set(true)
+                EntityShowProductiveEye.set(o => !o)
+                addToast("Upload Sucessfully", {
+                    appearance: "success",
                     autoDismiss: true,
                 })
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            addToast(error.response.data.message, {
+                appearance: "error",
+                autoDismiss: true,
             })
+        })
     }
+
+
+    const chooseFile = async (e) => {
+        if(e.target.value){
+            commonUploadApi(e.target.value)
+        }
+    }
+
 
     return (
         <div>
@@ -206,7 +242,29 @@ const ProductSearch = ({ placeHolderName, valueData, chooseprojectopnclsData
 
                 </ul>}
             </div>
-
+            <Popup
+                open={isMultiFiles}
+                position="right center"
+                model
+                >
+                    <div className="p-7">
+                        <div className="pb-5">
+                            Which file do you want to upload? &nbsp;
+                            Select one of the following files.
+                        </div>
+                        {
+                            checkMultiFiles && checkMultiFiles?.map((item)=>{
+                                return(
+                                    <div className="choose-multi-file">
+                                        <div className="">
+                                            <input type="radio"  onChange={(e)=>chooseFile(e)} value={item} name="excel"/> {item}
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </Popup>
         </div>
     );
 };
