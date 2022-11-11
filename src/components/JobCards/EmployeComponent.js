@@ -13,7 +13,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [open, setOpen] = useState(false);
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
+    const [spread_sheet_id_1, setSpreadSheet_1] = useState('AT - HRMS format');
 
     const [timesheetdata, setTimeSheetData] = useState([null]);
     const [timesheetname, setTimeSheetName] = useState(null);
@@ -126,7 +126,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             const feach = async () => {
                 try {
                     const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                    // console.log(data1?.data?.values)
                    
                     let final_arr = []
                     if(data1?.data?.values.length > 0){
@@ -151,6 +150,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                             }
                         }
                     }
+
+                    console.log("final_arr---",final_arr);
+
                     setTimeSheetData(final_arr)
                     setFilterEmpoyeeAllData(final_arr)
                     console.log(data1?.data)
@@ -521,15 +523,16 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                 >
                                     <option >Employee ID</option>
-                                    {!DropDownSelect && filterempoyeealldata && filterempoyeealldata?.slice(1).map((item, id) => {
+                                    {!DropDownSelect && filterempoyeealldata && filterempoyeealldata?.map((item, id) => 
 
-                                        return <option
-                                            value={[item.UserName, item.UserID, item.designation]}
-                                        >
-                                            {`${item.UserID} [${item.designation}]  ${item.UserName}`}
-
-                                        </option>
-                                    })}
+                                        { return (item?.UserName && item.UserID && item.designation)  ?
+                                            (<option
+                                                value={[item.UserName, item.UserID, item.designation]}
+                                            >
+                                                {`${item.UserID} [${item.designation}]  ${item.UserName}`}
+    
+                                            </option>) : '' }
+                                    )}
 
                                 </select>
                             </div> :

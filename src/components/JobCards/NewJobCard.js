@@ -226,12 +226,11 @@ const NewJobCard = () => {
     setZoneName(ZoneDataSplit[1])
 
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log(response?.data)
         setSubZoneData(response?.data)
@@ -243,7 +242,6 @@ const NewJobCard = () => {
         console.log(error)
 
       })
-
   }
 
 

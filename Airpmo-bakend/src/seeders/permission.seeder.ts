@@ -135,6 +135,7 @@ export class PermissionsSeeder implements Seeder {
         description: 'add sheet',
       },
       { name: 'GET-SHEET', description: 'get  sheet' },
+      { name: 'CHECK-SHEET', description: 'check  sheet' },
       {
         name: 'EDIT-SHEET',
         description: 'edit  sheet',
