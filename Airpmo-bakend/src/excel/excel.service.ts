@@ -66,31 +66,37 @@ export class ExcelService {
         
     })
 
-    
-    var user = await this.excelModel.findOne({ project_id: projectid });
-
-    if (!user) {
-      if (files[0].fieldname === 'productivity' && projectid) {
-        var pr = await this.excelModel.create({
-          productivitysheet: new_ary,
-          project_id: projectid,
-          organization_id: organization_id,
-        });
-        return 'upload sucessfully';
+    if(projectid && organization_id){
+      var user = await this.excelModel.findOne({ project_id: projectid });
+  
+      if (!user) {
+        if (files[0].fieldname === 'productivity' && projectid) {
+          var pr = await this.excelModel.create({
+            productivitysheet: jsonData,
+            project_id: projectid,
+            organization_id: organization_id,
+          });
+          return 'upload sucessfully';
+        } else {
+          throw new UnprocessableEntityException('file not match');
+        }
       } else {
-        throw new UnprocessableEntityException('file not match');
+        if (files[0].fieldname === 'productivity' && projectid) {
+          var pro = await this.excelModel.updateOne(
+            { project_id: projectid },
+            { productivitysheet: jsonData },
+          );
+          return 'update sucessfully';
+        } else {
+          throw new UnprocessableEntityException('file not match');
+        }
       }
-    } else {
-      if (files[0].fieldname === 'productivity' && projectid) {
-        var pro = await this.excelModel.updateOne(
-          { project_id: projectid },
-          { productivitysheet: new_ary },
-        );
-        return 'update sucessfully';
-      } else {
-        throw new UnprocessableEntityException('file not match');
-      }
+    }else{
+      throw new UnprocessableEntityException('projectid & organizationId required');
     }
+    
+
+
   }
 
   // CHECK Multiple sheet

@@ -86,7 +86,17 @@ export class SpiCpiService {
 
     const quantity_to_be_achieved = updateSpiCpiDto.quantity_to_be_achived;
     let min_hour = parseFloat(updateSpiCpiDto.min_hour);
-    const productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4);
+    
+    let num = 2
+    let productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(2);
+
+    if(Object.keys(updateSpiCpiDto.productivity[0]).includes('Sub Activity code')){
+      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4)
+      
+    }else{
+      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(2);
+    }   
+    
     var unit = updateSpiCpiDto.productivity[0][' UNIT '] ||updateSpiCpiDto.productivity[0]['UNIT'];
     if (unit === undefined || unit === null) {
       unit = 'absents';
@@ -96,6 +106,7 @@ export class SpiCpiService {
 
     const arr = [];
     const cal_arr = [];
+    
     for (let index = 0; index < productivity_key.length; index++) {
       if (productivity_key[index].startsWith(' Part') === false) {
         arr.push(productivity_key[index]);
@@ -122,16 +133,20 @@ export class SpiCpiService {
     }
 
     var new_arr = {};
+    
     for (let i = 0; i < arr.length; i++) {
       if(quantity_to_be_achieved!='0'&&quantity_to_be_achieved!=""){
+
       const number = arr1[i] / parseFloat(quantity_to_be_achieved);
       const ar = (number * parseFloat(gangproductivity)).toFixed(2);
        new_arr[arr[i]] = [arr[i], ar, cal_arr[i], unit];
     
     } else{
+      
       new_arr[arr[i]] = [arr[i], 0, cal_arr[i], unit];
     }
   }
+  
     updateSpiCpiDto.productivity[0] = new_arr;
     updateSpiCpiDto.gang_productivity = gangproductivity;
     const finddata = await this.spicpiModel.findOne({
@@ -157,6 +172,8 @@ export class SpiCpiService {
       throw new NotFoundException('sorry no data matched');
     }
   }
+
+
   async remove(id: string) {
     const remove = await this.spicpiModel.softDelete({ _id: id });
     if (remove.deleted === 1) {
