@@ -199,23 +199,24 @@ const NewJobCard = () => {
   });
 
   const ActivityCode = (e) => {
-   
+
     MyJobcardActivityCoard.set(true)
 
     setActivityCode(e.target.value)
 
     let productArray = []
     productivitysheetdata?.map((items, id) => {
-      if (e.target.value === items["Activity code"]) {
+      if (e.target.value === items["Sub Activity code"] || e.target.value === items["Activity code"]) {
 
         productArray.push(items)
 
+        console.log("productArray", productArray);
         setProductivitySheetObject(items)
-        setActivityName(items["Activity name"])
+        setActivityName(items["Sub Activity Name"])
       }
 
     })
-   
+
     setProductivitySheetArray(productArray)
     QuantityTOAchivedData.set('')
   }
@@ -226,11 +227,11 @@ const NewJobCard = () => {
     setZoneName(ZoneDataSplit[1])
 
     const token = reactLocalStorage.get("access_token", false);
-      axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         console.log(response?.data)
         setSubZoneData(response?.data)
@@ -292,7 +293,6 @@ const NewJobCard = () => {
         }
       })
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             GetCalculatedData()
           }
@@ -320,10 +320,9 @@ const NewJobCard = () => {
     })
 
       .then((response) => {
-        console.log(response)
 
         setAllCalcultedMachineryData(response?.data)
-
+       
         if (response.status === 200) {
           PatchCalculatedData()
         }
@@ -340,11 +339,11 @@ const NewJobCard = () => {
       PatchCalculatedData()
     }
 
-  }, [quantitytoachivedData, JcExcutedTrue])
+  }, [JcExcutedTrue])
 
   console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
   console.log(allCalcultedMachineryData?.quantity_to_be_achived)
-   
+
 
   const PatchCalculatedData = (e) => {
     console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
@@ -360,7 +359,7 @@ const NewJobCard = () => {
       ],
 
       gang_productivity: quantitytoachivedData !== null && quantitytoachivedData !== '' ? quantitytoachivedData : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
-      quantity_to_be_achived:productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "], 
+      quantity_to_be_achived: productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
       deleted_filed: JcExcutedTrue
     }, {
       headers: {
@@ -369,8 +368,8 @@ const NewJobCard = () => {
     })
 
       .then((response) => {
-
-        console.log(response)
+        console.log('get GetCalculatedData run outside');
+        console.log("setpatchResponeData", response.data)
         setpatchResponeData(response?.data)
         if (response.status === 200) {
           // GetCalculatedData()
@@ -422,7 +421,7 @@ const NewJobCard = () => {
                     {productivitysheetdata?.map((items, id) => {
 
                       return <option className="cursor-pointer" >
-                        {items["Activity code"]}</option>
+                        {items["Sub Activity code"] ? items["Sub Activity code"] : items["Activity code"]}</option>
                     })}
                   </select>
                 </div>
