@@ -125,8 +125,6 @@ const NewJobCardMultiId = () => {
     ]);
 
 
-
-
     useEffect(() => {
         ///this api Run's only for first time 
         const token = reactLocalStorage.get("access_token", false);

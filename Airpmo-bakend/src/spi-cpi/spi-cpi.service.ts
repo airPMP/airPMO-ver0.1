@@ -19,12 +19,30 @@ export class SpiCpiService {
     if (unit === undefined || unit === null) {
       unit = 'absents';
     }
-    const productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(
-      4,
-    );
-    var productivity_value = Object.values(
-      createSpiCpiDto.productivity[0],
-    ).slice(4);
+
+    let productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(4);
+    let productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(4);
+
+    if(Object.keys(createSpiCpiDto.productivity[0]).includes('Sub Activity code')){
+      productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(10)
+
+      if(productivity_key.includes('__EMPTY')){
+        productivity_key = productivity_key.filter(function(item) {
+          return item !== '__EMPTY'
+        })      
+      }
+      if(productivity_key.includes('subActitvity')){
+        productivity_key = productivity_key.filter(function(item) {
+          return item !== 'subActitvity'
+        })      
+      }
+
+      productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(10);
+    }else{
+      productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(4);
+      productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(4);
+    }  
+
     const arr1 = productivity_value.map(Number);
 
     const arr = [];
@@ -87,21 +105,34 @@ export class SpiCpiService {
     const quantity_to_be_achieved = updateSpiCpiDto.quantity_to_be_achived;
     let min_hour = parseFloat(updateSpiCpiDto.min_hour);
     
-    let num = 2
-    let productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(2);
+    let productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4);
+    let productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(4);
 
     if(Object.keys(updateSpiCpiDto.productivity[0]).includes('Sub Activity code')){
-      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4)
-      
+      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(10)
+      productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(10);
+
+      if(productivity_key.includes('__EMPTY')){
+        productivity_key = productivity_key.filter(function(item) {
+          return item !== '__EMPTY'
+        })      
+      }
+      if(productivity_key.includes('subActitvity')){
+        productivity_key = productivity_key.filter(function(item) {
+          return item !== 'subActitvity'
+        })      
+      }
+
     }else{
-      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(2);
+      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(4);
+      productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(4);
     }   
     
     var unit = updateSpiCpiDto.productivity[0][' UNIT '] ||updateSpiCpiDto.productivity[0]['UNIT'];
     if (unit === undefined || unit === null) {
       unit = 'absents';
     }
-    var productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(4);
+    
     const arr1 = productivity_value.map(Number);
 
     const arr = [];

@@ -62,8 +62,6 @@ const UpdateCreateJCId = () => {
   const quantitytoachivedData = QuantityTOAchivedData.use()
 
 
-
-
   useEffect(() => {
     if (urlTitle.pathname === "/daily_task/new_daily_task") {
       setTitle("Daily Task");
@@ -407,7 +405,7 @@ const UpdateCreateJCId = () => {
                     {productivitysheetdata?.map((items, id) => {
 
                       return <option className="cursor-pointer" >
-                        {items["Activity code"]}
+                        {items["Sub Activity code"]}
 
                       </option>
                     })}
