@@ -552,8 +552,8 @@ const ProductivitySheet = () => {
                                                                 <td className="pt-[15px] pb-[14.83px]">{element?.['Sub Activity code']}</td>
                                                                 <td className="pt-[15px] pb-[14.83px]"></td>
                                                                 <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{element?.['Sub Activity Name']}</td>
-                                                                <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
-                                                                <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
+                                                                <td className="pt-[15px] pb-[14.83px]">{element?.[" UNIT "]}</td>
+                                                                <td className="pt-[15px] pb-[14.83px]">{element?.[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td className="p-[10px]"></td>

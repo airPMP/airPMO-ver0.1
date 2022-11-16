@@ -594,13 +594,15 @@ export class JobCardsService {
                 total = total + parseInt(res[i].hour);
                 var h = res[i].designation;
                 let tsal:any =  res[i]?.hourly_salrey * parseInt(res[i].hour)
+                
                 hRate = parseFloat(
                   tsal
-                ).toFixed(2);
+                  ).toFixed(2);
               }
             }
             if (res.length - 1 === i) {
-              const actual_cos:any = total * hRate;
+              const actual_cos:any = hRate;
+              
               arr2.push([h, total, parseFloat(actual_cos).toFixed(2)]);
               total = 0;
               hRate = 0
