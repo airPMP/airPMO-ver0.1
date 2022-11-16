@@ -34,6 +34,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     const [spidatat, setSpiDatat] = useState(true)
     const [roleDataLocal, setRoleDataLocal] = useState(true)
+    const [undefined, setUndefined] = useState(['NAN', 'nan', 'NaN'])
     let useperma = useParams()
 
     useEffect(() => {
@@ -388,34 +389,34 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                         {roleDataLocal !== "albannaadmin" &&
                                             <td className="py-[20px]">
-                                                {item[1]}
+                                                {undefined.includes(item[1]) ? 0 : item[1]}
                                             </td>}
 
 
                                         {roleDataLocal !== "albannaadmin" &&
                                             <td className="py-[20px]">
-                                                {item[2]}
+                                                {undefined.includes(item[2]) ? 0 : item[2]}
                                             </td>}
 
 
                                         {roleDataLocal !== "albannaadmin" &&
                                             <td className="py-[20px]">
-                                                {item[3]}
+                                                {undefined.includes(item[3]) ? 0 : item[3]}
                                             </td>}
 
 
                                         {roleDataLocal !== "albannaadmin" &&
                                             <td className="py-[20px]">
-                                                {item[4]}
+                                                {undefined.includes(item[4]) ? 0 : item[4]}
                                             </td>}
 
 
-                                        <td className="py-[20px]">{item[5]}</td>
+                                        <td className="py-[20px]">{undefined.includes(item[5]) ? 0 : item[5]}</td>
 
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[6]}</td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[6]) ? 0 : item[6]}</td>}
 
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[7]} </td>}
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{item[8]}</td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[7]) ? 0 : item[7]} </td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[8]) ? 0 : item[8]}</td>}
 
                                     </>
 
@@ -464,10 +465,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </div> */}
                 <div className="flex ">
                     <div className="text-[14px] pr-2">
-                        {assigncarddataA?.total_overall_spi}
+                        {undefined.includes(assigncarddataA?.total_overall_spi) ? 0 : assigncarddataA?.total_overall_spi}
                     </div>
                     <div className="text-[14px] ">
-                        {assigncarddataA?.total_overall_cpi}
+                        {undefined.includes(assigncarddataA?.total_overall_cpi) ? 0 : assigncarddataA?.total_overall_cpi}
                     </div>
                 </div>
 

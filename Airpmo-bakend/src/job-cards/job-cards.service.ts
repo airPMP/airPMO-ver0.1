@@ -593,7 +593,7 @@ export class JobCardsService {
               ) {
                 total = total + parseInt(res[i].hour);
                 var h = res[i].designation;
-                let tsal:any =  res[i]?.hourly_salrey * parseInt(res[i].hour)
+                let tsal:any =  res[i]?.hourly_salrey 
                 
                 hRate = parseFloat(
                   tsal
@@ -601,7 +601,7 @@ export class JobCardsService {
               }
             }
             if (res.length - 1 === i) {
-              const actual_cos:any = hRate;
+              const actual_cos:any = total* hRate;
               
               arr2.push([h, total, parseFloat(actual_cos).toFixed(2)]);
               total = 0;
@@ -624,7 +624,6 @@ export class JobCardsService {
       }
     }
  
-    
     var cpi_array = [];
     var cpi_array2 = [];
    
