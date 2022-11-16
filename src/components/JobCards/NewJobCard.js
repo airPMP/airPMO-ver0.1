@@ -166,7 +166,7 @@ const NewJobCard = () => {
       values.sub_zone = subzonename
       values.quantity_to_be_achieved = quantitytoachivedData
       values.manpower_and_machinary = patchResponeData?.productivity
-      values.updated_quantity_to_be_achived = quantitytoachivedData
+      values.updated_quantity_to_be_achived = ''
       values.unit = productivitysheetobject[" UNIT "]
       const token = reactLocalStorage.get("access_token", false);
 

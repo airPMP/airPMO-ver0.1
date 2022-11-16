@@ -234,9 +234,14 @@ const ProductivitySheet = () => {
     }
 
     const ActiveNameSheet = (e, data) => {
+        console.log("daya==",data);
         setActiveNameData(o => !o)
         setGANG_PRODUCTIVIVY(data[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-        setActiveNameDataCode(data["Activity code"])
+        if(data["Sub Activity code"] && data["Activity code"] == undefined){
+            setActiveNameDataCode(data["Sub Activity code"])
+        }else{
+            setActiveNameDataCode(data["Activity code"])
+        }
         setUNIT(data[" UNIT "])
     }
 
@@ -321,6 +326,121 @@ const ProductivitySheet = () => {
 
     const storedropDown = (code) => {
         setDropDown({...dropDown, [code]:!dropDown[code]})
+    }
+
+
+    const DefaultAct = (activity, item) => {
+        let data = activity.slice(10);
+
+        data = data?.filter((itm)=>{
+            if(itm[0] == '__EMPTY' || itm[0] == 'subActitvity'){
+
+            }else{
+                return itm
+            }
+        })
+
+        return(
+            data.map(([key, value]) => {
+                    return <> {
+                        value !== 0 ?
+                            <>
+                                <tr className="h-[35px]  float-left">
+                                    <div className="p-[10px]   cursor-pointer whitespace-nowrap">
+                                        <span className="p-3">
+                                            {key}</span>
+                                        =
+                                        <span className="pl-5">
+                                            {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                * GANG_PRODUCTIVIVY).toFixed(2)}
+                                        </span>
+                                    </div>
+                                </tr>
+                                <br />
+                            </>
+                            : <>
+                            </>
+                    }
+                    </>
+                }
+        )
+        )
+    }
+
+    const ModifyAct = (activity,item) => {
+        let data = activity.slice(4);
+
+        data = data?.filter((itm)=>{
+            if(itm[0] == '__EMPTY' || itm[0] == 'subActitvity'){
+
+            }else{
+                return itm
+            }
+        })
+
+        return(
+            data.map(([key, value]) => {
+                    return <> {
+                        value !== 0 ?
+                            <>
+                                <tr className="h-[35px]  float-left">
+                                    <div className="p-[10px]   cursor-pointer whitespace-nowrap">
+                                        <span className="p-3">
+                                            {key}</span>
+                                        =
+                                        <span className="pl-5">
+                                            {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                * GANG_PRODUCTIVIVY).toFixed(2)}
+                                        </span>
+                                    </div>
+                                </tr>
+                                <br />
+                            </>
+                            : <>
+                            </>
+                    }
+                    </>
+                }
+            )
+        )
+    }
+
+    const ModifySubAct = (activity,item) => {
+        let data = activity.slice(5);
+
+        data = data?.filter((itm)=>{
+            if(itm[0] == '__EMPTY' || itm[0] == 'subActitvity'){
+
+            }else{
+                return itm
+            }
+        })
+
+        return(
+            data.map(([key, value]) => {
+                    return <> {
+                        value !== 0 ?
+                            <>
+                                <tr className="h-[35px]  float-left">
+                                    <div className="p-[10px]   cursor-pointer whitespace-nowrap">
+                                        <span className="p-3">
+                                            {key}</span>
+                                        =
+                                        <span className="pl-5">
+                                            {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
+                                                * GANG_PRODUCTIVIVY).toFixed(2)}
+                                        </span>
+                                    </div>
+                                </tr>
+                                <br />
+                            </>
+                            : <>
+                            </>
+                    }
+                    </>
+                }
+            )
+        )
     }
 
     return (
@@ -523,7 +643,7 @@ const ProductivitySheet = () => {
                                         return(
                                           <tbody className="mb-[10px]">
                                             {
-                                                item["Activity Name"] && item["Activity code"] ?
+                                                item["Activity code"] ?
                                                 <>                                                
                                                 <tr className="bg-[#ECF1F0] text-[#8F9BBA] text-[12px] font-sans  ">
                                                     <td style={{'cursor':'pointer'}} onClick={()=>storedropDown(item['Activity code'])} >
@@ -532,7 +652,7 @@ const ProductivitySheet = () => {
                                                         </td>
                                                     <td className="pt-[15px] pb-[14.83px]">{item["Activity code"]} </td>
                                                     <td className="pt-[15px] pb-[14.83px]">{item["Sub Activity code"]} </td>
-                                                    <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity Name"]}</td>
+                                                    <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Activity Name"] ? item["Activity Name"] : item["Activity name"]}</td>
                                                     <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{item["Sub Activity Name"]}</td>
                                                     <td className="pt-[15px] pb-[14.83px]">{item[" UNIT "]}</td>
                                                     <td className="pt-[15px] pb-[14.83px]">{item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
@@ -551,20 +671,45 @@ const ProductivitySheet = () => {
                                                                 <td className="pt-[15px] pb-[14.83px]"></td>
                                                                 <td className="pt-[15px] pb-[14.83px]">{element?.['Sub Activity code']}</td>
                                                                 <td className="pt-[15px] pb-[14.83px]"></td>
-                                                                <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, item)}>{element?.['Sub Activity Name']}</td>
+                                                                <td className="pt-[15px] pb-[14.83px] cursor-pointer" onClick={(e) => ActiveNameSheet(e, element)}>{element?.['Sub Activity Name']}</td>
                                                                 <td className="pt-[15px] pb-[14.83px]">{element?.[" UNIT "]}</td>
                                                                 <td className="pt-[15px] pb-[14.83px]">{element?.[" GANG PRODUCTIVIVY (APRVD. BY PM) "]}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td className="p-[10px]"></td>
                                                             </tr>
+
+                                                            {activenamedata && activenamedatacode === (element["Sub Activity code"] ) ?
+   
+                                                            <tr className="mb-4"
+                                                                style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+
+                                                                <tr className="h-[35px]   " >
+                                                                    <div className="flex" style={{ borderBottom: "1px solid black" }}>
+                                                                        <input type='number' placeholder="Gang Productivity"
+                                                                            className="border-none pt-2  gang_product_input"
+                                                                            value={GANG_PRODUCTIVIVY}
+                                                                            onChange={(e) => GangProductData(e, item)}
+
+                                                                        />
+                                                                        <span className="pl-2 pt-2 text-[15px]" >{UNIT}</span>
+                                                                    </div>
+                                                                </tr>
+                                                                { Object.keys(item).includes('Sub Activity code') && ModifySubAct(Object.entries(element), element)
+                                                                }
+                                                            </tr> : <>
+                                                    </>}
+                                                    <tr>
+                                                    <td className="p-[10px]"></td>
+                                                    </tr>
+
                                                     </>
                                                         )
                                                     })
                                                 }
                                                 </>
                                                 : '' }
-                                                {activenamedata && activenamedatacode === (item["Activity code"] || item["Sub Activity code"]) ?
+                                                {activenamedata && activenamedatacode === (item["Activity code"] ) ?
    
                                                     <tr className="mb-4"
                                                         style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
@@ -580,30 +725,9 @@ const ProductivitySheet = () => {
                                                                 <span className="pl-2 pt-2 text-[15px]" >{UNIT}</span>
                                                             </div>
                                                         </tr>
-
-
-                                                        {Object.entries(item).slice(4).map(([key, value]) => {
-                                                            return <> {
-                                                                value !== 0 ?
-                                                                    <>
-                                                                        <tr className="h-[35px]  float-left">
-                                                                            <div className="p-[10px]   cursor-pointer whitespace-nowrap">
-                                                                                <span className="p-3">
-                                                                                    {key}</span>
-                                                                                =
-                                                                                <span className="pl-5">
-                                                                                    {(value / item[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-                                                                                        * GANG_PRODUCTIVIVY).toFixed(2)}
-                                                                                </span>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <br />
-                                                                    </>
-                                                                    : <>
-                                                                    </>
-                                                            }
-                                                            </>
-                                                        })}
+                                                    { Object.keys(item).includes('Sub Activity code') ? 
+                                                            DefaultAct(Object.entries(item), item) : ModifyAct(Object.entries(item), item)
+                                                    }
                                                     </tr> : <>
                                                     </>}
                                                     <tr>
