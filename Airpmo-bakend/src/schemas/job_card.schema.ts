@@ -75,12 +75,21 @@ export class jobcard {
 
   @Prop()
   actual_employees: [{}];
+  
+  @Prop()
+  actual_employees_rollup: [];
+
+  @Prop()
+  actual_equipments_rollup: [];
 
   @Prop()
   actual_equipments: [{}];
 
   @Prop()
   alanned_vs_allowable_vs_actual: [{}];
+
+  @Prop()
+  alanned_vs_allowable_vs_actual_rollup: [{}];
 
   @Prop()
   hourly_salrey: string;

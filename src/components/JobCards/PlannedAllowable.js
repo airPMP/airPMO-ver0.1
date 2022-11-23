@@ -9,7 +9,6 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, Job
 
 
 const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
-    console.log('main_data',assigncarddataA);
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetid, setTimeSheetId] = useState(null);
@@ -33,6 +32,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [projectDetailsData, setProjectDetailsData] = useState(null);
 
     const [spidatat, setSpiDatat] = useState(true)
+    const [rollupData, setRollupData] = useState()
     const [roleDataLocal, setRoleDataLocal] = useState(true)
     const [undefined, setUndefined] = useState(['NAN', 'nan', 'NaN'])
     let useperma = useParams()
@@ -129,11 +129,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achived)
             CumilativeQuntity.set(assigncarddataA.cumilative_quantity_to_be_achived ? assigncarddataA.cumilative_quantity_to_be_achived : assigncarddataA?.updated_quantity_to_be_achived)
             setSpiDatat(false)
-
         }
 
         const roleData = reactLocalStorage.get("roles", false);
         setRoleDataLocal(roleData)
+
+        if(assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual_rollup && assigncarddataA?.alanned_vs_allowable_vs_actual_rollup?.length > 0 ){
+            setRollupData(assigncarddataA?.alanned_vs_allowable_vs_actual_rollup[0])
+        }else{
+            setRollupData(assigncarddataA?.alanned_vs_allowable_vs_actual[0])
+        }
     }, [assigncarddataA])
 
 
@@ -212,6 +217,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     hourly_salrey = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     hourly_standrd_salrey = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     final_employee.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                    console.log("************final_employee**************",final_employee);
                 })
 
             }
@@ -237,7 +243,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 })
             }
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
-
+                activity_code: assigncarddataA?.activity_code,
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
                 // updated_quantity_to_be_achived: quantityachieved,
                 updated_quantity_to_be_achived: quantityToBeAchived,
@@ -246,7 +252,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: final_employee ? final_employee : [],
                 actual_equipments: eqData? eqData : [],
-                alanned_vs_allowable_vs_actual: [],
                 hourly_salrey: 0,
                 hourly_standrd_salrey: 0
             },
@@ -369,7 +374,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                             <td className="p-[10px]" ></td>
                         </tr>
                     </thead>
-                    {assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual[0]?.map((item, id) => {
+                    {assigncarddataA &&  rollupData?.map((item, id) => {
                         return <>  {
 
                             // item[1]!=="0.00" && !item[0].startsWith(" Part NO") ?

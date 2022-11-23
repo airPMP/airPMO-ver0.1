@@ -7,7 +7,7 @@ import { CurrentQuantityTOAchivedData, EquipmentAllData, JobCardEquipmentData } 
 
 
 
-const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataId }) => {
+const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataId, assigncarddataA }) => {
 
 
 
@@ -30,7 +30,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
     const [editopen, setEditOpen] = useState(false);
     const [cenceldelete, setCencelDelete] = useState(false);
     const [editprofileid, setEditProfileId] = useState(null);
-
+    const [rollupActualEmp, setRollupActualEmp] = useState();
     const [deleteid, setDeleteId] = useState(null);
 
     const [textData, settextData] = useState([]);
@@ -61,36 +61,63 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
         feach();
 
-        // const feach1 = async () => {
-        //     try {
-        //         const data1 = await axios.get(`${process.env.REACT_APP_BASE_EMPLOYEE}/equipments`,)
-        //         console.log(data1?.data)
-        //         setFilterEmpoyeeAllData(data1?.data)
-        //         setEmpoyeeData(data1?.data)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-
-        // feach1();
-
         const feach2 = async () => {
             try {
-                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_equipments_by_jc_no/${assigncarddataId}`,
+                await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_my_job_card_equipments_by_jc_no/${assigncarddataId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
+                    }).then((data1)=>{
+
+                        if (data1?.status === "200") {
+                            setEmpoyeeUpdate(false)
+                        }
+        
+                        if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
+
+                            const productsCheck = {}
+
+                            assigncarddataA?.actual_employees_rollup.forEach(product => {
+                                if (product.employee_id in productsCheck) {
+                                    let hr = parseFloat(product.hour)
+                                    productsCheck[product.employee_id].hour = parseFloat(productsCheck[product.employee_id].hour)
+                                    productsCheck[product.employee_id].hour += hr
+                                    productsCheck[product.employee_id].hour = productsCheck[product.employee_id].hour.toString()
+                                } else {
+                                productsCheck[product.employee_id] = product
+                                }
+                            })
+
+                            setRollupActualEmp(Object.values(productsCheck))
+                            setEmpoyeeAllData(data1?.data)
+                        }else{
+                            setRollupActualEmp(data1?.data)
+                            setEmpoyeeAllData(data1?.data)
+                        }
+        
+                        EquipmentAllData.set(data1?.data)
+
                     })
-                if (data1?.status === "200") {
-                    setEmpoyeeUpdate(false)
-                }
-                
-                setEmpoyeeAllData(data1?.data)
-                EquipmentAllData.set(data1?.data)
 
             } catch (error) {
-                console.log(error)
+                    if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
+                        const productsCheck = {}
+                        assigncarddataA?.actual_equipments_rollup.forEach(product => {
+                            if (product.equipment_id in productsCheck) {
+                                let hr = parseFloat(product.hour)
+                                productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
+                                productsCheck[product.equipment_id].hour += hr
+                                productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
+                            } else {
+                            productsCheck[product.equipment_id] = product
+                            }
+                        })
+
+                        setRollupActualEmp(Object.values(productsCheck))
+                        // setRollupActualEmp(assigncarddataA?.actual_equipments_rollup)
+                        setEmpoyeeAllData([])
+                    }
             }
         }
 
@@ -274,6 +301,21 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         setCencelDelete(false)
     }
 
+    const formatDate = (date) => {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
+
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
@@ -346,8 +388,9 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                 <table className=" w-[100%]  pt-[24px] ml-[40px]">
                     <thead className="font-secondaryFont text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                         <tr className="bg-[#ECF1F0]">
-                            <th className="py-[20px]">Employee ID</th>
-                            <th className="">Employee Name</th>
+                            <th className="py-[20px]">Equipment ID</th>
+                            <th className="">Equipment Name</th>
+                            <th className="">Created Date</th>
                             <th className="">Designation</th>
                             <th className="">Total Hours</th>
                             <th className="">Remarks</th>
@@ -358,7 +401,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                         </tr>
                     </thead>
 
-                    {empoyeealldata?.map((item, i) => {
+
+{rollupActualEmp && rollupActualEmp?.map((item, i) => {
                         return <tbody
 
                             className=" max-w-[631px] font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]"
@@ -367,6 +411,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
                                 <th className="text-[#8F9BBA]">{item.equipment_id}</th>
                                 <th className="text-[#8F9BBA]">{item.equipment_name}</th>
+                                <th className="text-[#8F9BBA]">{item.createdAt ? formatDate(item.createdAt) : ''}</th>
                                 <th className="text-[#8F9BBA]">{item.designation}</th>
                                 <th className="text-[#8F9BBA]">{item.hour}</th>
                                 <th className="text-[#8F9BBA]">{item.remarks}</th>

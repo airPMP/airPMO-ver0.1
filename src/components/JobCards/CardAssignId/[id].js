@@ -452,13 +452,11 @@ const NewJobCardMultiId = () => {
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     {assignCardData && (
                                         <EmployeComponent
-
                                             heading={"Actual Employees"}
                                             selectDropDown={true}
                                             assigncarddataId={assignCardData}
                                             currentdate={currentdate}
-
-
+                                            assigncarddataA={assignCardData}
                                         />
 
                                     )}
@@ -469,6 +467,7 @@ const NewJobCardMultiId = () => {
                                             heading={"Actual Equipments"}
                                             selectDropDown={true}
                                             assigncarddataId={assignCardData?._id}
+                                            assigncarddataA={assignCardData}
                                         />
                                     )}
 
