@@ -73,10 +73,19 @@ export class CreateJobCardDto {
   actual_employees: [{}];
 
   @ApiProperty()
+  actual_employees_rollup: [];
+
+  @ApiProperty()
+  actual_equipments_rollup: [];
+
+  @ApiProperty()
   actual_equipments: [{}];
 
   @ApiProperty()
   alanned_vs_allowable_vs_actual: [{}];
+
+  @ApiProperty()
+  alanned_vs_allowable_vs_actual_rollup: [{}];
 
   // @IsNotEmpty()
   @ApiProperty()

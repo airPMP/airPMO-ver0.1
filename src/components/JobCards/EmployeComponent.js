@@ -9,7 +9,7 @@ import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, Pr
 
 
 const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDown,
-    assigncarddataId, currentdate, }) => {
+    assigncarddataId, currentdate, assigncarddataA}) => {
     const [open, setOpen] = useState(false);
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
@@ -24,6 +24,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     const [addtolistdata, setAddToListData] = useState([]);
     const [empoyeealldata, setEmpoyeeAllData] = useState(null);
     const [filterempoyeealldata, setFilterEmpoyeeAllData] = useState([null]);
+    const [rollupActualEmp, setRollupActualEmp] = useState();
     const [empoyeeupdate, setEmpoyeeUpdate] = useState(false);
     const [editopen, setEditOpen] = useState(false);
     const [cenceldelete, setCencelDelete] = useState(false);
@@ -64,15 +65,31 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     },
                 })
                 .then((response) => {
-                    console.log(response)
                     if (response?.status === 200) {
                         setEmpoyeeUpdate(false)
-
                     }
-                    console.log(response)
-                    setEmpoyeeAllData(response?.data)
-                    EmployeeChangeData.set(response?.data)
+                    if(assigncarddataA && assigncarddataA?.actual_employees_rollup.length > 0){
 
+                        const productsCheck = {}
+
+                        assigncarddataA?.actual_employees_rollup.forEach(product => {
+                            if (product.employee_id in productsCheck) {
+                                let hr = parseFloat(product.hour)
+                                productsCheck[product.employee_id].hour = parseFloat(productsCheck[product.employee_id].hour)
+                                productsCheck[product.employee_id].hour += hr
+                                productsCheck[product.employee_id].hour = productsCheck[product.employee_id].hour.toString()
+                            } else {
+                            productsCheck[product.employee_id] = product
+                            }
+                        })
+
+                        setRollupActualEmp(Object.values(productsCheck))
+                        setEmpoyeeAllData(response?.data)
+                    }else{
+                        setRollupActualEmp(response?.data)
+                        setEmpoyeeAllData(response?.data)
+                    }
+                    EmployeeChangeData.set(response?.data)
                 })
                 .catch((error) => {
                     console.log("error");
@@ -257,7 +274,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
         })
             .then((response) => {
-                console.log(response);
                 if (response.status === 201 && response?.data?.status === 404) {
                     addToast(response?.data?.message, {
                         appearance: "error",
@@ -340,7 +356,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
         })
             .then((response) => {
-                console.log(response);
                 if (response.status === 200) {
 
 
@@ -502,6 +517,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
 
+
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
             <div className="flex flex-row justify-Start content-center items-center   ">
@@ -580,6 +596,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         <tr className="bg-[#ECF1F0]">
                             <th className="py-[20px]">Employee ID</th>
                             <th className="">Employee Name</th>
+                            <th className="">Created Date</th>
                             <th className="">Designation</th>
                             <th className="">Total Hours</th>
                             <th className="">Remarks</th>
@@ -590,7 +607,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         </tr>
                     </thead>
 
-                    {empoyeealldata && empoyeealldata?.map((item, i) => {
+                    {rollupActualEmp && rollupActualEmp?.map((item, i) => {
 
                         return <tbody
 
@@ -600,6 +617,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                 <th className="text-[#8F9BBA]">{item.employee_id}</th>
                                 <th className="text-[#8F9BBA]">{item.employee_name}</th>
+                                <th className="text-[#8F9BBA]">{item.date}</th>
                                 <th className="text-[#8F9BBA]">{item.designation}</th>
                                 <th className="text-[#8F9BBA]">{item.hour}</th>
                                 <th className="text-[#8F9BBA]">{item.remarks}</th>

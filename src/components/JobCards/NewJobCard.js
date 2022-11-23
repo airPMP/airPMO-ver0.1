@@ -71,8 +71,7 @@ const NewJobCard = () => {
 
 
   }, [urlTitle.pathname])
-
-  console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
+  
 
   useEffect(() => {
 
@@ -341,12 +340,8 @@ const NewJobCard = () => {
 
   }, [JcExcutedTrue])
 
-  console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
-  console.log(allCalcultedMachineryData?.quantity_to_be_achived)
-
 
   const PatchCalculatedData = (e) => {
-    console.log(productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "])
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`, {
       activity_code: activitycode,
@@ -383,7 +378,6 @@ const NewJobCard = () => {
 
   }
   // productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
-  console.log(quantitytoachivedData)
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>

@@ -4,7 +4,7 @@ import { JobCardsController } from './job-cards.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { jobcard, jobcardSchema } from 'src/schemas/job_card.schema';
 import { UsersModule } from 'src/users/users.module';
-import { excelSchema } from 'src/schemas/excel.schema';
+import { excels, excelSchema } from 'src/schemas/excel.schema';
 import { ExcelModule } from 'src/excel/excel.module';
 import { jobcardassign, jobcardassignSchema } from 'src/schemas/job_card_assigen.schema';
 import { myjobcard, myjobcardschema } from 'src/schemas/my_job_card.schema';
@@ -20,6 +20,7 @@ import { project, projectSchema } from 'src/schemas/projects.schema';
   { name: jobcardassign.name, schema: jobcardassignSchema },
   { name: myjobcard.name, schema: myjobcardschema },
   { name:UserRole.name,schema:UserRoleSchema, },
+  { name:excels.name,schema:excelSchema },
   { name: spicpi.name, schema: spicpiSchema },
   { name: project.name, schema: projectSchema },
   { name:Role.name,schema:RoleSchema },
