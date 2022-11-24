@@ -468,7 +468,8 @@ export class JobCardsService {
         }
       })
       var alwoable_arr_mix = [];
-      if(sub_act && sub_act[0]){
+      
+      if(sub_act && sub_act[0] && sub_act[0].subActitvity && sub_act[0].subActitvity.length > 0){
         for (let index = 0; index < sub_act[0].subActitvity.length; index++) {
           const element = sub_act[0].subActitvity[index]['Sub Activity code'];
           // console.log("element---------",element);
@@ -726,6 +727,7 @@ export class JobCardsService {
       }
 
       for (let m = 0; m < arr2.length; m++) {
+        
         for (let index = 1; index < 5; index++) {
           arr2[m].splice(index, 0, '0');
         }
@@ -806,12 +808,15 @@ export class JobCardsService {
             h_sal = itm.salary
           }
         })
-        
         var allowable_cost =
         parseFloat(alwoable_arr[index][5]) * parseFloat(h_sal);
+
+
        
         
         var actual_cost1 = alwoable_arr[index][6];
+
+
         
         h_sal = 0;
         var cpi;
