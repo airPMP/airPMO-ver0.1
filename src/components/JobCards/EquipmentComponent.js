@@ -77,15 +77,14 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                         if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
 
                             const productsCheck = {}
-
-                            assigncarddataA?.actual_employees_rollup.forEach(product => {
-                                if (product.employee_id in productsCheck) {
+                            assigncarddataA?.actual_equipments_rollup.forEach(product => {
+                                if (product.equipment_id in productsCheck) {
                                     let hr = parseFloat(product.hour)
-                                    productsCheck[product.employee_id].hour = parseFloat(productsCheck[product.employee_id].hour)
-                                    productsCheck[product.employee_id].hour += hr
-                                    productsCheck[product.employee_id].hour = productsCheck[product.employee_id].hour.toString()
+                                    productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
+                                    productsCheck[product.equipment_id].hour += hr
+                                    productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
                                 } else {
-                                productsCheck[product.employee_id] = product
+                                productsCheck[product.equipment_id] = product
                                 }
                             })
 
@@ -103,6 +102,7 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
             } catch (error) {
                     if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
                         const productsCheck = {}
+                       
                         assigncarddataA?.actual_equipments_rollup.forEach(product => {
                             if (product.equipment_id in productsCheck) {
                                 let hr = parseFloat(product.hour)
@@ -314,8 +314,6 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
     
         return [year, month, day].join('-');
     }
-
-
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">

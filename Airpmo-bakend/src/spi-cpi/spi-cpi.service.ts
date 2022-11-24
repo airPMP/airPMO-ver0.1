@@ -20,11 +20,29 @@ export class SpiCpiService {
       unit = 'absents';
     }
 
+
     let productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(4);
     let productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(4);
 
     if(Object.keys(createSpiCpiDto.productivity[0]).includes('Sub Activity code')){
-      productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(10)
+
+      let temp_key = []
+      let temp_val = []
+
+      if(Object.keys(createSpiCpiDto.productivity[0]).includes(' End Date ')){
+        Object.keys(createSpiCpiDto.productivity[0]).map((itm,index)=>{
+            if( index > Object.keys(createSpiCpiDto.productivity[0]).indexOf(' End Date ')){
+              temp_key.push(itm)
+            }
+        })
+        Object.values(createSpiCpiDto.productivity[0]).map((itm,index)=>{
+            if( index > Object.keys(createSpiCpiDto.productivity[0]).indexOf(' End Date ')){
+              temp_val.push(itm)
+            }
+        })  
+      }
+
+      productivity_key = temp_key && temp_key.length>0 ? temp_key : Object.keys(createSpiCpiDto.productivity[0]).slice(10)
 
       if(productivity_key.includes('__EMPTY')){
         productivity_key = productivity_key.filter(function(item) {
@@ -37,7 +55,7 @@ export class SpiCpiService {
         })      
       }
 
-      productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(10);
+      productivity_value = temp_val && temp_val.length>0 ? temp_val : Object.values(createSpiCpiDto.productivity[0]).slice(10);
     }else{
       productivity_key = Object.keys(createSpiCpiDto.productivity[0]).slice(4);
       productivity_value = Object.values(createSpiCpiDto.productivity[0]).slice(4);
@@ -109,8 +127,25 @@ export class SpiCpiService {
     let productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(4);
 
     if(Object.keys(updateSpiCpiDto.productivity[0]).includes('Sub Activity code')){
-      productivity_key = Object.keys(updateSpiCpiDto.productivity[0]).slice(10)
-      productivity_value = Object.values(updateSpiCpiDto.productivity[0]).slice(10);
+
+      let temp_key = []
+      let temp_val = []
+
+      if(Object.keys(updateSpiCpiDto.productivity[0]).includes(' End Date ')){
+        Object.keys(updateSpiCpiDto.productivity[0]).map((itm,index)=>{
+            if( index > Object.keys(updateSpiCpiDto.productivity[0]).indexOf(' End Date ')){
+              temp_key.push(itm)
+            }
+        })
+        Object.values(updateSpiCpiDto.productivity[0]).map((itm,index)=>{
+            if( index > Object.keys(updateSpiCpiDto.productivity[0]).indexOf(' End Date ')){
+              temp_val.push(itm)
+            }
+        })  
+      }
+
+      productivity_key = temp_key && temp_key.length>0 ? temp_key : Object.keys(updateSpiCpiDto.productivity[0]).slice(10)
+      productivity_value = temp_val && temp_val.length>0 ? temp_val : Object.values(updateSpiCpiDto.productivity[0]).slice(10);
 
       if(productivity_key.includes('__EMPTY')){
         productivity_key = productivity_key.filter(function(item) {

@@ -456,13 +456,13 @@ export class JobCardsService {
 
   async editspicpi(id: string, @Body() UpdateJobCardDto: UpdateJobCardDto) {
 
-    var user = await this.excelModel.findOne({ project_id: "6363c6adba35aa79547eb978" });
+    var user_act = await this.excelModel.findOne({ project_id: UpdateJobCardDto.project_id });
     var actual_employees_list :any = []
     var actual_equipments_list :any = []
     var actual_employees_equipments_list :any = []
 
-    if(user.productivitysheet){
-      let sub_act : any = user.productivitysheet.filter((item)=>{
+    if(user_act.productivitysheet){
+      let sub_act : any = user_act.productivitysheet.filter((item)=>{
         if(item['Activity code'] == UpdateJobCardDto.activity_code){
           return item
         }
@@ -471,11 +471,10 @@ export class JobCardsService {
       if(sub_act && sub_act[0]){
         for (let index = 0; index < sub_act[0].subActitvity.length; index++) {
           const element = sub_act[0].subActitvity[index]['Sub Activity code'];
-          console.log("element---------",element);
+          // console.log("element---------",element);
           
-          const find_Card:any = await this.jobcardmodal.findOne({ activity_code: sub_act[0].subActitvity[index]['Sub Activity code'] });
+          const find_Card:any = await this.jobcardmodal.findOne({ activity_code: sub_act[0].subActitvity[index]['Sub Activity code'], isDeleted:false });
 
-          console.log("find_Card",find_Card);
           if(find_Card){
             if(find_Card.actual_employees && find_Card.actual_employees.length > 0){
               find_Card.actual_employees.map((item)=>{
@@ -599,6 +598,8 @@ export class JobCardsService {
         employe_data_arr.push(data_arr[index]);
       }
     }
+
+    
     
     var machinary_arr = [];
     if(machinary_data_value.length > 0){
@@ -663,6 +664,7 @@ export class JobCardsService {
         }
       }
     }
+    
     const new_arr2 = [];
     for (let index = 0; index < alwoable_arr.length; index++) {
       new_arr2.push(alwoable_arr[index][0]);
@@ -676,6 +678,8 @@ export class JobCardsService {
         }
       });
     });
+
+
       
     if (res.length != 0) {
       var arr1 = [];
@@ -793,6 +797,7 @@ export class JobCardsService {
 
   
     let h_sal:any = 0
+    
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let j = 0; j < alwoable_arr[index].length; j++) {
 
@@ -894,6 +899,7 @@ export class JobCardsService {
     for (let j = 0; j < productivity.length; j++) {
       productivity1[productivity[j][0]] = productivity[j];
     }
+
     UpdateJobCardDto.manpower_and_machinary[0] = productivity1;
     UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
     UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();

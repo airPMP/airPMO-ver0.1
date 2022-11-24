@@ -244,6 +244,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
                 activity_code: assigncarddataA?.activity_code,
+                project_id: assigncarddataA?.project_id,
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
                 // updated_quantity_to_be_achived: quantityachieved,
                 updated_quantity_to_be_achived: quantityToBeAchived,
