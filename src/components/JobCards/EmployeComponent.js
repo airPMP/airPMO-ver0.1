@@ -92,10 +92,9 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     EmployeeChangeData.set(response?.data)
                 })
                 .catch((error) => {
-                    console.log("error");
-                    console.log(error.response);
                     if (error?.response?.data?.message === "employee not found") {
                         setEmpoyeeAllData('')
+                        setRollupActualEmp('')
                     }
                 })
 
@@ -135,9 +134,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         const token = reactLocalStorage.get("access_token", false);
         if (currentdate) {
             let spitData = currentdate?.split("-")
-            console.log(spitData)
             let splitDataArange = `${spitData[2]}${spitData[1]}${spitData[0]}`
-            console.log(splitDataArange)
 
             setCurrentdata(currentdate)
             const feach = async () => {
@@ -168,11 +165,8 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         }
                     }
 
-                    console.log("final_arr---",final_arr);
-
                     setTimeSheetData(final_arr)
                     setFilterEmpoyeeAllData(final_arr)
-                    console.log(data1?.data)
                 } catch (error) {
                     console.log(error)
                 }
@@ -380,14 +374,12 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
 
     const DeleteProfile = (e, alldata) => {
-        console.log(alldata)
         setDeleteId(alldata)
         setCencelDelete(true)
     }
 
 
     const conformDelete = () => {
-
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -396,7 +388,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data)
                 if (data?.status === 200) { 
                     setDeleteDataRefrace(o => !o) 
                     JobCardEmplyeData.set(o => !o)  
@@ -450,7 +441,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                 // if (response?.data) {
                 let Dta = response?.data?.message
                 let splitDta = Dta?.split(" ")
-                console.log(splitDta)
                 setRemaingData(splitDta[0])
                 setHoursData(splitDta[1])
                 setMaxTimeData(splitDta[3])
@@ -494,7 +484,6 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                 let Dta = response?.data?.message
                 let splitDta = Dta?.split(" ")
-                console.log(splitDta)
                 setRemaingData(splitDta[0])
                 setHoursData(splitDta[1])
                 setMaxTimeData(splitDta[3])
@@ -509,14 +498,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             });
 
 
-
-
-
     }
-
-
-
-
 
     return (
         <div className="max-w-[100%]  scroll_bar_ManpowerMulti  overflow-hidden bg-[#FFFFFF] justify-center items-center  my-[10px] mt-[20px]  pb-[20px] rounded-[31.529px]">
