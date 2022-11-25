@@ -330,12 +330,18 @@ const ProductivitySheet = () => {
 
 
     const DefaultAct = (activity, item) => {
-        let data = activity.slice(10);
+        let temp = []
+        
+        activity.map((itm,index)=>{
+            if(activity.map(i=>i[0]).includes(' End Date ') && index > activity.map(i=>i[0]).indexOf(' End Date ')){
+                temp.push(itm)
+            }
+        })
+        
+        let data = temp ? temp : activity;
 
         data = data?.filter((itm)=>{
-            if(itm[0] == '__EMPTY' || itm[0] == 'subActitvity'){
-
-            }else{
+            if(itm[0] == '__EMPTY' || itm[0] == 'subActitvity'){ }else{
                 return itm
             }
         })
