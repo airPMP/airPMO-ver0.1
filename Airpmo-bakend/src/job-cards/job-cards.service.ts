@@ -634,6 +634,10 @@ export class JobCardsService {
       var popped = machinary_arr[i].pop();
       var children = machinary_arr[i].concat(new_array2[i]);
       alwoable_arr.push(children);
+
+      if(alwoable_arr_mix.length && alwoable_arr.length){
+          alwoable_arr_mix.push(children)
+      }
     }
    
     for (let index = 0; index < alwoable_arr.length; index++) {
