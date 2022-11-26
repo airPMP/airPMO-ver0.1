@@ -69,6 +69,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                         setEmpoyeeUpdate(false)
                     }
                     if(assigncarddataA && assigncarddataA?.actual_employees_rollup.length > 0){
+                        console.log("assigncarddataA?.actual_employees_rollup",assigncarddataA?.actual_employees_rollup);
 
                         const productsCheck = {}
 
@@ -95,6 +96,23 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
                     if (error?.response?.data?.message === "employee not found") {
                         setEmpoyeeAllData('')
                         setRollupActualEmp('')
+                    }
+
+                    if(assigncarddataA && assigncarddataA?.actual_employees_rollup.length > 0){
+
+                        const productsCheck = {}
+
+                        assigncarddataA?.actual_employees_rollup.forEach(product => {
+                            if (product.employee_id in productsCheck) {
+                                let hr = parseFloat(product.hour)
+                                productsCheck[product.employee_id].hour = parseFloat(productsCheck[product.employee_id].hour)
+                                productsCheck[product.employee_id].hour += hr
+                                productsCheck[product.employee_id].hour = productsCheck[product.employee_id].hour.toString()
+                            } else {
+                            productsCheck[product.employee_id] = product
+                            }
+                        })
+                        setRollupActualEmp(Object.values(productsCheck))
                     }
                 })
 
