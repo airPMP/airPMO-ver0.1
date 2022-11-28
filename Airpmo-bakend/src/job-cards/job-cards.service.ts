@@ -472,8 +472,12 @@ export class JobCardsService {
       if(sub_act && sub_act[0] && sub_act[0].subActitvity && sub_act[0].subActitvity.length > 0){
         for (let index = 0; index < sub_act[0].subActitvity.length; index++) {
           
-          const find_Card:any = await this.jobcardmodal.findOne({ activity_code: sub_act[0].subActitvity[index]['Sub Activity code'], isDeleted:false });
-
+           let temp = await this.jobcardmodal.find({ activity_code: sub_act[0].subActitvity[index]['Sub Activity code'], isDeleted:false });
+           
+           if(temp && temp.length>0){
+             var find_Card:any = temp[temp.length-1]
+           }
+           
           if(find_Card){
             if(find_Card.actual_employees && find_Card.actual_employees.length > 0){
               find_Card.actual_employees.map((item)=>{
@@ -635,9 +639,9 @@ export class JobCardsService {
       var children = machinary_arr[i].concat(new_array2[i]);
       alwoable_arr.push(children);
 
-      if(alwoable_arr_mix.length && alwoable_arr.length){
-          alwoable_arr_mix.push(children)
-      }
+      // if(alwoable_arr_mix.length && alwoable_arr.length){
+      //     alwoable_arr_mix.push(children)
+      // }
     }
    
     for (let index = 0; index < alwoable_arr.length; index++) {
@@ -732,6 +736,17 @@ export class JobCardsService {
         }
         alwoable_arr.push(arr2[m]);
       }
+    }else{
+
+      if(machinary_arr && machinary_arr.length){
+        for (let i = 0; i < machinary_arr.length; i++) {
+          var children = machinary_arr[i].concat(new_array2[i]);
+          if(alwoable_arr_mix.length && alwoable_arr.length){
+              alwoable_arr_mix.push(children)
+          }
+        }
+      }
+
     }
     
     for (let index = 0; index < alwoable_arr.length; index++) {
@@ -786,6 +801,8 @@ export class JobCardsService {
           }
           
           cpi_array_temp.push(alwoable_arr_mix[index][j]);
+
+          // console.log("cpi_array_temp===>>>",cpi_array_temp);
   
           if (alwoable_arr_mix[index].length - 1 === j) {
             cpi_array_temp.push(spi_temp, cpi_temp);
