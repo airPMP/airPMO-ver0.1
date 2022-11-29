@@ -476,24 +476,27 @@ export class JobCardsService {
            
            if(temp && temp.length>0){
              var find_Card:any = temp[temp.length-1]
-           }
-           
-          if(find_Card){
-            if(find_Card.actual_employees && find_Card.actual_employees.length > 0){
-              find_Card.actual_employees.map((item)=>{
-                actual_employees_list.push(item)
-              })
-            }
+            if(find_Card){
   
-            if(find_Card.actual_equipments && find_Card.actual_equipments.length > 0){
-              find_Card.actual_equipments.map((item)=>{
-                actual_equipments_list.push(item)
-              })
+              if(find_Card.actual_employees && find_Card.actual_employees.length > 0){
+                
+                find_Card.actual_employees.map((item)=>{
+                  
+                  actual_employees_list.push(item)
+                })
+              }
+    
+              if(find_Card.actual_equipments && find_Card.actual_equipments.length > 0){
+                find_Card.actual_equipments.map((item)=>{
+                  actual_equipments_list.push(item)
+                })
+              }
+  
             }
-
-          }
+           }
 
         }
+        
         if(UpdateJobCardDto && UpdateJobCardDto.actual_employees && UpdateJobCardDto.actual_employees.length >0){
           UpdateJobCardDto.actual_employees.map((item)=>{
             actual_employees_list.push(item)
@@ -525,8 +528,6 @@ export class JobCardsService {
           }
           var uniqueChars = [...new Set(arr1)];
         }
-
-
         
         const employe_data = actual_employees_equipments_list;
         var data_arr = [];
@@ -802,8 +803,6 @@ export class JobCardsService {
           
           cpi_array_temp.push(alwoable_arr_mix[index][j]);
 
-          // console.log("cpi_array_temp===>>>",cpi_array_temp);
-  
           if (alwoable_arr_mix[index].length - 1 === j) {
             cpi_array_temp.push(spi_temp, cpi_temp);
             cpi_array2_temp.push(cpi_array_temp);
@@ -923,17 +922,15 @@ export class JobCardsService {
     UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
     UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
     UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
-
+    
     if(sub_act && sub_act[0] && sub_act[0].subActitvity && sub_act[0].subActitvity.length > 0){
-      if(alwoable_arr_mix && alwoable_arr_mix.length > 0){      
+
+      if(cpi_array2_temp.length == 0 && alwoable_arr_mix.length == 0){
+        cpi_array2_temp = cpi_array2
+      }
         UpdateJobCardDto.alanned_vs_allowable_vs_actual_rollup = [cpi_array2_temp];
-      }    
-      if(actual_employees_list && actual_employees_list.length > 0){
         UpdateJobCardDto.actual_employees_rollup = actual_employees_list;
-      }         
-      if(actual_employees_list && actual_employees_list.length > 0){
         UpdateJobCardDto.actual_equipments_rollup = actual_equipments_list;
-      }   
     }
 
     UpdateJobCardDto.hourly_salrey = hourly_sal;

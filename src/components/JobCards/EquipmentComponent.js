@@ -76,19 +76,19 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
         
                         if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
 
-                            const productsCheck = {}
-                            assigncarddataA?.actual_equipments_rollup.forEach(product => {
-                                if (product.equipment_id in productsCheck) {
-                                    let hr = parseFloat(product.hour)
-                                    productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
-                                    productsCheck[product.equipment_id].hour += hr
-                                    productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
-                                } else {
-                                productsCheck[product.equipment_id] = product
-                                }
-                            })
+                            // const productsCheck = {}
+                            // assigncarddataA?.actual_equipments_rollup.forEach(product => {
+                            //     if (product.equipment_id in productsCheck) {
+                            //         let hr = parseFloat(product.hour)
+                            //         productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
+                            //         productsCheck[product.equipment_id].hour += hr
+                            //         productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
+                            //     } else {
+                            //     productsCheck[product.equipment_id] = product
+                            //     }
+                            // })
 
-                            setRollupActualEmp(Object.values(productsCheck))
+                            setRollupActualEmp(assigncarddataA?.actual_equipments_rollup)
                             setEmpoyeeAllData(data1?.data)
                         }else{
                             setRollupActualEmp(data1?.data)
@@ -101,20 +101,20 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
 
             } catch (error) {
                     if(assigncarddataA && assigncarddataA?.actual_equipments_rollup.length > 0){
-                        const productsCheck = {}
+                        // const productsCheck = {}
                        
-                        assigncarddataA?.actual_equipments_rollup.forEach(product => {
-                            if (product.equipment_id in productsCheck) {
-                                let hr = parseFloat(product.hour)
-                                productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
-                                productsCheck[product.equipment_id].hour += hr
-                                productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
-                            } else {
-                            productsCheck[product.equipment_id] = product
-                            }
-                        })
+                        // assigncarddataA?.actual_equipments_rollup.forEach(product => {
+                        //     if (product.equipment_id in productsCheck) {
+                        //         let hr = parseFloat(product.hour)
+                        //         productsCheck[product.equipment_id].hour = parseFloat(productsCheck[product.equipment_id].hour)
+                        //         productsCheck[product.equipment_id].hour += hr
+                        //         productsCheck[product.equipment_id].hour = productsCheck[product.equipment_id].hour.toString()
+                        //     } else {
+                        //     productsCheck[product.equipment_id] = product
+                        //     }
+                        // })
 
-                        setRollupActualEmp(Object.values(productsCheck))
+                        setRollupActualEmp( assigncarddataA?.actual_equipments_rollup)
                         // setRollupActualEmp(assigncarddataA?.actual_equipments_rollup)
                         setEmpoyeeAllData([])
                     }
