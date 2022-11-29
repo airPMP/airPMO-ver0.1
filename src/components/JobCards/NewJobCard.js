@@ -169,6 +169,22 @@ const NewJobCard = () => {
       values.unit = productivitysheetobject[" UNIT "]
       const token = reactLocalStorage.get("access_token", false);
 
+
+      values.isMainActitvity = false
+      values.subActitvity = []
+      
+      
+      productivitysheetdata.filter((jc_item)=>{
+        if(jc_item?.['Activity code'] == values?.activity_code){
+          values.isMainActitvity = true
+          if(jc_item.subActitvity?.length > 0){
+            let sub_ary = jc_item.subActitvity?.map(i => i?.['Sub Activity code'])
+            values.isMainActitvity = true
+            values.subActitvity = sub_ary
+          }
+        }
+      })
+      
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_job_card`, values, {
         headers: {
           Authorization: `Bearer ${token}`,

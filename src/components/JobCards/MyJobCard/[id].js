@@ -465,6 +465,7 @@ const MyJobCardsId = () => {
             <table className="table-auto pt-[24px]" style={{overflow: 'auto'}}>
               <thead className="font-secondaryFont text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%] py-[36px] ">
                 <tr>
+                  <th></th>
                   <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
                   {/* <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th> */}
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%] cursor-pointer" onClick={() => onSortChange()}>
@@ -566,6 +567,7 @@ const MyJobCardsId = () => {
               {filteredData && filteredData.sort(sortTypes[currentSort].fn)?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
+                    <th> {item?.isMainActitvity && <div className="main_activity_check"></div> }</th>
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
                       onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, item) : null}>
                       {item?.activity_code}</th>

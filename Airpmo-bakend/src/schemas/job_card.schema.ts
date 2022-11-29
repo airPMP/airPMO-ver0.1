@@ -106,6 +106,12 @@ export class jobcard {
   @Prop()
   unit: string;
 
+  @Prop()
+  isMainActitvity: boolean;
+
+  @Prop()
+  subActitvity: [];
+
   @Prop({ default: Date })
   createdAt: string;
 

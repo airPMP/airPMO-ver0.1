@@ -185,3 +185,10 @@ width: 100px !important;
   cursor: pointer;
   z-index: 9999;
 }
+.main_activity_check {
+  height: 10px;
+  width: 10px;
+  background: green;
+  margin-left: 5px;
+  border-radius: 50%;
+}
