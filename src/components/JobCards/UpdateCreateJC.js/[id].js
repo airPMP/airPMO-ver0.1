@@ -35,6 +35,7 @@ const UpdateCreateJCId = () => {
   const [updatedata, setUpdateData] = useState(null)
   const [activityname, setActivityName] = useState(null)
   const [activitycode, setActivityCode] = useState(null)
+  const [subActivityList, setSubActivityList] = useState(null)
 
   const [subzonedata, setSubZoneData] = useState(null)
   const [zonename, setZoneName] = useState(null)
@@ -85,6 +86,7 @@ const UpdateCreateJCId = () => {
 
         setActivityCode(response?.data?.activity_code)
         setActivityName(response?.data?.activity_name)
+        setSubActivityList(response?.data?.subActitvity)
         setdataData(response?.data?.jc_creation)
         setZoneName(response?.data?.zone)
         setSubZoneName(response?.data?.sub_zone)
@@ -179,6 +181,7 @@ const UpdateCreateJCId = () => {
       // values.project_name = projectobjectdata.project_name
       values.activity_code = activitycode
       values.activity_name = activityname
+      values.subActitvity = subActivityList
       values.jc_creation = dataData
       values.zone = zonename
       values.sub_zone = subzonename
