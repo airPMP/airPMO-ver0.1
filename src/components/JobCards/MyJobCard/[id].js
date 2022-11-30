@@ -8,7 +8,6 @@ import { useToasts } from "react-toast-notifications";
 import Multiselect from 'multiselect-react-dropdown';
 import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
 
-
 const sortTypes = {
 	up: {
 		class: 'sort-up',
@@ -41,7 +40,6 @@ function sortByColumn(a, colIndex, reverse) {
   return a;
 }
 
-
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState([null]);
@@ -69,6 +67,8 @@ const MyJobCardsId = () => {
   const [projectDetailsData, setProjectDetailsData] = useState(null);
   const [currentSort, setCurrentSort] = useState('default')
 
+  const [newActivityList, setNewActivityList] = useState()
+
   const currentquantitytoachivedData = CurrentQuantityTOAchivedData.use()
 
   let urlTitle = useLocation();
@@ -87,8 +87,6 @@ const MyJobCardsId = () => {
     }
   }, [urlTitle.pathname])
 
-
-
   const onSortChange = () => {
 		let nextSort;
 		
@@ -98,27 +96,20 @@ const MyJobCardsId = () => {
 	  setCurrentSort(nextSort);
 	}
 
-
   useEffect(() => {
     let tokenroles = reactLocalStorage.get("roles", false);
     setAllTokenRoles(tokenroles)
-
   })
 
-
-
   useEffect(() => {
-
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-
         let zoneFilterData = response?.data.filter((elem => elem.zone))
         const keys = ['zone']
         const filteredZonedata = zoneFilterData.filter(
@@ -128,8 +119,46 @@ const MyJobCardsId = () => {
           )
           (new Set)
         );  
+
         setFilterZonesData(filteredZonedata)
-        console.log("zoneFilterData",zoneFilterData);
+        console.log("response?.data=============",response?.data); 
+
+        let main_ary = []
+
+        response?.data?.map((item)=>{
+            if(item?.isMainActitvity && !item?.subActitvity?.mainActitvityCode){
+              item.sub_act_list = []
+              main_ary.push(item)
+            }
+        })
+
+        main_ary?.map((items)=>{
+          response?.data?.map((c_item)=>{
+            if(!c_item?.isMainActitvity && c_item?.mainActitvityCode == items?.activity_code){
+              items.sub_act_list.push(c_item)
+            }
+          })
+        })
+        
+        setNewActivityList(main_ary)
+        console.log("---main_ary----",main_ary);
+        
+        // main_ary?.filter((f_item)=>{
+        //   if(f_item?.sub_act_list?.length > 0){
+        //     let index = main_ary.indexOf(f_item)
+            
+        //     console.log("f_item---index",index);
+
+        //       f_item?.sub_act_list?.map((item)=>{
+        //         main_ary[index].push(item)
+        //       })
+            
+        //   }
+        // })
+        
+        // console.log("===after===",main_ary);
+
+        
         let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
         setFilterSubZonesData(SubzoneFilterData) 
         setFilteredData(response?.data)
@@ -142,39 +171,31 @@ const MyJobCardsId = () => {
       .catch((error) => {
         console.log(error)
       })
-    handleSearch()
+    
+      handleSearch()
 
-    if (selectalldata) {
-      onSelect()
+      if (selectalldata) {
+        onSelect()
 
-      setShowMultiSelectZone(o => !o)
-      SetSelectAllData(false)
-    }
+        setShowMultiSelectZone(o => !o)
+        SetSelectAllData(false)
+      }
 
-    if (selectallsubzonedata) {
-      onSelectSub()
-      setShowMultiSelectSubzone(o => !o)
-      SetSelectAllSubZoneData(false)
-    }
+      if (selectallsubzonedata) {
+        onSelectSub()
+        setShowMultiSelectSubzone(o => !o)
+        SetSelectAllSubZoneData(false)
+      }
 
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setProjectDetailsData(response?.data)
-        if (response.status === 201) {
-
-        }
       })
-      .catch((error) => {
-        console.log(error)
-
-      })
-
-
+      .catch((error) => { console.log(error) })
 
   }, [selectalldata, selectallsubzonedata])
 
@@ -186,7 +207,9 @@ const MyJobCardsId = () => {
         return data?.activity_code?.toUpperCase().search(value) !== -1;
       }
     });
+
     setFilteredData(result)
+
     if (value === "") {
       setFilteredData(alljobcarddata)
       console.log("alljobcarddata")
@@ -195,8 +218,6 @@ const MyJobCardsId = () => {
       console.log("FilteredData")
     }
   }
-
-
 
   const CardAssignIdPage = (e, itemid) => {
     console.log(itemid)
@@ -212,22 +233,16 @@ const MyJobCardsId = () => {
       CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
       if (response.status === 200) {
         setPatchApiTrue(true)
-
-
       }
-    }).catch((error) => {
-      console.log(error)
-    })
+    }).catch((error) => { console.log(error) })
 
     navigate(`/daily_task/CardAssignId/${itemid._id}`)
   }
 
 
   const PatchCalculatedData = (e) => {  
-    
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityId?._id}`, {
-
       quantity_to_be_achieved: allCalcultedMachineryData?.quantity_to_be_achived,
       updated_quantity_to_be_achived: currentquantitytoachivedData,
       manpower_and_machinary:
@@ -261,11 +276,7 @@ const MyJobCardsId = () => {
         console.log(error)
 
       })
-
   }
-
-
-
 
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
@@ -277,10 +288,7 @@ const MyJobCardsId = () => {
     }
   }, [allpermission, patchapiTrue, activityId])
 
-
-
   const getPermision = async () => {
-
     const url_data = await allpermission
     const database = url_data?.split(',')
 
@@ -291,8 +299,6 @@ const MyJobCardsId = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
-
     let value1 = "EDIT-MY-JOB-CARD".toUpperCase();
     let result1 = []
     result1 = database?.filter((data) => {
@@ -300,7 +306,6 @@ const MyJobCardsId = () => {
         return data?.toUpperCase().search(value1) !== -1;
       }
     });
-
     let value2 = "GET-MY-JOB-CARD".toUpperCase();
     let result2 = []
     result2 = database?.filter((data) => {
@@ -308,8 +313,6 @@ const MyJobCardsId = () => {
         return data?.toUpperCase().search(value2) !== -1;
       }
     });
-
-
 
     if (result[0] === "EDIT-MY-JOB-CARD" ||
       result1[0] === "EDIT-MY-JOB-CARD" ||
@@ -328,68 +331,43 @@ const MyJobCardsId = () => {
       });
       setAllPermissions(result[0])
     }
-
   }
 
-
-
   const onSelect = (selectedList, selectedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.zone === items.zone
       })
     })
-
-    console.log("detasome")
-    console.log(detasome)
-
     setFilteredData(detasome)
-
   }
 
   const onRemove = (selectedList, removedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.zone === items.zone
       })
     })
-
     setFilteredData(detasome)
-
   }
 
   const onSelectSub = (selectedList, selectedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.sub_zone === items.sub_zone
       })
     })
-
-    console.log("detasome")
-    console.log(detasome)
-
     setFilteredData(detasome)
-
   }
 
   const onRemoveSub = (selectedList, removedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.sub_zone === items.sub_zone
       })
-    }
-
-    )
-
+    })
     setFilteredData(detasome)
-
   }
-
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -418,7 +396,6 @@ const MyJobCardsId = () => {
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
                   {projectDetailsData?.project_name}
-                  {/* {alltokenroles === "albannaadmin" ? "Albanna" : "Arab Electricians"} */}
                 </div>
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
                   {projectDetailsData?.project_id ? projectDetailsData?.project_id  : "Shining Towers"}
@@ -467,7 +444,6 @@ const MyJobCardsId = () => {
                 <tr>
                   <th></th>
                   <th className="whitespace-nowrap  pb-[15.39px] w-[7%] ">Activity ID</th>
-                  {/* <th className="whitespace-nowrap pb-[15.39px] w-[20%]">Daily Task No.</th> */}
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%] cursor-pointer" onClick={() => onSortChange()}>
                     Date(YY/MM/DD)
                   </th>
@@ -500,7 +476,6 @@ const MyJobCardsId = () => {
                       </span>
                     </div>
                     <div className={`${showmultiselectzone ? null : "hidden"}`}>
-
                       {comezonedata &&
                         <Multiselect
                           displayValue={`zone`}
@@ -514,35 +489,27 @@ const MyJobCardsId = () => {
                       }
 
                     </div>
-
-
                   </th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
 
                     <div className=" flex justify-center cursor-pointer ">
-                      <div className="flex justify-center cursor-pointer"
-                        onClick={(e) => setShowMultiSelectSubzone(o => !o)}
-                      >
-                        <span>
-                          Subzone
-                        </span>
+                      <div className="flex justify-center cursor-pointer" onClick={(e) => setShowMultiSelectSubzone(o => !o)} >
+                        <span> Subzone </span>
                         <span> <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M12.5 1.875H2.5C2.15438 1.875 1.875 2.15438 1.875 2.5V4.11875C1.875 4.44563 2.00813 4.76688 2.23938 4.99813L5.625 8.38375V13.125C5.625 13.3419 5.7375 13.5425 5.92188 13.6569C6.02188 13.7188 6.13562 13.75 6.25 13.75C6.34562 13.75 6.44125 13.7281 6.52937 13.6844L9.02937 12.4344C9.24125 12.3281 9.375 12.1119 9.375 11.875V8.38375L12.7606 4.99813C12.9919 4.76688 13.125 4.44563 13.125 4.11875V2.5C13.125 2.15438 12.8456 1.875 12.5 1.875ZM8.30813 7.68313C8.19063 7.8 8.125 7.95875 8.125 8.125V11.4888L6.875 12.1138V8.125C6.875 7.95875 6.80937 7.8 6.69187 7.68313L3.125 4.11875V3.125H11.8756L11.8769 4.11438L8.30813 7.68313Z" fill="#8F9BBA" />
                         </svg>
                         </span>
                       </div>
 
-                      <span className={`${showmultiselectsubzone ? null : "hidden"} pl-2 flex`}
-                        onClick={(e) => SetSelectAllSubZoneData(true)}
-                      >
+                      <span className={`${showmultiselectsubzone ? null : "hidden"} pl-2 flex`} onClick={(e) => SetSelectAllSubZoneData(true)} >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                         <span className="pl-1 pb-2"> Select All </span>
                       </span>
                     </div>
-                    <div className={`${showmultiselectsubzone ? null : "hidden"}`}>
 
+                    <div className={`${showmultiselectsubzone ? null : "hidden"}`}>
                       {comezonedata &&
                         <Multiselect
                           displayValue={`sub_zone`}
@@ -552,9 +519,7 @@ const MyJobCardsId = () => {
                           options={FilterSubZonesdata}
                           showCheckbox
                         />
-
                       }
-
                     </div>
 
                   </th>
@@ -564,15 +529,13 @@ const MyJobCardsId = () => {
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">Status</th> */}
                 </tr>
               </thead>
-              {filteredData && filteredData.sort(sortTypes[currentSort].fn)?.map((item, ids) => {
+              {newActivityList && newActivityList?.map((item, ids) => {
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th> {item?.isMainActitvity && <div className="main_activity_check"></div> }</th>
                     <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
                       onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, item) : null}>
                       {item?.activity_code}</th>
-                    {/* <th className=" "  >
-                      {item?._id}</th> */}
                     <th className=" ">{item?.jc_creation}</th>
                     <th className=" ">{item?.activity_name}</th>
                     <th className=" ">{item?.unit}</th>
@@ -581,29 +544,35 @@ const MyJobCardsId = () => {
                     <th className=" ">{Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) == 'Infinity' || isNaN(Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved)) ? 0 : (Number(item?.cumilative_quantity_to_be_achived) / Number(item?.quantity_to_be_achieved) * 100).toFixed(2)}</th>
                     <th className=" ">{item?.zone}</th>
                     <th className=" ">{item?.sub_zone}</th>
-                    {/* <th className=" "> {item?.assign ? item.assign : "no"}</th>
-                    <th className=" "> {item?.spi ? item.spi : "0"}</th>
-                    <th className=" ">{item?.cpi ? item.cpi : "0"}</th>
-                    <th className=" ">{item?.status ? item.status : "No Status"}</th> */}
-
-                    {/* <th className="">
-                      <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
-                        onFocus={(e) => UserOnFocusSelectFun(e, item)}
-                        onClick={(e) => UserSelectFun(e, item)}>
-                        <option> Select User</option>
-                        {item?.user?.map((items, i) => {
-
-
-                          return <option value={items.name}>{items.name}</option>
-                        })
-                        }
-
-                      </select>
-                    </th> */}
                   </tr>
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
+
+                  {item?.sub_act_list && item?.sub_act_list?.length > 0 &&
+                    item?.sub_act_list && item?.sub_act_list?.map((s_item, ids) => {
+                      return <>
+                        <tr className="mb-[5px] bg-[#ECF1F0]">
+                          <th> {s_item?.isMainActitvity && <div className="main_activity_check"></div> }</th>
+                          <th className={`${editpermission === "EDIT-MY-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"} py-[13px]  `}
+                            onClick={(e) => editpermission || allpermissions ? CardAssignIdPage(e, s_item) : null}>
+                            {s_item?.activity_code}</th>
+                          <th className=" ">{s_item?.jc_creation}</th>
+                          <th className=" ">{s_item?.activity_name}</th>
+                          <th className=" ">{s_item?.unit}</th>
+                          <th className=" ">{s_item?.quantity_to_be_achieved}</th>
+                          <th className=" ">{s_item?.cumilative_quantity_to_be_achived}</th>
+                          <th className=" ">{Number(s_item?.cumilative_quantity_to_be_achived) / Number(s_item?.quantity_to_be_achieved) == 'Infinity' || isNaN(Number(s_item?.cumilative_quantity_to_be_achived) / Number(s_item?.quantity_to_be_achieved)) ? 0 : (Number(s_item?.cumilative_quantity_to_be_achived) / Number(s_item?.quantity_to_be_achieved) * 100).toFixed(2)}</th>
+                          <th className=" ">{s_item?.zone}</th>
+                          <th className=" ">{s_item?.sub_zone}</th>
+                        </tr>
+                        <tr className="p-[15px]">
+                          <td className="p-[10px]" ></td>
+                        </tr>
+                        </>
+
+                    })
+                  }
 
                 </tbody>
 
@@ -611,8 +580,6 @@ const MyJobCardsId = () => {
             </table>
           </div>
           <div className="flex flex-row justify-end py-[20px] space-x-2 ">
-
-
           </div>
         </div>
       </div>
