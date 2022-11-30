@@ -420,10 +420,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
                                         <td className="py-[20px]">{undefined.includes(item[5]) ? 0 : item[5]}</td>
 
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[6]) ? 0 : item[6]}</td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[6]) ? 0 : parseFloat(item[6]).toFixed(2)}</td>}
 
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[7]) ? 0 : item[7]} </td>}
-                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[8]) ? 0 : item[8]}</td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[7]) ? 0 : parseFloat(item[7]).toFixed(2)} </td>}
+                                        {roleDataLocal !== "albannaadmin" && <td className="py-[20px]">{undefined.includes(item[8]) ? 0 : parseFloat(item[8]).toFixed(2)}</td>}
 
                                     </>
 
