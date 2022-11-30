@@ -173,8 +173,12 @@ const NewJobCard = () => {
       values.isMainActitvity = false
       values.subActitvity = []
       
-      
       productivitysheetdata.filter((jc_item)=>{
+        if(jc_item?.['Activity code'] && jc_item?.['subActitvity']?.length>0){
+          if((jc_item?.['subActitvity']?.map(i=>i['Sub Activity code'])).includes(values?.activity_code) ){
+            values.mainActitvityCode = jc_item?.['Activity code']
+          }
+        }
         if(jc_item?.['Activity code'] == values?.activity_code){
           values.isMainActitvity = true
           if(jc_item.subActitvity?.length > 0){
@@ -379,8 +383,6 @@ const NewJobCard = () => {
     })
 
       .then((response) => {
-        console.log('get GetCalculatedData run outside');
-        console.log("setpatchResponeData", response.data)
         setpatchResponeData(response?.data)
         if (response.status === 200) {
           // GetCalculatedData()

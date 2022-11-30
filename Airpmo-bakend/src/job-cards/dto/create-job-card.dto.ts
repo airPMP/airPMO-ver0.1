@@ -108,5 +108,8 @@ export class CreateJobCardDto {
   isMainActitvity: boolean;
 
   @ApiProperty()
+  mainActitvityCode: string;
+
+  @ApiProperty()
   subActitvity: [];
 }
