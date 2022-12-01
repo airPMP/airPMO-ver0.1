@@ -521,7 +521,7 @@ export class JobCardsService {
         if (employe_data_arr[i].designation != undefined) {
           if ( ((alwoable_arr[index][0]).trim()).toLowerCase() === ( (employe_data_arr[i].designation).trim()).toLowerCase() ) {
            
-            const cal = parseInt(employe_data_arr[i].hour);
+            const cal = parseFloat(employe_data_arr[i].hour);
             actual_total_hours = actual_total_hours + cal;
             
             
@@ -577,7 +577,7 @@ export class JobCardsService {
               (( uniqueChars[index]).trim()).toLowerCase() ===
                ( (res[i].designation).trim()).toLowerCase()
               ) {
-                total = total + parseInt(res[i].hour);
+                total = total + parseFloat(res[i].hour);
                 var h = res[i].designation;
                 let tsal:any =  res[i]?.hourly_salrey 
                 
@@ -762,7 +762,6 @@ return cpi_array2;
         employe_data_arr.push(data_arr[index]);
       }
     }
-
     
     var machinary_arr = [];
     if(machinary_data_value.length > 0){
@@ -810,7 +809,7 @@ return cpi_array2;
         if (employe_data_arr[i].designation != undefined) {
           if ( ((alwoable_arr[index][0]).trim()).toLowerCase() === ( (employe_data_arr[i].designation).trim()).toLowerCase() ) {
            
-            const cal = parseInt(employe_data_arr[i].hour);
+            const cal = parseFloat(employe_data_arr[i].hour);
             actual_total_hours = actual_total_hours + cal;
             
             
@@ -866,7 +865,7 @@ return cpi_array2;
               (( uniqueChars[index]).trim()).toLowerCase() ===
                ( (res[i].designation).trim()).toLowerCase()
               ) {
-                total = total + parseInt(res[i].hour);
+                total = total + parseFloat(res[i].hour);
                 var h = res[i].designation;
                 let tsal:any =  res[i]?.hourly_salrey 
                 
@@ -999,11 +998,9 @@ return cpi_array2;
     UpdateJobCardDto.manpower_and_machinary[0] = productivity1;
     UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
     UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
+
     UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
 
-
-    
-    
     if(subactivitys && subactivitys.length > 0){
 
       if(cpi_array2 && cpi_array2.length>0){
