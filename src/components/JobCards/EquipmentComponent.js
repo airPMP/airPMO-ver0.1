@@ -414,7 +414,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                                 <th className="text-[#8F9BBA]">{item.hour}</th>
                                 <th className="text-[#8F9BBA]">{item.remarks}</th>
                                 <th className="text-[#8F9BBA]">
-
+                                {
+                                        assigncarddataA && assigncarddataA?._id == item?.jc_id ? 
 
                                     <div className="flex flex-row space-x-xl justify-center">
                                         <div
@@ -452,7 +453,8 @@ const EquipmentComponent = ({ closeModal, heading, Quantityachieved, selectDropD
                                             </svg>
                                         </div>
                                     </div>
-
+                                    : ''
+                                }   
                                 </th>
                             </tr>
                             <tr className="p-[15px] ">
