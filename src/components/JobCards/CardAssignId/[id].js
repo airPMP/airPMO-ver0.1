@@ -84,9 +84,9 @@ const NewJobCardMultiId = () => {
         if(assignCardData?.cumilative_quantity_log){
             assignCardData.cumilative_quantity_log.filter((item) =>{
                 if(item.date == currentdate){ 
-                    if(item?.updated_quantity_to_be_achived){
+                    if(item?.updated_quantity_to_be_achieved){
                         metch = true
-                        let quntity = Number(item.updated_quantity_to_be_achived)
+                        let quntity = Number(item.updated_quantity_to_be_achieved)
                         QuantityToBeAchived.set(quntity);
                     }
                    

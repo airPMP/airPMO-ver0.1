@@ -321,7 +321,7 @@ setFinalSubArrayList(final_ary)
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityId?._id}`, {
 
       quantity_to_be_achieved: allCalcultedMachineryData?.quantity_to_be_achived,
-      updated_quantity_to_be_achived: currentquantitytoachivedData,
+      updated_quantity_to_be_achieved: currentquantitytoachivedData,
       manpower_and_machinary:
       allCalcultedMachineryData?.productivity
       ,
@@ -331,11 +331,11 @@ setFinalSubArrayList(final_ary)
       actual_equipments: [
 
       ],
-      alanned_vs_allowable_vs_actual: [
+      planned_vs_allowable_vs_actual: [
 
       ],
-      hourly_salrey: "10",
-      hourly_standrd_salrey: "10"
+      hourly_salary: "10",
+      hourly_standard_salary: "10"
     },
       {
         headers: {

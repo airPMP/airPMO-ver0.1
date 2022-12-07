@@ -82,8 +82,11 @@ const SideBar = ({ sendDataToParent }) => {
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
+        {
+          console.log("projectLogoSet",projectLogoSet)
+        }
         <img
-          src={sidebarlogo ? sidebarlogo : projectLogoSet ? projectLogoSet : "/logo1.jpg"}
+          src={"/logo1.jpg"}
           alt="logo"
           width="182px"
           height="60.67px"

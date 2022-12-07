@@ -125,19 +125,19 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     useEffect(() => {
         if (assigncarddataA && spidatat) {
-            setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achived)
-            QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achived)
-            CumilativeQuntity.set(assigncarddataA.cumilative_quantity_to_be_achived ? assigncarddataA.cumilative_quantity_to_be_achived : assigncarddataA?.updated_quantity_to_be_achived)
+            setQuantityAchieved(assigncarddataA?.updated_quantity_to_be_achieved)
+            QuantityToBeAchived.set(assigncarddataA?.updated_quantity_to_be_achieved)
+            CumilativeQuntity.set(assigncarddataA.cumilative_quantity_to_be_achived ? assigncarddataA.cumilative_quantity_to_be_achived : assigncarddataA?.updated_quantity_to_be_achieved)
             setSpiDatat(false)
         }
 
         const roleData = reactLocalStorage.get("roles", false);
         setRoleDataLocal(roleData)
 
-        if(assigncarddataA && assigncarddataA?.alanned_vs_allowable_vs_actual_rollup && assigncarddataA?.alanned_vs_allowable_vs_actual_rollup?.length > 0 ){
-            setRollupData(assigncarddataA?.alanned_vs_allowable_vs_actual_rollup[0])
+        if(assigncarddataA && assigncarddataA?.planned_vs_allowable_vs_actual_rollup && assigncarddataA?.planned_vs_allowable_vs_actual_rollup?.length > 0 ){
+            setRollupData(assigncarddataA?.planned_vs_allowable_vs_actual_rollup[0])
         }else{
-            setRollupData(assigncarddataA?.alanned_vs_allowable_vs_actual[0])
+            setRollupData(assigncarddataA?.planned_vs_allowable_vs_actual[0])
         }
     }, [assigncarddataA])
 
@@ -174,12 +174,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         assign_arr.push({
                             ...item,
                             'cumilative_quantity_to_be_achived': cumilativeQuntity,
-                            updated_quantity_to_be_achived: quantityToBeAchived
+                            updated_quantity_to_be_achieved: quantityToBeAchived
                         })
                     } else {
                         assign_arr.push(item,{
                             'date': exceCuteDate,
-                            updated_quantity_to_be_achived: quantityToBeAchived,
+                            updated_quantity_to_be_achieved: quantityToBeAchived,
                             'cumilative_quantity_to_be_achived': cumilativeQuntity
                         })
                     }
@@ -199,8 +199,8 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
          
             const final_employee = []
             if(hrmsFormat && stdSalaries){
-                let hourly_salrey = 0
-                let hourly_standrd_salrey = 0
+                let hourly_salary = 0
+                let hourly_standard_salary = 0
                 employeechangeData && employeechangeData.forEach((empCheck) =>{
 
                     let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
@@ -214,17 +214,17 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
       
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                    hourly_salrey = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
-                    hourly_standrd_salrey = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
-                    final_employee.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                    hourly_salary = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    hourly_standard_salary = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    final_employee.push({...empCheck,ctc,std,hourly_salary,hourly_standard_salary})
                     console.log("************final_employee**************",final_employee);
                 })
 
             }
             const eqData = []
             if(stdRentals && hrmsEquipment){
-                let hourly_salrey = 0
-                let hourly_standrd_salrey = 0
+                let hourly_salary = 0
+                let hourly_standard_salary = 0
                 equipmentallData && equipmentallData.forEach((empCheck) =>{
                     let ogEmployee = hrmsEquipment && hrmsEquipment.find(item => item.Id === empCheck.equipment_id)
                     let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type'].toLowerCase() === empCheck.designation.toLowerCase())
@@ -237,9 +237,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
       
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-                    hourly_salrey = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
-                    hourly_standrd_salrey = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
-                    eqData.push({...empCheck,ctc,std,hourly_salrey,hourly_standrd_salrey})
+                    hourly_salary = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    hourly_standard_salary = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
+                    eqData.push({...empCheck,ctc,std,hourly_salary,hourly_standard_salary})
                 })
             }
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
@@ -247,15 +247,15 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 project_id: assigncarddataA?.project_id,
                 subActitvity: assigncarddataA?.subActitvity,
                 quantity_to_be_achieved: assigncarddataA?.quantity_to_be_achieved,
-                // updated_quantity_to_be_achived: quantityachieved,
-                updated_quantity_to_be_achived: quantityToBeAchived,
+                // updated_quantity_to_be_achieved: quantityachieved,
+                updated_quantity_to_be_achieved: quantityToBeAchived,
                 cumilative_quantity_log: assign_arr.length > 0 ? assign_arr : [],
                 cumilative_quantity_to_be_achived: cumilativeQuntity,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: final_employee ? final_employee : [],
                 actual_equipments: eqData? eqData : [],
-                hourly_salrey: 0,
-                hourly_standrd_salrey: 0
+                hourly_salary: 0,
+                hourly_standard_salary: 0
             },
                 {
                     headers: {
@@ -472,10 +472,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 </div> */}
                 <div className="flex ">
                     <div className="text-[14px] pr-2">
-                        {undefined.includes(assigncarddataA?.total_overall_spi) ? 0 : assigncarddataA?.total_overall_spi}
+                        {undefined.includes(assigncarddataA?.total_overall_spi) ? 0 : parseFloat(assigncarddataA?.total_overall_spi).toFixed(2)}
                     </div>
                     <div className="text-[14px] ">
-                        {undefined.includes(assigncarddataA?.total_overall_cpi) ? 0 : assigncarddataA?.total_overall_cpi}
+                        {undefined.includes(assigncarddataA?.total_overall_cpi) ? 0 : parseFloat(assigncarddataA?.total_overall_cpi).toFixed(2)}
                     </div>
                 </div>
 

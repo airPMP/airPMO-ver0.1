@@ -255,11 +255,11 @@ export class JobCardsService {
   //   const equipmets_data = UpdateJobCardDto.actual_equipments;
   //   var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
   //   var update_quantity = parseFloat(
-  //     UpdateJobCardDto.updated_quantity_to_be_achived,
+  //     UpdateJobCardDto.updated_quantity_to_be_achieved,
   //   );
-  //   const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
+  //   const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salary).toFixed(2);
   //   const hourly_standard_sal = parseFloat(
-  //     UpdateJobCardDto.hourly_standrd_salrey,
+  //     UpdateJobCardDto.hourly_standard_salary,
   //   ).toFixed(2);
 
   //   ///actual employee array
@@ -424,13 +424,13 @@ export class JobCardsService {
   
   //   UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
   //   UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
-  //   UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
-  //   UpdateJobCardDto.hourly_salrey = hourly_sal;
-  //   UpdateJobCardDto.hourly_standrd_salrey = hourly_standard_sal;
+  //   UpdateJobCardDto.planned_vs_allowable_vs_actual = [cpi_array2];
+  //   UpdateJobCardDto.hourly_salary = hourly_sal;
+  //   UpdateJobCardDto.hourly_standard_salary = hourly_standard_sal;
   //   UpdateJobCardDto.actual_employees = employe_data
   //   UpdateJobCardDto.actual_equipments = equipmets_data
   //   // UpdateJobCardDto.quantity_to_be_achieved = current_quantity.toString(2);
-  //   // UpdateJobCardDto.updated_quantity_to_be_achived =update_quantity.toString(2);
+  //   // UpdateJobCardDto.updated_quantity_to_be_achieved =update_quantity.toString(2);
   //   UpdateJobCardDto.unit = popped;
     
   //   const find = await this.jobcardmodal.findOne({ _id: id });
@@ -453,7 +453,7 @@ export class JobCardsService {
 
   const employe_data = makeNewObj.actual_employees;
     const equipmets_data = makeNewObj.actual_equipments;
-    var update_quantity = parseFloat( makeNewObj.updated_quantity_to_be_achived );
+    var update_quantity = parseFloat( makeNewObj.updated_quantity_to_be_achieved );
     var current_quantity = parseFloat(makeNewObj.quantity_to_be_achieved);
     
     ///actual employee array
@@ -525,11 +525,11 @@ export class JobCardsService {
             actual_total_hours = actual_total_hours + cal;
             
             
-            let t_sal:any =  employe_data_arr[i]?.hourly_salrey * cal
+            let t_sal:any =  employe_data_arr[i]?.hourly_salary * cal
             
             hr_salary = Number(hr_salary) + Number(parseFloat( t_sal ).toFixed(2));
-            let stds:any =  employe_data_arr[i]?.hourly_standrd_salrey * cal
-            ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat( employe_data_arr[i]?.hourly_standrd_salrey ).toFixed(2)})
+            let stds:any =  employe_data_arr[i]?.hourly_standard_salary * cal
+            ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat( employe_data_arr[i]?.hourly_standard_salary ).toFixed(2)})
           }
         }
         if (employe_data_arr.length - 1 === i) {
@@ -579,7 +579,7 @@ export class JobCardsService {
               ) {
                 total = total + parseFloat(res[i].hour);
                 var h = res[i].designation;
-                let tsal:any =  res[i]?.hourly_salrey 
+                let tsal:any =  res[i]?.hourly_salary 
                 
                 hRate = parseFloat(tsal).toFixed(2);
               }
@@ -742,10 +742,10 @@ return cpi_array2;
  
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
-    var update_quantity = parseFloat( UpdateJobCardDto.updated_quantity_to_be_achived );
+    var update_quantity = parseFloat( UpdateJobCardDto.updated_quantity_to_be_achieved );
     var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
-    const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salrey).toFixed(2);
-    const hourly_standard_sal = parseFloat( UpdateJobCardDto.hourly_standrd_salrey, ).toFixed(2);
+    const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salary).toFixed(2);
+    const hourly_standard_sal = parseFloat( UpdateJobCardDto.hourly_standard_salary, ).toFixed(2);
     
     ///actual employee array
 
@@ -813,11 +813,11 @@ return cpi_array2;
             actual_total_hours = actual_total_hours + cal;
             
             
-            let t_sal:any =  employe_data_arr[i]?.hourly_salrey * cal
+            let t_sal:any =  employe_data_arr[i]?.hourly_salary * cal
             
             hr_salary = Number(hr_salary) + Number(parseFloat( t_sal ).toFixed(2));
-            let stds:any =  employe_data_arr[i]?.hourly_standrd_salrey * cal
-            ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat( employe_data_arr[i]?.hourly_standrd_salrey ).toFixed(2)})
+            let stds:any =  employe_data_arr[i]?.hourly_standard_salary * cal
+            ht_std_sal.push({"designation":employe_data_arr[i].designation,"salary":parseFloat( employe_data_arr[i]?.hourly_standard_salary ).toFixed(2)})
           }
         }
         if (employe_data_arr.length - 1 === i) {
@@ -867,7 +867,7 @@ return cpi_array2;
               ) {
                 total = total + parseFloat(res[i].hour);
                 var h = res[i].designation;
-                let tsal:any =  res[i]?.hourly_salrey 
+                let tsal:any =  res[i]?.hourly_salary 
                 
                 hRate = parseFloat(tsal).toFixed(2);
               }
@@ -930,6 +930,7 @@ return cpi_array2;
           }
           
         }
+        var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
         if (update_quantity === 0) {
           spi = 0;
         } else {
@@ -962,6 +963,8 @@ return cpi_array2;
       all_allowable_cost = all_allowable_cost + parseFloat(cpi_array2[i][4]) * parseFloat(hstd_sal); hstd_sal = 0;
         
     }
+
+    
     var tota_overall_cpi;
     if(actual_total_cost===0){
       tota_overall_cpi=0;
@@ -996,10 +999,27 @@ return cpi_array2;
     }
 
     UpdateJobCardDto.manpower_and_machinary[0] = productivity1;
-    UpdateJobCardDto.total_overall_cpi = tota_overall_cpi;
-    UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
 
-    UpdateJobCardDto.alanned_vs_allowable_vs_actual = [cpi_array2];
+    UpdateJobCardDto.planned_vs_allowable_vs_actual = [cpi_array2];
+
+    var not_val = ['NAN', 'nan', 'NaN', undefined, '', ' '];
+    var total_cpi = 0
+    if(cpi_array2 && cpi_array2.length > 0){
+      for (let i = 0; i < cpi_array2.length; i++) {
+        if(!(not_val).includes(cpi_array2[i][8])){
+          total_cpi = total_cpi + parseFloat(cpi_array2[i][8])
+        }
+      }
+    }
+
+    var total_spi = 0
+    if(cpi_array2 && cpi_array2.length > 0){
+      for (let i = 0; i < cpi_array2.length; i++) {
+        if(!(not_val).includes(cpi_array2[i][7])){
+          total_spi = total_spi + parseFloat(cpi_array2[i][7])
+        }
+      }
+    }
 
     if(subactivitys && subactivitys.length > 0){
 
@@ -1038,15 +1058,36 @@ return cpi_array2;
           }
       }
       }
-      
 
-        UpdateJobCardDto.alanned_vs_allowable_vs_actual_rollup = [result];
+      total_cpi = 0
+      if(result && result.length > 0){
+        for (let i = 0; i < result.length; i++) {
+          if(!(not_val).includes(result[i][8])){
+            total_cpi = total_cpi + parseFloat(result[i][8])
+          }
+        }
+      }
+  
+      total_spi = 0
+      
+      if(result && result.length > 0){
+        for (let i = 0; i < result.length; i++) {
+          if(!(not_val).includes(result[i][7])){
+            total_spi = total_spi + parseFloat(result[i][7])
+          }
+        }
+      }
+
+        UpdateJobCardDto.planned_vs_allowable_vs_actual_rollup = [result];
         UpdateJobCardDto.actual_employees_rollup = actual_employees_list;
         UpdateJobCardDto.actual_equipments_rollup = actual_equipments_list;
     }
 
-    UpdateJobCardDto.hourly_salrey = hourly_sal;
-    UpdateJobCardDto.hourly_standrd_salrey = hourly_standard_sal;
+    UpdateJobCardDto.total_overall_cpi = total_cpi.toString();
+    UpdateJobCardDto.total_overall_spi = total_spi.toString();
+
+    UpdateJobCardDto.hourly_salary = hourly_sal;
+    UpdateJobCardDto.hourly_standard_salary = hourly_standard_sal;
     UpdateJobCardDto.unit = popped;  
 
     const find = await this.jobcardmodal.findOne({ _id: id });

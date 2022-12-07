@@ -28,7 +28,7 @@ export class CreateJobCardDto {
 
   // @IsNotEmpty()
   @ApiProperty()
-  updated_quantity_to_be_achived: string;
+  updated_quantity_to_be_achieved: string;
 
   @ApiProperty()
   cumilative_quantity_to_be_achived:string;
@@ -82,18 +82,18 @@ export class CreateJobCardDto {
   actual_equipments: [{}];
 
   @ApiProperty()
-  alanned_vs_allowable_vs_actual: [{}];
+  planned_vs_allowable_vs_actual: [{}];
 
   @ApiProperty()
-  alanned_vs_allowable_vs_actual_rollup: [{}];
-
-  // @IsNotEmpty()
-  @ApiProperty()
-  hourly_salrey: string;
+  planned_vs_allowable_vs_actual_rollup: [{}];
 
   // @IsNotEmpty()
   @ApiProperty()
-  hourly_standrd_salrey: string;
+  hourly_salary: string;
+
+  // @IsNotEmpty()
+  @ApiProperty()
+  hourly_standard_salary: string;
 
   @ApiProperty()
   total_overall_cpi: string;

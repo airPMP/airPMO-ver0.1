@@ -31,7 +31,7 @@ export class jobcard {
   quantity_to_be_achieved: string;
 
   @Prop()
-  updated_quantity_to_be_achived: string;
+  updated_quantity_to_be_achieved: string;
 
 
   @Prop()
@@ -86,16 +86,16 @@ export class jobcard {
   actual_equipments: [{}];
 
   @Prop()
-  alanned_vs_allowable_vs_actual: [{}];
+  planned_vs_allowable_vs_actual: [{}];
 
   @Prop()
-  alanned_vs_allowable_vs_actual_rollup: [{}];
+  planned_vs_allowable_vs_actual_rollup: [{}];
 
   @Prop()
-  hourly_salrey: string;
+  hourly_salary: string;
 
   @Prop()
-  hourly_standrd_salrey: string;
+  hourly_standard_salary: string;
 
   @Prop()
   total_overall_cpi: string;
