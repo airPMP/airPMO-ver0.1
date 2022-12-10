@@ -453,7 +453,7 @@ export class JobCardsService {
 
   const employe_data = makeNewObj.actual_employees;
     const equipmets_data = makeNewObj.actual_equipments;
-    var update_quantity = parseFloat( makeNewObj.updated_quantity_to_be_achieved );
+    var update_quantity = parseFloat( makeNewObj.cumilative_quantity_to_be_achived );
     var current_quantity = parseFloat(makeNewObj.quantity_to_be_achieved);
     
     ///actual employee array
@@ -619,17 +619,20 @@ export class JobCardsService {
   
 
   let h_sal:any = 0
+
+  var count_h : any  = 0
     
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let j = 0; j < alwoable_arr[index].length; j++) {
 
         arrayUniqueByKey.forEach((itm) => {
           if(itm.designation.toLowerCase() === alwoable_arr[index][0].toLowerCase().trim()){
+            count_h = count_h + parseFloat(itm.salary)
             h_sal = itm.salary
           }
         })
         var allowable_cost =
-        parseFloat(alwoable_arr[index][5]) * parseFloat(h_sal);
+        parseFloat(alwoable_arr[index][5]) * parseFloat(count_h);
 
         var actual_cost1 = alwoable_arr[index][6];
 
