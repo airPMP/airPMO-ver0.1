@@ -742,7 +742,7 @@ return cpi_array2;
  
     const employe_data = UpdateJobCardDto.actual_employees;
     const equipmets_data = UpdateJobCardDto.actual_equipments;
-    var update_quantity = parseFloat( UpdateJobCardDto.updated_quantity_to_be_achieved );
+    var update_quantity = parseFloat( UpdateJobCardDto.cumilative_quantity_to_be_achived );
     var current_quantity = parseFloat(UpdateJobCardDto.quantity_to_be_achieved);
     const hourly_sal = parseFloat(UpdateJobCardDto.hourly_salary).toFixed(2);
     const hourly_standard_sal = parseFloat( UpdateJobCardDto.hourly_standard_salary, ).toFixed(2);
@@ -905,16 +905,18 @@ return cpi_array2;
 
     let h_sal:any = 0
     
+    let count_h : any = 0;
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let j = 0; j < alwoable_arr[index].length; j++) {
 
         arrayUniqueByKey.forEach((itm) => {
           if(itm.designation.toLowerCase() === alwoable_arr[index][0].toLowerCase().trim()){
+            count_h = count_h + parseFloat(itm.salary)
             h_sal = itm.salary
           }
         })
         var allowable_cost =
-        parseFloat(alwoable_arr[index][5]) * parseFloat(h_sal);
+        parseFloat(alwoable_arr[index][5]) * parseFloat(count_h);
         
         var actual_cost1 = alwoable_arr[index][6];
 
