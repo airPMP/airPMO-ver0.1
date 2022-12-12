@@ -449,7 +449,7 @@ export class JobCardsService {
   // }
 
 
- async getSameData(makeNewObj:any)  {
+ async getSameData(makeNewObj:any, machinaryMainData : any)  {
 
   const employe_data = makeNewObj.actual_employees;
     const equipmets_data = makeNewObj.actual_equipments;
@@ -472,31 +472,29 @@ export class JobCardsService {
       }
     }
 
-    const machinary_data = makeNewObj.manpower_and_machinary[0];
-    let machinary_data_value = [];
-    if(machinary_data != undefined){
-      machinary_data_value = Object.values(machinary_data);
-    }
-    
-    var machinary_arr = [];
-    if(machinary_data_value.length > 0){
-      for (let i = 0; i < machinary_data_value.length; i++) {
-        machinary_arr.push(machinary_data_value[i]);
+      const machinary_data_main = machinaryMainData;
+      var machinary_data_value_main = [];
+      if(machinary_data_main != undefined){
+        machinary_data_value_main = Object.values(machinary_data_main);
       }
-
-    }    
-
+      
+      var machinary_arr_main = [];
+      if(machinary_data_value_main.length > 0){
+        for (let i = 0; i < machinary_data_value_main.length; i++) {
+          machinary_arr_main.push(machinary_data_value_main[i]);
+        }
+      }   
     
     /////array 2    
     
     var new_array = [];
     var new_array2 = [];
-    for (let j = 0; j < machinary_arr.length; j++) {
-      for (let k = 1; k < machinary_arr[j].length - 1; k++) {
-        const a = machinary_arr[j][k] / current_quantity;
+    for (let j = 0; j < machinary_arr_main.length; j++) {
+      for (let k = 1; k < machinary_arr_main[j].length - 1; k++) {
+        const a = machinary_arr_main[j][k] / current_quantity;
         var calculated_all = (a * update_quantity).toFixed(2);
         new_array.push(calculated_all); 
-        if (machinary_arr[j].length - 2 === k) {
+        if (machinary_arr_main[j].length - 2 === k) {
           new_array2.push(new_array);
           new_array = [];
         }
@@ -509,13 +507,15 @@ export class JobCardsService {
     var actual_total_hours = 0;
     var ht_std_sal = []
     var hr_salary:any = 0;
-    for (let i = 0; i < machinary_arr.length; i++) {
-      var popped = machinary_arr[i].pop();
-      var children = machinary_arr[i].concat(new_array2[i]);
+    for (let i = 0; i < machinary_arr_main.length; i++) {
+      let remove_last_ele = machinary_arr_main[i]
+      var popped_m = remove_last_ele.slice(0, -1);
+      
+      var children = popped_m.concat(new_array2[i]);
       alwoable_arr.push(children);
 
     }
-   
+
     for (let index = 0; index < alwoable_arr.length; index++) {
       for (let i = 0; i < employe_data_arr.length; i++) {
         if (employe_data_arr[i].designation != undefined) {
@@ -619,13 +619,14 @@ export class JobCardsService {
 
   let h_sal:any = 0
 
-  var count_h : any  = 0
-    
-    for (let index = 0; index < alwoable_arr.length; index++) {
+  
+  for (let index = 0; index < alwoable_arr.length; index++) {
+      var count_h : any  = 0
       for (let j = 0; j < alwoable_arr[index].length; j++) {
 
         arrayUniqueByKey.forEach((itm) => {
           if(itm.designation.toLowerCase() === alwoable_arr[index][0].toLowerCase().trim()){
+            
             count_h = count_h + parseFloat(itm.salary)
             h_sal = itm.salary
           }
@@ -642,6 +643,7 @@ export class JobCardsService {
           cpi = 0;
         } else {
           cpi = (allowable_cost / actual_cost1).toFixed(2);
+          
           if(cpi == 'NaN'){
             cpi = 0
           }
@@ -678,6 +680,8 @@ return cpi_array2;
     var all_sub_act_data = []
     var not_val = ['NAN', 'nan', 'NaN', undefined, '', ' '];
 
+    var main_machinary_data = UpdateJobCardDto.manpower_and_machinary[0]
+
     if(UpdateJobCardDto.subActitvity){
 
       var subactivitys = UpdateJobCardDto.subActitvity
@@ -692,7 +696,7 @@ return cpi_array2;
 
              if(find_Card){
               
-              let datas = await this.getSameData(find_Card)
+              let datas = await this.getSameData(find_Card, main_machinary_data)
 
                 if(datas && datas[0] && datas[0].length>0){
                   datas.map((item)=>{
