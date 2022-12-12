@@ -632,7 +632,7 @@ export class JobCardsService {
           }
         })
         var allowable_cost =
-        parseFloat(alwoable_arr[index][5]) * parseFloat(count_h);
+        parseFloat(alwoable_arr[index][4]) * parseFloat(h_sal);
 
         var actual_cost1 = alwoable_arr[index][6];
 
@@ -948,7 +948,7 @@ return cpi_array2;
           }
         })
         var allowable_cost =
-        parseFloat(alwoable_arr[index][5]) * parseFloat(count_h);
+        parseFloat(alwoable_arr[index][4]) * parseFloat(h_sal);
         
         var actual_cost1 = alwoable_arr[index][6];
 
