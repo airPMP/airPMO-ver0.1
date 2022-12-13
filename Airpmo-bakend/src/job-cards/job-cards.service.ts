@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, set } from 'mongoose';
-import { setPriority } from 'os';
+import { setPriority, type } from 'os';
 import { map } from 'rxjs';
 import { jobcard, jobcardDocuments } from 'src/schemas/job_card.schema';
 import {
@@ -449,7 +449,7 @@ export class JobCardsService {
   // }
 
 
- async getSameData(makeNewObj:any, machinaryMainData : any)  {
+ async getSameData(makeNewObj:any)  {
 
   const employe_data = makeNewObj.actual_employees;
     const equipmets_data = makeNewObj.actual_equipments;
@@ -472,7 +472,7 @@ export class JobCardsService {
       }
     }
 
-      const machinary_data_main = machinaryMainData;
+      const machinary_data_main = makeNewObj.manpower_and_machinary[0];;
       var machinary_data_value_main = [];
       if(machinary_data_main != undefined){
         machinary_data_value_main = Object.values(machinary_data_main);
@@ -696,7 +696,9 @@ return cpi_array2;
 
              if(find_Card){
               
-              let datas = await this.getSameData(find_Card, main_machinary_data)
+              let datas = await this.getSameData(find_Card)
+
+              // return false
 
                 if(datas && datas[0] && datas[0].length>0){
                   datas.map((item)=>{
@@ -1037,12 +1039,19 @@ return cpi_array2;
     UpdateJobCardDto.planned_vs_allowable_vs_actual = [cpi_array2];
 
     var not_val = ['NAN', 'nan', 'NaN', undefined, '', ' '];
-    var total_cpi = 0
+    var total_cpi :any = 0
     if(cpi_array2 && cpi_array2.length > 0){
+      let count_plan_Ary_cpi = 0
       for (let i = 0; i < cpi_array2.length; i++) {
         if(!(not_val).includes(cpi_array2[i][8])){
           total_cpi = total_cpi + parseFloat(cpi_array2[i][8])
+          if(cpi_array2[i][8] > 0){
+            count_plan_Ary_cpi++
+          }
         }
+      }
+      if(!(not_val).includes(total_cpi)){
+        total_cpi = total_cpi / count_plan_Ary_cpi
       }
     }
 
@@ -1056,48 +1065,66 @@ return cpi_array2;
 
       if(all_sub_act_data && all_sub_act_data.length>0){
         var result = new Array();
-      var n = all_sub_act_data.length;
-      result.push(all_sub_act_data[0]);
-      for(var i = 1; i < n; i++) {
-          var flag = false;
-          for(var j=0;j<result.length;j++) {
-              if((all_sub_act_data[i][0]).trim() === (result[j][0]).trim()) {
-                  flag = true;
-                  for(var k = 1; k < all_sub_act_data[i].length; k++) {
-                    if(all_sub_act_data[i][k] === 'NaN'){
-                    	all_sub_act_data[i][k] = 0
-                    }
-                     if(result[j][k] === 'NaN'){
-                    	result[j][k] = 0
-                    }
+        var n = all_sub_act_data.length;
+        result.push(all_sub_act_data[0]);
+        for(var i = 1; i < n; i++) {
+            var flag = false;
+            for(var j=0;j<result.length;j++) {
+                if((all_sub_act_data[i][0]).trim() === (result[j][0]).trim()) {
+                    flag = true;
+                    for(var k = 1; k < all_sub_act_data[i].length; k++) {
+                      if(all_sub_act_data[i][k] === 'NaN'){
+                        all_sub_act_data[i][k] = 0
+                      }
+                      if(result[j][k] === 'NaN'){
+                        result[j][k] = 0
+                      }
 
-                    let temp1 = parseFloat(all_sub_act_data[i][k])
-                    let temp2 = parseFloat(result[j][k])
-                    let sum = temp1 + temp2;
-                    result[j][k] = sum.toString()
-                  }
-              }
-          }
-          if(flag == false) {
-              result.push(all_sub_act_data[i])
-          }
-      }
+                      let temp1 = parseFloat(all_sub_act_data[i][k])
+                      let temp2 = parseFloat(result[j][k])
+                      let sum = temp1 + temp2;
+                      result[j][k] = sum.toString()
+                    }
+                }
+            }
+            if(flag == false) {
+                result.push(all_sub_act_data[i])
+            }
+        }
       }
 
       total_cpi = 0
       if(result && result.length > 0){
+        let count_plan_Ary_cpi = 0;
         for (let i = 0; i < result.length; i++) {
           if(!(not_val).includes(result[i][8])){
+            
+            for (let j = 0; i < actual_employees_list.length; j++) {
+              if(actual_employees_list[j]['designation'] == result[i][0]){
+                let allowable_cpi_cost = Number(actual_employees_list[j].hourly_standard_salary) * parseFloat(result[i][5])
+                let actual_cpi_cost = Number(result[i][6])
+                result[i][8] = Number(allowable_cpi_cost) / Number(actual_cpi_cost)
+                  break;
+                }
+            }
+              
             total_cpi = total_cpi + parseFloat(result[i][8])
+            if(result[i][8] > 0){
+              count_plan_Ary_cpi++;
+            }
           }
         }
-      }      
+
+        if(!(not_val).includes(total_cpi)){
+          total_cpi = total_cpi / count_plan_Ary_cpi
+        }
+
+      }          
 
         UpdateJobCardDto.planned_vs_allowable_vs_actual_rollup = [result];
         UpdateJobCardDto.actual_employees_rollup = actual_employees_list;
         UpdateJobCardDto.actual_equipments_rollup = actual_equipments_list;
     }
-
     UpdateJobCardDto.total_overall_cpi = total_cpi.toString();
     UpdateJobCardDto.total_overall_spi = total_overall_spi.toString();
 
