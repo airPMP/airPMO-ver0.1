@@ -1101,7 +1101,7 @@ return cpi_array2;
             
             for (let j = 0; i < actual_employees_list.length; j++) {
               if(actual_employees_list[j]['designation'] == result[i][0]){
-                let allowable_cpi_cost = Number(actual_employees_list[j].hourly_standard_salary) * parseFloat(result[i][5])
+                let allowable_cpi_cost = Number(actual_employees_list[j].hourly_standard_salary) * parseFloat(result[i][4])
                 let actual_cpi_cost = Number(result[i][6])
                 result[i][8] = Number(allowable_cpi_cost) / Number(actual_cpi_cost)
                   break;
