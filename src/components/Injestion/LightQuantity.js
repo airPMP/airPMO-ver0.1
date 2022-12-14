@@ -9,7 +9,6 @@ import { SearchClientSet, LightQuantitySheetId, ProductiveNameActive, UpdateShee
 import axios from "axios";
 import LightQuentitySearch from './LightQuentitySearch';
 
-
 const LightQuantity = () => {
 
     const [clientdata, setClientData] = useState(null);
@@ -29,8 +28,6 @@ const LightQuantity = () => {
     const [allsubzoneuniqe, setAllSubZoneUniqe] = useState(null)
     const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
     const [sheetupdateddata, setSheetUpdatedData] = useState(false)
-
-
     const [title, setTitle] = useState(null);
     let urlTitle = useLocation();
     const { addToast } = useToasts();
@@ -39,92 +36,76 @@ const LightQuantity = () => {
     const projectnameactive = ProductiveNameActive.use()
     const entityshoeproductiveeye = EntityShowProductiveEye.use()
     const updatesheetdata = UpdateSheetData.use()
-
     let LocationButton = useLocation();
     let navigate = useNavigate();
-
 
     useEffect(() => { 
         if (urlTitle.pathname === "/DataInjestion/QuantitySheet") {
             setTitle("Data Ingestion");
         }
-
-    }, [urlTitle.pathname])
-
-
-
-
+    }, [urlTitle.pathname]);
 
     useEffect(() => {
-
         const userData = getClientApi().then((data) => {
-            setClientData(data?.data) //get client data c-1 -1a
+            setClientData(data?.data); //get client data c-1 -1a
         })
+    }, []);
 
-    }, [])
     useEffect(() => {
         if (openSearchData1 === null || openSearchData1 === "") {
-            setopenSearchData(false)
-            SearchClientSet.set(false)
-            setProjectSearchData(null)
+            setopenSearchData(false);
+            SearchClientSet.set(false);
+            setProjectSearchData(null);
         }
         else {
-            setopenSearchData(true)
-            SearchClientSet.set(true)
+            setopenSearchData(true);
+            SearchClientSet.set(true);
         }
-    }, [openSearchData1])
+    }, [openSearchData1]);
 
     useEffect(() => {
         const clientidname = (e, Objdata) => {
-            setClientSearchData(Objdata?.client_name)
+            setClientSearchData(Objdata?.client_name);
         }
-        setopenSearchData(false)
-        clientidname()
+        setopenSearchData(false);
+        clientidname();
         //when he click to seach client  then this useState will and run the clientNameFun run -7a
         //
-    }, [clientsearchdata])
+    }, [clientsearchdata]);
 
 
     useEffect(() => {
         if (lightquantitysheetid) {
-            SheetTableData()
+            SheetTableData();
         }
-        console.log("data coming")
-    }, [lightquantitysheetid, projectnameactive, updatesheetdata])
-
+    }, [lightquantitysheetid, projectnameactive, updatesheetdata]);
 
     useEffect(() => {
-
         if (filteredsheetdata === undefined || filteredsheetdata === null) {
             setFilteredSheetData(productivesheetsllsata)
         }
         setFilteredSheetData(productivesheetsllsata) 
-
         UpdateSheetData.set(false)
-    }, [productivesheetsllsata, sheetupdateddata, updatesheetdata])
-
+    }, [productivesheetsllsata, sheetupdateddata, updatesheetdata]);
 
     const clientidname = (e, Objdata) => {
-        setChooseprojectOpnCls(false)
-        setClientSearchData(Objdata?.client_name)
+        setChooseprojectOpnCls(false);
+        setClientSearchData(Objdata?.client_name);
 
         const token = reactLocalStorage.get("access_token", false);
         axios.get(`${process.env.REACT_APP_BASE_URL}/api/client/${Objdata?._id}/project`, {
             headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
+                    Authorization: `Bearer ${token}`,
+                }
+            })
             .then((response) => {
-                // console.log(response?.data)
-                setProjectSearchData(response?.data)
-
+                setProjectSearchData(response?.data);
                 if (response?.data.length === 0) { 
-                    setSheetUpdatedData(false)
+                    setSheetUpdatedData(false);
                 }
                 else {
-                    setSheetUpdatedData(true)
+                    setSheetUpdatedData(true);
                 }
-
                 // if (response.status === 200) {
                 //     addToast("Project is Added Sucessfully", {
                 //         appearance: "success",
@@ -132,32 +113,28 @@ const LightQuantity = () => {
                 //     })
 
                 // }
-
             })
             .catch((error) => {
-                console.log(error)
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
             })
     }
+
     const handleChangeForClientData = (e) => {
-
-        setChooseprojectOpnCls(true)
-
+        setChooseprojectOpnCls(true);
         let value = e.target.value.toUpperCase();
-        let result = []
+        let result = [];
         result = clientdata?.filter((data) => {  //get client data c-2 -3a
-
             if (isNaN(+value)) {
                 return data?.client_name.toUpperCase().search(value) !== -1;
             }
         });
-
-        setSearchData(result) // set Search client data c-1 -4a
-        setopenSearchData1(e.target.value)
+        setSearchData(result);  // set Search client data c-1 -4a
+        setopenSearchData1(e.target.value);
     }
+
     const SheetTableData = () => {
 
         const token = reactLocalStorage.get("access_token", false);
@@ -167,11 +144,9 @@ const LightQuantity = () => {
             }
         })
             .then((response) => {
-                console.log(response)
-
                 if (response?.data?.light_fitting_quantity_sheets.length !== 0) {
-                    setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets)
-                    setSheetUpdatedData(true)
+                    setProductiveSheetAllData(response?.data?.light_fitting_quantity_sheets);
+                    setSheetUpdatedData(true);
                 }
                 else {
                     addToast("sheet not Found", {
@@ -180,26 +155,20 @@ const LightQuantity = () => {
                     })
                     setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide 
                 }
-
-
                 if (response?.status === 200) {
-                    ProductiveNameActive.set(true)
-
+                    ProductiveNameActive.set(true);
                 }
-
             })
             .catch((error) => {
-                console.log(error)
-                console.log("error light_fitting_quantity_sheets")
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
-                setSheetUpdatedData(false)  //when there is  no data in sheet then the condition will false and data will hide
+                setSheetUpdatedData(false); //when there is  no data in sheet then the condition will false and data will hide
             })
     }
     const SheetFile = (e) => {
-        setProductiveSheetData(e?.target?.files[0])
+        setProductiveSheetData(e?.target?.files[0]);
     }
     const handleSearch = (e) => {
 
@@ -216,28 +185,24 @@ const LightQuantity = () => {
             }
         });
 
-        setFilteredSheetData(result)
+        setFilteredSheetData(result);
 
         if (value === "") {
-            setFilteredSheetData(productivesheetsllsata)
+            setFilteredSheetData(productivesheetsllsata);
         }
     } 
  
     const ActiveNameData = (e, itemData) => {
-        console.log(itemData)
-        setZoneTotal(itemData)
-        setActiveDataShow(o => !o)
-        setActiveData(itemData[0].activity_code)
+        setZoneTotal(itemData);
+        setActiveDataShow(o => !o);
+        setActiveData(itemData[0].activity_code);
     }
 
     const SubZoneDataFun = (e, item) => {
-        console.log(item)
-        setAllSubZoneShow(o => !o)
-        setAllSubZoneUniqe(item.zone)
-        setAllSubZoneValue(item)
+        setAllSubZoneShow(o => !o);
+        setAllSubZoneUniqe(item.zone);
+        setAllSubZoneValue(item);
     }
-
-   
 
     return (
         <>
@@ -261,14 +226,10 @@ const LightQuantity = () => {
                             className={LocationButton.pathname.includes("FireQuantity") ? "bg-[#8d8b8b] p-4 text-[#f0f0f0] m-3 rounded-[8px]" : "bg-[#fff]  p-4 m-3 rounded-[8px]"}    >
                             Fire Quantity
                         </button>
-
-
                     </div>
-                    <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
-
-                        <div className="mr-[70px]"   >
+                    <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px] ">
+                        <div className="mr-[70px]">
                             <div>
-
                                 <div className=" basic-1/4 flex flex-row px-[20px] 
                                 bg-[#FFFFFF] rounded-[0.625rem] ">
                                     <div className="pt-[18px]">
@@ -291,7 +252,7 @@ const LightQuantity = () => {
                                             />
                                         </svg>
                                     </div>
-                                    <div className="bg-[#FFFFFF] pl-[7px]    ">
+                                    <div className="bg-[#FFFFFF] pl-[7px]">
                                         <input
                                             type="text"
                                             placeholder="Choose Client"
@@ -307,7 +268,6 @@ const LightQuantity = () => {
 
                                         {
                                             searchdata.map((item, id) => { // get Search client data c-2 -5a
-
                                                 return <li onClick={(e) => clientidname(e, item)}>
                                                     {
                                                         item.client_name
@@ -315,7 +275,6 @@ const LightQuantity = () => {
                                                 </li> //-6a
                                             })
                                         }
-
                                     </ul>}
                                 </div>
                             </div>
@@ -329,14 +288,11 @@ const LightQuantity = () => {
                             />
                         </div>
                     </div>
-
                     <div className=" flex flex-col  mb-10 pb-5 lg:w-[97%] md:w-[90%] mr-[10px] rounded-[31.529px] mh-[632.01px] mt-[48px] ml-[38px] 
                   bg-[#FFFFFF] ">
-
                         <div className="flex flex-row justify-between">
                             <div className="flex">
-                                <div className=" ml-[26.8px] mt-[31.94px]      ">
-
+                                <div className=" ml-[26.8px] mt-[31.94px]">
                                     <svg width="77" height="76" viewBox="0 0 77 76" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="38.6122" cy="37.9999" r="37.7143" fill="#F4F7FE" />
                                     </svg>
@@ -353,18 +309,14 @@ const LightQuantity = () => {
                                                 Shining Towers
                                             </div>
                                         </div>
-                                        <div  >
-
+                                        <div>
                                         </div>
-
-
-                                        <div className="col-span-1     ">
+                                        <div className="col-span-1">
                                             <div className="flex  ml-[50%] " style={{ marginTop: "-15px" }}>
                                                 <div className=" mr-[14px] mt-[10px] text-[#8F9BBA]">
                                                     <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M14 20H0L0 18H14V20ZM7 16L1 10L2.41 8.59L6 12.17V0L8 0V12.17L11.59 8.59L13 10L7 16Z" fill="#8F9BBA" />
                                                     </svg>
-
                                                 </div>
                                                 <div className="text-[14px]  cursor-pointer   
                                                  text-[#8F9BBA] font-sans font-medium text-center"
@@ -382,19 +334,15 @@ const LightQuantity = () => {
                                                 </div>
                                                 <div className="shhetText">Import Sheet</div>
                                             </div>
-
-
                                             <div>
                                                 <div className="pl-[13px] -mt-[40px]   rounded-[0.625rem]"
                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                                     <div
                                                         className="mt-[73.07px]  flex flex-row 
-                                                     items-center mr-[55.5px] bg-[#FFFFFF]       "
+                                                     items-center mr-[55.5px] bg-[#FFFFFF]"
                                                     >
                                                         <div className="pt-[4.64px] pl-[16.6px]">
                                                             <svg
-
                                                                 width="11"
                                                                 height="12"
                                                                 viewBox="0 0 11 12"
@@ -420,126 +368,104 @@ const LightQuantity = () => {
                                                             </svg>
                                                         </div>
                                                         <div className="bg-[#FFFFFF] 
-                                                        pl-[9.64px] mb-[10.44]  ">
+                                                        pl-[9.64px] mb-[10.44]">
                                                             <input
                                                                 type="text"
                                                                 onChange={(e) => handleSearch(e)}
-                                                                placeholder="Search "
+                                                                placeholder="Search"
                                                                 className="outline-none
                                                                 text-[12px]
-                                                                 w-[173.87px] h-[36.94px]  
-                                                            "
-
+                                                                 w-[173.87px] h-[36.94px]"
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] w-[100%]" >
+                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] w-[100%]">
                             <table className="table-auto   text-center 
                              text-[#8F9BBA] text-[12px] font-sans
-                               font-normal not-italic w-[100%]"
-                            >
-
-                                <tr className="max-h-[52.84px] text-center  ">
+                               font-normal not-italic w-[100%]">
+                                <tr className="max-h-[52.84px] text-center">
                                     <th className="w-[25%] py-[13px]">Activity&nbsp;Code</th>
                                     <th className="w-[35%] py-[13px]">Activity&nbsp;Name</th>
                                     <th className="w-[20%] py-[13px]">Unit of Measure</th>
                                     <th className="w-[20%] py-[13px]">Quentity</th>
                                 </tr>
 
-
                                 {sheetupdateddata && filteredsheetdata?.map((item, i) => (
 
-                                    <tbody className="  mb-[10px]   ">
-                                        <tr className="max-h-[52.84px] text-center  ">
-                                            <th className=" py-[13px]">{item[0]?.activity_code}</th>
-                                            <th className="  py-[13px] cursor-pointer"
+                                    <tbody className="mb-[10px]">
+                                        <tr className="max-h-[52.84px] text-center">
+                                            <th className="py-[13px]">{item[0]?.activity_code}</th>
+                                            <th className="py-[13px] cursor-pointer"
                                                 onClick={(e) => ActiveNameData(e, item)}> {item[1]?.activity_discription}</th>
-                                            <th className="  py-[13px]">Unit of Measure</th>
-                                            <th className="  py-[13px]">{item[2]?.total}</th>
+                                            <th className="py-[13px]">Unit of Measure</th>
+                                            <th className="py-[13px]">{item[2]?.total}</th>
                                         </tr>
                                         <tr>
                                             <td className="p-[10px]"></td>
                                         </tr>
 
-
-
                                         {activedatashow && activedata === item[0]?.activity_code ?
                                             <td className="mb-4  text-justify  " colspan="5"
                                                 style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
-
-                                                <tr className=" w-[100%] pr-4         h-[35px] "    >
-
-                                                    <div className="p-[10px] ml-[270px] text-[#180c5a] font-semibold  cursor-pointer  "
+                                                <tr className=" w-[100%] pr-4 h-[35px]">
+                                                    <div className="p-[10px] ml-[270px] text-[#180c5a] font-semibold  cursor-pointer"
                                                         onClick={(e) => SubZoneDataFun(e, item)}>
                                                         <span className="p-3"> Zone'S</span>
                                                         <span className="pl-5"> Total</span>
                                                     </div>
-
                                                 </tr>
+
                                                 {zonetotal.slice(3).map((item, ids) => {
-
-                                                    return <tr className=" w-[100%] pr-4 h-[35px] "  >
-
+                                                    return <tr className=" w-[100%] pr-4 h-[35px]">
                                                         <div className="p-[10px] ml-[275px] whitespace-nowrap  cursor-pointer"
                                                             onClick={(e) => SubZoneDataFun(e, item)}>
-                                                            <span className="p-2  "> {item.zone}</span>
+                                                            <span className="p-2"> {item.zone}</span>
                                                             =
                                                             <span className="p-2"> {item.sub_zone_total}
                                                             </span>
                                                         </div>
 
-
-
                                                         {allsubzoneshow && allsubzoneuniqe === item.zone ?
-                                                            <td className="mb-4 m-2  w-[40%] "
-                                                                style={{ boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
-                                                                <tr className=" w-[100%] pr-4         h-[35px] "    >
+                                                            <td className="mb-4 m-2 w-[40%]"
+                                                                style={{ boxShadow: "0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
+                                                                <tr className=" w-[100%] pr-4 h-[35px]">
 
-                                                                    <div className="p-[10px]   text-[#180c5a] font-semibold  cursor-pointer  "
+                                                                    <div className="p-[10px] text-[#180c5a] font-semibold  cursor-pointer"
                                                                         onClick={(e) => SubZoneDataFun(e, item)}>
                                                                         <span className="p-3"> SubZone'S</span>
                                                                         <span className="pl-5"> Values</span>
                                                                     </div>
-
                                                                 </tr>
                                                                 {Object.entries(allsubzonevalue).map(([key, value]) => {
                                                                     return <>
-                                                                        <tr className="h-[35px] ">
-                                                                            <div className="p-[10px]   cursor-pointer">
+                                                                        <tr className="h-[35px]">
+                                                                            <div className="p-[10px] cursor-pointer">
                                                                                 <span className="p-3">
                                                                                     {key}</span>
                                                                                 =
                                                                                 <span className="pl-5">
                                                                                     {value}</span>
-
                                                                             </div>
                                                                         </tr>
                                                                         <br />
                                                                     </>
-
-
                                                                 })}
                                                             </td> : null
                                                         }
                                                     </tr>
-
                                                 })}
                                             </td> : null
                                         }
-
-
                                     </tbody>
                                 ))}
-
                             </table>
                         </div>
                     </div>

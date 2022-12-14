@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect , useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,12 +6,9 @@ import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 
 const validate = (values) => {
-
-
-
     const errors = {};
     // if (!values.FirstName) {
     //     errors.FirstName = "First Name Required";
@@ -51,11 +48,11 @@ const validate = (values) => {
     // if (!values.Comments) {
     //     errors.Comments = "comment Required";
     // }
-    // console.log(errors);
     return errors;
 };
 
 const AddUserRole = () => {
+    
     const { addToast } = useToasts();
     const [rolesdata, setRolesData] = useState(null)
     const [designationdata, setDesignationData] = useState(null)
@@ -63,28 +60,22 @@ const AddUserRole = () => {
     const [rolesalldata, setRolesAllData] = useState(null)
     const [hierarchydata, setHierarchyData] = useState(null)
     const [errrolesalldata, setErrRolesAllData] = useState(false)
-    const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
-    const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
-    const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
-
+    // const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
+    // const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
+    // const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
     let navigate = useNavigate();
-
-   
 
     useEffect(() => {
 
         const feachSheetId = async () => {
-
             const now = new Date();
             let some = dateFormat(now, "paddedShortDate");
             let curentDta = some.split('/')
             let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
-
             // let newDate = new Date().toLocaleString()
             // let curentDta = newDate.split('/')
             // let yearsplit = curentDta[2].split(",")
             // let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
-
 
             try {
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT - HRMS Std Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`,)
@@ -97,8 +88,6 @@ const AddUserRole = () => {
                 // })
 
               //  const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                // console.log(data1?.data?.values)
-               
                 // let final_arr = []
                 // if(data1?.data?.values.length > 0){
                 //     for(let i=0;i<data1?.data?.values.length;i++){
@@ -129,18 +118,14 @@ const AddUserRole = () => {
                         ClientIdStore.push(items[0])
                     }
                 })
-                //console.log('dddd',ClientIdStore);
-                setRolesData(ClientIdStore)
-
+                setRolesData(ClientIdStore);
                 //setRolesData(data1?.data)
 
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
         feachSheetId();
-
-
     })
 
     useEffect(() => {
@@ -150,9 +135,7 @@ const AddUserRole = () => {
         if (rolesalldata) {
             setErrRolesAllData(false)
         }
-
-
-    }, [designationdata, rolesalldata])
+    }, [designationdata, rolesalldata]);
 
 
     const Hierarchy = [
@@ -164,9 +147,8 @@ const AddUserRole = () => {
     ]
 
     const CancelButton = () => {
-        navigate('/UserManagement')
+        navigate('/UserManagement');
     }
-
 
     const formik = useFormik({
 
@@ -185,7 +167,6 @@ const AddUserRole = () => {
                 values.organization_id = organization_Id
             }
 
-
             values.name = rolesalldata
 
             values.hierarchy = hierarchydata
@@ -199,7 +180,6 @@ const AddUserRole = () => {
             }
             )
                 .then((response) => {
-                    console.log(response)
                     if (response.status === 201) {
                         navigate('/UserManagement')
                         addToast("User Created Sucessfully", {
@@ -227,16 +207,12 @@ const AddUserRole = () => {
     });
 
     const SpreadFun = (e) => {
-        setRolesAllData(e.target.value)
-        console.log(e.target.value)
+        setRolesAllData(e.target.value);
     }
+
     const HierarchyFun = (e) => {
-        setHierarchyData(e.target.value)
-        console.log(e.target.value)
-
+        setHierarchyData(e.target.value);
     }
-
-    console.log(rolesdata)
 
     return (
         <>
@@ -247,8 +223,7 @@ const AddUserRole = () => {
                 <div className="flex flex-col">
                     <Header />
                     <div className="flex flex-col  justify-center overflow-hidden w-[100%] 
-                     h-[100vh]  ">
-
+                     h-[100vh]">
                         <div className="max-w-[1099px] max-h-[632.01px]  
                         bg-[#FFFFFF] justify-center  ml-[38px] mr-[170px] mt-[36px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
                             <div className="flex flex-row items-center ">
@@ -258,8 +233,7 @@ const AddUserRole = () => {
                                         alt="logo"
                                         width="42.79px"
                                         height="44px"
-                                        className="content-center"
-                                    />
+                                        className="content-center"/>
                                 </div>
                                 <div>
                                     <div className=" font-secondaryFont ml-[27.92px]
@@ -272,13 +246,12 @@ const AddUserRole = () => {
                                     </div> */}
                                 </div>
                             </div>
-
                             <div className="pl-[120px] pr-[96px] pt-[33.49px]">
                                 <form onSubmit={formik.handleSubmit}>
                                     <div className="flex flex-row space-x-40 pb-[36px]">
 
                                         <div>
-                                            <div className="relative w-[300px] border-b border-black ">
+                                            <div className="relative w-[300px] border-b border-black">
                                                 <select
                                                     name="spread_sheet_user_id"
                                                     onChange={(e) => SpreadFun(e)}
@@ -288,7 +261,7 @@ const AddUserRole = () => {
                                                     <option value="" label="Role" />
                                                     {rolesdata?.map((item, id) => {
                                                         return <>
-                                                            <option value={item} label={item    } key={id} />
+                                                            <option value={item} label={item} key={id} />
                                                         </>
                                                     })}
                                                 </select>
@@ -298,11 +271,10 @@ const AddUserRole = () => {
                                                     Role
                                                 </div>
                                             )} */}
-
                                         </div>
 
                                         <div>
-                                            <div className="relative w-[300px]  ">
+                                            <div className="relative w-[300px]">
                                                 <input
                                                     id="description"
                                                     name="description"
@@ -332,19 +304,17 @@ const AddUserRole = () => {
                                             )
                                             } */}
                                         </div>
-
                                     </div>
 
                                     <div className="flex flex-row space-x-40 pb-[36px]">
-
-                                        <div className=" relative w-[300px]" >
+                                        <div className=" relative w-[300px]">
                                             <div>
-                                                <div className="relative w-[300px] border-b border-black ">
+                                                <div className="relative w-[300px] border-b border-black">
                                                     <select
                                                         // name="spread_sheet_user_id"
                                                         onChange={(e) => HierarchyFun(e)}
                                                         className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none  "
+                                                    37.83px] border-none bg-[#ffffff] w-full focus:outline-none"
                                                     >
                                                         <option value="" label="Hierarchy" />
                                                         {Hierarchy?.map((item, id) => {
@@ -359,7 +329,6 @@ const AddUserRole = () => {
                                                    Hierarchy
                                                 </div>
                                             )} */}
-
                                             </div>
                                         </div>
                                     </div>

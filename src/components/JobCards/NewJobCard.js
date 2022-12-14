@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
-// import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import Header from "../layout/Header";
 import SideBar from "../layout/SideBar";
@@ -14,7 +13,6 @@ import { ProductivitySheetData, ProductiveSheetId, QuantityTOAchivedData, Projec
 
 const validate = (values) => {
   const errors = {};
-
   // if (!values.qc_remark) {
   //   errors.qc_remark = "qc_remark Required";
   // }  
@@ -45,10 +43,8 @@ const NewJobCard = () => {
   const [allCalcultedMachineryData, setAllCalcultedMachineryData] = useState([null])
   const [dataData, setdataData] = useState(currentdate)
   const [patchResponeData, setpatchResponeData] = useState(null)
-
   const [projectobjectdata, setProjectObjectData] = useState(null)
   const [JcExcutedTrue, setJcExcutedTrue] = useState(false)
-
 
   let useperma = useParams()
   let urlTitle = useLocation();
@@ -57,73 +53,49 @@ const NewJobCard = () => {
 
   const productivitysheetdata = ProductivitySheetData.use()
   const quantitytoachivedData = QuantityTOAchivedData.use()
-
-
-  // console.log(patchResponeData?.productivity)
   const myJobcardActivityCoard = MyJobcardActivityCoard.use()
 
-
   useEffect(() => {
-
     if (urlTitle.pathname === "/daily_task/new_daily_task") {
       setTitle("Daily Task");
     }
-
-
   }, [urlTitle.pathname])
   
-
   useEffect(() => {
-
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${useperma.id}/zone`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/project/${useperma.id}/zone`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        console.log(response?.data)
         setZoneData(response?.data)
-        if (response.status === 201) {
-
-        }
       })
       .catch((error) => {
         console.log(error)
-
       })
 
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((response) => {
-        // console.log(response?.data)
         setProjectObjectData(response?.data)
-
-
       })
       .catch((error) => {
         console.log(error)
-
       })
-
-
 
 
     let today = new Date();
     let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     setCurrentDate(date)
-
     setProjectIdPerma(useperma.id)
   }, [])
 
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-
 
   const formik = useFormik({
     initialValues: {
@@ -169,7 +141,6 @@ const NewJobCard = () => {
       values.unit = productivitysheetobject[" UNIT "]
       const token = reactLocalStorage.get("access_token", false);
 
-
       values.isMainActitvity = false
       values.subActitvity = []
       
@@ -195,7 +166,6 @@ const NewJobCard = () => {
         }
       })
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             addToast("Issue JC Sucessfully", {
               appearance: "success",
@@ -203,7 +173,6 @@ const NewJobCard = () => {
             })
             setJcExcutedTrue(false)
             naviagte("/daily_task")
-
           }
           resetForm()
         })
@@ -218,24 +187,16 @@ const NewJobCard = () => {
   });
 
   const ActivityCode = (e) => {
-
     MyJobcardActivityCoard.set(true)
-
     setActivityCode(e.target.value)
-
     let productArray = []
     productivitysheetdata?.map((items, id) => {
       if (e.target.value === items["Sub Activity code"] || e.target.value === items["Activity code"]) {
-
         productArray.push(items)
-
-        console.log("productArray", productArray);
         setProductivitySheetObject(items)
         setActivityName(items["Sub Activity Name"])
       }
-
     })
-
     setProductivitySheetArray(productArray)
     QuantityTOAchivedData.set('')
   }
@@ -244,15 +205,13 @@ const NewJobCard = () => {
     const zoneData = e.target.value
     const ZoneDataSplit = zoneData.split(',a,')
     setZoneName(ZoneDataSplit[1])
-
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/zone/${ZoneDataSplit[0]}/subzone`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((response) => {
-        console.log(response?.data)
         setSubZoneData(response?.data)
         if (response.status === 201) {
 
@@ -260,21 +219,17 @@ const NewJobCard = () => {
       })
       .catch((error) => {
         console.log(error)
-
       })
   }
-
-
 
   useEffect(() => {
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then((response) => {
-        console.log(response?.data?.productivitysheet)
         ProductivitySheetData.set(response?.data?.productivitysheet)
       })
       .catch((error) => {
@@ -285,10 +240,7 @@ const NewJobCard = () => {
         })
 
       })
-
   }, [])
-
-
 
   useEffect(() => {
 
@@ -327,74 +279,60 @@ const NewJobCard = () => {
 
   }, [activitycode])
 
-
-
   const GetCalculatedData = (e) => {
-
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_create_job_card_cal/${activitycode}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-
         setAllCalcultedMachineryData(response?.data)
-       
         if (response.status === 200) {
           PatchCalculatedData()
         }
       })
       .catch((error) => {
         console.log(error)
-
       })
-
   }
 
   useEffect(() => {
     if (quantitytoachivedData) {
       PatchCalculatedData()
     }
-
   }, [JcExcutedTrue])
-
 
   const PatchCalculatedData = (e) => {
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_create_job_card_cal/${useperma.id}/${activitycode}`, {
-      activity_code: activitycode,
-      client_name: projectobjectdata?.client_name,
-      project_name: projectobjectdata?.project_name,
-      project_id: projectobjectdata?._id,
-      min_hour: projectobjectdata?.min_hours,
-      productivity: [
-        productivitysheetobject
-      ],
-
-      gang_productivity: quantitytoachivedData !== null && quantitytoachivedData !== '' ? quantitytoachivedData : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
-      quantity_to_be_achived: productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
-      deleted_filed: JcExcutedTrue
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        activity_code: activitycode,
+        client_name: projectobjectdata?.client_name,
+        project_name: projectobjectdata?.project_name,
+        project_id: projectobjectdata?._id,
+        min_hour: projectobjectdata?.min_hours,
+        productivity: [
+          productivitysheetobject
+        ],
+        gang_productivity: quantitytoachivedData !== null && quantitytoachivedData !== '' ? quantitytoachivedData : productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
+        quantity_to_be_achived: productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "],
+        deleted_filed: JcExcutedTrue
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setpatchResponeData(response?.data)
         if (response.status === 200) {
           // GetCalculatedData()
-
         }
       })
       .catch((error) => {
         console.log(error)
-
       })
-
   }
+
   // productivitysheetobject[" GANG PRODUCTIVIVY (APRVD. BY PM) "]
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -422,23 +360,17 @@ const NewJobCard = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row space-x-20 pb-[30px] ">
                 <div className="relative w-[350px] border-b border-black   ">
-
                   <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                      37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer "
                     onChange={(e) => ActivityCode(e)}
                   >
-
                     <option selected="true" disabled="disabled" >Activity Code</option>
-
                     {productivitysheetdata?.map((items, id) => {
-
                       return <option className="cursor-pointer" >
                         {items["Sub Activity code"] ? items["Sub Activity code"] : items["Activity code"]}</option>
                     })}
                   </select>
                 </div>
-
-
 
                 <div className="relative w-[350px]  ">
                   <input
@@ -456,12 +388,10 @@ const NewJobCard = () => {
                   >
                     Activity  Name
                   </label>
-
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[30px]">
                 <div className=" relative w-[350px]">
-
                   <input
                     id="jcCreation"
                     name="jcCreation"
@@ -472,42 +402,26 @@ const NewJobCard = () => {
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-gray-900 placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
-
                 </div>
-
                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
                   <div className="w-[165px] border-b border-black">
-
                     <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
                       37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
                       onChange={(e) => ZoneNameFun(e)}
                     // placeholder="ikhdm"
                     >
-
                       <option selected="true" disabled="disabled" >Select Zone</option>
-
                       {zonedata?.map((items, id) => {
-
                         return <option value={[items._id, "a", items.zone_name]}  >
                           {items.zone_name}
                         </option>
                       })}
                     </select>
-
                   </div>
                   <div className="relative w-[165px] border-b  border-black ">
-
-
-                    <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[
-            37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer"
-                      onChange={(e) => setSubZoneName(e.target.value)}
-
-                    >
-
+                    <select className=" font-secondaryFont font-medium not-italic text-[14px] leading-[ 37.83px] border-none bg-[#ffffff] w-full focus:outline-none text-[#2E3A59] cursor-pointer" onChange={(e) => setSubZoneName(e.target.value)} >
                       <option selected="true" disabled="disabled">Select Subzone </option>
-
                       {subzonedata?.map((items, id) => {
-
                         return <option value={items.subzone_name} >
                           {items.subzone_name}
                         </option>
@@ -515,10 +429,7 @@ const NewJobCard = () => {
                     </select>
                   </div>
                 </div>
-
               </div>
-
-
               <div style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                 <ManpowerAndMachinery
                   productivitysheetobject={productivitysheetobject}
@@ -543,9 +454,7 @@ const NewJobCard = () => {
                     htmlFor="qc_remark"
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
-
                     QC Remarks
-                    {/* <span className="text-red-700">*</span> */}
                   </label>
                   {
                     //   formik.errors.qc_remark && (
@@ -573,7 +482,6 @@ const NewJobCard = () => {
                     className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     HSE Remarks
-                    {/* <span className="text-red-700">*</span> */}
                   </label>
                   {
                     //   formik.errors.hse_remark && (
@@ -584,9 +492,6 @@ const NewJobCard = () => {
                   }
                 </div>
               </div>
-
-
-
 
               <div className="flex flex-col mb-10 ">
                 <div className="relative max-w-[860px]">
@@ -604,7 +509,6 @@ const NewJobCard = () => {
                     className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     Manager Comments
-                    {/* <span className="text-red-700">*</span> */}
                   </label>
                   {
                     //   formik.errors.manager_comments && (
@@ -631,7 +535,6 @@ const NewJobCard = () => {
                     className="absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                   >
                     discription
-                    {/* <span className="text-red-700">*</span> */}
                   </label>
                   {
                     //   formik.errors.discription && (
@@ -642,8 +545,6 @@ const NewJobCard = () => {
                   }
                 </div>
               </div>
-
-
 
               <div className="flex flex-row justify-between shadow-[buttonshadow]   mt-[42px]">
                 <div className="mr-[45px] shadow-[buttonshadow] ">

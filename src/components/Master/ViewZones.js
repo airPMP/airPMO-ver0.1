@@ -16,38 +16,27 @@ const ViewZones = () => {
     const [zonedata, setZoneData] = useState(null)
     const [zone_id, setZone_id] = useState(null)
     const [subzonedata, setSubZoneData] = useState(null)
-
-
-
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
     const [createpermission, setCreatePermission] = useState(null)
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
-
-
     const [filteredData, setFilteredData] = useState(zonedata);
-
-    const CategorieLengthget = CategorieLengthSet.use()
-
     const [deleteid, setDeleteId] = useState(null);
-    let urlTitle = useLocation();
-    let navigate = useNavigate();
-
-
-
     const [subzoneid, setSubZoneId] = useState(null);
     const [activezoneshow, setActiveZoneShow] = useState(null);
+
+    const CategorieLengthget = CategorieLengthSet.use()
     const viewzonedata = ViewZoneData.use()
     const viewsubzonedata = ViewSubZoneData.use()
 
+    let urlTitle = useLocation();
+    let navigate = useNavigate();
+
     useEffect(() => {
-
-
         if (urlTitle.pathname === "/master/categories") {
             setTitle("Master");
         }
-
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -56,7 +45,6 @@ const ViewZones = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
                 setZoneData(data?.data)
                 setFilteredData(data?.data)
             } catch (error) {
@@ -65,18 +53,13 @@ const ViewZones = () => {
         }
         feach();
         handleSearch();
-
-
         getPermision()
-
     }, [urlTitle.pathname])
-
 
 
     useEffect(() => {
         const permissionData = reactLocalStorage.get("permisions", false);
         setAllPermission(permissionData)
-
         getPermision()
     }, [allpermission])
 
@@ -92,7 +75,6 @@ const ViewZones = () => {
                 return data?.toUpperCase().search(value) !== -1;
             }
         });
-
 
         let value1 = "CREATE-SUBZONES".toUpperCase();
         let result1 = []
@@ -110,63 +92,42 @@ const ViewZones = () => {
             }
         });
 
-
-
-
-
-
-        if (result[0] === "EDIT-SUBZONES" ||
-            result1[0] === "CREATE-SUBZONES" ||
-            result2[0] === "GET-SUBZONES") {
-            setEditPermission(result[0])
-            setCreatePermission(result1[0])
-            setViewPermission(result2[0])
+        if(result){
+            if (result[0] === "EDIT-SUBZONES" ||
+                result1[0] === "CREATE-SUBZONES" ||
+                result2[0] === "GET-SUBZONES") {
+                setEditPermission(result[0])
+                setCreatePermission(result1[0])
+                setViewPermission(result2[0])
+            }
+            else {
+                let value = "ALL".toUpperCase();
+                let result = []
+                result = database?.filter((data) => {
+                    if (isNaN(+value)) {
+                        return data?.toUpperCase().search(value) !== -1;
+                    }
+                });
+                setAllPermissions(result[0])
+            }
         }
-        else {
-            let value = "ALL".toUpperCase();
-            let result = []
-            result = database?.filter((data) => {
-                if (isNaN(+value)) {
-                    return data?.toUpperCase().search(value) !== -1;
-                }
-            });
-            setAllPermissions(result[0])
-        }
-
     }
-
-
-
-
-
-
-
 
     const handleSearch = (e) => {
         let value = e?.target?.value?.toUpperCase();
         let result = []
         result = zonedata?.filter((data) => {
-
             if (isNaN(+value)) {
                 return data?.zone_name?.toUpperCase().search(value) !== -1;
             }
         });
-
         setFilteredData(result)
-
         if (value === "") {
             setFilteredData(zonedata)
         }
     }
 
-
-    const DeleteProfile = (e) => {
-        setDeleteId(e)
-        setOpen(o => !o)
-    }
-
     const conformDelete = () => {
-
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -176,10 +137,8 @@ const ViewZones = () => {
                     },
                 })
                 if (data?.status === 200) {
-
                     window.location.reload(false);
                 }
-                console.log(data)
             } catch (error) {
                 console.log(error)
             }
@@ -192,13 +151,9 @@ const ViewZones = () => {
         setOpen(o => !o)
     }
 
-
-
     const Subzone = (e, zone_id) => {
-        console.log(zone_id)
         setSubZoneId(zone_id)
         setActiveZoneShow(o => !o)
-
 
         const feach = async () => {
             const token = reactLocalStorage.get("access_token", false);
@@ -208,30 +163,21 @@ const ViewZones = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
                 setSubZoneData(data?.data)
                 if (data?.status === 200) {
-
                     // window.location.reload(false);
                 }
-                console.log(data)
             } catch (error) {
                 console.log(error)
             }
         }
         feach();
-
-
-
     }
-
 
     const ViewSubZoneFun = (e, item_data) => {
         ViewSubZoneData.set(o => !o)
         setZone_id(item_data._id)
     }
-
-
 
     return (
 
@@ -298,8 +244,6 @@ const ViewZones = () => {
                             </div>
                         </div>
                     </div>
-
-
 
                     <div className="pl-[80px]">
                         <table className="table-auto pt-[24px]  w-[100%]">
@@ -415,7 +359,6 @@ const ViewZones = () => {
                 className="zone_pops"
             >
                 <ZoneList />
-
             </Popup>
             <Popup
                 open={viewsubzonedata}
@@ -424,11 +367,8 @@ const ViewZones = () => {
                 className="zone_pops"
             >
                 <SubZoneList
-
                     zone_id={zone_id}
-
                 />
-
             </Popup>
         </div>
 

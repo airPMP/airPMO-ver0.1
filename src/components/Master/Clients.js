@@ -11,10 +11,8 @@ const Clients = ({ addNewCliient }) => {
   const [title, setTitle] = useState(null);
   const [clientdata, setClientData] = useState(null)
   const [filteredData, setFilteredData] = useState(clientdata);
-  const [delconfom, seDelConfom] = useState(false)
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
@@ -26,13 +24,10 @@ const Clients = ({ addNewCliient }) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-
     if (urlTitle.pathname === "/master/clients") {
       setTitle("Master");
     }
-
     const token = reactLocalStorage.get("access_token", false);
-
     const feach = async () => {
       try {
         const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/client`, {
@@ -48,22 +43,18 @@ const Clients = ({ addNewCliient }) => {
     }
     feach();
     handleSearch()
-
   }, [urlTitle.pathname])
 
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
-
   const getPermision = async () => {
-
     const url_data = await allpermission
-    const database = url_data.split(',')
-
+    const database = url_data?.split(',')
+    
     let value = "EDIT-CLIENTS".toUpperCase();
     let result = []
     result = database?.filter((data) => {
@@ -71,7 +62,6 @@ const Clients = ({ addNewCliient }) => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "CREATE-CLIENTS".toUpperCase();
     let result1 = []
@@ -97,49 +87,38 @@ const Clients = ({ addNewCliient }) => {
       }
     });
 
-
-
-
-
-
-
-
-    if (result[0] === "EDIT-CLIENTS" ||
-      result1[0] === "CREATE-CLIENTS" ||
-      result2[0] === "GET-CLIENTS" ||
-      result3[0] === "DELETE-CLIENTS") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
-      setDeletePermission(result3[0])
+    if(result){
+      if (result[0] === "EDIT-CLIENTS" ||
+        result1[0] === "CREATE-CLIENTS" ||
+        result2[0] === "GET-CLIENTS" ||
+        result3[0] === "DELETE-CLIENTS") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+        setDeletePermission(result3[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
-    }
-
   }
 
-
   const handleSearch = (e) => {
-
     let value = e?.target?.value?.toUpperCase();
     let result = []
-    console.log("functiom iahsdi")
     result = clientdata?.filter((data) => {
       if (isNaN(+value)) {
         return data?.client_name?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(clientdata)
     }
@@ -161,12 +140,10 @@ const Clients = ({ addNewCliient }) => {
     if(deletePermission === "DELETE-CLIENTS" || allpermission === "ALL"){
       setDeleteId(e)
       setOpen(o => !o)
-
     }
   }
 
   const conformDelete = () => {
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -176,10 +153,8 @@ const Clients = ({ addNewCliient }) => {
           },
         })
         if (data?.status === 200) {
-
           window.location.reload(false);
         }
-        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -293,9 +268,7 @@ const Clients = ({ addNewCliient }) => {
                           <center>
                             <img src={item?.upload_logo_file}
                               style={{ width: "53px", height: "53px", borderRadius: "50%" }} />
-
                           </center>
-
                         </td>
                         <td className="w-[20%]">{item?.client_name}</td>
                         <td className="w-[40%]">{item?.location}</td>
@@ -347,7 +320,6 @@ const Clients = ({ addNewCliient }) => {
                         <div className="p-7">
                           <div className="flex pb-3">
                             <div>
-
                             </div>
                             <div style={{ marginLeft: "90%" }}>
                               <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
@@ -368,20 +340,17 @@ const Clients = ({ addNewCliient }) => {
                             </button>
                           </div>
                         </div>
-
                       </Popup>
+
                     </tbody>
                   })
                 }
               </table>
             </div>
           </div>
-
         </div>
       </div>
-
     </>
-
   );
 };
 

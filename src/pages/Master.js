@@ -9,15 +9,13 @@ import { getCategorieApi, getClientApi, getProjectApi } from "../AllApi/Api";
 
 const Master = () => {
 
-  const [title, setTitle] = useState(null);
-  let urlTitle = useLocation();
-  const CategorieLengthget = CategorieLengthSet.use()
-
+  const [title, setTitle] = useState(null);  
   const [clientapi, setClientApi] = useState(null);
   const [projectapi, setProjectApi] = useState(null);
   const [categoriesapi, setCategoriesApi] = useState(null);
 
-  
+  let urlTitle = useLocation();
+  const CategorieLengthget = CategorieLengthSet.use()
 
   useEffect(() => {
     if (urlTitle.pathname === "/master") {
@@ -25,26 +23,18 @@ const Master = () => {
     }
   }, [urlTitle.pathname]);
 
-  console.log(CategorieLengthget);
-
-
   useLayoutEffect(() => {
-
     const userData = getClientApi().then((data) => {
       setClientApi(data?.data.length)
-
     })
 
     const userData1 = getProjectApi().then((data) => {
       setProjectApi(data?.data.length)
-
     })
 
     const userData2 = getCategorieApi().then((data) => {
       setCategoriesApi(data?.data?.length)
     })
-
-
   }, [])
 
   return (
@@ -55,12 +45,10 @@ const Master = () => {
         </div>
         <div className="flex flex-col">
           <Header title={title} />
-
           <div className="grid grid-cols-2 gap-4 mt-[62px]  px-[20px] ">
             <Link to={`/master/projects`}>
               <InjestionCardOnline
                 title={"Projects"}
-                
                 totalNumber={projectapi?projectapi:"0"}
                 iconn={
                   <svg
@@ -82,13 +70,10 @@ const Master = () => {
             <Link to={`/master/clients`}>
               <InjestionCardOffine
                 title={"Clients"}
-                
-                 
                 totalNumber={clientapi?clientapi:"0"}
                 iconn={
                   <svg
-                    width="
-                                            40px"
+                    width="40px"
                     height="32.79px"
                     viewBox="0 0 51 34"
                     fill="none"
@@ -122,7 +107,6 @@ const Master = () => {
                 }
               />
             </Link>
-
 
             {/* <Link to={`/master/consultant`}>
               <InjestionCardOffine

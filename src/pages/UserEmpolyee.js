@@ -1,13 +1,9 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 
 const validate = (values) => {
-
-
-
     const errors = {};
     if (!values.company_name) {
         errors.company_name = "First Name Required";
@@ -24,7 +20,6 @@ const validate = (values) => {
     ) {
         errors.address = "Invalid address format!";
     }
-
     if (!values.hrms) {
         errors.hrms = "Phone Number Required";
     } else if (
@@ -43,13 +38,11 @@ const validate = (values) => {
     // if (!values.Comments) {
     //     errors.Comments = "comment Required";
     // }
-    // console.log(errors);
     return errors;
 };
 
 const UserEmpolyee = () => {
     const { addToast } = useToasts();
-
     let navigate = useNavigate();
     const Login = () => {
         navigate('/');
@@ -71,10 +64,8 @@ const UserEmpolyee = () => {
         },
         validate,
         onSubmit: (values, { resetForm }) => {
-
             // axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values)
             //     .then((response) => {
-            //         console.log(response)
             //         if (response.status === 201) {
             //             addToast("form submitted Sucessfully", {
             //                 appearance: "success",
@@ -85,7 +76,6 @@ const UserEmpolyee = () => {
             //         resetForm()
             //     })
             //     .catch((error) => {
-            //         console.log(error)
             //         addToast("form submitted fail", {
             //             appearance: "error",
             //             autoDismiss: true,
@@ -93,10 +83,9 @@ const UserEmpolyee = () => {
             //     })
         },
     });
- 
 
     return (
-        <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%] ">
+        <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%]">
             <div className="flex flex-row  place-items-start">
                 <img
                     src="/logo1.svg"
@@ -217,10 +206,8 @@ const UserEmpolyee = () => {
                                     </div>
                                 )} */}
                             </div>
-
                         </div>
                         <div className="flex flex-row space-x-40 pb-[36px]">
-
                             <div className=" relative w-[350px]">
                                 <input
                                     id="spread_sheet"
@@ -245,7 +232,6 @@ const UserEmpolyee = () => {
                                     </div>
                                 )} */}
                             </div>
-
                             <div className="relative w-[350px]">
                                 <input
                                     id="spread_sheet_id_1"
@@ -271,7 +257,6 @@ const UserEmpolyee = () => {
                             </div>
 
                         </div>
-
                         <div className="flex flex-row space-x-40 pb-[36px]">
                             <div className="relative w-[350px]">
                                 <input
@@ -296,7 +281,6 @@ const UserEmpolyee = () => {
                                     </div>
                                 )} */}
                             </div>
-
                         </div> 
                         <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
                             <div className="mr-[45px] shadow-[buttonshadow] ">

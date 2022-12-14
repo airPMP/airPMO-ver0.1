@@ -8,7 +8,6 @@ import { getOrganizationByUserId, getUserById } from "../../AllApi/Api";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 
-
 const initialValue = {
   first_name: "",
   last_name: "",
@@ -56,7 +55,6 @@ const UserProfile = () => {
       if(Object.keys(error).length !== 0){
         console.log("error--is");
       }else{
-        console.log("error--null",values);
         let user_payload = {
           FirstName: values?.first_name,
           LastName: values?.last_name,
@@ -69,7 +67,6 @@ const UserProfile = () => {
           blood_group: values?.blood_group,
           district: values?.district
         }
-        console.log("user_payload---",user_payload);
         let userUp = await UpdateUser(user_payload, token)
         let org_payload = {
           hrms_api_url: values?.hrms,
@@ -81,7 +78,6 @@ const UserProfile = () => {
           spread_sheet_id4: values?.spreadsheetID4,
           logo_url: values?.companyLogoURL
         }
-        console.log("org_payload---",org_payload);
         let orgUp = await UpdateOrganization(org_payload, token)
       }
     },

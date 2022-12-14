@@ -7,11 +7,7 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
 const validate = (values) => {
-
-  console.log(values)
-
   const errors = {};
   // if (!values.category) {
   //   errors.category = "Category Required";
@@ -19,22 +15,18 @@ const validate = (values) => {
   if (!values.category) {
     errors.category = "Client Name Required";
   }
-   
-
   if (!values.sub_category) {
     errors.sub_category = "Type Required";
   }
-
   if (!values.discription) {
     errors.discription = "Discription Type Required";
   }
-   
   return errors;
 };
+
 const AddConsultant = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
-  const [fileName, setFileName] = useState();
   const [organization_id_data, setOrganization_Id] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -46,9 +38,8 @@ const AddConsultant = () => {
     }
     const organization_Id = reactLocalStorage.get("organizationId", false);
     setOrganization_Id(organization_Id)
-
   }, [urlTitle.pathname]);
- 
+
 
   const formik = useFormik({
     initialValues: { 
@@ -66,7 +57,6 @@ const AddConsultant = () => {
           Authorization: `Bearer ${token}`,
         }})
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             addToast("Categorie is Added Sucessfully", {
               appearance: "success",
@@ -83,10 +73,6 @@ const AddConsultant = () => {
         })
     },
   });
-
-
-   
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -160,7 +146,6 @@ const AddConsultant = () => {
                    )}
                  </div>
               </div>
-              
               
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">
                 <div className="mr-[45px] shadow-[buttonshadow] ">

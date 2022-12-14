@@ -1,33 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useFormik } from "formik";
 import SideBar from "../../layout/SideBar";
 import Header from "../../layout/Header";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
-
-
  
 const EditCategories = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
-  const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
   const { addToast } = useToasts();
-  const [editdata, setEditData] = useState(null)
   const [truedata,setTrueData]= useState(false)
-
-  
   const [namedata, setName] = useState("")
   const [typedata, setType] = useState("")
   const [discription, setDiscription] = useState("")
-   
 
   let useperma = useParams()
-
-  console.log(useperma)
 
   useEffect(() => {
     if (urlTitle.pathname === "/master/clients/new_client") {
@@ -42,28 +32,19 @@ const EditCategories = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-
         setType(data?.data?.sub_category)
         setName(data?.data?.category)
         setDiscription(data?.data?.discription)
-         
       } catch (error) {
         console.log(error)
       }
     }
-
     feach();
-
   }, [urlTitle.pathname]);
 
-
-
   const SaveButton =  (e) => {
-
     e.preventDefault()
-
     const token = reactLocalStorage.get("access_token", false);
-
       axios.patch(`${process.env.REACT_APP_BASE_URL}/api/categories/${useperma.id}/`, {
         sub_category: namedata,
         category: typedata,
@@ -81,25 +62,14 @@ const EditCategories = () => {
           })
           naviagte("/master/categories")
         }
-        
       })
       .catch((error) => {
-        console.log(error)
         addToast(error.response.data.message, {
           appearance: "error",
           autoDismiss: true,
         })
-         
-
       });
-
   }
-  
-  if(truedata){
-    console.log("done deta")
-  }
-
-  console.log(truedata)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -125,17 +95,13 @@ const EditCategories = () => {
             </div>
           </div>
           <div className="pl-[120px] pr-[26px] pt-[33.49px]">
-            <form  >
-               
-               
+            <form>
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-
                     type="text"
                     value={namedata}
                     onChange={(e) => setName(e.target.value)}
-
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
@@ -153,7 +119,6 @@ const EditCategories = () => {
                 </div>
                 <div className=" relative w-[350px]">
                   <input
-
                     type="text"
                     value={typedata}
                     onChange={(e) => setType(e.target.value)}
@@ -176,11 +141,9 @@ const EditCategories = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-
                     type="text"
                     value={discription}
                     onChange={(e) => setDiscription(e.target.value)}
-
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
@@ -196,7 +159,6 @@ const EditCategories = () => {
                     </div>
                   )} */}
                 </div>
-                 
               </div>
               
               <div className="flex flex-row justify-end shadow-[buttonshadow] mr-[-30px] pb-[45.01px] content-center mt-[42px]">

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
-import SearchBox from "../components/layout/SearchBox"; 
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import UserRolesCard from "../components/layout/UserRolesCard";
-import UserRolesCardCreate from "../components/layout/UserRolesCardCreate";
 import { getRoleApi, getUserApi, getUserByOrgId } from "../AllApi/Api";
 import { reactLocalStorage } from "reactjs-localstorage";
 
@@ -19,30 +17,31 @@ const UserManagement = () => {
   let urlTitle = useLocation();
 
   useEffect(() => {
-
     if (urlTitle.pathname === "/UserManagement") {
       setTitle("User Mgmt");
     }
-  }, [urlTitle.pathname])
+  }, [urlTitle.pathname]);
 
   const handleChangeForClient = (event) => {
     setClient(event.target.value);
   };
+
   const handleChangeForProject = (event) => {
     setProject(event.target.value);
   };
+
   const sendPage = (pagename) => {
     setPage(pagename);
   };
 
   useEffect(()=>{
-    console.log("call---");
     const roles = getRoleApi().then((data) => {
       setRolesNum(data?.data.length)
-    })
+    });
 
     const role_name = reactLocalStorage.get("roles", false);
     const org_id = reactLocalStorage.get("organization_id", false);
+
     if(role_name == "Airpmo Super Admin"){
       const user = getUserApi().then((data) => {
         setUserNum(data?.data.length)
@@ -52,7 +51,7 @@ const UserManagement = () => {
         setUserNum(data?.data ? data?.data.length : 0)
       })
     }
-  },[])
+  },[]);
 
 
   return (
@@ -99,7 +98,6 @@ const UserManagement = () => {
                           r="28.5141"
                           fill="#F4F7FE"
                         />
-
                       </svg>
                     }
                   />
@@ -122,7 +120,6 @@ const UserManagement = () => {
                           r="28.5141"
                           fill="#F4F7FE"
                         />
-
                       </svg>
                     }
                   />
@@ -154,8 +151,6 @@ const UserManagement = () => {
                       <svg width="40" height="40" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M26.1668 26.1666V45.1666H19.8335V26.1666H0.833496V19.8333H19.8335V0.833252H26.1668V19.8333H45.1668V26.1666H26.1668Z" fill="#2E3A59" />
                       </svg>
-
-
                     </div>
                   }
                 /> */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,12 +6,9 @@ import { useToasts } from "react-toast-notifications";
 import SideBar from "../layout/SideBar";
 import Header from "../layout/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 
 const validate = (values) => {
-
-
-
     const errors = {};
     // if (!values.FirstName) {
     //     errors.FirstName = "First Name Required";
@@ -28,11 +25,9 @@ const validate = (values) => {
     ) {
         errors.Email = "Invalid email format!";
     }
-
     if (!values.Password) {
         errors.Password = "Password Required";
     }
-
     if (!values.PhoneNumber) {
         errors.PhoneNumber = "Phone Number Required";
     } else if (
@@ -51,7 +46,6 @@ const validate = (values) => {
     // if (!values.Comments) {
     //     errors.Comments = "comment Required";
     // }
-    // console.log(errors);
     return errors;
 };
 
@@ -70,28 +64,17 @@ const AddNewUser = () => {
     const [nodesignationedata, setNoDesignaionData] = useState([])
     const [errdesignation, setErrDesignation] = useState(false)
     const [assignproject, setAssignProject] = useState(false)
-    const [spreadsheetid, setSpreadSheetId] = useState(null)
-    const [spreadsheetalldata, setSpreadSheetIdAllData] = useState(null)
     const [spreadalldata, setSpreadAllData] = useState(null)
     const [errspreadalldata, setErrSpreadAllData] = useState(false)
     const [refraceData, setRefraceData] = useState(false)
     const [designatiotrue, setDesignatioTrue] = useState(false)
-
-
-    // const [hrmsdata, setHRMSData] = useState(null);
-    // const [spread_sheet_id_1, setSpreadSheet_1] = useState(null);
-
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('time sheet employees');
-
-
     let navigate = useNavigate();
-
 
     useEffect(() => {
         const token = reactLocalStorage.get("access_token", false);
-
         const feachRolls = async () => {
             try {
                 const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
@@ -99,65 +82,49 @@ const AddNewUser = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-               console.log("data1--",data1?.data);
                 setRolesData(data1?.data)
                 // let lastlengh = data1?.data[data1?.data.length - 1]
                 // setRoleId(lastlengh?._id)
-
             } catch (error) {
                 console.log(error)
             }
         }
         feachRolls();
-
-
-
-    }, [])
+    }, []);
 
     useEffect(() => {
-
         const token = reactLocalStorage.get("access_token", false);
         const user_id = reactLocalStorage.get("user_id", false);
         const feachAddUser = async () => {
-
             try {
                 const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${user_id}/organization`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
-            
-
                 // setHRMSData(data1?.data[0]?.hrms_api_url)
                 // setSpreadSheet(data1?.data[0]?.spread_sheet_id)
                 // setSpreadSheet_1(data1?.data[0]?.discription)
-
-
             } catch (error) {
                 console.log(error)
             }
         }
         feachAddUser();
-
     })
 
-
     useEffect(() => {
+
         const now = new Date();
             let some = dateFormat(now, "paddedShortDate");
             let curentDta = some.split('/')
             let cuurctData = `${curentDta[1]}${curentDta[0]}${curentDta[2]}-${curentDta[1]}${curentDta[0]}${curentDta[2]}`
-
-
         // let newDate = new Date().toLocaleString()
         // let curentDta = newDate.split('/')
         // let yearsplit = curentDta[2].split(",") 
         // let cuurctData = `${curentDta[0]}${curentDta[1]}${yearsplit[0]}-${curentDta[0]}${curentDta[1]}${yearsplit[0]}`
-        
-
         const token = reactLocalStorage.get("access_token", false);
         const feachSheetId = async () => {
+
             try {
                 // const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/hrms-api/59/${cuurctData}`, {
 
@@ -168,7 +135,6 @@ const AddNewUser = () => {
                 // setClientIdData(data1?.data)
                 
                 const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                // console.log(data1?.data?.values)
                
                 let final_arr = []
                 if(data1?.data?.values.length > 0){
@@ -189,19 +155,17 @@ const AddNewUser = () => {
                                     res["attendence"] = item
                                 }
                             })
-                            final_arr.push(res)
+                            final_arr.push(res);
                         }
                     }
                 }
-                setClientIdData(final_arr)
+                setClientIdData(final_arr);
                 // let ClientIdStore = []
                 // data1?.data?.values.map((items, id) => {
                 //     if (id >= 1) {
                 //         ClientIdStore.push(items[0])
                 //     }
                 // })
-
-
 
                 // setSpreadSheetIdAllData(data1?.data?.values)
                 // let ClientFirstNameStore = []
@@ -218,36 +182,34 @@ const AddNewUser = () => {
                 // setClientIdData(ClientIdStore)
 
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
         feachSheetId();
-
-
     })
 
 
     useEffect(() => {
         if (designationdata) {
-            setErrDesignation(false)
+            setErrDesignation(false);
         }
         if (spreadalldata) {
-            setErrSpreadAllData(false)
+            setErrSpreadAllData(false);
         }
 
-    }, [designationdata, spreadalldata])
+    }, [designationdata, spreadalldata]);
 
     useEffect(() => {
         if (refraceData) {
-            AssignUserRole()
+            AssignUserRole();
         }
-    }, [refraceData])
+    }, [refraceData]);
 
     useEffect(() => {
         if (designationedata) {
-            postRole()
+            postRole();
         }
-    }, [designationedata])
+    }, [designationedata]);
 
     // useEffect(() => {
     //     if (designatiotrue) {
@@ -257,7 +219,7 @@ const AddNewUser = () => {
     // }, [designatiotrue])
 
     const CancelButton = () => {
-        navigate('/UserManagement')
+        navigate('/UserManagement');
     }
 
     const formik = useFormik({
@@ -284,8 +246,6 @@ const AddNewUser = () => {
             if (organization_Id !== "undefined" && organization_Id !== null) {
                 values.organization_id = organization_Id
             }
-
-            console.log("values",values);
             // if (designationdata && spreadalldata) {
             if (spreadalldata) {
                 axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values, {
@@ -295,9 +255,7 @@ const AddNewUser = () => {
                 })
                     .then(async (response) => {
                         setUserId_Designation(response?.data._id)
-                        console.log("user aded - ", response);
                         if (response.status === 201) {
-
                             addToast("User Created Sucessfully", {
                                 appearance: "success",
                                 autoDismiss: true,
@@ -311,7 +269,6 @@ const AddNewUser = () => {
                         }
                         resetForm()
                     })
-
                     .catch((error) => {
                         addToast(error.response.data.message, {
                             appearance: "error",
@@ -320,14 +277,12 @@ const AddNewUser = () => {
                     })
             }
             else {
-                setErrDesignation(true)
-                setErrSpreadAllData(true)
+                setErrDesignation(true);
+                setErrSpreadAllData(true);
 
             }
         },
     });
-
-
 
     const AssignRoles = () => {
        
@@ -339,26 +294,21 @@ const AddNewUser = () => {
                 Authorization: `Bearer ${token}`,
             }
         }
-
         )
             .then((response) => {
-                
                 if (response.status === 200) {
                     addToast("Role Assign  Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
                 }
-
             })
             .catch((error) => {
-                
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
             })
-
     }
 
     const UserDetails = () => {
@@ -375,15 +325,11 @@ const AddNewUser = () => {
                 let lastlengh = data1?.data[data1?.data.length - 1]
                 // setUserId_Designation(lastlengh?._id)
                 setRefraceData(o => !o)
-               
             } catch (error) {
-
             }
         }
         feachUser();
     }
-
-
 
     const AssignUserRole = () => {
         const organization_Id = reactLocalStorage.get("organization_id", false);
@@ -418,26 +364,23 @@ const AddNewUser = () => {
                     autoDismiss: true,
                 })
             })
-
     }
 
     const SpreadFun = (e) => {
         let splitdata = e.target.value
-        let somdata = splitdata.split(",")
-        let nameSplit = somdata[0].split(" ")
-        setSpreadAllData(somdata[2])
-        console.log("subOrg1e---",somdata[1]);
+        let somdata = splitdata.split(",");
+        let nameSplit = somdata[0].split(" ");
+        setSpreadAllData(somdata[2]);
 
         // spreadsheetalldata?.map((item, id) => {
         //     if (e.target.value === item[0]) {
-        setFirstNameData(nameSplit[0])
-        setLastNameData(nameSplit[1])
-        setDesignaionData(somdata[1])
+        setFirstNameData(nameSplit[0]);
+        setLastNameData(nameSplit[1]);
+        setDesignaionData(somdata[1]);
         //     }
         // })
 
     }
-
 
     const postRole = () => {
         let value = designationedata.toUpperCase();
@@ -449,18 +392,15 @@ const AddNewUser = () => {
         });
 
         if (result?.length === 0) {
-            console.log("result--",result, designationedata);
-            setRoleName(designationedata)
-            setDesignatioTrue(true)
+            setRoleName(designationedata);
+            setDesignatioTrue(true);
         }
         else {
-            // console.log(result[0]._id)
             if (result) {
-                setRoleId(result[0]?._id)
+                setRoleId(result[0]?._id);
             }
         }
     }
-
 
     const RolePostApi = async () => {
 
@@ -477,23 +417,18 @@ const AddNewUser = () => {
         }
         )
             .then(async(response) => {
-              console.log("response--usr--",response);
-                setRoleId(response?.data._id)
+                setRoleId(response?.data._id);
                 if (response.status === 201) {
 
                     addToast("Roles Created Sucessfully", {
                         appearance: "success",
                         autoDismiss: true,
                     })
-                  
                     await UserDetails()
-                   
                 }
-
             })
 
             .catch((error) => {
-              
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
@@ -508,8 +443,6 @@ const AddNewUser = () => {
         // setRoleId(designation_data[1]) 
     }
 
-
-
     return (
         <>
             <div className="flex flex-row justify-start overflow-hidden">
@@ -519,8 +452,7 @@ const AddNewUser = () => {
                 <div className="flex flex-col">
                     <Header />
                     <div className="flex flex-col  justify-center overflow-hidden w-[100%] 
-                     h-[100vh]  ">
-
+                     h-[100vh]">
                         <div className="max-w-[1099px] max-h-[632.01px]  
                         bg-[#FFFFFF] justify-center  ml-[38px] mr-[170px] mt-[36px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
                             <div className="flex flex-row items-center ">
@@ -545,8 +477,7 @@ const AddNewUser = () => {
 
                             <div className="lg:pl-[120px] md:pl-[80px] pr-[96px] pt-[33.49px]">
                                 <form onSubmit={formik.handleSubmit}>
-                                    <div className="flex flex-row   lg:space-x-40 md:space-x-20 sm:space-x-10    pb-[36px]">
-
+                                    <div className="flex flex-row   lg:space-x-40 md:space-x-20 sm:space-x-10 pb-[36px]">
                                         <div>
                                             <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px]  border-b border-black ">
                                                 <select
@@ -571,7 +502,6 @@ const AddNewUser = () => {
                                                 </div>
                                             )
                                             }
-
                                         </div>
 
                                         {/* <div>
@@ -600,9 +530,7 @@ const AddNewUser = () => {
                                             }
                                         </div> */}
 
-
                                         <div className="relative lg:w-[300px] md:w-[230px] sm:w-[140px] ">
-
                                             <input
                                                 id="Designation"
                                                 name="Designation"
@@ -618,14 +546,12 @@ const AddNewUser = () => {
                                                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
                                                 User Id
-
                                             </label>
                                             {errspreadalldata && (
                                                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
                                                     User Id Is  Required
                                                 </div>
                                             )}
-                                           
                                         </div>
                                     </div>
                                     <div className="flex flex-row  lg:space-x-40 md:space-x-20 sm:space-x-10 pb-[36px]">
@@ -721,7 +647,6 @@ const AddNewUser = () => {
                                                 absolute left-0 top-2 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                             >
                                                 Assign to all projects
-
                                             </label>
                                             {/* {formik.errors.CompanyName && (
                                                     <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">

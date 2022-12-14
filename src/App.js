@@ -49,7 +49,7 @@ import AddConsultant from "./components/Master/Add_Consultant";
 import LightQuantity from "./components/Injestion/LightQuantity";
 import FireQuantity from "./components/Injestion/FireQuantity";
 import ViewZones from "./components/Master/ViewZones";
-// import NewJobCardMulti from "./components/JobCards/NewJobCardMulti"; 
+// import   from "./components/JobCards/NewJobCardMulti"; 
 import NewJobCardMultiId from "./components/JobCards/CardAssignId/[id]";
 import ZoneById from "./components/Master/zones/[id]";
 import AllJobCardsId from "./components/JobCards/JobCardByProjectId/[id]";
@@ -95,8 +95,9 @@ function App() {
         <Route path="dashboard" element={<DashBoard />} />
         <Route path="/dashboard/user" element={<SignUpTemplate />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
-
-        {/* organization */}
+        {
+          /* organization */
+        }
         <Route path="/organization" element={<Organization />} />
         <Route path="/userProfile" element={<UserProfile/>} />
         {
@@ -106,25 +107,22 @@ function App() {
         {/* <Route path="/daily_task/new_daily_task" element={<NewJobCard />} /> */}
         <Route path="/manpower" element={<ManpowerAndMachinery />} /> 
         <Route path="/daily_task/:id/new_daily_task" element={<NewJobCard />} />
-         {/* NewJobCard this is Create new Job */}
+        {
+          /* NewJobCard this is Create new Job */
+        }
         <Route path="/daily_task/All-daily-task" element={<AllJobCards />} />
-         {/* AllJobCards this is arab electricals before status conform */}
-        
-          {/* JobCardAssigned this is arab electricals  drop down */}
+        {/* AllJobCards this is arab electricals before status conform */}
+        {/* JobCardAssigned this is arab electricals  drop down */}
         {/* <Route path="/manpowermulti" element={<ManpowerAndMachineryMulti />} /> */}
-
         {/* <Route path="/daily_task/new_daily_task_multi" element={<NewJobCardMulti />} /> */}
-
         <Route path="/daily_task/CardAssignId/:id" element={<NewJobCardMultiId />} />
-         {/* NewJobCardMulti this is Create new Job */}
-         <Route path="/daily_task/JobCardByProjectId/:id" element={<AllJobCardsId />} />
-
-
-         <Route path="/daily_task/AssignById/:id" element={<JobCardAssignedId />} />
-
-         <Route path="/daily_task/my_daily_task/:id" element={<MyJobCardsId />} />
-         <Route path="/daily_task/update_create_daily_task/:id" element={<UpdateCreateJCId />} />
-
+        {
+          /* NewJobCardMulti this is Create new Job */
+        }
+        <Route path="/daily_task/JobCardByProjectId/:id" element={<AllJobCardsId />} />
+        <Route path="/daily_task/AssignById/:id" element={<JobCardAssignedId />} />
+        <Route path="/daily_task/my_daily_task/:id" element={<MyJobCardsId />} />
+        <Route path="/daily_task/update_create_daily_task/:id" element={<UpdateCreateJCId />} />
         {
           // Master
         }
@@ -144,7 +142,6 @@ function App() {
         <Route path="/master/zones/:id" element={<ZoneById />} />
         <Route path="/master/consultant" element={<Consultant/>}/>
         <Route path="/master/consultant/add_consultant" element={<AddConsultant />} />
-
         <Route path="/master/Projects/new_project/view_zones" element={<ViewZones />} />
         {
           // timeline
@@ -171,41 +168,32 @@ function App() {
         <Route path="/DataInjestion/QuantitySheet" element={<QuantitySheet />} /> 
         <Route path="/DataInjestion/LightQuantity" element={<LightQuantity />} /> 
         <Route path="/DataInjestion/FireQuantity" element={<FireQuantity />} />
-
-        {/* superAmin pages */}
+        {
+          /* superAmin pages */
+        }
         <Route path="organization/super_admin" element={<SuperAdmin/>}/>
         <Route path="organization/edit/:id" element={<EditOrganization />}/>
         <Route path="user_empolyee" element={<UserEmpolyee/>}/>
         <Route path="/SuperAdmin/:id" element={<SuperAdminId />} />
-          {
+
+        {
           /*<Route path="/master/clients" element={<Clients />} />
          <Route path="/master/projects" element={<Projects />} />
          <Route path="/master/categories" element={<Categories />} />
          <Route path="dashboard" element={<DashBoard />} />
          <Route path="daily_task" element={<JobCards />} />
          <Route path="master" element={<Master />} />
-         <Route
-           path="/master/clients/new_client"
-           element={<NewClientProfile />}
-         />
-         <Route
-           path="/master/clients/new_client/client_name"
-           element={<ClientName />}
-         />
+         <Route path="/master/clients/new_client" element={<NewClientProfile />} />
+         <Route path="/master/clients/new_client/client_name" element={<ClientName />} />
          <Route path="/master/Projects/new_project" element={<NewProject />} />
-         <Route
-           path="/master/Projects/Edit_Project"
-           element={<EditNewProject />}
-         />
+         <Route path="/master/Projects/Edit_Project" element={<EditNewProject />} />
          <Route path="/master/Projects/zone_list" element={<ZoneList />} />
          <Route path="timeline" element={<TimeLine />} />
          <Route path="/timeline/client" element={<ClientTimeLine />} />
- 
          <Route path="UserManagement" element={<UserManagement />} />
          <Route path="/UserManagement/UserRole1" element={<UserRole1 />} />
          <Route path="/UserManagement/UserRole2" element={<UserRole2 />} />
          <Route path="/UserManagement/UserRole3" element={<UserRole3 />} />
-        
          <Route path="/DataInjestion" element={<DataInjestion />} />
          <Route
            path="/DataInjestion/ProductivitySheet"

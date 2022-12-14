@@ -7,19 +7,13 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
 const validate = (values) => {
 
-  console.log(values)
-
   const errors = {};
-  // if (!values.category) {
-  //   errors.category = "Category Required";
-  // }
+
   if (!values.category) {
     errors.category = "Client Name Required";
   }
-   
 
   if (!values.sub_category) {
     errors.sub_category = "Type Required";
@@ -31,10 +25,10 @@ const validate = (values) => {
    
   return errors;
 };
+
 const AddCategories = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
-  const [fileName, setFileName] = useState();
   const [organization_id_data, setOrganization_Id] = useState();
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -46,10 +40,8 @@ const AddCategories = () => {
     }
     const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganization_Id(organization_Id)
-
   }, [urlTitle.pathname]);
  
-
   const formik = useFormik({
     initialValues: { 
       category: "",
@@ -59,20 +51,17 @@ const AddCategories = () => {
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
-
-      console.log(organization_id_data)
+      
       if (organization_id_data !== "undefined" && organization_id_data !== null) { 
         values.organization_id = organization_id_data
       }
- 
      
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/categories/`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }})
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }})
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             addToast("Categorie is Added Sucessfully", {
               appearance: "success",
@@ -89,9 +78,6 @@ const AddCategories = () => {
         })
     },
   });
-
-
-   
 
 
   return (

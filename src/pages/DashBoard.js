@@ -2,60 +2,48 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
-import SearchBox from "../components/layout/SearchBox";
-import Card from "../components/layout/Card";
 import { reactLocalStorage } from "reactjs-localstorage";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import { useToasts } from "react-toast-notifications";
 import { getAllJobCardApi, getMyJobCardApi } from "../AllApi/Api";
+
 const DashBoard = () => {
   const [title, setTitle] = useState(null);
   const [client, setClient] = useState();
   const [project, setProject] = useState();
   const [page, setPage] = useState(null);
-
   const [alljobcardapi, setAllJobCardApi] = useState(null)
   const [myjobcardapi, setMyJobCardApi] = useState(null)
-
 
   let urlTitle = useLocation();
   let navigate = useNavigate();
   const { addToast } = useToasts();
-  useEffect(() => {
 
+  useEffect(() => {
     if (urlTitle.pathname === "/dashboard") {
       setTitle("Dashboard");
     }
-    
-  
   }, [urlTitle.pathname])
   
   useEffect(() => {
-
     const userData = getAllJobCardApi().then((data) => {
       setAllJobCardApi(data?.data?.length)  
-       
     })
-
     const userData1 = getMyJobCardApi().then((data) => {   
       setMyJobCardApi(data?.data?.length) 
     })
-
     setTimeout(function(){
-	if(reactLocalStorage.get("organization_id") == "6256bea8e25e1ec36f021392"){
-		document.getElementById("dashboardCards").style.display = "none";
-	} else {
-		document.getElementById("reportFrame").style.display = "none";
-	}
-	document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
-	window.onresize = function(event) {
-		document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
-	};
+      if(reactLocalStorage.get("organization_id") == "6256bea8e25e1ec36f021392"){
+        document.getElementById("dashboardCards").style.display = "none";
+      } else {
+        document.getElementById("reportFrame").style.display = "none";
+      }
+      document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
+      window.onresize = function(event) {
+        document.getElementById("reportFrame").setAttribute("width", (window.innerWidth - 270));
+      };
     },100);
-
   }, [])
-
-
 
   const handleChangeForClient = (event) => {
     setClient(event.target.value);
@@ -68,10 +56,8 @@ const DashBoard = () => {
   };
 
   const Logout = (e) => {
-
     reactLocalStorage.clear();
     navigate('/')
-
     addToast("Logout  Sucessfully ", {
       appearance: "success",
       autoDismiss: true,
@@ -86,9 +72,7 @@ const DashBoard = () => {
         </div>
         <div className="flex flex-col " style={{overflow: 'auto'}}>
           <Header title={title} sendPage={sendPage} />
-          {page === "user" ? (
-            <SignUpTemplate />
-          ) : (
+          {page === "user" ? ( <SignUpTemplate /> ) : (
             <>
               {/* <div className="ml-[90%] pt-3">
                 <button style={{ border: "2px solid red", background: "red" }}
@@ -200,7 +184,7 @@ const DashBoard = () => {
                   }
                 />
               </div> */}
-		{/* <iframe id="reportFrame" frameborder="0" width="1330" height="1700" src="https://analytics.zoho.com/open-view/2402102000000483592"></iframe> */}
+		        {/* <iframe id="reportFrame" frameborder="0" width="1330" height="1700" src="https://analytics.zoho.com/open-view/2402102000000483592"></iframe> */}
             </>
           )}
         </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { getOrganizationById } from "../../../AllApi/Api";
 import axios from "axios";
@@ -39,7 +39,6 @@ const EditOrganization = () => {
 
       let error = validate(values)
       if(Object.keys(error).length !== 0){
-        console.log("error--is",error);
       }else{
         let org_payload = {
             location: values?.location,
@@ -88,8 +87,8 @@ const EditOrganization = () => {
     return updateOrg;
   }
 
-  useEffect(()=>{
-    getOrganizationById(useperma.id).then((o_data)=>{
+  useEffect(() => {
+    getOrganizationById(useperma.id).then((o_data) => { 
         let org = o_data?.data;
       setInitialFormValues({
         hrms: org?.hrms_api_url,
@@ -106,15 +105,15 @@ const EditOrganization = () => {
         domain: org?.domain,
       })
     })
-  },[])
+  },[]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if(initialFormValues){
       formik.setValues({
         ...initialFormValues
       });
     }
-  },[initialFormValues])
+  },[initialFormValues]);
 
   const validate = (values) => {
     const errors = {};
@@ -139,7 +138,6 @@ const EditOrganization = () => {
     } 
     return errors
   };
-
 
   return (
     <>

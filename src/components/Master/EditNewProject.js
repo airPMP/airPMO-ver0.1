@@ -8,11 +8,8 @@ import Header from "../layout/Header";
 import ZoneList from "./ZoneList";
 import SubZoneList from "./SubZoneList";
 import axios from "axios";
-import { useToasts } from "react-toast-notifications";
-import { reactLocalStorage } from "reactjs-localstorage";
 
 const validate = (values) => {
-
   const errors = {};
   if (!values.category) {
     errors.category = "Category Required";
@@ -23,7 +20,6 @@ const validate = (values) => {
   if (!values.uploadLogoFile) {
     errors.uploadLogoFile = "uploadLogoFile Required";
   }
-
   if (!values.projectName) {
     errors.projectName = "projectName Required";
   }
@@ -36,9 +32,9 @@ const validate = (values) => {
   if (!values.description) {
     errors.description = "description Required";
   }
-  // console.log(errors);
   return errors;
 };
+
 const EditNewProject = () => {
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState(false);
@@ -52,8 +48,6 @@ const EditNewProject = () => {
     if (urlTitle.pathname === "/master/Projects/Edit_Project") {
       setTitle("Master");
     }
-
-    
   }, [urlTitle.pathname ]);
 
   const formik = useFormik({
@@ -79,10 +73,8 @@ const EditNewProject = () => {
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
-      // console.log(`Form data`, values);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values)
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             // addToast("form submitted Sucessfully", {
             //   appearance: "success",

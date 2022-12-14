@@ -7,7 +7,6 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { getUserApi } from "../../../AllApi/Api";
 import { useToasts } from "react-toast-notifications";
 
-
 const JobCardAssignedId = () => {
 
     const [title, setTitle] = useState(null); // the lifted state
@@ -15,78 +14,53 @@ const JobCardAssignedId = () => {
     const [userdata, setUserData] = useState(null);
     const [filteredData, setFilteredData] = useState(null);
     const [userrolesdata, setUserRolesData] = useState(null);
-
-
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
     const [createpermission, setCreatePermission] = useState(null)
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
-
     const [someallpermissions, setSomeAllPermissions] = useState([null])
-
     const [alltokenroles, setAllTokenRoles] = useState(null)
-
-
-
     const [selectrefrance, setSelectRefrance] = useState(false);
     const [userdetail, setDetail] = useState([]);
+
     const { addToast } = useToasts();
     let navigate = useNavigate();
     let urlTitle = useLocation();
-
     let useperma = useParams()
 
     useEffect(() => {
-
         if (urlTitle.pathname === `/daily_task/AssignById/${useperma.id}`) {
             setTitle("Activities");
         }
-
         const tokenroles= reactLocalStorage.get("roles", false);
         setAllTokenRoles(tokenroles)
-
     }, [urlTitle.pathname])
 
-
     useEffect(() => {
-
         const token = reactLocalStorage.get("access_token", false);
         axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${useperma.id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
             .then((response) => {
-                console.log(response?.data)
                 setAllJobCardData(response?.data)
                 setFilteredData(response?.data)
-
-                if (response.status === 201) {
-
-                }
             })
             .catch((error) => {
                 console.log(error)
-
             })
 
         const userData = getUserApi().then((data) => {
             setUserData(data?.data)
         })
         handleSearch()
-
     }, [])
 
-
-
-
     useEffect(() => {
-
         let userdataArray = []
         let usersName = ""
-
         userdata?.map((items, id) => {
             usersName = {
                 "name": `${items.FirstName} ${items.LastName}`,
@@ -94,26 +68,13 @@ const JobCardAssignedId = () => {
             }
             userdataArray.push(usersName)
         })
-
         alljobcarddata?.forEach((items) => items.user = userdataArray) //this add user name in to the job card data
-
         setAllJobCardData(alljobcarddata)
         setFilteredData(alljobcarddata)
-
     }, [alljobcarddata, userdata, selectrefrance])
 
-
-
     const UserSelectFun = (e, itemData) => {
-
-        console.log( e.target.value)
-
-        // if (itemData.assign_user_id !== undefined && itemData.assign_user_id !== "") {
-
-        
-
         let organizationId = ""
-
         const organization_Id = reactLocalStorage.get("organization_id", false);
 
         if (organization_Id !== "undefined" && organization_Id !== null) {
@@ -132,11 +93,10 @@ const JobCardAssignedId = () => {
 
         const token = reactLocalStorage.get("access_token", false);
         axios.get(`${process.env.REACT_APP_BASE_URL}/api/user/${database[1]}/roles`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
             .then((response) => {
                 setUserRolesData(response?.data[0]?.permission)
                 selectedObject.assign_user_roles = response?.data[0]?.permission
@@ -146,43 +106,16 @@ const JobCardAssignedId = () => {
             })
             .catch((error) => {
                 console.log(error)
-
             })
-
         setDetail([...userdetail, selectedObject]);
-        // console.log(selectedObject)
-        // allObjectArray.push(...selectedObject,selectedObject) 
-        // console.log(allObjectArray)
-        // console.log(itemData)
-        // console.log(e.target.value)
-        // }
     }
 
     const UserOnFocusSelectFun = (e, itemData) => {
         setSelectRefrance(true)  //this refrace the select data
     }
 
-
-
-
     const SavePostApi = () => {
-
         let UserSdata = userdetail.filter((ele, ind) => ind === userdetail.findIndex(elem => elem._id === ele._id))
-
-        // let detasome = alljobcarddata?.filter((item) => {
-        //     return !UserSdata.find((items) => {
-        //         return item._id === items._id
-        //     })
-        // }
-
-        // )
-
-        // let AllAssignAndNotAssignData = UserSdata.concat(detasome)
-
-
-        // console.log(AllAssignAndNotAssignData) 
-        
-
         let organizationId = ""
 
         const token = reactLocalStorage.get("access_token", false);
@@ -194,16 +127,12 @@ const JobCardAssignedId = () => {
         
         axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card`,
              UserSdata,
-                // organization_id: organizationId
-            
              {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             })
-
             .then((response) => {
-                console.log(response);
                 if (response.status === 200) {
                     addToast("your daily task is assign Sucessfully", {
                         appearance: "success",
@@ -221,7 +150,6 @@ const JobCardAssignedId = () => {
 
 
     const handleSearch = (e) => {
-
         let value = e?.target?.value?.toUpperCase();
         let result = []
         result = alljobcarddata?.filter((data) => {
@@ -229,20 +157,15 @@ const JobCardAssignedId = () => {
                 return data?.activity_code?.toUpperCase().search(value) !== -1;
             }
         });
-
         setFilteredData(result)
-
         if (value === "") {
             setFilteredData(alljobcarddata)
         }
     }
 
-
-
     useEffect(() => {
         const permissionData = reactLocalStorage.get("permisions", false);
         setAllPermission(permissionData)
-
         getPermision()
     }, [allpermission])
 
@@ -259,7 +182,6 @@ const JobCardAssignedId = () => {
             }
         });
 
-
         let value1 = "CREATE-ASSIGN-JOB-CARD".toUpperCase();
         let result1 = []
         result1 = database?.filter((data) => {
@@ -275,12 +197,6 @@ const JobCardAssignedId = () => {
                 return data?.toUpperCase().search(value2) !== -1;
             }
         });
-
-
-
-
-
-
 
         if (result[0] === "CREATE-ASSIGN-JOB-CARD" ||
             result1[0] === "CREATE-ASSIGN-JOB-CARD" ||
@@ -299,16 +215,7 @@ const JobCardAssignedId = () => {
             });
             setAllPermissions(result[0])
         }
-
     }
-
-
-
-
-
-
-
-
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
@@ -317,7 +224,6 @@ const JobCardAssignedId = () => {
             </div>
             <div className="flex flex-col">
                 <Header title={title} />
-
                 <div className=" ml-[20px] mt-[10px] text-[#A3AED0] font-bold not-italic text-[29.6px] leading-[53.15px] tracking-[-2%] " >
                 Activities Assigned</div>
                 <div className="flex flex-col w-[100%] mt-[20px] pl-[22px] pr-[44px] ml-[20px] bg-[#FFFFFF] rounded-[31.53px]">
@@ -340,7 +246,6 @@ const JobCardAssignedId = () => {
                                 </div>
                                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
                                 {alltokenroles ==="albannaadmin"?  "J725" : "Shining Towers"}
-                                     
                                 </div>
                             </div>
                             <div
@@ -404,16 +309,12 @@ const JobCardAssignedId = () => {
                                         <th className="">{item.quantity_to_be_achieved}</th>
                                         <th className="">{item.zone}</th>
                                         <th className="">{item.sub_zone}</th>
-
                                         <th className="">
                                             <select className=" outline-none bg-[#ECF1F0] cursor-pointer"
                                                 onFocus={(e) => UserOnFocusSelectFun(e, item)}
                                                 onChange={(e) => UserSelectFun(e, item)}>
                                                 <option selected="true" disabled="disabled"> {item?.assign_to!==""?item?.assign_to:`Select User`}</option>
                                                 {item?.user?.map((items, i) => { 
-
-
-
                                                     return <option 
                                                     // selected= {`${item?.assign_to===items.name?"true":null}`} 
                                                      className={`${item?.assign_to===items.name?"bg-[red] text-[black]":null}`} 
@@ -421,14 +322,12 @@ const JobCardAssignedId = () => {
                                                         {  items.name}</option>
                                                 })
                                                 }
-
                                             </select>
                                         </th>
                                     </tr>
                                     <tr className="p-[15px]">
                                         <td className="p-[10px]" ></td>
                                     </tr>
-
                                 </tbody>
                             })}
                         </table>

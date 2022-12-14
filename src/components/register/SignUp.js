@@ -6,8 +6,6 @@ import { useToasts } from "react-toast-notifications";
 
 const validate = (values) => {
 
-
-
   const errors = {};
   if (!values.FirstName) {
     errors.FirstName = "First Name Required";
@@ -18,13 +16,12 @@ const validate = (values) => {
   if (!values.Email) {
     errors.Email = "Email Required";
   } else if (
-    !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
+    !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
       values.Email
     )
   ) {
     errors.Email = "Invalid email format!";
   }
-
   if (!values.PhoneNumber) {
     errors.PhoneNumber = "Phone Number Required";
   } else if (
@@ -43,7 +40,6 @@ const validate = (values) => {
   if (!values.Comments) {
     errors.Comments = "comment Required";
   }
-  // console.log(errors);
   return errors;
 };
 
@@ -51,9 +47,7 @@ const SignUp = () => {
   const { addToast } = useToasts();
 
   let navigate = useNavigate();
-  const Login = () => {
-    navigate('/');
-  };
+  const Login = () => { navigate('/'); };
 
   const formik = useFormik({
     initialValues: {
@@ -71,10 +65,9 @@ const SignUp = () => {
       <div>
         {values.Password = "demo@123"}
       </div>
-      console.log(`Form data`, values);
+      
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/users/register/`, values)
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             addToast("form submitted Sucessfully", {
               appearance: "success",
@@ -85,7 +78,6 @@ const SignUp = () => {
           resetForm()
         })
         .catch((error) => {
-          console.log(error)
           addToast("form submitted fail", {
             appearance: "error",
             autoDismiss: true,
@@ -97,22 +89,12 @@ const SignUp = () => {
   return (
     <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100vh] lg:w-[100vw] xl:w[100vw] sm:w-[100vw]">
       <div className="flex flex-row  place-items-start">
-        <img
-          src="/logo1.svg"
-          alt="logo"
-          className="ml-[4.313rem] mt-[68px]  w-[150px] h-[50px]  right-[765px]"
-        />
+        <img src="/logo1.svg" alt="logo" className="ml-[4.313rem] mt-[68px]  w-[150px] h-[50px]  right-[765px]" />
       </div>
       <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center  ml-[171px] mr-[170px] mt-[36px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
         <div className="flex flex-row items-center ">
           <div className="bg-[#F4F7FE] w-[68.28px] flex items-center justify-center h-[68.28px] mt-[31.93px] ml-[26.8px] rounded-full">
-            <img
-              src="/Group8.png"
-              alt="logo"
-              width="42.79px"
-              height="44px"
-              className="content-center"
-            />
+            <img src="/Group8.png" alt="logo" width="42.79px" height="44px" className="content-center" />
           </div>
           <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
             Create new <br /> account
@@ -136,7 +118,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   First Name
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.FirstName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -159,7 +140,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Last Name
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.LastName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -184,7 +164,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Phone Number
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.PhoneNumber && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -207,7 +186,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Email
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.Email && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -232,7 +210,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Job Title
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.Jobtitle && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -255,7 +232,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Company Name
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.CompanyName && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -280,7 +256,6 @@ const SignUp = () => {
                   className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                 >
                   Comment
-                  {/* <span className="text-red-700">*</span> */}
                 </label>
                 {formik.errors.Comments && (
                   <div className="text-red-700 text-xs font-secondaryFont mt-[2px]">
@@ -296,10 +271,7 @@ const SignUp = () => {
                 </button>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] "
-                >
+                <button type="submit" className="w-[110px] h-[25px] rounded btnshadow   text-sm font-secondaryFont text-[14px] font-medium not-italic  bg-[#0FCC7C] text-[#000000] " >
                   Create Account
                 </button>
               </div>

@@ -62,12 +62,12 @@ const SuperAdmin = () => {
 
   }, [urlTitle.pathname]);
   
-  useEffect(()=>{
+  useEffect(() => {
     const role_name = reactLocalStorage.get("roles", false);
     if(role_name !== "Airpmo Super Admin"){
       navigate("/dashboard")  
     }
-  },[])
+  },[]);
 
   const [sheetdata, setSheetData] = useState(null);
   const [sheetdata_2, setSheetData_2] = useState(null);
@@ -77,21 +77,9 @@ const SuperAdmin = () => {
   const [sheetdata_2_open, setSheetData_2_open] = useState(false);
   const [sheetdata_3_open, setSheetData_3_open] = useState(false);
   const [sheetdata_4_open, setSheetData_4_open] = useState(false);
-
-  const [nameErr, setNameDataErr] = useState("");
-  const [locationErr, setLocationErr] = useState("");
-  const [addressErr, setAddressErr] = useState("");
-  const [rolleiddata, setRolleIdData] = useState(null);
-
   const [showpassword, setshowpassword] = useState("password");
   const [showeye, setShowEye] = useState(" ");
-  const [assignproject, setAssignProject] = useState(false);
-  const [designationdata, setDesignationData] = useState(null);
-
-  const [rolesdata, setRolesData] = useState(null)
-  const Login = () => {
-    navigate("/dashboard");
-  };
+  const [rolesdata, setRolesData] = useState(null);
 
   const initialValue = {
     phone_number: "",
@@ -145,101 +133,101 @@ const SuperAdmin = () => {
 
   //   const SubmitForm = (e) => {};
 
-  const ShowPasswordButton = (e, sheet2) => {
-    if (sheet2 === "sheet_2") {
-      setSheetData_1_open(false);
-      setSheetData_2_open(true);
-      setSheetData_3_open(false);
-      setSheetData_4_open(false);
-      console.log("sheet 2");
-      if (showeye) {
-        setshowpassword("input");
-        const feach = async () => {
-          try {
-            const data1 = await axios.get(
-              `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_2}?key=${hrmsdata}`
-            );
-            setSheetData_2(data1?.data?.values);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        feach();
-      }
-    } else if (sheet2 === "sheet_3") {
-      setSheetData_1_open(false);
-      setSheetData_2_open(false);
-      setSheetData_3_open(true);
-      setSheetData_4_open(false);
+  // const ShowPasswordButton = (e, sheet2) => {
+  //   if (sheet2 === "sheet_2") {
+  //     setSheetData_1_open(false);
+  //     setSheetData_2_open(true);
+  //     setSheetData_3_open(false);
+  //     setSheetData_4_open(false);
+  //     console.log("sheet 2");
+  //     if (showeye) {
+  //       setshowpassword("input");
+  //       const feach = async () => {
+  //         try {
+  //           const data1 = await axios.get(
+  //             `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_2}?key=${hrmsdata}`
+  //           );
+  //           setSheetData_2(data1?.data?.values);
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       };
+  //       feach();
+  //     }
+  //   } else if (sheet2 === "sheet_3") {
+  //     setSheetData_1_open(false);
+  //     setSheetData_2_open(false);
+  //     setSheetData_3_open(true);
+  //     setSheetData_4_open(false);
 
-      if (showeye) {
-        setshowpassword("input");
-        const feach = async () => {
-          try {
-            const data1 = await axios.get(
-              `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_3}?key=${hrmsdata}`
-            );
-            setSheetData_3(data1?.data?.values);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        feach();
-      }
-    } else if (sheet2 === "sheet_4") {
-      setSheetData_1_open(false);
-      setSheetData_2_open(false);
-      setSheetData_3_open(false);
-      setSheetData_4_open(true);
+  //     if (showeye) {
+  //       setshowpassword("input");
+  //       const feach = async () => {
+  //         try {
+  //           const data1 = await axios.get(
+  //             `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_3}?key=${hrmsdata}`
+  //           );
+  //           setSheetData_3(data1?.data?.values);
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       };
+  //       feach();
+  //     }
+  //   } else if (sheet2 === "sheet_4") {
+  //     setSheetData_1_open(false);
+  //     setSheetData_2_open(false);
+  //     setSheetData_3_open(false);
+  //     setSheetData_4_open(true);
 
-      if (showeye) {
-        setshowpassword("input");
-        const feach = async () => {
-          try {
-            const data1 = await axios.get(
-              `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_4}?key=${hrmsdata}`
-            );
-            setSheetData_4(data1?.data?.values);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        feach();
-      }
-    } else {
-      setSheetData_1_open(true);
-      setSheetData_2_open(false);
-      setSheetData_3_open(false);
-      setSheetData_4_open(false);
-      if (showeye) {
-        setshowpassword("input");
-        const feach = async () => {
-          const token = reactLocalStorage.get("access_token", false);
-          try {
-            // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-            const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            console.log(data1);
-            setSheetData(data1?.data);
-            // setSheetData(data1?.data?.values)
+  //     if (showeye) {
+  //       setshowpassword("input");
+  //       const feach = async () => {
+  //         try {
+  //           const data1 = await axios.get(
+  //             `https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_4}?key=${hrmsdata}`
+  //           );
+  //           setSheetData_4(data1?.data?.values);
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       };
+  //       feach();
+  //     }
+  //   } else {
+  //     setSheetData_1_open(true);
+  //     setSheetData_2_open(false);
+  //     setSheetData_3_open(false);
+  //     setSheetData_4_open(false);
+  //     if (showeye) {
+  //       setshowpassword("input");
+  //       const feach = async () => {
+  //         const token = reactLocalStorage.get("access_token", false);
+  //         try {
+  //           // const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
+  //           const data1 = await axios.get(`${hrmsdata}${spread_sheet_id_1}`, {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           });
+  //           console.log(data1);
+  //           setSheetData(data1?.data);
+  //           // setSheetData(data1?.data?.values)
 
-            // let storedDesignamtion = []
-            // data1?.data?.values.map((items, id) => {
-            //     storedDesignamtion.push(items[3])
-            // })
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        feach();
-      }
-    }
-    setShowEye((o) => !o);
-    setOpen((o) => !o);
-  };
+  //           // let storedDesignamtion = []
+  //           // data1?.data?.values.map((items, id) => {
+  //           //     storedDesignamtion.push(items[3])
+  //           // })
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       };
+  //       feach();
+  //     }
+  //   }
+  //   setShowEye((o) => !o);
+  //   setOpen((o) => !o);
+  // };
 
   const CancelButton = (e) => {
     setOpen((o) => !o);
@@ -253,7 +241,6 @@ const SuperAdmin = () => {
   }, [organizationid]);
 
   const userApi = () => {
-    console.log(organizationid);
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
     axios
@@ -269,8 +256,6 @@ const SuperAdmin = () => {
         }
       )
       .then((response) => {
-        console.log(response);
-
         if (response.status === 201) {
           // addToast("form submitted Sucessfully", {
           //     appearance: "success",
@@ -300,8 +285,7 @@ const SuperAdmin = () => {
         "LastName": "",
         "organization_id": "",
         "spread_sheet_user_id": ""
-    }
-    console.log("values---",values);
+    };
       if (values && values.email) {
         let role_id = null;
         try {
@@ -326,7 +310,7 @@ const SuperAdmin = () => {
             role_id: role_id,
             user_id: newAdminUser.data._id
           }
-          let role_data = await  AddNewRole(role_payload, token);
+          // let role_data = await  AddNewRole(role_payload, token);
           let org_payload ={
             hrms_api_url: values.hrms,
             location: values.location,
@@ -351,8 +335,9 @@ const SuperAdmin = () => {
             hrms_api_url_id: "",
             hrms_api_or_sheet: false,
             organization_image_url: ""
-          }
-          let newOrganization = await AddNewOrganization(org_payload, token)
+          };
+          let newOrganization = await AddNewOrganization(org_payload, token);
+
           if(newOrganization){
             let user_up_payload = {
               organization_id: newOrganization?.data?._id
@@ -377,7 +362,7 @@ const SuperAdmin = () => {
                     appearance: "success",
                     autoDismiss: true,
                 })
-                navigate('/organization')
+                navigate('/organization');
             }
             })
             .catch((error) => {
@@ -391,7 +376,6 @@ const SuperAdmin = () => {
       }
     },
   });
-
 
   const AddNewAdminUser = async (user_payload, token) => {
     let user_res;
@@ -409,8 +393,8 @@ const SuperAdmin = () => {
           autoDismiss: true,
       })
     })
-    return user_res
-  }
+    return user_res;
+  };
 
   const AddNewOrganization = async (org_payload, token) => {
     let org_res;
@@ -428,29 +412,27 @@ const SuperAdmin = () => {
           autoDismiss: true,
       })
     })
-    return org_res
+    return org_res;
   }
 
-  const AddNewRole = async (role_payload, token) => {
-    let role_res;
-    await axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles/`, role_payload, {
-      headers: {
-          Authorization: `Bearer ${token}`,
-      }
-    })
-    .then((response) => {
-      role_res = response
-    })
-    .catch((error) => {
-      addToast(error.response.data.message, {
-          appearance: "error",
-          autoDismiss: true,
-      })
-    })
-    return role_res
-  }
-
-
+  // const AddNewRole = async (role_payload, token) => {
+  //   let role_res;
+  //   await axios.post(`${process.env.REACT_APP_BASE_URL}/api/assign_user_roles/`, role_payload, {
+  //     headers: {
+  //         Authorization: `Bearer ${token}`,
+  //     }
+  //   })
+  //   .then((response) => {
+  //     role_res = response
+  //   })
+  //   .catch((error) => {
+  //     addToast(error.response.data.message, {
+  //         appearance: "error",
+  //         autoDismiss: true,
+  //     })
+  //   })
+  //   return role_res
+  // }
 
   const onChange = (event) => {
     const value = event.target.value;
@@ -1081,7 +1063,6 @@ const SuperAdmin = () => {
                                                 <th className="w-[30%] py-[13px]">{item[3]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[4]}</th>
                                                 <th className="w-[30%] py-[13px] px-5">{item[11]}</th> */}
-
                           <th className="w-[35%] py-[13px]"> User ID</th>
                           <th className="w-[35%] py-[13px]">User Name</th>
                           <th className="w-[30%] py-[13px]">Designation</th>
@@ -1100,7 +1081,6 @@ const SuperAdmin = () => {
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[3]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td> */}
-
                             <td className=" pt-[15px] w-[35%]  pb-[14.83px]">
                               {item.UserID}{" "}
                             </td>
@@ -1125,7 +1105,6 @@ const SuperAdmin = () => {
                   <></>
                 )}
               </>
-
               {/* <>
                                 {sheetdata_4_open ? sheetdata_4?.map((item, i) => {
                                     if (i <= 0) {

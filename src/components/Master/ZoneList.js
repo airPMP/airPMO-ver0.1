@@ -1,12 +1,11 @@
 
 import { useFormik } from "formik";
-import React, { useState } from 'react'
+import React from 'react'
 import { ViewZoneData } from '../../SimplerR/auth'
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import {   useParams } from "react-router-dom";
-
 
 const validate = (values) => {
   const errors = {};
@@ -16,9 +15,9 @@ const validate = (values) => {
   if (!values.discription) {
     errors.discription = "Desciption Required";
   }
-
   return errors;
 };
+
 const ZoneList = ({ closeModal, projectidzone }) => {
 
   const { addToast } = useToasts();
@@ -47,7 +46,6 @@ const ZoneList = ({ closeModal, projectidzone }) => {
         }
       })
         .then((response) => {
-          console.log(response)
           if (response.status === 201) {
             addToast("Zone is Added Sucessfully", {
               appearance: "success",
@@ -59,15 +57,14 @@ const ZoneList = ({ closeModal, projectidzone }) => {
           resetForm()
         })
         .catch((error) => {
-          console.log(error)
           addToast(error.response.data.message, {
             appearance: "error",
             autoDismiss: true,
           })
         })
-
     },
   });
+  
   return (
     <div className="flex flex-row  overflow-hidden">
       <div className="flex flex-col">

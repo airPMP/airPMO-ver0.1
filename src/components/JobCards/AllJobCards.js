@@ -6,25 +6,18 @@ import SearchBox from "../layout/SearchBox";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
-
-
 const AllJobCards = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
 
-
-
   let urlTitle = useLocation();
   let navigate = useNavigate();
-
 
   useEffect(() => {
     if (urlTitle.pathname === "/daily_task/All-daily-task") {
@@ -32,35 +25,24 @@ const AllJobCards = () => {
     }
   }, [urlTitle.pathname]);
 
-
-
   useEffect(() => {
-
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_job_card`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        console.log(response?.data)
         setAllJobCardData(response?.data)
         setFilteredData(response?.data)
-
-        if (response.status === 201) {
-
-        }
       })
       .catch((error) => {
         console.log(error)
-
       })
     handleSearch()
   }, [])
 
   const handleSearch = (e) => {
-
     let value = e?.target?.value?.toUpperCase();
     let result = []
     result = alljobcarddata?.filter((data) => {
@@ -68,27 +50,21 @@ const AllJobCards = () => {
         return data?.activity_code?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(alljobcarddata)
     }
   }
 
-
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
   const getPermision = async () => {
-
     const url_data = await allpermission
     const database = url_data?.split(',')
-
     let value = "EDIT-JOB-CARD".toUpperCase();
     let result = []
     result = database?.filter((data) => {
@@ -96,8 +72,6 @@ const AllJobCards = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
-
     let value1 = "CREATE-JOB-CARD".toUpperCase();
     let result1 = []
     result1 = database?.filter((data) => {
@@ -105,7 +79,6 @@ const AllJobCards = () => {
         return data?.toUpperCase().search(value1) !== -1;
       }
     });
-
     let value2 = "GET-JOB-CARD".toUpperCase();
     let result2 = []
     result2 = database?.filter((data) => {
@@ -113,31 +86,26 @@ const AllJobCards = () => {
         return data?.toUpperCase().search(value2) !== -1;
       }
     });
-
- 
-    if (result[0] === "EDIT-JOB-CARD" ||
-      result1[0] === "CREATE-JOB-CARD" ||
-      result2[0] === "GET-JOB-CARD") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
+    if(result){
+      if (result[0] === "EDIT-JOB-CARD" ||
+        result1[0] === "CREATE-JOB-CARD" ||
+        result2[0] === "GET-JOB-CARD") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
-    }
-
   }
-
-
-
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -163,7 +131,6 @@ const AllJobCards = () => {
                 <circle cx="38.6122" cy="37.9999" r="37.7143" fill="#F4F7FE" />
               </svg>
             </div>
-
             <div className="flex flex-row space-x-[350px] ">
               <div className="flex flex-col">
                 <div className=" font-secondaryFont font-medium bg-[#FFFFFF]  not-italic text-2xl leading-[32.33px] text-[#A3AED0] tracking-[-2%] ">
@@ -172,7 +139,6 @@ const AllJobCards = () => {
                 <div className="font-secondaryFont font-bold not-italic  text-lg leading-[43.1px] tracking-[-2%] text-[#1B2559] ">
                   Shining Towers
                 </div>
-
               </div>
               <div
                 style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
@@ -213,9 +179,7 @@ const AllJobCards = () => {
                     className="outline-none"
                   />
                 </div>
-
               </div>
-
             </div>
           </div>
           <div className=" text-right pr-20">
@@ -226,8 +190,6 @@ const AllJobCards = () => {
                 Add  DailyTask
               </button>
             </Link>
-
-
           </div>
           <div className="ml-[95px]">
             <table className="table-auto pt-[24px] w-[100%]  ">
@@ -236,7 +198,6 @@ const AllJobCards = () => {
                   <th className="pb-[15.39px]">Activity ID</th>
                   <th className="pb-[15.39px]"> Daily Task No.</th>
                   <th className="pb-[15.39px]">Date(YY/MM/DD)
-                  
                   </th>
                   <th className="pb-[15.39px]">Description</th>
                   <th className="pb-[15.39px]">Qty</th>
@@ -253,7 +214,6 @@ const AllJobCards = () => {
                     <th className="">{item.activity_name}</th>
                     <th className="">{item.quantity_to_be_achieved}</th>
                     <th className="">{item.zone}</th>
-
                     <th
                       className="cursor-pointer"
                     // onClick={() => {
@@ -266,7 +226,6 @@ const AllJobCards = () => {
                   <tr className="p-[15px]">
                     <td className="p-[10px]"></td>
                   </tr>
-
                 </tbody>
               })}
             </table>

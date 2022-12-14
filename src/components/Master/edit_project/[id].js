@@ -14,22 +14,17 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { ViewZoneData } from "../../../SimplerR/auth";
 
-
 const validate = (values) => {
-
     const errors = {};
     if (!values.category) {
         errors.category = "Category Required";
     }
-
     if (!values.sub_category) {
         errors.sub_category = "Sub Category Required";
     }
-
     if (!values.client_name) {
         errors.client_name = "Client Name Required";
     }
-
     if (!values.project_name) {
         errors.project_name = "Project Name Required";
     }
@@ -39,31 +34,25 @@ const validate = (values) => {
     if (!values.end_date) {
         errors.end_date = "End Date Required";
     }
-
     return errors;
 };
+
 const EditProject = () => {
     const [open, setOpen] = useState(false);
     const [openSub, setOpenSub] = useState(false);
-    const [client_name_data, setdeta] = useState("");
-
     const closeModal = () => setOpen(false);
     const closeModalSub = () => setOpenSub(false);
     const [title, setTitle] = useState(null); // the lifted state
     const [projectdata, setProjectData] = useState(null)
     const [categoriesdata, setCategoriesData] = useState(null)
-    const [category, setCategory] = useState(null)
     const [responcedata, setResponceData] = useState(true)
     const [showeye, setShowEye] = useState(" ");
     const [sheetdata, setSheetData] = useState(null)
-
-
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
     const [createpermission, setCreatePermission] = useState(null)
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
-
 
     const viewzonedata = ViewZoneData.use()
     let useperma = useParams()
@@ -72,13 +61,10 @@ const EditProject = () => {
     let naviagte = useNavigate();
     const { addToast } = useToasts();
 
-    console.log(viewzonedata)
-
     useEffect(() => {
         if (urlTitle.pathname === "/master/projects/new_project") {
             setTitle("Master");
         }
-
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -94,9 +80,7 @@ const EditProject = () => {
         }
         feach();
 
-
         const feach1 = async () => {
-
             try {
                 const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories/`, {
                     headers: {
@@ -110,22 +94,16 @@ const EditProject = () => {
         }
         feach1();
 
-
-
-
     }, [urlTitle.pathname]);
 
     useEffect(() => {
-
-
         const token = reactLocalStorage.get("access_token", false);
         if (responcedata) {
             axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
                 .then((response) => {
                     formik.values.category = response?.data?.category
                     formik.values.sub_category = response?.data?.sub_category
@@ -150,9 +128,7 @@ const EditProject = () => {
                             appearance: "success",
                             autoDismiss: true,
                         })
-                        // navigate('/')
                     }
-
                 })
                 .catch((error) => {
                     console.log(error)
@@ -164,8 +140,6 @@ const EditProject = () => {
         }
 
     }, [responcedata])
-
-    console.log(responcedata)
 
     const formik = useFormik({
         initialValues: {
@@ -196,43 +170,34 @@ const EditProject = () => {
         onSubmit: async (values, { resetForm }) => {
             const token = reactLocalStorage.get("access_token", false);
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, values, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
                 .then((response) => {
-                    console.log(response)
-
                     if (response.status === 200) {
                         addToast("Project is Added Sucessfully", {
                             appearance: "success",
                             autoDismiss: true,
                         })
-                        // navigate('/')
                     }
                     resetForm()
                 })
                 .catch((error) => {
-                    console.log(error)
                     addToast(error.response.data.message, {
                         appearance: "error",
                         autoDismiss: true,
                     })
                 })
-
         },
     });
 
-
-
     const ShowPasswordButton = (e, sheet2) => {
-
         if (showeye) {
             const feach = async () => {
                 try {
                     const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${formik.values.spread_sheet_id}/values/${formik.values.time_sheet_id}?key=${formik.values.spread_sheet_key}`,)
                     setSheetData(data1?.data?.values)
-                    console.log(data1)
                 } catch (error) {
                     console.log(error)
                 }
@@ -241,26 +206,23 @@ const EditProject = () => {
         }
         setShowEye(o => !o)
         setOpen(o => !o)
-
     }
+
     const CancelButton = (e) => {
         setOpen(o => !o)
         setShowEye(o => !o)
     }
 
-
     useEffect(() => {
         const permissionData = reactLocalStorage.get("permisions", false);
         setAllPermission(permissionData)
-
         getPermision()
     }, [allpermission])
 
     const getPermision = async () => {
-
         const url_data = await allpermission
         const database = url_data?.split(',')
-
+        
         let value = "EDIT-ZONES".toUpperCase();
         let result = []
         result = database?.filter((data) => {
@@ -268,8 +230,7 @@ const EditProject = () => {
                 return data?.toUpperCase().search(value) !== -1;
             }
         });
-
-
+        
         let value1 = "CREATE-ZONES".toUpperCase();
         let result1 = []
         result1 = database?.filter((data) => {
@@ -286,35 +247,26 @@ const EditProject = () => {
             }
         });
 
-
-
-
-
-
-        if (result[0] === "EDIT-ZONES" ||
-            result1[0] === "CREATE-ZONES" ||
-            result2[0] === "GET-ZONES") {
-            setEditPermission(result[0])
-            setCreatePermission(result1[0])
-            setViewPermission(result2[0])
+        if(result){
+            if (result[0] === "EDIT-ZONES" ||
+                result1[0] === "CREATE-ZONES" ||
+                result2[0] === "GET-ZONES") {
+                setEditPermission(result[0])
+                setCreatePermission(result1[0])
+                setViewPermission(result2[0])
+            }
+            else {
+                let value = "ALL".toUpperCase();
+                let result = []
+                result = database?.filter((data) => {
+                    if (isNaN(+value)) {
+                        return data?.toUpperCase().search(value) !== -1;
+                    }
+                });
+                setAllPermissions(result[0])
+            }
         }
-        else {
-            let value = "ALL".toUpperCase();
-            let result = []
-            result = database?.filter((data) => {
-                if (isNaN(+value)) {
-                    return data?.toUpperCase().search(value) !== -1;
-                }
-            });
-            setAllPermissions(result[0])
-        }
-
     }
-
-
-
-
-
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
@@ -323,7 +275,6 @@ const EditProject = () => {
             </div>
             <div className="flex flex-col">
                 <Header title={title} />
-
                 <div className=" flex flex-col max-w-[1099px] max-h-[632.01px] bg-[#FFFFFF] pl-[26px] pr-[46.02px] mt-[103px] ml-[38px] mr-[51px] rounded-[31.53px] ">
                     <div className="flex flex-row space-x-[27.92px] pt-[31.94px] items-center ">
                         <div className="bg-[#F4F7FE] w-[88.28px] flex items-center justify-center h-[88.28px]   rounded-full">
@@ -336,11 +287,6 @@ const EditProject = () => {
                             />
                         </div>
 
-
-
-
-
-
                         <div className="grid grid-cols-2">
 
                             <div className="col-span-1">
@@ -352,7 +298,6 @@ const EditProject = () => {
                             <div className="col-span-1  pl-14">
 
                                 <div className="flex ">
-
                                     <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button
 
@@ -360,7 +305,6 @@ const EditProject = () => {
                                             Add Delay
                                         </button>
                                     </div>
-
                                     <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button
                                             onClick={() => createpermission || allpermissions ? ViewZoneData.set(o => !o) : null}
@@ -371,13 +315,12 @@ const EditProject = () => {
                                         >
                                             Add Zones & Subzone
                                         </button>
-
                                     </div>
-
                                 </div>
-                            </div>
-                        </div>
 
+                            </div>
+
+                        </div>
 
                     </div>
                     <div className="pl-[120px] pr-[26px] pt-[33.49px]">
@@ -402,7 +345,6 @@ const EditProject = () => {
                                                 })}
                                             </select>
 
-
                                         </div>
                                         {
                                             formik.errors.category && (
@@ -414,7 +356,6 @@ const EditProject = () => {
                                     </div>
                                     <div>
                                         <div className="relative w-[165px] border-b border-black ">
-
                                             <select
                                                 name="sub_category"
                                                 value={formik.values.sub_category}
@@ -750,17 +691,17 @@ const EditProject = () => {
                                         <div>
                                             {showeye ? (<div onClick={(e) => ShowPasswordButton(e)}
                                                 className="cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
 
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                                                 </svg>
                                             </div>)
                                                 :
                                                 (<div onClick={(e) => ShowPasswordButton(e)} className="cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                 </div>
                                                 )}
@@ -789,7 +730,6 @@ const EditProject = () => {
                                             <SubZoneList closeModal={closeModalSub} />
                                         </Popup>
 
-
                                         <Popup
                                             open={open}
                                             position="right center"
@@ -805,9 +745,7 @@ const EditProject = () => {
                                                     </div>
                                                 </div>
                                                 <div className="mt-3 ex1">
-                                                    <table className="table-auto   text-center   
-                            text-[#8F9BBA] text-[12px] font-sans w-[100%]
-                         font-normal not-italic ">
+                                                    <table className="table-auto   text-center text-[#8F9BBA] text-[12px] font-sans w-[100%] font-normal not-italic ">
                                                         {sheetdata?.map((item, i) => {
                                                             if (i <= 0) {
                                                                 return (
@@ -837,11 +775,8 @@ const EditProject = () => {
                                                         })
                                                         }
                                                     </table>
-
                                                 </div>
-
                                             </div>
-
                                         </Popup>
 
                                         {/* <button onClick={() => { naviagte("/master/clients") }} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#FFFFFF] text-[#2E3A59] ">
@@ -865,9 +800,7 @@ const EditProject = () => {
 
                                     <div className="mr-[25px] shadow-[buttonshadow] ">
                                         <button onClick={() => { naviagte("/UserManagement/EditAccess") }}
-                                            className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont
-                      text-[14px] text-center font-medium not-italic items-center 
-                       bg-[#FFFFFF] text-[#2E3A59] ">
+                                            className="w-[160px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center bg-[#FFFFFF] text-[#2E3A59] ">
                                             View Edit Access
                                         </button>
                                     </div>

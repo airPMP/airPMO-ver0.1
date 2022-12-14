@@ -15,7 +15,6 @@ const validate = (values) => {
   if (!values.uploadLogoFile) {
     errors.uploadLogoFile = "uploadLogoFile Required";
   }
-
   if (!values.location) {
     errors.location = "Location Required";
   }
@@ -28,9 +27,9 @@ const validate = (values) => {
   if (!values.description) {
     errors.description = "description Required";
   }
-  // console.log(errors);
   return errors;
 };
+
 const ClientName = () => {
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
@@ -54,7 +53,7 @@ const ClientName = () => {
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
-      // console.log(`Form data`, values);
+      
     },
   });
   return (

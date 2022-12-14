@@ -6,7 +6,6 @@ import { useFormik } from "formik";
 import {useLocation} from "react-router-dom";
 
 const validate = (values) => {
-
   const errors = {};
   if (!values.firstName) {
     errors.firstName = "First Name Required";
@@ -42,14 +41,12 @@ const validate = (values) => {
   if (!values.comment) {
     errors.comment = "comment Required";
   }
-  // console.log(errors);
   return errors;
 };
 const SignUpTemplate = ({dashboardtrue}) => {
   const [title, setTitle] = useState(null);
   let urlTitle = useLocation();
   useEffect(() => {
-       
     if(urlTitle.pathname === "/dashboard/user"){
         setTitle("Master");
     } 
@@ -70,10 +67,8 @@ const SignUpTemplate = ({dashboardtrue}) => {
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
-      // console.log(`Form data`, values);
     },
   });
-  console.log(formik.values);
   return (
     <div className="flex flex-row justify-start overflow-hidden">
         <div>
@@ -132,7 +127,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 First Name
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.firstName && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -155,7 +149,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Last Name
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.lastName && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -180,7 +173,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Phone Number
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.phoneNumber && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -203,7 +195,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Email
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.email && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -228,7 +219,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Job Title
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.jobtitle && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -251,7 +241,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Company Name
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.companyName && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">
@@ -276,7 +265,6 @@ const SignUpTemplate = ({dashboardtrue}) => {
                 className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
               >
                 Comment
-                {/* <span className="text-red-700">*</span> */}
               </label>
               {formik.errors.comment && (
                 <div className="text-red-700 text-xs font-secondaryFont mt-[1px]">

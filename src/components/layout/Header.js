@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import NotificationBar from "./NotificationBar";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
@@ -13,15 +12,11 @@ const Header = ({ title, sendPage }) => {
   const [userOrg, setUserOrg] = useState(false);
   const { addToast } = useToasts();
 
-  let param = useLocation();
-  const sendStyle = (name) => {
-    setDp(name);
-  };
+  const sendStyle = (name) => { setDp(name); };
 
   useEffect(()=>{
     const user_id = reactLocalStorage.get("user_id", false);
     getOrganizationByUserId(user_id).then((o_data)=>{
-      console.log("o_data==",o_data);
       if(o_data?.data[0]){
         setUserOrg(o_data?.data[0])
       }
@@ -106,7 +101,6 @@ const Header = ({ title, sendPage }) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             onClick={() => {
-              console.log("Notification");
               setDp(true);
             }}
           >

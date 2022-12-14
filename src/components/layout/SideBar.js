@@ -1,17 +1,15 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getUserApiOrgnization_id, getUserApi, getOrganizationById } from "../../AllApi/Api";
+import { getOrganizationById } from "../../AllApi/Api";
 import axios from "axios";
 import { ProjectLogoSet } from "../../SimplerR/auth";
 
 const SideBar = ({ sendDataToParent }) => {
-  const [style, setStyle] = useState(1);
   const [Rolesdata, setRolesdata] = useState(null);
   const [title, setTitle] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [funTrue, setFunTrue] = useState(true);
   const [permissionData, setPermissionData] = useState([]);
   const [sidebarlogo, setSidebarlogo] = useState();
   const projectLogoSet = ProjectLogoSet.use();
@@ -31,17 +29,16 @@ const SideBar = ({ sendDataToParent }) => {
   const gotoJobCards = () => {
     navigate("/daily_task");
   };
-
   const gotoJobMaster = () => {
     navigate("/master");
   };
-
   const gotoJobTimeLine = () => {
     navigate("/timeline");
   };
 
   const permisions_data = reactLocalStorage.get("permisions", false);
   const organization_id = reactLocalStorage.get("organization_id", false);
+
   useEffect(() => {
     if (permisions_data && permisions_data != "ALL") {
       setPermissionData(permisions_data.substring(1).split(","));
@@ -65,7 +62,6 @@ const SideBar = ({ sendDataToParent }) => {
 
   useEffect(() => {
     const token = reactLocalStorage.get("access_token", false);
-
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/api/users`, {
         headers: {
@@ -73,7 +69,6 @@ const SideBar = ({ sendDataToParent }) => {
         },
       })
       .then((responce) => {
-        // console.log(responce);
         setUserData(responce?.data[0]);
         ProjectLogoSet.set(responce?.data[0]?.logo_url);
       });
@@ -82,17 +77,7 @@ const SideBar = ({ sendDataToParent }) => {
   return (
     <div className="flex flex-col max-w-[252px] w-[252px] px-[26px] overflow-hidden  h-[100vh] bg-[#FFFFFF]">
       <div className="divide-solid">
-        {
-          console.log("projectLogoSet",projectLogoSet)
-        }
-        <img
-          src={"/logo1.jpg"}
-          alt="logo"
-          width="182px"
-          height="60.67px"
-          className="px-[35px] pt-[26px]"
-        />
-
+        <img src={"/logo1.jpg"} alt="logo" width="182px" height="60.67px" className="px-[35px] pt-[26px]" />
         <hr className=" mt-[30.33px] border  border-[#000000] " />
       </div>
 
@@ -130,7 +115,6 @@ const SideBar = ({ sendDataToParent }) => {
               />
             </svg>
           </div>
-
           <div
             className={`${
               param.pathname === "/dashboard" ||
@@ -304,7 +288,6 @@ const SideBar = ({ sendDataToParent }) => {
           param.pathname.includes("/DataInjestion") ? "bg-[#136C57]" : ""
         }`}
         onClick={() => {
-          setStyle(5);
           navigate("/DataInjestion");
         }}
       >
@@ -350,11 +333,9 @@ const SideBar = ({ sendDataToParent }) => {
         className={`flex flex-row justify-center mt-[15px] max-w-[170px] max-h-[50px]  py-[11px]  rounded cursor-pointer  ${style === 6 ? "bg-[#136C57]" : ""
           } `}
         onClick={() => {
-          setStyle(6);
           sendDataToParent("QA/QC");
         }}
       >
-
         <div
           className={`${style === 6 ? "text-white" : "text-[#000000]"
             } font-secondaryFont not-italic font-bold text-base leading-7 tracking-[-0.02em]`}
@@ -367,7 +348,7 @@ const SideBar = ({ sendDataToParent }) => {
       (permissionData && permissionData.includes("EDIT-ROLES")) ? (
         <div
           className={`flex flex-row justify-center mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-12 ${
-            param.pathname.includes("UserManagement") ? "bg-[#136C57]" : ""
+            param.pathname?.includes("UserManagement") ? "bg-[#136C57]" : ""
           }`}
           onClick={() => {
             navigate("/UserManagement");
@@ -398,7 +379,7 @@ const SideBar = ({ sendDataToParent }) => {
           </div>
         </div>
       ) : null}
-      {permissionData && permissionData.includes("ALL") ? (
+      {permissionData && permissionData?.includes("ALL") ? (
         <div
           className={`flex flex-row justify-center mt-[15px] max-w-[200px] max-h-[50px]  py-[11px] px-[15px]  rounded cursor-pointer space-x-12 ${
             param.pathname.includes("organization") ? "bg-[#136C57]" : ""

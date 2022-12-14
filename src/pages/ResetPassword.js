@@ -1,10 +1,7 @@
 import React, { useState, } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { useToasts } from "react-toast-notifications";
-
 import axios from "axios";
-
 
 const ResetPassword = () => {
 
@@ -13,8 +10,6 @@ const ResetPassword = () => {
   const [ConformPassword, setConformPassword] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const tokenData = searchParams.get("token")
-
-
 
   const onSubmitit = (e) => {
     e.preventDefault();
@@ -35,15 +30,12 @@ const ResetPassword = () => {
         .then((response) => {
           console.error(response);
           if (response.status === 201) {
-           
             addToast("Reset Password Sucessfully", {
               appearance: "success",
               autoDismiss: true,
             })
-
           }
           else{
-            
             addToast("Login fail", {
               appearance: "error",
               autoDismiss: true,
@@ -51,7 +43,6 @@ const ResetPassword = () => {
           }
         })
         .catch((error) => {
-          
           addToast(error?.response?.data?.message , {
             appearance: "error",
             autoDismiss: true,
@@ -60,14 +51,12 @@ const ResetPassword = () => {
     }
   }
 
-
-
   return (
     <>
-      <div class="flex flex-row justify-around lg:pt-40 md:pt-44 pt-52 mb-16 bg-indigo-100"  >
-        <div class="w-full max-w-xs m-auto bg-indigo-100 rounded p-5">
+      <div className="flex flex-row justify-around lg:pt-40 md:pt-44 pt-52 mb-16 bg-indigo-100"  >
+        <div className="w-full max-w-xs m-auto bg-indigo-100 rounded p-5">
           <div className="mb-4">
-            <label class="block mb-2 text-indigo-500" for="username">  New Password</label>
+            <label className="block mb-2 text-indigo-500" htmlFor="username">  New Password</label>
             <input
               type="text"
               className="form-control p-3"
@@ -78,7 +67,7 @@ const ResetPassword = () => {
             />
           </div>
           <div className="mb-4">
-            <label class="block mb-2 text-indigo-500" for="password"> Conform Password</label>
+            <label className="block mb-2 text-indigo-500" htmlFor="password"> Conform Password</label>
             <input
               type="text"
               className="form-control p-3"

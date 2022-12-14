@@ -16,16 +16,11 @@ const ZoneById = () => {
   const [zonedata, setZoneData] = useState(null)
   const [zone_id, setZone_id] = useState(null)
   const [subzonedata, setSubZoneData] = useState(null)
-
-
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
-
-
   const [filteredData, setFilteredData] = useState(zonedata);
 
   const CategorieLengthget = CategorieLengthSet.use()
@@ -36,15 +31,12 @@ const ZoneById = () => {
 
   let useperma = useParams()
 
-
-
   const [subzoneid, setSubZoneId] = useState(null);
   const [activezoneshow, setActiveZoneShow] = useState(null);
   const viewzonedata = ViewZoneData.use()
   const viewsubzonedata = ViewSubZoneData.use()
 
   useEffect(() => {
-
 
     if (urlTitle.pathname === "/master/categories") {
       setTitle("Master");
@@ -58,8 +50,6 @@ const ZoneById = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-
-        console.log(data)
         setZoneData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {
@@ -68,18 +58,13 @@ const ZoneById = () => {
     }
     feach();
     handleSearch();
-
-
     getPermision()
 
   }, [urlTitle.pathname ,viewzonedata])
 
-
-
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
@@ -95,7 +80,6 @@ const ZoneById = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "CREATE-SUBZONES".toUpperCase();
     let result1 = []
@@ -113,37 +97,27 @@ const ZoneById = () => {
       }
     });
 
-
-
-
-
-
-    if (result[0] === "EDIT-SUBZONES" ||
-      result1[0] === "CREATE-SUBZONES" ||
-      result2[0] === "GET-SUBZONES") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
-    }
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
+    if(result){
+      if (result[0] === "EDIT-SUBZONES" ||
+        result1[0] === "CREATE-SUBZONES" ||
+        result2[0] === "GET-SUBZONES") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
 
   }
-
-
-
-
-
-
-
 
   const handleSearch = (e) => {
     let value = e?.target?.value?.toUpperCase();
@@ -154,22 +128,13 @@ const ZoneById = () => {
         return data?.zone_name?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(zonedata)
     }
   }
 
-
-  const DeleteProfile = (e) => {
-    setDeleteId(e)
-    setOpen(o => !o)
-  }
-
   const conformDelete = () => {
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -179,7 +144,6 @@ const ZoneById = () => {
           },
         })
         if (data?.status === 200) {
-
           window.location.reload(false);
         }
         console.log(data)
@@ -195,13 +159,9 @@ const ZoneById = () => {
     setOpen(o => !o)
   }
 
-  
-
-
   const Subzone = (e, zone_id) => {
     setSubZoneId(zone_id)
     setActiveZoneShow(o => !o)
-
 
     const feach = async () => {
       const token = reactLocalStorage.get("access_token", false);
@@ -211,13 +171,10 @@ const ZoneById = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-
         setSubZoneData(data?.data)
         if (data?.status === 200) {
-
           // window.location.reload(false);
         }
-        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -225,18 +182,14 @@ const ZoneById = () => {
     feach();
   }
 
-
   const ViewSubZoneFun = (e, item_data) => {
     ViewSubZoneData.set(o => !o)
     setZone_id(item_data._id)
   }
 
-
   const AddZone = () => {
     ViewZoneData.set(o => !o)
   }
-
-
 
   return (
 
@@ -301,8 +254,6 @@ const ZoneById = () => {
                   placeholder="Search for zone or subzone"
                   className="outline-none"
                 />
-
-
               </div>
 
             </div>
@@ -442,8 +393,8 @@ const ZoneById = () => {
         className="zone_pops"
       >
         <ZoneList />
-
       </Popup>
+
       <Popup
         open={viewsubzonedata}
         position="right center"
@@ -451,14 +402,10 @@ const ZoneById = () => {
         className="zone_pops"
       >
         <SubZoneList
-
           zone_id={zone_id}
-
         />
-
       </Popup>
     </div>
-
   );
 };
 

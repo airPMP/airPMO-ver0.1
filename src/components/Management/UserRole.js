@@ -12,15 +12,11 @@ const UserRole1 = () => {
     const [rolesdata, setRolesData] = useState(null)
     const [deleteid, setDeleteId] = useState(null);
     const [open, setOpen] = useState(false);
-
-
     const [allpermission, setAllPermission] = useState(null)
     const [editpermission, setEditPermission] = useState(null)
     const [createpermission, setCreatePermission] = useState(null)
     const [viewpermission, setViewPermission] = useState(null)
     const [allpermissions, setAllPermissions] = useState(null)
-
-
     let navigate = useNavigate();
     let urlTitle = useLocation();
 
@@ -29,7 +25,6 @@ const UserRole1 = () => {
         if (urlTitle.pathname === "/UserManagement/UserRole") {
             setTitle("User Mgmt");
         }
-
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
@@ -38,23 +33,17 @@ const UserRole1 = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log(data?.data)
-                setRolesData(data?.data)
+                setRolesData(data?.data);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
         feach();
-
-
     }, [urlTitle.pathname])
 
-
-
     const DeleteProfile = (e) => {
-
-        setDeleteId(e)
-        setOpen(o => !o)
+        setDeleteId(e);
+        setOpen(o => !o);
     }
 
     const conformDelete = () => {
@@ -71,32 +60,28 @@ const UserRole1 = () => {
 
                     window.location.reload(false);
                 }
-                console.log(data)
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
         feach();
-        setOpen(o => !o)
+        setOpen(o => !o);
     }
 
     const CancelButton = (e) => {
-        setOpen(o => !o)
+        setOpen(o => !o);
     }
-
 
     useEffect(() => {
         const permissionData = reactLocalStorage.get("permisions", false);
-        setAllPermission(permissionData)
-    
-        getPermision()
-      }, [allpermission])
-    
+        setAllPermission(permissionData);
+        getPermision();
+      }, [allpermission]);
     
       const getPermision = async () => {
     
         const url_data = await allpermission
-        const database = url_data.split(',')
+        const database = url_data?.split(',')
     
         let value = "EDIT-ROLES".toUpperCase();
         let result = []
@@ -105,8 +90,7 @@ const UserRole1 = () => {
             return data?.toUpperCase().search(value) !== -1;
           }
         });
-    
-    
+
         let value1 = "CREATE-ROLES".toUpperCase();
         let result1 = []
         result1 = database?.filter((data) => {
@@ -123,15 +107,12 @@ const UserRole1 = () => {
           }
         });
     
-      
-    
-    
         if (result[0] === "EDIT-ROLES" ||
           result1[0] === "CREATE-ROLES" ||
           result2[0] === "GET-ROLES") {
-          setEditPermission(result[0])
-          setCreatePermission(result1[0])
-          setViewPermission(result2[0])
+          setEditPermission(result[0]);
+          setCreatePermission(result1[0]);
+          setViewPermission(result2[0]);
         }
         else {
           let value = "ALL".toUpperCase();
@@ -141,13 +122,9 @@ const UserRole1 = () => {
               return data?.toUpperCase().search(value) !== -1;
             }
           });
-          setAllPermissions(result[0])
+          setAllPermissions(result[0]);
         }
-    
       }
-
-
-
 
     return (
         <>
@@ -164,7 +141,7 @@ const UserRole1 = () => {
                 <Header title={title} />
             </div> */}
                     <div className=" flex flex-col max-w-[1099px] rounded-[31.529px] mh-[632.01px] mt-[105.49px] ml-[38px] 
-        bg-[#FFFFFF]   ">
+        bg-[#FFFFFF]">
                         <div className="flex flex-row justify-between">
                             <div className="flex">
                                 {/* <Link to={`/UserManagement/AddUserRole`}> */}
@@ -198,20 +175,16 @@ const UserRole1 = () => {
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M16.7916 16.7917V24.5417H14.2083V16.7917H6.45825V14.2083H14.2083V6.45834H16.7916V14.2083H24.5416V16.7917H16.7916Z" fill="#2E3A59" />
                                             </svg>
-
                                             <span className="text-[15px] pt-1"> New Roles</span>
                                         </div>
-
                                     </div>
                                 </Link>
                             </div>
 
                         </div>
-
                         <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
                             <table className="table-auto   text-center font-secondaryFont text-[#000000]
                          font-normal not-italic text-[12px " style={{ width: "100%" }}>
-
                                 <tr className="max-h-[52.84px] text-center  " >
                                     {/* <th className="w-[10%] py-[13px]">Name</th> */}
                                     <th className="w-[10%] py-[13px]">Role</th>
@@ -220,12 +193,9 @@ const UserRole1 = () => {
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
-
                                 {rolesdata?.slice(0).map((item, i) => {
-
-                                    
-                                        return <tbody className="  mb-[10px]   ">
-                                            <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  "  >
+                                        return <tbody className="mb-[10px]">
+                                            <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]" >
                                                 {/* <td className="pt-[15px] pb-[14.83px]">{item.name} </td> */}
                                                 <td className="pt-[15px] pb-[14.83px]">{item.name}</td>
                                                 <td className="pt-[15px] pb-[14.83px]">{item.description}</td>
@@ -267,7 +237,6 @@ const UserRole1 = () => {
                                                 <td className="p-[10px]"></td>
                                             </tr>
                                         </tbody>
-                                     
                                 })}
 
                             </table>
@@ -305,7 +274,6 @@ const UserRole1 = () => {
                         </button>
                     </div>
                 </div>
-
             </Popup>
         </>
     )

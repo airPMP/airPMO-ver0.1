@@ -8,20 +8,17 @@ const UserRole1 = () => {
     const [title, setTitle] = useState(null);
     let navigate = useNavigate();
     let urlTitle = useLocation();
-    useEffect(() => {
 
+    useEffect(() => {
         if (urlTitle.pathname === "/UserManagement/UserRole3") {
             setTitle("User Roles");
         }
-    }, [urlTitle.pathname])
+    }, [urlTitle.pathname]);
 
     const data = [
+        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" } ,
         { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
-        ,
-        { "name": "John doe", "role": "Client", "email": "adith80@gmail.com", "mobile": "529255077", "action": "action" }
-
     ]
-
 
     return (
         <>
@@ -31,14 +28,7 @@ const UserRole1 = () => {
                 </div>
                 <div className="flex flex-col">
                     <Header title={title} />
-                    {/* <div>
-                <SideBar />
-            </div>
-            <div className="flex flex-col">
-                <Header title={title} />
-            </div> */}
-                    <div className=" flex flex-col max-w-[1099px] rounded-[31.529px] mh-[632.01px] mt-[105.49px] ml-[38px] 
-        bg-[#FFFFFF]    ">
+                    <div className=" flex flex-col max-w-[1099px] rounded-[31.529px] mh-[632.01px] mt-[105.49px] ml-[38px] bg-[#FFFFFF]">
                         <div className="flex flex-row justify-between">
                             <div className="flex">
                                 <div className=" ml-[26.8px] mt-[31.94px]   h-[88.28px] w-[88.28px] bg-[#F4F7FE] rounded-[50%]">
@@ -48,18 +38,15 @@ const UserRole1 = () => {
                                         className="ml-[23px] mt-[16.57px] h-[44px]  w-[42.79px]"
                                     />
                                 </div>
-                                <div className="font-secondaryFont font-medium not-italic text-[28.09px] 
-                    leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px] ">
+                                <div className="font-secondaryFont font-medium not-italic text-[28.09px] leading-[37.83px] text-[#000000] mt-[51.51px] ml-[27.92px]">
                                     Role 3
                                 </div>
                             </div>
                             <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
-                                className="mt-[73.07px] basic-1/4 flex flex-row  items-center mr-[51.5px] 
-                       bg-[#FFFFFF] rounded-[0.625rem]   "
+                                className="mt-[73.07px] basic-1/4 flex flex-row  items-center mr-[51.5px] bg-[#FFFFFF] rounded-[0.625rem]   "
                             >
                                 <div className="pt-[4.64px] pl-[16.6px]">
                                     <svg
-
                                         width="11"
                                         height="12"
                                         viewBox="0 0 11 12"
@@ -93,12 +80,10 @@ const UserRole1 = () => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]" >
+                        <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px]">
                             <table className="table-auto   text-center font-secondaryFont text-[#000000]
                          font-normal not-italic text-[12px " style={{ width: "100%" }}>
-
-                                <tr className="max-h-[52.84px] text-center  ">
+                                <tr className="max-h-[52.84px] text-center ">
                                     <th className="w-[10%] py-[13px]">Name</th>
                                     <th className="w-[30%] py-[13px]">Role</th>
                                     <th className="w-[25%] py-[13px]">Email</th>
@@ -106,10 +91,9 @@ const UserRole1 = () => {
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
-
                                 {data?.map((item, i) => (
-                                    <tbody className="  mb-[10px]   ">
-                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  " onClick ={() => {navigate("/UserManagement/UserRole1/Details")}} >
+                                    <tbody className="mb-[10px]">
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]" onClick ={() => {navigate("/UserManagement/UserRole1/Details")}} >
                                             <td className="pt-[15px] pb-[14.83px]">{item.name} </td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.role}</td>
                                             <td className="pt-[15px] pb-[14.83px]">{item.email}</td>
@@ -152,7 +136,6 @@ const UserRole1 = () => {
                                         </tr>
                                     </tbody>
                                 ))}
-
                             </table>
                         </div>
                     </div>

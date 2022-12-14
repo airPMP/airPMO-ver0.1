@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 
@@ -14,7 +14,6 @@ const Login = () => {
   const [userdetailemail, setDetailEmail] = useState([]);
   const [userName, setName] = useState("");
   const [userpassword, setPassword] = useState("");
-
   const [showpassword, setshowpassword] = useState("password");
   const [showeye, setShowEye] = useState(" ");
 
@@ -24,14 +23,6 @@ const Login = () => {
     navigate('/sign-up');
   };
 
-  const location = useLocation();   
-  useEffect(()=>{
-    const user_id = reactLocalStorage.get("user_id", false);
-    // if(user_id){
-    //   navigate('/dashboard');
-    // }
-  },[])
-
   const submit = (e) => {
     e.preventDefault();
 
@@ -39,31 +30,22 @@ const Login = () => {
     setDetail([...userdetail, allData]);
     axios
       .post(`${process.env.REACT_APP_BASE_URL}/api/login/`, {
-
         Email: userName,
         Password: userpassword,
         domain_name: window.location.origin
-        
       })
       .then((response) => {
-        console.log(response)
-        console.log(response?.data?.roles)
         if (response.status === 201) {
-
-          
-             if(response?.data?.user?.organization_id){
-               if(response?.data?.roles[0]==="Airpmo Super Admin"){
+          if(response?.data?.user?.organization_id){
+            if(response?.data?.roles[0]==="Airpmo Super Admin"){
               navigate('/dashboard')}
-              else{
-                 
-                navigate('/daily_task')
-                window.location.reload(false)
-              }
-             }
-             else{
-              navigate('organization/super_admin')
-             }
-             
+            else{
+              navigate('/daily_task')
+              window.location.reload(false)
+            }
+          } else{
+            navigate('organization/super_admin')
+          }
           
           addToast("Login  Sucessfully", {
             appearance: "success",
@@ -74,10 +56,8 @@ const Login = () => {
           reactLocalStorage.set("organization_id", response?.data?.user?.organization_id);
           reactLocalStorage.set("roles", response?.data?.roles);
           reactLocalStorage.set("permisions", response?.data?.permissions); 
-           
         }
         else {
-
           addToast("login fail", {
             appearance: "error",
             autoDismiss: true,
@@ -85,16 +65,12 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.log(error)
         addToast(error?.response?.data?.message, {
           appearance: "error",
           autoDismiss: true,
         })
         navigate('/');
-
       });
-
-    // navigate('/dashboard');
   };
 
   const Forget = () => {
@@ -103,7 +79,6 @@ const Login = () => {
     axios.post(`${process.env.REACT_APP_BASE_URL}/api/forget/`, { Email: email })
 
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           addToast("Please Check Your Email", {
             appearance: "success",
@@ -119,23 +94,16 @@ const Login = () => {
       });
   }
 
-  const CancelButton = (e) => {
-    setOpen(o => !o)
-  }
-
-
-
+  const CancelButton = (e) => { setOpen(o => !o) }
 
   const ShowPasswordButton = () => {
     setShowEye(o => !o)
     if (showeye) {
       setshowpassword("input")
-    }
-    else {
+    } else {
       setshowpassword("password")
     }
   }
-
 
   return (
     <div className="md:flex flex-row overflow-hidden w-[100%] md:h-[100vh]  lg:w-[100vw]     ">
@@ -169,12 +137,10 @@ const Login = () => {
         />
       </div>
 
-      <div className="flex flex-col justify-center items-center lg:p-0 p-5 
-       lg:px-[116px] md:w-[50%] w-[100%] 
-     mb-[50px] ">
+      <div className="flex flex-col justify-center items-center lg:p-0 p-5 lg:px-[116px] md:w-[50%] w-[100%] mb-[50px] ">
         <div className=" flex flex-col justify-center   w-[100%] max-h-[431px]
-       px-[50px] py-[34px] border border-solid left-[817px] border-[#236F57] 
-       rounded-xl bg-[#FFFFFF] md:mt-[259px] mb-[210px] lg:ml-[9.86%]  ">
+            px-[50px] py-[34px] border border-solid left-[817px] border-[#236F57] 
+            rounded-xl bg-[#FFFFFF] md:mt-[259px] mb-[210px] lg:ml-[9.86%]  ">
           <div className="font-mainFont font-normal not-italic w-[93px] h-[30px]  tracking-[1.5px] text-[32px]">
             Login
           </div>
@@ -183,7 +149,6 @@ const Login = () => {
               <a href="/sign-up">
                 Email Or Mobile{" "}
               </a>
-
             </span>
           </div>
           <div className=" flex 10px items-center mt-[10px]">
@@ -196,14 +161,7 @@ const Login = () => {
                 value={userName}
               />
               <div>
-                <svg
-                  className="text-[#4D627A]"
-                  width="6"
-                  height="10"
-                  viewBox="0 0 6 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg className="text-[#4D627A]" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg" >
                   <path
                     d="M1 9L5 5L1 1"
                     stroke="#4D627A"
@@ -230,56 +188,45 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div>
-
-                {showeye ? (<div onClick={() => ShowPasswordButton()} className="cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                  </svg>
-                </div>)
-                  :
-                  (<div onClick={() => ShowPasswordButton()} className="cursor-pointer">
+                {showeye ? (
+                  <div onClick={() => ShowPasswordButton()} className="cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                     </svg>
-                  </div>)}
+                  </div>
+                ) : (
+                <div onClick={() => ShowPasswordButton()} className="cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                )}
               </div>
             </div>
           </div>
           <div className="flex flex-row">
-            <div className="   border-[1px] border-solid border-[#000000] rounded bg-[#FFFFFF] mt-[37px]">
-              <button onClick={() => { signUp() }} className="lg:w-[161px] 
-              w-[100px] responcev_btn h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+            <div className="border-[1px] border-solid border-[#000000] rounded bg-[#FFFFFF] mt-[37px]">
+              <button onClick={() => { signUp() }} className="lg:w-[161px] w-[100px] responcev_btn h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Sign Up
               </button>
             </div>
-            <div className=" ml-[28px]  border-[1px] border-solid border-[#000000] rounded bg-[#0FCC7C] mt-[37px]">
-              <button onClick={(e) => { submit(e) }} className="lg:w-[161px]  
-              w-[100px] responcev_btn h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
+            <div className="ml-[28px]  border-[1px] border-solid border-[#000000] rounded bg-[#0FCC7C] mt-[37px]">
+              <button onClick={(e) => { submit(e) }} className="lg:w-[161px] w-[100px] responcev_btn h-[37px] font-mainFont text-[15px] font-normal not-italic leading-[18px] text-[#000000] ">
                 Login
               </button>
             </div>
-
           </div>
           <div className="mt-3 " >
             <div className="float-right text-[14px] text-[blue] cursor-pointer" onClick={() => setOpen(o => !o)}>
               Forget Password ?
             </div>
 
-            <Popup
-              open={open}
-              position="right center"
-              model
-            >
+            <Popup open={open} position="right center" model >
               <div className="p-7">
                 <div className="flex pb-3">
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="font-size-4 text-black-2 font-weight-semibold  "
-                    >
+                    <label htmlFor="email" className="font-size-4 text-black-2 font-weight-semibold  " >
                       Email
                     </label>
                   </div>
@@ -308,8 +255,8 @@ const Login = () => {
                   </button>
                 </div>
               </div>
-
             </Popup>
+
           </div>
         </div>
       </div>

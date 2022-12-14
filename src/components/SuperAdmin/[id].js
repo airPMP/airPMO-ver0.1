@@ -1,19 +1,16 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
-
 const SuperAdminId = () => {
     const { addToast } = useToasts();
     const [open, setOpen] = useState(false);
-    const [name, setNameData] = useState('')
-    const [location, setLocation] = useState('')
-    const [address, setAddress] = useState('')
+    const [name, setNameData] = useState('');
+    const [location, setLocation] = useState('');
+    const [address, setAddress] = useState('');
     const [organizationid, setOrganizationId] = useState(null)
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
     const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
@@ -21,24 +18,20 @@ const SuperAdminId = () => {
     const [spread_sheet_id_2, setSpreadSheet_2] = useState('AT - Equipment List format');
     const [spread_sheet_id_3, setSpreadSheet_3] = useState('AT - HRMS Std Salaries');
     const [spread_sheet_id_4, setSpreadSheet_4] = useState('AT - HRMS Std Rentals');
-
-    const [sheetdata, setSheetData] = useState(null)
-    const [sheetdata_2, setSheetData_2] = useState(null)
-    const [sheetdata_3, setSheetData_3] = useState(null)
-    const [sheetdata_4, setSheetData_4] = useState(null)
-    const [sheetdata_1_open, setSheetData_1_open] = useState(false)
-    const [sheetdata_2_open, setSheetData_2_open] = useState(false)
-    const [sheetdata_3_open, setSheetData_3_open] = useState(false)
-    const [sheetdata_4_open, setSheetData_4_open] = useState(false)
-
-    const [nameErr, setNameDataErr] = useState('')
-    const [locationErr, setLocationErr] = useState('')
-    const [addressErr, setAddressErr] = useState('')
-
+    const [sheetdata, setSheetData] = useState(null);
+    const [sheetdata_2, setSheetData_2] = useState(null);
+    const [sheetdata_3, setSheetData_3] = useState(null);
+    const [sheetdata_4, setSheetData_4] = useState(null);
+    const [sheetdata_1_open, setSheetData_1_open] = useState(false);
+    const [sheetdata_2_open, setSheetData_2_open] = useState(false);
+    const [sheetdata_3_open, setSheetData_3_open] = useState(false);
+    const [sheetdata_4_open, setSheetData_4_open] = useState(false);
+    const [nameErr, setNameDataErr] = useState('');
+    const [locationErr, setLocationErr] = useState('');
+    const [addressErr, setAddressErr] = useState('');
     const [showpassword, setshowpassword] = useState("password");
     const [showeye, setShowEye] = useState(" ");
-    const [designationdata, setDesignationData] = useState(null)
-
+    const [designationdata, setDesignationData] = useState(null);
 
     let navigate = useNavigate();
     const Login = () => {
@@ -46,9 +39,7 @@ const SuperAdminId = () => {
     };
 
     const SubmitForm = (e) => {
-
         e.preventDefault()
-
         if (name === '') {
             setNameDataErr("Please fill company name ")
         }
@@ -62,7 +53,6 @@ const SuperAdminId = () => {
         const token = reactLocalStorage.get("access_token", false);
 
         if (name && location && address) {
-            console.log("done")
             axios.post(`${process.env.REACT_APP_BASE_URL}/api/organization/`, {
                 hrms_api_url: hrmsdata,
                 location: location,
@@ -73,7 +63,6 @@ const SuperAdminId = () => {
                 address: address,
                 contact_details: "string",
                 name: name
-
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -81,7 +70,6 @@ const SuperAdminId = () => {
             })
                 .then((response) => {
                     reactLocalStorage.set("organizationId", response?.data?._id);
-                    console.log(response?.data?._id)
                     if (response.status === 201) {
                         Roles()
                         addToast("form submitted Sucessfully", {
@@ -91,7 +79,6 @@ const SuperAdminId = () => {
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
                     addToast(error.response.data.message, {
                         appearance: "error",
                         autoDismiss: true,
@@ -101,7 +88,6 @@ const SuperAdminId = () => {
     }
 
     const Roles = () => {
-
         const token = reactLocalStorage.get("access_token", false);
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/roles/`, {
             roles_data: designationdata,
@@ -117,7 +103,6 @@ const SuperAdminId = () => {
             }
         })
             .then((response) => {
-                console.log(response)
                 if (response.status === 201) {
 
                     addToast("Roles are Added Sucessfully", {
@@ -127,17 +112,14 @@ const SuperAdminId = () => {
                 }
             })
             .catch((error) => {
-                console.log(error)
                 addToast(error.response.data.message, {
                     appearance: "error",
                     autoDismiss: true,
                 })
             })
-
     }
 
     // const SuperAdminOrganizatioId = () => {
-
     //     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/users/`, {
     //         roles_data: designationdata,
     //         name: " ",
@@ -168,18 +150,14 @@ const SuperAdminId = () => {
     //                 autoDismiss: true,
     //             })
     //         })
-
     // }
 
-
     const ShowPasswordButton = (e, sheet2) => {
-
         if (sheet2 === "sheet_2") {
-            setSheetData_1_open(false)
-            setSheetData_2_open(true)
-            setSheetData_3_open(false)
-            setSheetData_4_open(false)
-            console.log("sheet 2")
+            setSheetData_1_open(false);
+            setSheetData_2_open(true);
+            setSheetData_3_open(false);
+            setSheetData_4_open(false);
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
@@ -187,21 +165,17 @@ const SuperAdminId = () => {
                         const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_2}?key=${hrmsdata}`,)
                         setSheetData_2(data1?.data?.values)
                     } catch (error) {
-                        console.log(error)
+                        console.log(error);
                     }
                 }
                 feach();
             }
-
         }
-
         else if (sheet2 === "sheet_3") {
-
-            setSheetData_1_open(false)
-            setSheetData_2_open(false)
-            setSheetData_3_open(true)
-            setSheetData_4_open(false)
-
+            setSheetData_1_open(false);
+            setSheetData_2_open(false);
+            setSheetData_3_open(true);
+            setSheetData_4_open(false);
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
@@ -209,19 +183,17 @@ const SuperAdminId = () => {
                         const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_3}?key=${hrmsdata}`,)
                         setSheetData_3(data1?.data?.values)
                     } catch (error) {
-                        console.log(error)
+                        console.log(error);
                     }
                 }
                 feach();
             }
         }
         else if (sheet2 === "sheet_4") {
-
-            setSheetData_1_open(false)
-            setSheetData_2_open(false)
-            setSheetData_3_open(false)
-            setSheetData_4_open(true)
-
+            setSheetData_1_open(false);
+            setSheetData_2_open(false);
+            setSheetData_3_open(false);
+            setSheetData_4_open(true);
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
@@ -236,10 +208,10 @@ const SuperAdminId = () => {
             }
         }
         else {
-            setSheetData_1_open(true)
-            setSheetData_2_open(false)
-            setSheetData_3_open(false)
-            setSheetData_4_open(false)
+            setSheetData_1_open(true);
+            setSheetData_2_open(false);
+            setSheetData_3_open(false);
+            setSheetData_4_open(false);
             if (showeye) {
                 setshowpassword("input")
                 const feach = async () => {
@@ -261,22 +233,18 @@ const SuperAdminId = () => {
                 feach();
             }
         }
-        setShowEye(o => !o)
-        setOpen(o => !o)
+        setShowEye(o => !o);
+        setOpen(o => !o);
 
     }
     const CancelButton = (e) => {
-        setOpen(o => !o)
-        setShowEye(o => !o)
+        setOpen(o => !o);
+        setShowEye(o => !o);
     }
-
-    const Forget = () => {
-    }
-
 
     return (
         <>
-            <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%]"  >
+            <div className="flex flex-col  justify-center overflow-hidden w-[100%]  h-[100%]">
                 <div className="flex flex-row  place-items-start">
                     <img
                         src="/logo1.svg"
@@ -286,15 +254,12 @@ const SuperAdminId = () => {
                 </div>
                 <div className="max-w-[1099px] max-h-[632.01px]  bg-[#FFFFFF] justify-center  ml-[171px] mr-[170px] mt-[19px] mb-[110.99px] pb-[20px] rounded-[31.529px]">
                     <div className="flex flex-row items-center ">
-
                         <div className=" font-secondaryFont ml-[27.92px] mt-[31.51px] text-[#000000]  font-medium not-italic text-[28.09px] tracking-[-0.02em]">
                             Super Admin
                         </div>
                     </div>
                     <div className="pl-[120px] pr-[96px] pt-[33.49px]">
-                        <form
-
-                        >
+                        <form>
                             <div className="flex flex-row space-x-40 pb-[36px]">
                                 <div className="relative w-[350px]">
                                     <input
@@ -313,8 +278,7 @@ const SuperAdminId = () => {
                                         Company Name
 
                                     </label>
-                                    {name ? <>
-                                    </>
+                                    {name ? <> </>
                                         : <div className="text-[red] text-[13px]">
                                             {nameErr}
                                         </div>}
@@ -334,10 +298,8 @@ const SuperAdminId = () => {
                                         className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Location
-
                                     </label>
-                                    {location ? <>
-                                    </>
+                                    {location ? <></>
                                         : <div className="text-[red] text-[13px]">
                                             {locationErr}
                                         </div>}
@@ -359,11 +321,9 @@ const SuperAdminId = () => {
                                         className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Address
-
                                     </label>
                                     {address ?
-                                        <>
-                                        </>
+                                        <> </>
                                         : <div className="text-[red] text-[13px]">
                                             {addressErr}
                                         </div>}
@@ -383,18 +343,10 @@ const SuperAdminId = () => {
                                         className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         HRMS (API)
-
-
                                     </label>
-
-                                    <div>
-
-                                    </div>
                                 </div>
-
                             </div>
                             <div className="flex flex-row space-x-40 pb-[36px]">
-
                                 <div className=" relative w-[350px]">
                                     <input
                                         id="spread_sheet"
@@ -410,12 +362,8 @@ const SuperAdminId = () => {
                                         className=" after:content-['*'] after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Spreadsheet URL
-
-
                                     </label>
-
                                 </div>
-
                                 <div className="relative w-[350px]">
                                     <div className="flex">
                                         <input
@@ -448,11 +396,8 @@ const SuperAdminId = () => {
                                                 )}
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
-
                             <div className="flex flex-row space-x-40 pb-[36px]">
                                 <div className="relative w-[350px]">
                                     <div className="flex">
@@ -465,7 +410,6 @@ const SuperAdminId = () => {
                                             className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                                             placeholder="Spreadsheet ID 2"
                                         />
-
                                         <div>
                                             {showeye ? (<div onClick={(e) => ShowPasswordButton(e, "sheet_2")}
                                                 className="cursor-pointer">
@@ -485,7 +429,6 @@ const SuperAdminId = () => {
                                                 )}
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className=" relative w-[350px]">
                                     <div className="flex">
@@ -523,7 +466,6 @@ const SuperAdminId = () => {
                             <div className="flex flex-row space-x-40 ">
                                 <div className="relative w-[350px]">
                                     <div className="flex">
-
                                         <input
                                             id="spread_sheet_id_4"
                                             name="spread_sheet_id_4"
@@ -538,7 +480,6 @@ const SuperAdminId = () => {
                                                 className="cursor-pointer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
-
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                                                 </svg>
                                             </div>)
@@ -552,7 +493,6 @@ const SuperAdminId = () => {
                                                 )}
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className=" relative w-[350px]">
                                     <input
@@ -569,12 +509,9 @@ const SuperAdminId = () => {
                                         className="   after:ml-0.5 after:text-red-500 absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Spreadsheet ID 5
-
                                     </label>
-
                                 </div>
                             </div>
-
                             <div className="flex flex-row justify-end shadow-[buttonshadow]  content-center pb-[38px] mt-[53px] mr-[-60px]">
                                 <div className="mr-[45px] shadow-[buttonshadow] ">
                                     <button onClick={() => Login()} className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">
@@ -601,7 +538,6 @@ const SuperAdminId = () => {
             >
                 <div className="p-7 ">
                     <div className="flex pb-3">
-
                         <div style={{ marginLeft: "95%" }}>
                             <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
                                 <b>X</b>
@@ -615,7 +551,7 @@ const SuperAdminId = () => {
                             {sheetdata_3_open ? sheetdata_3?.map((item, i) => {
                                 if (i <= 0) {
                                     return (
-                                        <tr className="max-h-[52.84px] text-center  ">
+                                        <tr className="max-h-[52.84px] text-center">
                                             <th className="w-[11%] py-[13px]">{item[0]}</th>
                                             <th className="w-[20%] py-[13px]">{item[1]}</th>
                                             <th className="w-[30%] py-[13px] px-5">{item[8]}</th>
@@ -625,12 +561,11 @@ const SuperAdminId = () => {
                                 }
                                 else {
                                     return (
-                                        <tbody className=" mb-[10px]   ">
-                                            <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans  ">
+                                        <tbody className=" mb-[10px]">
+                                            <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans">
                                                 <td className=" pt-[15px] w-[11%] pb-[14.83px]">{item[0]} </td>
                                                 <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[1]}</td>
                                                 <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[8]}</td>
-
                                             </tr>
                                             <tr>
                                                 <td className="p-[10px]"></td>
@@ -640,10 +575,8 @@ const SuperAdminId = () => {
                                 }
                             })
                                 :
-                                <>
-                                </>
+                                <></>
                             }
-
                             <>
                                 {sheetdata_2_open ? sheetdata_2?.map((item, i) => {
                                     if (i <= 0) {
@@ -652,7 +585,6 @@ const SuperAdminId = () => {
                                                 <th className="w-[11%] py-[13px]">{item[0]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[4]}</th>
                                                 <th className="w-[30%] py-[13px] px-5">{item[10]}</th>
-
                                             </tr>
                                         )
                                     }
@@ -663,7 +595,6 @@ const SuperAdminId = () => {
                                                     <td className=" pt-[15px] w-[11%] pb-[14.83px]">{item[0]} </td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[10]}</td>
-
                                                 </tr>
                                                 <tr>
                                                     <td className="p-[10px]"></td>
@@ -673,37 +604,33 @@ const SuperAdminId = () => {
                                     }
                                 })
                                     :
-                                    <>
-                                    </>
+                                    <> </>
                                 }
                             </>
-
                             <>
                                 {sheetdata_1_open ? sheetdata?.map((item, i) => {
                                     if (i <= 0) {
                                         return (
-                                            <tr className="max-h-[52.84px] text-center  ">
+                                            <tr className="max-h-[52.84px] text-center">
                                                 <th className="w-[15%] py-[13px]">{item[0]}</th>
                                                 <th className="w-[15%] py-[13px]">{item[1]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[2]}</th>
                                                 <th className="w-[30%] py-[13px]">{item[3]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[4]}</th>
                                                 <th className="w-[30%] py-[13px] px-5">{item[11]}</th>
-
                                             </tr>
                                         )
                                     }
                                     else {
                                         return (
-                                            <tbody className=" mb-[10px]   ">
-                                                <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans  ">
+                                            <tbody className=" mb-[10px]">
+                                                <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans">
                                                     <td className=" pt-[15px] w-[15%] pb-[14.83px]">{item[0]} </td>
                                                     <td className="pt-[15px] w-[15%] pb-[14.83px]">{item[1]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[2]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[3]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[4]}</td>
                                                     <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[11]}</td>
-
                                                 </tr>
                                                 <tr>
                                                     <td className="p-[10px]"></td>
@@ -713,17 +640,14 @@ const SuperAdminId = () => {
                                     }
                                 })
                                     :
-                                    <>
-
-                                    </>
+                                    <> </>
                                 }
                             </>
-
                             <>
                                 {sheetdata_4_open ? sheetdata_4?.map((item, i) => {
                                     if (i <= 0) {
                                         return (
-                                            <tr className="max-h-[52.84px] text-center  ">
+                                            <tr className="max-h-[52.84px] text-center">
                                                 <th className="w-[15%] py-[13px]">{item[0]}</th>
                                                 <th className="w-[15%] py-[13px]">{item[1]}</th>
                                                 <th className="w-[20%] py-[13px]">{item[7]}</th>
@@ -732,12 +656,11 @@ const SuperAdminId = () => {
                                     }
                                     else {
                                         return (
-                                            <tbody className=" mb-[10px]   ">
-                                                <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans  ">
+                                            <tbody className=" mb-[10px]">
+                                                <tr className="bg-[#e4eeec]  text-[#8F9BBA] text-[12px] font-sans">
                                                     <td className=" pt-[15px] w-[15%] pb-[14.83px]">{item[0]} </td>
                                                     <td className="pt-[15px] w-[15%] pb-[14.83px]">{item[1]}</td>
                                                     <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[7]}</td>
-
                                                 </tr>
                                                 <tr>
                                                     <td className="p-[10px]"></td>
@@ -747,17 +670,12 @@ const SuperAdminId = () => {
                                     }
                                 })
                                     :
-                                    <>
-                                    </>
+                                    <> </>
                                 }
                             </>
-
                         </table>
-
                     </div>
-
                 </div>
-
             </Popup>
         </>
     );

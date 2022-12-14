@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useFormik } from "formik";
 import SideBar from "../../layout/SideBar";
 import Header from "../../layout/Header";
 import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
-
 const EditClientProfile = () => {
 
-  // const history = useHistory();
   const [title, setTitle] = useState(null); // the lifted state
-  const [fileName, setFileName] = useState();
   let urlTitle = useLocation();
   let navigate = useNavigate();
   const { addToast } = useToasts();
   const [editdata, setEditData] = useState(null)
-  const [truedata, setTrueData] = useState(false)
   const [loginId,setLoginId] = useState();
   const [clintnamedata, setClintName] = useState("")
   const [location, setLocation] = useState("")
@@ -30,7 +24,6 @@ const EditClientProfile = () => {
   const [organizationId,setOrganizationId] = useState("")
 
   let useperma = useParams()
-
  
   useEffect(() => {
     const uid = reactLocalStorage.get("user_id", false);
@@ -43,7 +36,6 @@ const EditClientProfile = () => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -71,8 +63,6 @@ const EditClientProfile = () => {
 
   }, [urlTitle.pathname]);
 
-
-
   const SaveButton = (e) => {
 
     e.preventDefault()
@@ -80,22 +70,22 @@ const EditClientProfile = () => {
     const token = reactLocalStorage.get("access_token", false);
 
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/client/${useperma.id}/`, {
-      address: addnewfield,
-      category: " ",
-      client_id: client_id,
-      client_name: clintnamedata,
-      contact_no: contactno,
-      createdAt: " ",
-      discription: discription,
-      location: location,
-      organization_id: organizationId,
-      updatedAt: " ",
-      upload_logo_file: uploadlogofile
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+        address: addnewfield,
+        category: " ",
+        client_id: client_id,
+        client_name: clintnamedata,
+        contact_no: contactno,
+        createdAt: " ",
+        discription: discription,
+        location: location,
+        organization_id: organizationId,
+        updatedAt: " ",
+        upload_logo_file: uploadlogofile
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
           addToast("Profile is Edit Sucessfully", {
@@ -103,33 +93,16 @@ const EditClientProfile = () => {
             autoDismiss: true,
           })
           navigate("/master/clients/")
-          // history.push("/master/edit_client");
         }
-        // else {
-
-        //   addToast("login fail", {
-        //     appearance: "error",
-        //     autoDismiss: true,
-        //   })
-        // }
       })
       .catch((error) => {
-        console.log(error)
         addToast(error.response.data.message, {
           appearance: "error",
           autoDismiss: true,
         })
-        // navigate('/');
-
       });
 
   }
-
-  if (truedata) {
-    console.log("done deta")
-  }
-
-  console.log(truedata)
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -171,7 +144,6 @@ const EditClientProfile = () => {
                     <option>Demo Name</option>
                   </select> */}
                   <input
-
                     type="text"
                     value={clintnamedata}
                     onChange={(e) => setClintName(e.target.value)}
@@ -184,11 +156,9 @@ const EditClientProfile = () => {
                   >
                     Client Name
                   </label>
-
                 </div>
                 <div className="relative w-[350px] ">
                   <input
-
                     type="text"
                     value={client_id}
                     onChange={(e) => setClient_Id(e.target.value)}
@@ -206,7 +176,6 @@ const EditClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -256,11 +225,9 @@ const EditClientProfile = () => {
               <div className="flex flex-row space-x-20 pb-[16px]">
                 <div className="relative w-[350px]">
                   <input
-
                     type="text"
                     value={addnewfield}
                     onChange={(e) => setAddNewField(e.target.value)}
-
                     className="peer h-10 w-full border-b font-medium font-secondaryFont border-[#000000] text-[#000000] placeholder-transparent focus:outline-none focus:border-[#000000]"
                     placeholder="john@doe.com"
                   />
@@ -278,7 +245,6 @@ const EditClientProfile = () => {
                 </div>
                 <div className=" relative w-[350px]">
                   <input
-
                     type="text"
                     value={contactno}
                     onChange={(e) => setContactNo(e.target.value)}
@@ -301,7 +267,6 @@ const EditClientProfile = () => {
               <div className="flex flex-col ">
                 <div className="relative max-w-[860px]">
                   <input
-
                     type="text"
                     value={discription}
                     onChange={(e) => setDiscription(e.target.value)}

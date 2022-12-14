@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Popup from "reactjs-popup";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
 import "reactjs-popup/dist/index.css";
 import { useFormik } from "formik";
 import axios from "axios";
-import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived,CumilativeQuntity,ExceCuteDate } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived,CumilativeQuntity,ExceCuteDate } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -45,9 +43,7 @@ const validate = (values) => {
     return errors;
 };
 
-
 const NewJobCardMultiId = () => {
-
     const [title, setTitle] = useState(null); // the lifted state 
     const [assignCardData, setAssignCardData] = useState(null); // the lifted state
     const [currentdate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
@@ -67,14 +63,10 @@ const NewJobCardMultiId = () => {
     let naviagte = useNavigate();
     let useperma = useParams()
 
-
-
     useEffect(() => {
-
         if (urlTitle.pathname === "/job_cards/new_job_card_multi") {
             setTitle("Job Cards");
         }
-
         const roleData = reactLocalStorage.get("roles", false);
         setRoleDataLocal(roleData)
     }, [urlTitle.pathname])
@@ -89,7 +81,6 @@ const NewJobCardMultiId = () => {
                         let quntity = Number(item.updated_quantity_to_be_achieved)
                         QuantityToBeAchived.set(quntity);
                     }
-                   
                 }
             })
         }
@@ -108,7 +99,6 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log('mainget',data?.data)
                 setAssignCardData(data?.data)
                 JobCardEmplyeData.set(false)
                 JobCardEquipmentData.set(false)
@@ -117,11 +107,9 @@ const NewJobCardMultiId = () => {
                 console.log(error)
             }
         }
-
         feach();
     }, [
         currentquantitytoachivedData,
-        // jobCardEmplyeData
     ]);
 
 
@@ -135,24 +123,16 @@ const NewJobCardMultiId = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
-
                 if (data.status === 200) {
                     MyjobCardAfterPtachApi.set(true)
                 }
-                console.log(data?.data)
-
                 setAssignCardData(data?.data)
-
             } catch (error) {
                 console.log(error)
             }
         }
-
         feach();
     }, [myjobCardAfterPtachApi, myjobCardAfterPtachApiData]);
-
-
 
     const formik = useFormik({
         initialValues: {
@@ -167,24 +147,21 @@ const NewJobCardMultiId = () => {
         },
         validate,
         onSubmit: async (values, { resetForm }) => {
-            // console.log(`Form data`, values);
+            
         },
     });
 
     const IssueJc = () => {
-
-
         const token = reactLocalStorage.get("access_token", false);
-        axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card`,
-            {
-                "jc_number": assignCardData?._id,
-                "current_quantity_to_be_achieved": currentquantitytoachivedData
-            }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-
+            axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card`,
+                {
+                    "jc_number": assignCardData?._id,
+                    "current_quantity_to_be_achieved": currentquantitytoachivedData
+                }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
             .then((response) => {
                 if (response.status === 201) {
                     // addToast("your job card is assign Sucessfully", {
@@ -199,12 +176,7 @@ const NewJobCardMultiId = () => {
                 //     autoDismiss: true,
                 // })
             });
-
-
-
     }
-
-
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
@@ -231,10 +203,8 @@ const NewJobCardMultiId = () => {
                     </div>
                     <div className="pl-[140px] pr-[96px] pt-[33.49px]">
                         <form onSubmit={formik.handleSubmit}>
-
                             <div className="flex flex-row space-x-20 pb-[30px]">
                                 <div className=" relative w-[350px]">
-
                                     <input
                                         id="jcCreation"
                                         name="jcCreation"
@@ -271,8 +241,6 @@ const NewJobCardMultiId = () => {
                                             Zone
 
                                         </label>
-
-
                                     </div>
                                     <div className="relative w-[165px] border-b  ">
                                         <input
@@ -291,14 +259,11 @@ const NewJobCardMultiId = () => {
                                             Sub zones
 
                                         </label>
-
                                     </div>
                                 </div>
-
                             </div>
                             <div className="flex flex-row space-x-20 pb-[30px]">
                                 <div className=" relative w-[350px]">
-
                                     <input
                                         id="jcCreation"
                                         name="jcCreation"
@@ -313,10 +278,8 @@ const NewJobCardMultiId = () => {
                                         className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                     >
                                         Activity  Name
-
                                     </label>
                                 </div>
-
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
                                     <div className="w-[165px]">
                                         <input
@@ -335,7 +298,6 @@ const NewJobCardMultiId = () => {
                                             Date
 
                                         </label>
-
                                     </div>
                                     <div className="relative w-[165px] border-b  ">
                                         <input
@@ -352,22 +314,16 @@ const NewJobCardMultiId = () => {
                                             className="  absolute left-0 -top-3.5 font-medium font-secondaryFont text-[#000000] text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[#000000] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[#000000] peer-focus:text-sm"
                                         >
                                             Executed Date
-
                                         </label>
-
                                     </div>
                                 </div>
-
                             </div>
-
-
                             {/* { roleDataLocal === "albannaadmin" && <div className="flex flex-row relative justify-between space-x-2  w-[350px]"> 
                                 <div className="flex text-[14px]  border-b border-[#000000] text-gray-900 w-[400px] mb-5">
                                     <div className=" ">  Quantity to be achieved
                                         [ {assignCardData?.quantity_to_be_achieved}  ]
                                         :
                                     </div>
-
                                     <div className="relative">
                                         <input type='number' placeholder="Qty achieved"
                                             className="border-none pl-2  w-[100px]  gang_product_input"
@@ -375,13 +331,11 @@ const NewJobCardMultiId = () => {
                                             onChange={(e) =>
                                                 QuantityToBeAchived.set(e.target.value)
                                             }
-
                                         /> 
                                         <span className="absolute right-0 top-0">
                                             {assignCardData?.unit}
                                         </span>
                                     </div>
-
                                 </div>  
                             </div>} */}
                             <div className="flex flex-row space-x-20 pb-[30px]">
@@ -391,7 +345,6 @@ const NewJobCardMultiId = () => {
                                             [ {assignCardData?.quantity_to_be_achieved}  ]
                                             :
                                         </div>
-
                                         <div className="relative">
                                             <input type='number' placeholder="Qty achieved"
                                                 className="border-none pl-2  w-[100px]  gang_product_input quntity_input"
@@ -413,13 +366,11 @@ const NewJobCardMultiId = () => {
                                                     QuantityToBeAchived.set(e.target.value);
                                                 }
                                                 }
-
                                             />
                                             <span className="absolute right-0 top-0">
                                                 [ {assignCardData?.unit} ]
                                             </span>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div className="flex flex-row relative justify-between space-x-2  w-[350px]">
@@ -428,7 +379,6 @@ const NewJobCardMultiId = () => {
                                             [ {cumilativeQuntity}  ]  
                                             
                                         </div>
-
                                         <div className="relative">
                                         [ {assignCardData?.unit} ]
                                             {/* <input type='number' placeholder="Cumilative Qty achieved"
@@ -437,17 +387,14 @@ const NewJobCardMultiId = () => {
                                                 onChange={(e) =>
                                                     QuantityToBeAchived.set(e.target.value)
                                                 }
-
                                             /> */}
                                             {/* <span className="absolute right-0 top-0">
                                                 [ {assignCardData?.unit} ]
                                             </span> */}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
                             <div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     {assignCardData && (
@@ -458,7 +405,6 @@ const NewJobCardMultiId = () => {
                                             currentdate={currentdate}
                                             assigncarddataA={assignCardData}
                                         />
-
                                     )}
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
@@ -470,7 +416,6 @@ const NewJobCardMultiId = () => {
                                             assigncarddataA={assignCardData}
                                         />
                                     )}
-
                                 </div>
                                 <div className="mb-6" style={{ boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                     {assignCardData && (
@@ -483,11 +428,8 @@ const NewJobCardMultiId = () => {
                                     )}
                                 </div>
                             </div>
-
-
                             {/* <div className="flex flex-row space-x-20 pb-[30px]">
                                 <div className=" relative w-[350px]">
-
                                     <input
                                         id="jcCreation"
                                         name="jcCreation"
@@ -511,12 +453,8 @@ const NewJobCardMultiId = () => {
                                            </div>
                                          )
                                     }
-
-
                                 </div>
-
                                 <div className=" relative w-[350px]">
-
                                     <input
                                         id="jcCreation"
                                         name="jcCreation"
@@ -540,10 +478,7 @@ const NewJobCardMultiId = () => {
                                             </div>
                                           )
                                     }
-
-
                                 </div>
-
                             </div>  
                             <div className="flex flex-col mb-10 ">
                                 <div className="relative max-w-[860px]">
@@ -653,8 +588,6 @@ const NewJobCardMultiId = () => {
                                     }
                                 </div>
                             </div> */}
-
-
 
                             <div className="flex flex-row justify-between shadow-[buttonshadow]   mt-[42px]">
 

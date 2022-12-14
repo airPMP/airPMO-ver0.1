@@ -1,33 +1,28 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { useLocation, useNavigate, Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import Card from "../components/layout/Card";
-import JobCardSearch from "../components/JobCards/JobCardSearch";
 import axios from "axios";
-import Popup from "reactjs-popup";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { useToasts } from "react-toast-notifications";
 import { SearchClientSet, ProductiveSheetId, ProductivitySheetData, ProjectObjectData, ClientDataFreze } from '../SimplerR/auth'
-import { getAllJobCardApi, getClientApi, getMyJobCardApi } from '../AllApi/Api'
+import { getClientApi } from '../AllApi/Api'
 import ProductSearch from "../components/Injestion/ProductSearch";
+
 const JobCards = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
-
   const [clientdata, setClientData] = useState(null);
   const [openSearchData, setopenSearchData] = useState(false);
   const [openSearchData1, setopenSearchData1] = useState(null);
   const [searchdata, setSearchData] = useState(null);
   const clientdatareze = ClientDataFreze.use()
-  const [clientsearchdata, setClientSearchData] = useState(clientdatareze);
   const [projectsearchdata, setProjectSearchData] = useState(null);
   const [chooseprojectopncls, setChooseprojectOpnCls] = useState(false)
   const [sheetupdateddata, setSheetUpdatedData] = useState(false)
-  const [productivesheetdata, setProductiveSheetData] = useState(null)
   const searchclientset = SearchClientSet.use()
   const productivesheetid = ProductiveSheetId.use()
-
   const productivitysheetdata = ProductivitySheetData.use()
   const projectobjectdata = ProjectObjectData.use()
   const [alljobcardapi, setAllJobCardApi] = useState(null)
@@ -37,9 +32,6 @@ const JobCards = () => {
 
   const { addToast } = useToasts();
 
-  let navigate = useNavigate();
-  let useperma = useParams()
-
   let urlTitle = useLocation();
   useEffect(() => {
     if (urlTitle.pathname === "/daily_task") {
@@ -47,107 +39,72 @@ const JobCards = () => {
     }
   }, [urlTitle.pathname]);
 
-
   useEffect(() => {
-
     const token = reactLocalStorage.get("access_token", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-      .then((response) => {
-        // console.log(response?.data)
-        setAllJobCardApi(response?.data.length)
-
-        if (response.status === 201) {
-
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-
-      })
-
-
-
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-      .then((response) => {
-        console.log(response?.data)
-        let assingnLength = response?.data?.filter((items, id) => {
-          if (items.assign_to !== "") {
-            // console.log(items)
-            return items
+    if(projectobjectdata?._id){
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setAllJobCardApi(response?.data.length)
+          if (response.status === 201) {
           }
-
+        })
+        .catch((error) => {
+          console.log(error)
         })
 
-        // console.log(assingnLength.length)
-
-        setAllAssignJobCardApi(assingnLength.length)
-
-        if (response.status === 201) {
-
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-
-      })
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${projectobjectdata?._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        .then((response) => {
+          let assingnLength = response?.data?.filter((items, id) => {
+            if (items.assign_to !== "") {
+              return items
+            }
+          })
+          setAllAssignJobCardApi(assingnLength.length)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
 
     const user_id = reactLocalStorage.get("user_id", false);
-    axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${projectobjectdata?._id} `, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-      .then((response) => {
-        // console.log(response?.data)
-        setMyJobCardApi(response?.data.length)
-
-        if (response.status === 201) {
-
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-
-      })
-
-
+    if(projectobjectdata?._id){
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${projectobjectdata?._id} `, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setMyJobCardApi(response?.data.length)
+          if (response.status === 201) {
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
 
     // const userData = getAllJobCardApi().then((data) => {
     //   setAllJobCardApi(data?.data.length)
-    //   console.log(data?.data)
-
-
     // })
-
     //     const userData1 = getMyJobCardApi().then((data) => {
     //       setMyJobCardApi(data?.data?.length)
     //     })
-    // console.log(projectobjectdata)
 
   }, [projectobjectdata?._id])
 
   useEffect(() => {
-
     const userData = getClientApi().then((data) => {
       setClientData(data?.data) //get client data c-1 -1a
     })
-
-    if (reloadtrue) {
-      // window.location.reload(false)
-      setReloadTrue(false)
-    }
-
+    if (reloadtrue) { setReloadTrue(false) }
   }, [])
 
   useEffect(() => {
@@ -157,9 +114,7 @@ const JobCards = () => {
   }, [productivesheetid])
 
   useEffect(() => {
-
     setopenSearchData(false)
-
   }, [clientdatareze])
 
   const clientidname = (e, Objdata) => {
@@ -173,23 +128,12 @@ const JobCards = () => {
       }
     })
       .then((response) => {
-        console.log(response?.data)
         setProjectSearchData(response?.data)
-
         if (response?.data.length === 0) {
           setSheetUpdatedData(false)
-        }
-        else {
+        } else {
           setSheetUpdatedData(true)
         }
-        // if (response.status === 200) {
-        //     addToast("Project is Added Sucessfully", {
-        //         appearance: "success",
-        //         autoDismiss: true,
-        //     })
-
-        // }
-
       })
       .catch((error) => {
         console.log(error)
@@ -212,34 +156,27 @@ const JobCards = () => {
     }
   }, [openSearchData1])
 
-
-
   const handleChangeForClientData = (e) => {
     setChooseprojectOpnCls(true)
     let value = e.target.value.toUpperCase();
     let result = []
     result = clientdata?.filter((data) => {  //get client data c-2 -3a
-      console.log(data)
       if (isNaN(+value)) {
         return data?.client_name.toUpperCase().search(value) !== -1;
       }
     });
-
     setSearchData(result) // set Search client data c-1 -4a
     setopenSearchData1(e.target.value)
   }
 
-
   const SheetTableData = () => {
-
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/upload_productive_file/${productivesheetid}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
       .then((response) => {
-        console.log(response?.data?.productivitysheet)
         ProductivitySheetData.set(response?.data?.productivitysheet)
       })
       .catch((error) => {
@@ -248,12 +185,8 @@ const JobCards = () => {
           appearance: "error",
           autoDismiss: true,
         })
-
       })
   }
-
-
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -266,7 +199,6 @@ const JobCards = () => {
         <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
           <div className="mr-[70px]"   >
             <div>
-
               <div className=" basic-1/4 flex flex-row px-[20px] 
                                 bg-[#FFFFFF] rounded-[0.625rem] ">
                 <div className="pt-[18px]">
@@ -302,10 +234,8 @@ const JobCards = () => {
               <div className="float-right -mt-[10px] text-[#4D627A] text-[15px]   cursor-pointer font-serif"
                 style={{ width: "90%", backgroundColor: "white", boxShadow: " 0px 82px 54px rgba(57, 78, 119, 0.07), 0px 37.9111px 24.9658px rgba(57, 78, 119, 0.0519173), 0px 21.6919px 14.2849px rgba(57, 78, 119, 0.0438747), 0px 13.1668px 8.67082px rgba(57, 78, 119, 0.0377964), 0px 7.93358px 5.22455px rgba(57, 78, 119, 0.0322036), 0px 4.41793px 2.90937px rgba(57, 78, 119, 0.0261253), 0px 1.90012px 1.2513px rgba(57, 78, 119, 0.06)" }}>
                 {openSearchData && <ul className="searchList productiveSeacrhch"  >
-
                   {
                     searchdata?.map((item, id) => { // get Search client data c-2 -5a
-
                       return <li onClick={(e) => clientidname(e, item)}>
                         {
                           item.client_name
@@ -313,12 +243,10 @@ const JobCards = () => {
                       </li> //-6a
                     })
                   }
-
                 </ul>}
               </div>
             </div>
           </div>
-
           {/* <div className="mr-[70px]">
             <JobCardSearch
               placeHolderName={"Choose Client"} 
@@ -326,7 +254,6 @@ const JobCards = () => {
           </div> */}
           <div>
             <ProductSearch
-
               placeHolderName={"Choose Project"}
               valueData={projectsearchdata}
               // sheetData={productivesheetdata}
@@ -334,8 +261,6 @@ const JobCards = () => {
             />
             {/* <JobCardSearch
               placeHolderName={"Choose Project"}
-
-           
             /> */}
           </div>
         </div>
@@ -345,7 +270,6 @@ const JobCards = () => {
             <Card
               title={"Activities"}
               totalNumber={alljobcardapi}
-
               iconn={
                 <svg
                   width="58"

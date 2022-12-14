@@ -1,46 +1,34 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link ,useNavigate} from "react-router-dom";
 import Header from "../components/layout/Header";
 import SideBar from "../components/layout/SideBar";
 import SignUpTemplate from "../components/layout/SignUpTemplate";
 import InjestionCardOnline from "../components/Injestion/InjestionCardOnline";
 import InjestionCardOffine from "../components/Injestion/InjestionCardOffine";
-import ProductSearch from "../components/Injestion/ProductSearch";
 import SearchInjustion from "../components/Injestion/SearchInjustion";
 
 const DataInjestion = () => {
+
   const [title, setTitle] = useState(null);
   const [page, setPage] = useState(null);
-
   let navigate = useNavigate();
-
   let urlTitle = useLocation();
 
   useEffect(() => {
     if (urlTitle.pathnameIngesion === "/DataInjestion") {
       setTitle("Data Ingestion");
-      // window.location.reload(false)
     }
-    // window.location.reload(false)
-
   }, [urlTitle.pathname]);
 
-   
   const sendPage = (pagename) => {
     setPage(pagename);
   };
 
-  const ProductSheetPath =()=>{ 
+  const ProductSheetPath = () => { 
     navigate('/DataInjestion/ProductivitySheet')
-    window.location.reload(false)
+    window.location.reload(false);
   }
 
-  
-
-
-
-
-  console.log("DashBoard", urlTitle.pathname);
   return (
     <>
       <div className="flex flex-row justify-start overflow-hidden">
@@ -53,37 +41,32 @@ const DataInjestion = () => {
             <SignUpTemplate />
           ) : (
             <>
-              <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]  ">
+              <div className="flex flex-row justify-start space-x-10 mt-[63px] px-[30px]">
                 <div className="mr-[70px]">
                   <SearchInjustion
                     placeHolderName={"Choose Client"}
-
                   // value={client}
                   />
                 </div>
                 <div>
                   <SearchInjustion
                     placeHolderName={"Choose Project"}
-
                   // value={client}
                   />
                 </div>
               </div>
               <div className="w-10/12">
-                <div className="grid grid-cols-2 gap-6 mt-[62px]  px-[20px]   ">
+                <div className="grid grid-cols-2 gap-6 mt-[62px] px-[20px]">
                   <Link to={`/DataInjestion/ProductivitySheet`}>
-
-                    <span onClick={(e)=>  ProductSheetPath()}>
+                    <span onClick={(e) =>  ProductSheetPath()}>
                     <InjestionCardOnline
                       title={"Productivity Sheet"}
                       // totalNumber={400}
-                      
                       pathSet={"UserRole1"}
                       iconn={
                         <svg
                           width="54.64px"
-                          height="
-                                                36.84px"
+                          height="36.84px"
                           viewBox="0 0 58 58"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -103,8 +86,7 @@ const DataInjestion = () => {
                       // totalNumber={800}
                       iconn={
                         <svg
-                          width="
-                                            40px"
+                          width="40px"
                           height="32.79px"
                           viewBox="0 0 51 34"
                           fill="none"
@@ -118,7 +100,6 @@ const DataInjestion = () => {
                       }
                     />
                   </Link>
-
                 </div>
               </div>
             </>

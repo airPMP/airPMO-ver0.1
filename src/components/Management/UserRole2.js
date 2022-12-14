@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-
 import { reactLocalStorage } from "reactjs-localstorage";
 import axios from "axios";
 import Popup from "reactjs-popup";
@@ -15,19 +14,13 @@ const UserRole1 = () => {
     const [userSearchdata, setSearchUserData] = useState(null);
     const [deleteid, setDeleteId] = useState(null);
     const [rolesdata, setRolesData] = useState([]);
-  
-
     const [employeeid, setEmployeeId] = useState(null);
     const [employeedesignation, setEmployeeDesignation] = useState(null);
     const [emailid, setEmailId] = useState(null);
     const [editopen, setEditOpen] = useState(false);
-
-
     const [open, setOpen] = useState(false);
-
     let navigate = useNavigate();
     let urlTitle = useLocation();
-
 
     useEffect(() => {
 
@@ -44,30 +37,23 @@ const UserRole1 = () => {
             })
         }else{
             const user = getUserByOrgId(org_id).then((data) => {
-                setUserData(data?.data)
-                setSearchUserData(data?.data)
+                setUserData(data?.data);
+                setSearchUserData(data?.data);
             })
         }
-
-        // const userData = getUserApi().then((data) => {
-        //     setUserData(data?.data)
-        // })
-
         const rolesData = getRoleApi().then((data) => {
-            setRolesData(data?.data)
+            setRolesData(data?.data);
         })
 
-    }, [urlTitle.pathname])
-
+    }, [urlTitle.pathname]);
 
     const DeleteProfile = (e) => {
-
-        setDeleteId(e)
-        setOpen(o => !o)
+        setDeleteId(e);
+        setOpen(o => !o);
     }
 
     const CancelButton = (e) => {
-        setOpen(o => !o)
+        setOpen(o => !o);
     }
 
     const conformDelete = () => {
@@ -81,10 +67,8 @@ const UserRole1 = () => {
                     },
                 })
                 if (data?.status === 200) {
-
                     window.location.reload(false);
                 }
-                console.log(data)
             } catch (error) {
                 console.log(error)
             }
@@ -94,16 +78,14 @@ const UserRole1 = () => {
     }
 
     const EditProfile = (e, alldata) => {
-        setEmployeeId(alldata?.employee_id) 
-        setEmailId(alldata.hour) 
-        setEmployeeDesignation(alldata.designation)
-         
-
-        setEditOpen(true)
+        setEmployeeId(alldata?.employee_id);
+        setEmailId(alldata.hour) ;
+        setEmployeeDesignation(alldata.designation);
+        setEditOpen(true);
     }
 
     const searchUserData = (val) => {
-        setUserData(userSearchdata.filter((item)=> (item.Email.toLowerCase()).includes(val.toLowerCase())))
+        setUserData(userSearchdata.filter((item)=> (item.Email.toLowerCase()).includes(val.toLowerCase())));
     }
 
     return (
@@ -121,7 +103,7 @@ const UserRole1 = () => {
                 <Header title={title} />
             </div> */}
                     <div className=" flex flex-col max-w-[1099px] rounded-[31.529px] mh-[632.01px] mt-[105.49px] ml-[38px] 
-        bg-[#FFFFFF]    ">
+        bg-[#FFFFFF]">
                         <div className="flex flex-row justify-between">
                             <div className="flex">
                                 <div className=" ml-[26.8px] mt-[31.94px]   h-[88.28px] w-[88.28px] bg-[#F4F7FE] rounded-[50%]">
@@ -142,7 +124,6 @@ const UserRole1 = () => {
                             >
                                 <div className="pt-[4.64px] pl-[16.6px]">
                                     <svg
-
                                         width="11"
                                         height="12"
                                         viewBox="0 0 11 12"
@@ -181,7 +162,6 @@ const UserRole1 = () => {
                         <div className="pl-[143.96px] pr-[53.84px] pt-[28.49px] pb-[20px]" >
                             <table className="table-auto   text-center font-secondaryFont text-[#000000]
                               font-normal not-italic text-[12px " style={{ width: "100%" }}>
-
                                 <tr className="max-h-[52.84px] text-center  ">
                                     <th className="w-[10%] py-[13px]">User ID</th>
                                     <th className="w-[25%] py-[13px]">Designation</th>
@@ -189,12 +169,9 @@ const UserRole1 = () => {
                                     <th className="w-[10%] py-[13px]">Actions</th>
                                 </tr>
 
-
                                 {userdata?.slice(0).map((item, id) => {
-
-
-                                    return <tbody className="  mb-[10px]   " key={id}>
-                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]  "
+                                    return <tbody className="mb-[10px]" key={id}>
+                                        <tr className=" cursor-pointer  bg-[#ECF1F0] text-[#8F9BBA] text-[14.0447px]"
                                         // onClick={() => { navigate("/UserManagement/UserRole1/Details") }}
                                         >
                                             <td className="pt-[15px] pb-[14.83px]">{item?.spread_sheet_user_id} </td>
@@ -202,7 +179,7 @@ const UserRole1 = () => {
                                             <td className="pt-[15px] pb-[14.83px]">{item?.Email}</td>
                                             <td className="pt-[15px] pb-[14.83px]">
                                                 <div className="flex flex-row justify-center  space-x-xl">
-                                                    <div onClick={(e) => EditProfile(e, item)} className="hidden"  >
+                                                    <div onClick={(e) => EditProfile(e, item)} className="hidden">
                                                         <svg
                                                             width="19"
                                                             height="20"
@@ -238,7 +215,6 @@ const UserRole1 = () => {
                                         </tr>
                                     </tbody>
                                 })}
-
                             </table>
                             <div className="flex  float-right ">
                                 <div style={{ boxShadow: "0px 4px rgba(0, 0, 0, 0.25)" }}
@@ -254,7 +230,6 @@ const UserRole1 = () => {
                                                 New User
                                             </Link></span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -269,9 +244,6 @@ const UserRole1 = () => {
             >
                 <div className="p-7">
                     <div className="flex pb-3">
-                        <div>
-
-                        </div>
                         <div style={{ marginLeft: "90%" }}>
                             <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
                                 <b>X</b>
@@ -292,9 +264,7 @@ const UserRole1 = () => {
                         </button>
                     </div>
                 </div>
-
             </Popup>
-
             <div>
             <Popup
                     open={editopen}
@@ -303,7 +273,6 @@ const UserRole1 = () => {
                     className="jobCard_popup"
                 >
                     <div className="p-4 jobCard_popup">
-                        
                         <div className=" grid grid-cols-4 p-4 gap-3">
                             <div className="col-span-2    " style={{ borderBottom: "2px solid  black" }}>
                                 <label className="text-[14px]  text-[#aaa]" >User Id</label>
@@ -323,7 +292,6 @@ const UserRole1 = () => {
                        focus:outline-none focus:border-[#5e5d5d]"
                                     placeholder="Designation"
                                 />
-
                             </div>
                         </div>
                         <div className="p-4">

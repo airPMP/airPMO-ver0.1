@@ -7,10 +7,8 @@ import axios from "axios";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-
 const validate = (values) => {
   const errors = {};
-
   if (!values.client_name) {
     errors.client_name = "Client Name Required";
   }
@@ -20,7 +18,6 @@ const validate = (values) => {
   // if (!values.upload_logo_file) {
   //   errors.upload_logo_file = "upload_logo_file Required";
   // }
-
   if (!values.location) {
     errors.location = "Location Required";
   }
@@ -33,9 +30,9 @@ const validate = (values) => {
   if (!values.discription) {
     errors.discription = "discription Required";
   }
-  // console.log(errors);
   return errors;
 };
+
 const NewClientProfile = () => {
 
   const [title, setTitle] = useState(null); // the lifted state
@@ -57,12 +54,9 @@ const NewClientProfile = () => {
     if (urlTitle.pathname === "/master/clients/new_client") {
       setTitle("Master");
     }
-
     const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganizationIdData(organization_Id)
-
   }, [urlTitle.pathname]);
-
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +69,6 @@ const NewClientProfile = () => {
       contact_no: "",
       client_id: "",
       organization_id: "",
-
     },
     validate,
     onSubmit: (values, { resetForm }) => { 
@@ -87,10 +80,10 @@ const NewClientProfile = () => {
       }
       const token = reactLocalStorage.get("access_token", false);
       axios.post(`${process.env.REACT_APP_BASE_URL}/api/client/`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
         .then((response) => {
           console.log(response)
           if (response.status === 201) {
@@ -98,7 +91,6 @@ const NewClientProfile = () => {
               appearance: "success",
               autoDismiss: true,
             })
-            // navigate('/')
           }
           resetForm()
         })
@@ -110,13 +102,6 @@ const NewClientProfile = () => {
         })
     },
   });
-
-
-  const SaveButton = () => {
-
-
-  }
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -168,7 +153,6 @@ const NewClientProfile = () => {
                   )}
                 </div>
                 <div className="relative w-[350px]">
-
                   <input
                     id="client_id"
                     name="client_id"
@@ -189,8 +173,6 @@ const NewClientProfile = () => {
                       {formik.errors.client_id}{" "}
                     </div>
                   )}
-
-
                 </div>
               </div>
               <div className="flex flex-row space-x-20 pb-[16px]">

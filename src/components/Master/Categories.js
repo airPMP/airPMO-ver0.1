@@ -23,18 +23,12 @@ const Categories = () => {
   const [deleteid, setDeleteId] = useState(null);
   let urlTitle = useLocation();
   let navigate = useNavigate(); 
- 
-
-console.log(allpermissions)
-
 
   useEffect(() => {
-
 
     if (urlTitle.pathname === "/master/categories") {
       setTitle("Master");
     }
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -43,7 +37,6 @@ console.log(allpermissions)
             Authorization: `Bearer ${token}`,
           },
         })
-
         setCategoriesData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {
@@ -52,28 +45,19 @@ console.log(allpermissions)
     }
     feach();
     handleSearch();
-
-
     getPermision()
 
   }, [urlTitle.pathname])
 
-
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
-
   const getPermision = async () => {
-
-
-
     const url_data = await allpermission
-    const database = url_data.split(',')
-    console.log(database)
+    const database = url_data?.split(',')
 
     let value = "EDIT-CATEGORIES".toUpperCase();
     let result = []
@@ -99,35 +83,26 @@ console.log(allpermissions)
       }
     });
 
-
-
-    if (result[0] === "EDIT-CATEGORIES" ||
-      result1[0] === "CREATE-CATEGORIES" ||
-      result2[0] === "GET-CATEGORIES") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
-      console.log("data1")
+    if(result){
+      if ([0] === "EDIT-CATEGORIES" ||
+        result1[0] === "CREATE-CATEGORIES" ||
+        result2[0] === "GET-CATEGORIES") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
-
-
-
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
-
-    }
-
   }
-
-
-
 
   const handleSearch = (e) => {
     let value = e?.target?.value?.toUpperCase();
@@ -137,14 +112,11 @@ console.log(allpermissions)
         return data?.category?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(categoriesdata)
     }
   }
-
 
   const DeleteProfile = (e) => {
     setDeleteId(e)
@@ -152,7 +124,6 @@ console.log(allpermissions)
   }
 
   const conformDelete = () => {
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -162,10 +133,8 @@ console.log(allpermissions)
           },
         })
         if (data?.status === 200) {
-
           window.location.reload(false);
         }
-        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -178,20 +147,17 @@ console.log(allpermissions)
     setOpen(o => !o)
   } 
 
-
   const AddCategory = () => {
     if (createpermission === "CREATE-CATEGORIES" || allpermissions === "ALL") {
       navigate("/master/categories/add_categories")
     }
   }
+
   const EditProfile = (e) => {
     if (editpermission === "EDIT-CATEGORIES" || allpermissions === "ALL") {
       navigate(`/master/edit_categories/${e}`)
     }
-
   }
-
-
 
   return (
 
@@ -201,7 +167,6 @@ console.log(allpermissions)
       </div>
       <div className="flex flex-col">
         <Header title={title} />
-
         <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
           <div className="flex flex-row justify-between">
             <div className="flex space-x-[27.92px] self-center">
@@ -279,7 +244,6 @@ console.log(allpermissions)
             </div>
           </div>
 
-
           <div className="pl-[80px]">
             <table className="table-auto pt-[24px]">
               <thead className="font-secondaryFont   text-[#000000] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]   ">
@@ -296,7 +260,6 @@ console.log(allpermissions)
                     <th className=" w-[15%] py-[13px]">{item.category}</th>
                     <th className="w-[10%] py-[13px]">{item.sub_category}</th>
                     <th className="w-[30%] py-[13px]">{item.discription}</th>
-
                     <th className="w-[5%] py-[13px]">
                       <div className="flex flex-row space-x-xl">
                         <div className={`${editpermission === "EDIT-CATEGORIES" || allpermissions === "ALL" ? "cursor-pointer" : "disabledclass"}`}
@@ -337,6 +300,7 @@ console.log(allpermissions)
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
+
                   <Popup
                     open={open}
                     position="right center"
@@ -345,7 +309,6 @@ console.log(allpermissions)
                     <div className="p-7">
                       <div className="flex pb-3">
                         <div>
-
                         </div>
                         <div style={{ marginLeft: "90%" }}>
                           <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
@@ -366,8 +329,8 @@ console.log(allpermissions)
                         </button>
                       </div>
                     </div>
-
                   </Popup>
+
                 </tbody>
               })}
             </table>

@@ -9,22 +9,18 @@ import axios from "axios";
 const EditAccess = () => {
 
     const [title, setTitle] = useState(null);
-    const [rolesdata, setRolesData] = useState(null)
-    const [permissiondata, setPermissionData] = useState(null)
-    const [clientid, setClientId] = useState('') //don't remove this state its very important  
-
+    const [rolesdata, setRolesData] = useState(null);
+    const [permissiondata, setPermissionData] = useState(null);
+    const [clientid, setClientId] = useState(''); //don't remove this state its very important  
     let navigate = useNavigate();
     let urlTitle = useLocation();
     const { addToast } = useToasts();
-
-
 
     useEffect(() => {
 
         if (urlTitle.pathname === "/UserManagement/EditAccess") {
             setTitle("User Mgmt");
         }
-
         const token = reactLocalStorage.get("access_token", false);
         const feachRolls = async () => {
             try {
@@ -33,7 +29,6 @@ const EditAccess = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                console.log("all----",data?.data);
                 setRolesData(data?.data)
             } catch (error) {
                 console.log(error)
@@ -48,27 +43,18 @@ const EditAccess = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-
                 setPermissionData(data?.data)
             } catch (error) {
                 console.log(error)
             }
         }
         feachPermission();
-
-
-
-    }, [urlTitle.pathname])
-
-
-
+    }, [urlTitle.pathname]);
 
     const ClientView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes('GET-CLIENTS')) {
                     return item.permission = item.permission.filter(v => v != 'GET-CLIENTS');
                 }
@@ -79,16 +65,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
 
     const ClientEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
                 if (item.permission.includes('CREATE-CLIENTS')) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-CLIENTS' && v != 'EDIT-CLIENTS' && v != 'GET-CLIENTS');
@@ -101,13 +85,12 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
     const ProjectEditCreate = (e, id) => {
-        let comedata = rolesdata?.map((item, id1) => {
 
+        let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
 
                 if (item.permission.includes(`CREATE-PROJECTS`)) {
@@ -121,13 +104,12 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
+        setClientId(e);
     }
 
-
     const ProjectView = (e, id) => {
-        let comedata = rolesdata?.map((item, id1) => {
 
+        let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
                 if (item.permission.includes(`GET-PROJECTS`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-PROJECTS')
@@ -139,17 +121,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
-
     const CategoryEditCreate = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-CATEGORIES`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-CATEGORIES' && v != 'EDIT-CATEGORIES' && v != 'GET-CATEGORIES');
                 }
@@ -161,15 +140,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
+        setClientId(e);
     }
 
-
     const CategoryView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-CATEGORIES`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-CATEGORIES')
                 }
@@ -180,21 +157,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
-
-
-
-
-
     const ZoneEditCreate = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-ZONES`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-ZONES' && v != 'EDIT-ZONES' && v != 'GET-ZONES');
                 }
@@ -206,15 +176,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
     const ZoneView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-ZONES`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-ZONES')
                 }
@@ -225,17 +193,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
-
     const SubZoneEditCreate = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-SUBZONES`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-SUBZONES' && v != 'EDIT-SUBZONES' && v != 'GET-SUBZONES');
                 }
@@ -247,15 +212,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
     const SubZoneView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-SUBZONES`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-SUBZONES')
                 }
@@ -266,25 +229,16 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
+        setClientId(e);
     }
-
-
-
-
-
 
     //////////////////////////////////////// Start ProductivitySheet //////////////////////
 
     const ProductivitySheetEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-SHEET`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-SHEET' && v != 'EDIT-SHEET' && v != 'GET-SHEET');
                 }
@@ -296,21 +250,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
-
-
+        setClientId(e);
     }
-
-
-
 
     const ProductivitySheetView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-SHEET`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-SHEET')
                 }
@@ -321,27 +267,18 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
-
-
+        setClientId(e);
     }
-
 
     ////////////////////////////////////////   ProductivitySheet End ////////////////////////////
 
-
     ////////////////////////////////////////  JobCard start ////////////////////////////
-
 
     const JobCardEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-JOB-CARD' && v != 'EDIT-JOB-CARD' && v != 'GET-JOB-CARD');
                 }
@@ -353,20 +290,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
-
-
+        setClientId(e);
     }
-
-
 
     const JobCardView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-JOB-CARD')
                 }
@@ -379,10 +309,7 @@ const EditAccess = () => {
             }
 
         })
-        setClientId(e)
-
-
-
+        setClientId(e);
     }
 
     ////////////////////////////////////////  JobCard End ////////////////////////////
@@ -390,13 +317,10 @@ const EditAccess = () => {
 
     ////////////////////////////////////////  AssignJobCard start ////////////////////////////
 
-
     const AssignJobCardEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-ASSIGN-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-ASSIGN-JOB-CARD' && v != 'EDIT-ASSIGN-JOB-CARD' && v != 'GET-ASSIGN-JOB-CARD');
                 }
@@ -408,9 +332,7 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
-
+        setClientId(e);
     }
 
 
@@ -418,9 +340,7 @@ const EditAccess = () => {
     const AssignJobCardView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-ASSIGN-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-ASSIGN-JOB-CARD')
                 }
@@ -431,23 +351,18 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
     ////////////////////////////////////////  AssignJobCard End ////////////////////////////
 
-
-
     ////////////////////////////////////////   MyJobCard start ////////////////////////////
+
     const MyobCardEditCreate = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-MY-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-MY-JOB-CARD' && v != 'EDIT-MY-JOB-CARD' && v != 'GET-MY-JOB-CARD');
                 }
@@ -459,17 +374,14 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
 
     const MyJobCardView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-MY-JOB-CARD`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-MY-JOB-CARD')
                 }
@@ -480,27 +392,19 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
-
+        setClientId(e);
     }
 
 
     ////////////////////////////////////////   MyJobCard End ////////////////////////////
 
-
-
     ////////////////////////////////////////   UserEditCreate   start ////////////////////////////
-
 
     const UserEditCreate = (e, id) => {
 
-
         let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-USERS`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-USERS' && v != 'EDIT-USERS' && v != 'GET-USERS');
                 }
@@ -512,17 +416,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
-
 
     const UserView = (e, id) => {
 
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-USERS`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-USERS')
                 }
@@ -533,23 +433,17 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
-
-
+        setClientId(e);
     }
 
     ////////////////////////////////////////   UserEditCreate End ////////////////////////////
-
 
     ////////////////////////////////////////   RoleEditCreate start ////////////////////////////
 
     const RolesEditCreate = (e, id) => {
 
-
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
 
                 if (item.permission.includes(`CREATE-ROLES`)) {
@@ -563,15 +457,12 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
-
 
     const RolesView = (e, id) => {
         let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-ROLES`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-ROLES')
                 }
@@ -582,19 +473,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
-
 
     const createEditUserRole = (e, id) => {
 
-
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-USER_ROLES`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-USER_ROLES' && v != 'EDIT-USER_ROLES' && v != 'GET-USER_ROLES');
                 }
@@ -606,14 +492,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
-
+        setClientId(e);
     }
 
     const userRoleView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-USER_ROLES`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-USER_ROLES')
                 }
@@ -624,17 +509,15 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
 
     const organizationCreateEdit = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-ORGANIZATION`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-ORGANIZATION' && v != 'EDIT-ORGANIZATION' && v != 'GET-ORGANIZATION');
                 }
@@ -646,14 +529,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
+        setClientId(e);
     }
 
     const organizationView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-ORGANIZATION`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-ORGANIZATION')
                 }
@@ -664,16 +546,14 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
     const permissionCreateEdit = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`CREATE-PERMISSIONS`)) {
                     return item.permission = item.permission.filter(v => v != 'CREATE-PERMISSIONS' && v != 'EDIT-PERMISSIONS' && v != 'GET-PERMISSIONS');
                 }
@@ -685,14 +565,13 @@ const EditAccess = () => {
                 return "nothing"
             }
         })
-        setClientId(e)
+        setClientId(e);
     }
 
     const permisionsView = (e, id) => {
+
         let comedata = rolesdata?.map((item, id1) => {
-
             if (id === item._id) {
-
                 if (item.permission.includes(`GET-PERMISSIONS`)) {
                     return item.permission = item.permission.filter(v => v != 'GET-PERMISSIONS')
                 }
@@ -703,18 +582,11 @@ const EditAccess = () => {
             else {
                 return "nothing"
             }
-
         })
-        setClientId(e)
+        setClientId(e);
     }
 
-
-
     ////////////////////////////////////////   RoleEditCreate End ////////////////////////////
-
-
-
-
 
     const SavePermission = () => {
 
@@ -738,8 +610,6 @@ const EditAccess = () => {
         //     }else{
         //         final_data.push(item)
         //     }
-
-
         // })
 
         const token = reactLocalStorage.get("access_token", false);
@@ -760,18 +630,16 @@ const EditAccess = () => {
                         autoDismiss: true,
                     })
                 }
-
             } catch (error) {
                 console.log(error)
             }
         }
         feachPermission();
-
     }
 
     return (
         <>
-            <div className="flex flex-row justify-start overflow-hidden  ">
+            <div className="flex flex-row justify-start overflow-hidden">
                 <div>
                     <SideBar />
                 </div>
@@ -779,11 +647,11 @@ const EditAccess = () => {
                     <Header title={title} />
 
                     <div className=" flex flex-col  w-[100%] rounded-[31.529px]  
-                    mh-[632.01px] mt-[105.49px] ml-[38px]  pb-10
-                      bg-[#FFFFFF]   ">
+                    mh-[632.01px] mt-[105.49px] ml-[38px] pb-10
+                      bg-[#FFFFFF]">
                         <div className="flex flex-row justify-between">
                             <div className="flex">
-                                <div className=" ml-[26.8px] mt-[31.94px]   h-[88.28px] w-[88.28px] bg-[#F4F7FE] rounded-[50%]">
+                                <div className=" ml-[26.8px] mt-[31.94px] h-[88.28px] w-[88.28px] bg-[#F4F7FE] rounded-[50%]">
                                     <img
                                         src="/Group8.png"
                                         alt="logo"
@@ -795,21 +663,17 @@ const EditAccess = () => {
                                     Edit Access
                                 </div>
                             </div>
-
                         </div>
-
                         <div
-                            className="grid grid-cols-12    "
+                            className="grid grid-cols-12"
                         >
                             <div className="col-span-2   pl-4 mt-[70px]">
                                 <div className=" ml-[20px]">
-
                                     Dashboards
                                 </div>
                                 <div className="pt-4">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Users
                                         <br />
                                         Dashboards 0
@@ -818,8 +682,6 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
-
                                         Roles
                                         <br />
                                         Dashboards
@@ -828,8 +690,6 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
-
                                         Client
                                         <br />
                                         Dashboards 1
@@ -838,7 +698,6 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Project
                                         <br />
                                         Dashboards 2
@@ -847,7 +706,6 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Zone
                                         <br />
                                         Dashboards 3
@@ -856,7 +714,6 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Sub Zone
                                         <br />
                                         Dashboards 4
@@ -865,47 +722,38 @@ const EditAccess = () => {
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Category
                                         <br />
                                         Dashboards 5
                                     </button>
                                 </div>
-
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Productivity Sheet
                                         <br />
                                         Dashboards 6
                                     </button>
                                 </div>
-
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Job Cards
                                         <br />
                                         Dashboards 7
                                     </button>
                                 </div>
-
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         Job Cards Assigned
                                         <br />
                                         Dashboards 8
                                     </button>
                                 </div>
-
                                 <div className="pt-10">
                                     <button className=" bg-[#EDF2F1] text-[13.5px] py-[24px] w-[130px] rounded-[5px]"
                                         style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
-
                                         My Job Cards
                                         <br />
                                         Dashboards 9
@@ -942,18 +790,14 @@ const EditAccess = () => {
                                     {rolesdata?.map((items, id) => {
                                         if (id >= 0) {
                                             return <div className=" p-3   pt-[28.49px]" key={id}>
-
                                                 <button className=" bg-[#EDF2F1] text-[13.5px] py-1 w-[155px] rounded-[5px]"
                                                     style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}>
                                                     {items.name}
                                                 </button>
-
                                                 <div className="mt-[55px]">
-
                                                     <div className="flex">
                                                         <div className="px-[2px]">
                                                             <button
-
                                                                 onClick={(e) => UserEditCreate(e, items._id)}
                                                                 className={` 
                                                             ${items.permission.includes("CREATE-USERS") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
@@ -972,8 +816,6 @@ const EditAccess = () => {
                                                         </div>
                                                     </div>
 
-
-
                                                     <div className="flex mt-3">
                                                         <div className="px-[2px]">
                                                             <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
@@ -987,28 +829,21 @@ const EditAccess = () => {
                                                                 Approve
                                                             </button>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         }
                                     })}
                                 </div>
-
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
-
                                                                     onClick={(e) => RolesEditCreate(e, items._id)}
                                                                     className={` 
                                                             ${items.permission.includes("CREATE-ROLES") ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
@@ -1039,7 +874,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1048,19 +882,14 @@ const EditAccess = () => {
                                     </div>
                                 </div>
 
-
                                 <div className=" flex">
                                     {rolesdata?.map((items, id) => {
                                         if (id >= 0) {
-                                            return <div className=" p-3   pt-[28.49px]" key={id}>
-
-
-
-                                                <div className=" ">
+                                            return <div className="p-3 pt-[28.49px]" key={id}>
+                                                <div>
                                                     <div className="flex">
                                                         <div className="px-[2px]">
                                                             <button
-
                                                                 onClick={(e) => ClientEditCreate(e, items._id)}
                                                                 className={` 
                                                             ${items.permission.includes('CREATE-CLIENTS') ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
@@ -1079,7 +908,6 @@ const EditAccess = () => {
                                                         </div>
                                                     </div>
 
-
                                                     <div className="flex mt-3">
                                                         <div className="px-[2px]">
                                                             <button className=" bg-[#0FCC7C] text-[13.5px] py-2 w-[75px] rounded-[5px]"
@@ -1093,7 +921,6 @@ const EditAccess = () => {
                                                                 Approve
                                                             </button>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -1104,13 +931,11 @@ const EditAccess = () => {
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className=" p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
-
                                                                     onClick={(e) => ProjectEditCreate(e, items._id)}
                                                                     className={` 
                                                             ${items.permission.includes(`CREATE-PROJECTS`) ? "bg-[#0FCC7C]" : "bg-[#ffffff]"} 
@@ -1141,7 +966,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1154,9 +978,9 @@ const EditAccess = () => {
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
+                                                return <div className="p-3" key={id}>
 
-                                                    <div className=" ">
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1190,7 +1014,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1203,9 +1026,8 @@ const EditAccess = () => {
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1239,7 +1061,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1247,16 +1068,12 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1290,7 +1107,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1298,15 +1114,12 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1340,7 +1153,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1354,9 +1166,8 @@ const EditAccess = () => {
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1390,7 +1201,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1398,15 +1208,12 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1440,7 +1247,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1448,15 +1254,12 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1490,7 +1293,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1498,14 +1300,13 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
+                                                return <div className="p-3" key={id}>
 
-                                                    <div className=" ">
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1539,7 +1340,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1551,9 +1351,8 @@ const EditAccess = () => {
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
-                                                return <div className=" p-3    " key={id}>
-
-                                                    <div className=" ">
+                                                return <div className="p-3" key={id}>
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1587,7 +1386,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1595,14 +1393,12 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
                                 <div>
                                     <div className="flex mt-5">
                                         {rolesdata?.map((items, id) => {
                                             if (id >= 0) {
                                                 return <div className="p-3" key={id}>
-
-                                                    <div className=" ">
+                                                    <div>
                                                         <div className="flex">
                                                             <div className="px-[2px]">
                                                                 <button
@@ -1636,7 +1432,6 @@ const EditAccess = () => {
                                                                     Approve
                                                                 </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1644,16 +1439,11 @@ const EditAccess = () => {
                                         })}
                                     </div>
                                 </div>
-
-
-
                             </div>
-
-
                         </div>
 
-                        <div className="flex mt-10  ml-[70%]  ">
-                            <div className="mr-[45px] shadow-[buttonshadow] ">
+                        <div className="flex mt-10  ml-[70%]">
+                            <div className="mr-[45px] shadow-[buttonshadow]">
                                 <button
                                     onClick={() => { navigate("/UserManagement") }}
                                     className="w-[100px] btnshadow  h-[25px] rounded text-sm font-secondaryFont text-[14px] text-center font-medium not-italic items-center  bg-[#F42424] text-[#000000] ">

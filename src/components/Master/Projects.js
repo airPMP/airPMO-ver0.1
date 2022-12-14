@@ -7,6 +7,7 @@ import axios from "axios";
 import Popup from "reactjs-popup";
 
 const Projects = () => {
+
   const [title, setTitle] = useState(null);
   const [projectdata, setProjectData] = useState(null)
   const [filteredData, setFilteredData] = useState(projectdata);
@@ -19,16 +20,13 @@ const Projects = () => {
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
 
-
   let urlTitle = useLocation();
   let navigate = useNavigate();
 
   useEffect(() => {
-
     if (urlTitle.pathname === "/master/projects") {
       setTitle("Master");
     }
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -37,7 +35,6 @@ const Projects = () => {
             Authorization: `Bearer ${token}`,
           },
         })
-
         setProjectData(data?.data)
         setFilteredData(data?.data)
       } catch (error) {
@@ -46,23 +43,18 @@ const Projects = () => {
     }
     feach();
     handleSearch();
-
   }, [urlTitle.pathname])
 
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
-
-
   const getPermision = async () => {
-
     const url_data = await allpermission
     const database = url_data?.split(',')
-
+    
     let value = "EDIT-PROJECTS".toUpperCase();
     let result = []
     result = database?.filter((data) => {
@@ -70,7 +62,6 @@ const Projects = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "CREATE-PROJECTS".toUpperCase();
     let result1 = []
@@ -88,7 +79,6 @@ const Projects = () => {
       }
     });
 
-
     let value3 = "DELETE-PROJECTS".toUpperCase();
     let result3 = []
     result3 = database?.filter((data) => {
@@ -97,37 +87,30 @@ const Projects = () => {
       }
     });
 
-
-
-
-
-
-    if (result[0] === "EDIT-PROJECTS" ||
-      result1[0] === "CREATE-PROJECTS" ||
-      result2[0] === "GET-PROJECTS" ||
-      result3[0] === "DELETE-PROJECTS") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
-      setDeletePermission(result3[0])
+    if(result){
+      if (result[0] === "EDIT-PROJECTS" ||
+        result1[0] === "CREATE-PROJECTS" ||
+        result2[0] === "GET-PROJECTS" ||
+        result3[0] === "DELETE-PROJECTS") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+        setDeletePermission(result3[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
-    }
-
   }
 
-
-
   const handleSearch = (e) => {
-
     let value = e?.target?.value?.toUpperCase();
     let result = []
     result = projectdata?.filter((data) => {
@@ -135,14 +118,11 @@ const Projects = () => {
         return data?.client_name?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(projectdata)
     }
   }
-
 
   const DeleteProfile = (e) => {
     setDeleteId(e)
@@ -150,7 +130,6 @@ const Projects = () => {
   }
 
   const conformDelete = () => {
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -160,10 +139,8 @@ const Projects = () => {
           },
         })
         if (data?.status === 200) {
-
           window.location.reload(false);
         }
-        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -179,7 +156,6 @@ const Projects = () => {
   }
 
   const EditProfile = (e) => {
-    console.log(e)
     if (editpermission === "EDIT-PROJECTS" || allpermissions === "ALL") {
       navigate(`/master/edit_project/${e}`)
     }
@@ -189,8 +165,6 @@ const Projects = () => {
     setOpen(o => !o)
   }
 
-
-
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -198,8 +172,6 @@ const Projects = () => {
       </div>
       <div className="flex flex-col">
         <Header title={title} />
-
-
         <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
           <div className="flex flex-row justify-between">
             <div className="flex space-x-[27.92px] self-center">
@@ -272,7 +244,6 @@ const Projects = () => {
               >
                 <path d="M8 8V14H6V8H0V6H6V0H8V6H14V8H8Z" fill="#2E3A59" />
               </svg>
-
               <div onClick={() => AddProject()}>Add Project</div>
             </div>
           </div>
@@ -336,7 +307,6 @@ const Projects = () => {
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
-
                   <Popup
                     open={open}
                     position="right center"
@@ -345,7 +315,6 @@ const Projects = () => {
                     <div className="p-7">
                       <div className="flex pb-3">
                         <div>
-
                         </div>
                         <div style={{ marginLeft: "90%" }}>
                           <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
@@ -366,21 +335,14 @@ const Projects = () => {
                         </button>
                       </div>
                     </div>
-
                   </Popup>
-
                 </tbody>
               })}
             </table>
-
           </div>
         </div>
-
-
       </div>
     </div>
-
-
   )
 }
 

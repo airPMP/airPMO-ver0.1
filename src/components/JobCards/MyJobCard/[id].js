@@ -8,7 +8,6 @@ import { useToasts } from "react-toast-notifications";
 import Multiselect from 'multiselect-react-dropdown';
 import { CurrentQuantityTOAchivedData } from "../../../SimplerR/auth";
 
-
 const sortTypes = {
 	up: {
 		class: 'sort-up',
@@ -24,37 +23,16 @@ const sortTypes = {
 	}
 }
 
-function sortByColumn(a, colIndex, reverse) {
-  if (reverse == true) {
-    a.sort(sortFunction).reverse();
-  } else {
-    a.sort(sortFunction);
-  }
-
-  function sortFunction(a, b) {
-    if (a[colIndex] === b[colIndex]) {
-      return 0;
-    } else {
-      return (a[colIndex] < b[colIndex]) ? -1 : 1;
-    }
-  }
-  return a;
-}
-
-
 const MyJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState([null]);
   const [filteredData, setFilteredData] = useState([null]);
   const [alltokenroles, setAllTokenRoles] = useState(null)
-
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
-
   const [filterselecetddata, setFilterSelecetdData] = useState(null)
   const [comezonedata, setComeZoneData] = useState(false)
   const [FilterZonesdata, setFilterZonesData] = useState(false)
@@ -78,36 +56,25 @@ const MyJobCardsId = () => {
   let useperma = useParams()
 
   useEffect(() => {
-
     if (urlTitle.pathname === `/daily_task/my_daily_task/${useperma.id}`) {
       setTitle("Activities");
-
-
-
-
     }
   }, [urlTitle.pathname])
 
-
-
   const onSortChange = () => {
 		let nextSort;
-		
 		if(currentSort === 'down') nextSort = 'up';
 		else if(currentSort === 'up') nextSort = 'down';
 		else if(currentSort === 'default') nextSort = 'down';
 	  setCurrentSort(nextSort);
 	}
 
-
   useEffect(() => {
     let tokenroles = reactLocalStorage.get("roles", false);
     setAllTokenRoles(tokenroles)
-
   })
 
   useEffect(()=>{
-
     let main_ary = []
 
     filteredData?.map((item)=>{
@@ -125,75 +92,31 @@ const MyJobCardsId = () => {
       })
     })
 
-let final_ary = []
-    main_ary?.map((t1)=>{
-      final_ary.push(t1)
-      if(t1?.sub_act_list?.length>0){
-        t1?.sub_act_list?.map((t2)=>{
-          final_ary.push(t2)
-        })
+    let final_ary = []
+      main_ary?.map((t1)=>{
+        final_ary.push(t1)
+        if(t1?.sub_act_list?.length>0){
+          t1?.sub_act_list?.map((t2)=>{
+            final_ary.push(t2)
+          })
+        }
+      })
+
+    let sub_ary = []
+
+    filteredData?.map((f_item)=>{
+      if(!f_item?.isMainActitvity){
+        sub_ary.push(f_item)
       }
     })
 
-let sub_ary = []
+    sub_ary?.map((temp_item)=>{
+      if(!final_ary?.map(i=>i._id).includes(temp_item?._id)){
+        final_ary.push(temp_item)
+      }
+    })
 
-filteredData?.map((f_item)=>{
-  if(!f_item?.isMainActitvity){
-    sub_ary.push(f_item)
-  }
-})
-
-sub_ary?.map((temp_item)=>{
-  if(!final_ary?.map(i=>i._id).includes(temp_item?._id)){
-    final_ary.push(temp_item)
-  }
-})
-
-setFinalSubArrayList(final_ary)
-
-
-
-
-    // var result = new Array();
-    // result.push(filteredData[0]);
-
-    // if(filteredData[0]?.sub_act_list?.length > 0){
-    //   filteredData[0]?.sub_act_list?.map((temp_item)=>{
-    //     result.push(temp_item)
-    //   })
-    // }
-
-
-    // for(var i = 1; i < filteredData?.length; i++) {
-    //     var flag = false;
-        
-    //     for(var j=0;j<result.length;j++) {
-
-    //       if(result.map(i=>i._id).includes(filteredData[i]._id)) {
-             
-    //             flag = true;
-
-    //         }
-    //     }
-
-    //     if(flag == false) {
-    //         result.push(filteredData[i])
-
-    //         if(filteredData[i]?.sub_act_list?.length > 0){
-    //           filteredData[i]?.sub_act_list?.map((temp_item)=>{
-    //             result.push(temp_item)
-    //           })
-    //         }
-
-    //     }
-    // }
-
-
-    
-    // // result =  result.filter((a, i) => result.findIndex((s) => a._id === s._id) === i)
-
-    // console.log("result=======",result);
-    // console.log("filteredData=======",filteredData);
+    setFinalSubArrayList(final_ary)
 
   },[filteredData])
 
@@ -204,13 +127,11 @@ setFinalSubArrayList(final_ary)
     const token = reactLocalStorage.get("access_token", false);
     const user_id = reactLocalStorage.get("user_id", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_all_assign_card_by_user/${user_id}/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-
         let zoneFilterData = response?.data.filter((elem => elem.zone))
         const keys = ['zone']
         const filteredZonedata = zoneFilterData.filter(
@@ -222,11 +143,9 @@ setFinalSubArrayList(final_ary)
         );  
         setFilterZonesData(filteredZonedata)
         let SubzoneFilterData = response?.data.filter((elem => elem.sub_zone))
-
         setFilterSubZonesData(SubzoneFilterData) 
         setFilteredData(response?.data)
         setAllJobCardData(response?.data)
-
         if (response.status === 200) {
           setComeZoneData(true)
         }
@@ -238,7 +157,6 @@ setFinalSubArrayList(final_ary)
 
     if (selectalldata) {
       onSelect()
-
       setShowMultiSelectZone(o => !o)
       SetSelectAllData(false)
     }
@@ -250,24 +168,16 @@ setFinalSubArrayList(final_ary)
     }
 
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setProjectDetailsData(response?.data)
-        if (response.status === 201) {
-
-        }
       })
       .catch((error) => {
         console.log(error)
-
       })
-
-
-
   }, [selectalldata, selectallsubzonedata])
 
   const handleSearch = (e) => {
@@ -281,17 +191,10 @@ setFinalSubArrayList(final_ary)
     setFilteredData(result)
     if (value === "") {
       setFilteredData(alljobcarddata)
-      console.log("alljobcarddata")
-    }
-    else {
-      console.log("FilteredData")
     }
   }
 
-
-
   const CardAssignIdPage = (e, itemid) => {
-    console.log(itemid)
     setActivityId(itemid)
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_create_job_card_cal/${itemid?.activity_code}`, {
@@ -300,12 +203,9 @@ setFinalSubArrayList(final_ary)
       },
     }).then((response) => {
       setAllCalcultedMachineryData(response?.data)
-      console.log('dev',response?.data?.quantity_to_be_achived)
       CurrentQuantityTOAchivedData.set(response?.data?.quantity_to_be_achived)
       if (response.status === 200) {
         setPatchApiTrue(true)
-
-
       }
     }).catch((error) => {
       console.log(error)
@@ -314,9 +214,7 @@ setFinalSubArrayList(final_ary)
     navigate(`/daily_task/CardAssignId/${itemid._id}`)
   }
 
-
   const PatchCalculatedData = (e) => {  
-    
     const token = reactLocalStorage.get("access_token", false);
     axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${activityId?._id}`, {
 
@@ -342,40 +240,29 @@ setFinalSubArrayList(final_ary)
           Authorization: `Bearer ${token}`,
         },
       })
-
       .then((response) => {
-        console.log(response)
         if (response.status === 200) {
           navigate(`/daily_task/CardAssignId/${activityId._id}`)
         }
       })
       .catch((error) => {
         console.log(error)
-
       })
-
   }
-
-
-
 
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
     getPermision()
-
     if (patchapiTrue && activityId) {
       PatchCalculatedData()
     }
   }, [allpermission, patchapiTrue, activityId])
 
-
-
   const getPermision = async () => {
-
     const url_data = await allpermission
     const database = url_data?.split(',')
-
+  
     let value = "EDIT-MY-JOB-CARD".toUpperCase();
     let result = []
     result = database?.filter((data) => {
@@ -383,7 +270,6 @@ setFinalSubArrayList(final_ary)
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "EDIT-MY-JOB-CARD".toUpperCase();
     let result1 = []
@@ -400,8 +286,6 @@ setFinalSubArrayList(final_ary)
         return data?.toUpperCase().search(value2) !== -1;
       }
     });
-
-
 
     if (result[0] === "EDIT-MY-JOB-CARD" ||
       result1[0] === "EDIT-MY-JOB-CARD" ||
@@ -420,68 +304,43 @@ setFinalSubArrayList(final_ary)
       });
       setAllPermissions(result[0])
     }
-
   }
 
-
-
   const onSelect = (selectedList, selectedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.zone === items.zone
       })
     })
-
-    console.log("detasome")
-    console.log(detasome)
-
     setFilteredData(detasome)
-
   }
 
   const onRemove = (selectedList, removedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.zone === items.zone
       })
     })
-
     setFilteredData(detasome)
-
   }
 
   const onSelectSub = (selectedList, selectedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.sub_zone === items.sub_zone
       })
     })
-
-    console.log("detasome")
-    console.log(detasome)
-
     setFilteredData(detasome)
-
   }
 
   const onRemoveSub = (selectedList, removedItem) => {
-
     let detasome = FilterZonesdata?.filter((item) => {
       return selectedList?.find((items) => {
         return item.sub_zone === items.sub_zone
       })
-    }
-
-    )
-
+    })
     setFilteredData(detasome)
-
   }
-
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -602,11 +461,9 @@ setFinalSubArrayList(final_ary)
                           options={FilterZonesdata}
                           showCheckbox
                         />
-
                       }
 
                     </div>
-
 
                   </th>
                   <th className="whitespace-nowrap pb-[15.39px] w-[10%]">
@@ -644,7 +501,6 @@ setFinalSubArrayList(final_ary)
                           options={FilterSubZonesdata}
                           showCheckbox
                         />
-
                       }
 
                     </div>
@@ -685,8 +541,6 @@ setFinalSubArrayList(final_ary)
                         onClick={(e) => UserSelectFun(e, item)}>
                         <option> Select User</option>
                         {item?.user?.map((items, i) => {
-
-
                           return <option value={items.name}>{items.name}</option>
                         })
                         }
@@ -697,14 +551,11 @@ setFinalSubArrayList(final_ary)
                   <tr className="p-[15px]">
                     <td className="p-[10px]" ></td>
                   </tr>
-
                 </tbody>
-
               })}
             </table>
           </div>
           <div className="flex flex-row justify-end py-[20px] space-x-2 ">
-
 
           </div>
         </div>

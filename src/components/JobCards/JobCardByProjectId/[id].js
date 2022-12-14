@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link, useParams } from "react-router-dom";
 import Header from "../../layout/Header";
 import SideBar from "../../layout/SideBar";
-import SearchBox from "../../layout/SearchBox";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { ProjectObjectData } from "../../../SimplerR/auth";
@@ -13,7 +12,6 @@ const AllJobCardsId = () => {
   const [title, setTitle] = useState(null); // the lifted state
   const [alljobcarddata, setAllJobCardData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
@@ -21,7 +19,6 @@ const AllJobCardsId = () => {
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
   const [alltokenroles, setAllTokenRoles] = useState(null)
-
   const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
   const [deletedatarefrace, setDeleteDataRefrace] = useState(false);
@@ -42,42 +39,28 @@ const AllJobCardsId = () => {
 
   }, [urlTitle.pathname]);
 
-
   useEffect(() => {
-
     const token = reactLocalStorage.get("access_token", false);
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card_by_project/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        console.log(response?.data)
         setAllJobCardData(response?.data)
         setFilteredData(response?.data)
-
-        if (response.status === 201) {
-
-        }
       })
       .catch((error) => {
         console.log(error)
-
       })
     handleSearch()
 
-
-
-
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${useperma.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        console.log(response?.data)
         setProjectDetailsData(response?.data)
         if (response.status === 201) {
 
@@ -85,15 +68,10 @@ const AllJobCardsId = () => {
       })
       .catch((error) => {
         console.log(error)
-
       })
-
-
-
   }, [deletedatarefrace])
 
   const handleSearch = (e) => {
-
     let value = e?.target?.value?.toUpperCase();
     let result = []
     result = alljobcarddata?.filter((data) => {
@@ -101,24 +79,19 @@ const AllJobCardsId = () => {
         return data?.activity_code?.toUpperCase().search(value) !== -1;
       }
     });
-
     setFilteredData(result)
-
     if (value === "") {
       setFilteredData(alljobcarddata)
     }
   }
 
-
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
   const getPermision = async () => {
-
     const url_data = await allpermission
     const database = url_data?.split(',')
 
@@ -129,7 +102,6 @@ const AllJobCardsId = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "CREATE-JOB-CARD".toUpperCase();
     let result1 = []
@@ -154,11 +126,6 @@ const AllJobCardsId = () => {
         return data?.toUpperCase().search(value3) !== -1;
       }
     });
-
-
-
-
-
 
     if (result[0] === "EDIT-JOB-CARD" ||
       result1[0] === "CREATE-JOB-CARD" ||
@@ -187,12 +154,7 @@ const AllJobCardsId = () => {
       setDeleteId(e)
       setOpen(o => !o)
     }
-    
-
   }
-
-
-
 
   const conformDelete = () => {
 
@@ -206,9 +168,7 @@ const AllJobCardsId = () => {
         })
         if (data?.status === 200) {
           setDeleteDataRefrace(o => !o)
-          // window.location.reload(false);
         }
-
       } catch (error) {
         console.log(error)
       }
@@ -217,19 +177,15 @@ const AllJobCardsId = () => {
     setOpen(o => !o)
   }
 
-
   const CancelButton = (e) => {
     setOpen(o => !o)
   }
 
-
   const EditProfile = (e) => {
-    console.log(e)
     if (editpermission === "EDIT-JOB-CARD" || allpermissions === "ALL") {
       navigate(`/daily_task/update_create_daily_task/${e}`)
     }
   }
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -306,14 +262,12 @@ const AllJobCardsId = () => {
                     className="outline-none"
                   />
                 </div>
-
               </div>
-
             </div>
+
           </div>
           <div className=" flex justify-end   pr-14">
             <Link to={`${createpermission || allpermissions ? `/daily_task/${useperma.id}/new_daily_task` : `/daily_task/JobCardByProjectId/${useperma.id}`}`}>
-
               <button
                 className={`${createpermission === "CREATE-JOB-CARD" || allpermissions === "ALL" ? "cursor-pointer" : "  disabledclass"}
                   p-2 text-[#000000] mb-4 rounded-[8px] flex justify-end`}
@@ -329,7 +283,6 @@ const AllJobCardsId = () => {
                 </span>
               </button>
             </Link>
-
 
           </div>
           <div className="ml-[95px]">
@@ -348,7 +301,6 @@ const AllJobCardsId = () => {
                 </tr>
               </thead>
               {filteredData?.map((item, id) => {
-                console.log(item)
                 return <tbody className="font-secondaryFont  text-[#8F9BBA] font-normal not-italic text-[12px] leading-[20px] tracking-[-2%]">
                   <tr className="mb-[5px] bg-[#ECF1F0]">
                     <th className="py-[13px]">{item.activity_code}</th>
@@ -358,7 +310,6 @@ const AllJobCardsId = () => {
                     <th className="">{item.quantity_to_be_achieved}</th>
                     <th className="">{item.zone}</th>
                     <th className="">{item.sub_zone}</th>
-
                     <th
                       className="cursor-pointer"
                     // onClick={() => {
@@ -368,7 +319,6 @@ const AllJobCardsId = () => {
                       Status
                     </th>
                     <th>
-
                       <div className="flex flex-row space-x-xl justify-center">
                         <div className={` ${editpermission || allpermissions ? 'cursor-pointer' : "disabledclass"}   `}
                           onClick={(e) => EditProfile(item._id)}  >
@@ -402,7 +352,6 @@ const AllJobCardsId = () => {
                           </svg>
                         </div>
                       </div>
-
                     </th>
                   </tr>
                   <tr className="p-[15px]">
@@ -446,7 +395,6 @@ const AllJobCardsId = () => {
         <div className="p-7">
           <div className="flex pb-3">
             <div>
-
             </div>
             <div style={{ marginLeft: "90%" }}>
               <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
@@ -467,7 +415,6 @@ const AllJobCardsId = () => {
             </button>
           </div>
         </div>
-
       </Popup>
     </div>
   );

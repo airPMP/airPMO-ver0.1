@@ -13,24 +13,19 @@ import { reactLocalStorage } from "reactjs-localstorage";
 import { ViewZoneData } from '../../SimplerR/auth'
 
 const validate = (values) => {
-
   const errors = {};
   // if (!values.category) {
   //   errors.category = "Category Required";
   // }
-
   if (!values.sub_category) {
     errors.sub_category = "Sub Category Required";
   }
-
   if (!values.max_hours) {
     errors.max_hours = "Max Hours Required";
   }
-
   if (!values.min_hours) {
     errors.min_hours = "Min Hours Required";
   }
-
   // if (!values.client_name) {
   //   errors.client_name = "Client Name Required";
   // }
@@ -38,16 +33,12 @@ const validate = (values) => {
   // if (!values.uploadLogoFile) {
   //   errors.uploadLogoFile = "uploadLogoFile Required";
   // }
-
   if (!values.min_hours) {
     errors.min_hours = "Min Hours Required";
   }
-
   if (!values.max_hours) {
     errors.max_hours = "Max Hours Required";
   }
-
-
   if (!values.project_name) {
     errors.project_name = "Project Name Required";
   }
@@ -60,16 +51,13 @@ const validate = (values) => {
   // if (!values.discription) {
   //   errors.discription = "discription Required";
   // }
-
   return errors;
 };
-
 
 const NewProject = () => {
 
   const [open, setOpen] = useState(false);
   const [openaddzone, setAddZone] = useState(false);
-
   const [openviewSub, setViewSub] = useState(false);
   const [sheetdata, setSheetData] = useState(null)
   const closeModal = () => setOpen(false);
@@ -85,14 +73,11 @@ const NewProject = () => {
   const [clientnullerror1, setClientNullError1] = useState(false)
   const [showeye, setShowEye] = useState(" ");
   const [organizationIdData, setOrganizationIdData] = useState();
-
-
   const [allpermission, setAllPermission] = useState(null)
   const [editpermission, setEditPermission] = useState(null)
   const [createpermission, setCreatePermission] = useState(null)
   const [viewpermission, setViewPermission] = useState(null)
   const [allpermissions, setAllPermissions] = useState(null)
-
 
   let urlTitle = useLocation();
   let naviagte = useNavigate();
@@ -101,12 +86,10 @@ const NewProject = () => {
   const [zoneerror, setZoneError] = useState(null)
   const [projectidzone, setProjectIdZone] = useState(null);
 
-
   useEffect(() => {
     if (urlTitle.pathname === "/master/projects/new_project") {
       setTitle("Master");
     }
-
     const token = reactLocalStorage.get("access_token", false);
     const feach = async () => {
       try {
@@ -121,7 +104,6 @@ const NewProject = () => {
       }
     }
     feach();
-
 
     const feach1 = async () => {
       try {
@@ -139,9 +121,7 @@ const NewProject = () => {
 
     const organization_Id = reactLocalStorage.get("organization_id", false);
     setOrganizationIdData(organization_Id)
-
   }, [urlTitle.pathname]);
-
 
   const formik = useFormik({
     initialValues: {
@@ -187,18 +167,14 @@ const NewProject = () => {
 
       const token = reactLocalStorage.get("access_token", false);
 
-
-
       if (clientnullerror && clientnullerror1) {
         axios.post(`${process.env.REACT_APP_BASE_URL}/api/projects/`, values, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        })
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          })
           .then((response) => {
-            console.log(response)
             setProjectIdZone(response?.data?._id)
-            console.log(response?.data?._id)
             if (response.status === 201) {
               addToast("Project is Added Sucessfully", {
                 appearance: "success",
@@ -207,13 +183,10 @@ const NewProject = () => {
               if (createpermission || allpermissions) {
                 ViewZoneData.set(o => !o)
               }
-
-              // navigate('/')
             }
             resetForm()
           })
           .catch((error) => {
-            console.log(error)
             addToast(error.response.data.message, {
               appearance: "error",
               autoDismiss: true,
@@ -222,21 +195,16 @@ const NewProject = () => {
       }
       else{
         setClientNullError(false)
-         
       }
-
     },
   });
 
-
   const ShowPasswordButton = (e, sheet2) => {
-
     if (showeye) {
       const feach = async () => {
         try {
           const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${formik.values.spread_sheet_id}/values/${formik.values.time_sheet_id}?key=${formik.values.spread_sheet_key}`,)
           setSheetData(data1?.data?.values)
-          console.log(data1)
         } catch (error) {
           console.log(error)
         }
@@ -245,7 +213,6 @@ const NewProject = () => {
     }
     setShowEye(o => !o)
     setOpen(o => !o)
-
   }
 
   const CancelButton = (e) => {
@@ -261,24 +228,19 @@ const NewProject = () => {
   }
 
   const ClientFun = (e) => {
-    console.log(e.target.value)
-
     const url_data = e.target.value
     const client_data = url_data.split(',')
     setClientData(client_data[0])
     setClientId(client_data[1])
-
     if (client_data[0]) {
       setClientNullError(true)
       setClientNullError1(true)
     }
-
   }
 
   useEffect(() => {
     const permissionData = reactLocalStorage.get("permisions", false);
     setAllPermission(permissionData)
-
     getPermision()
   }, [allpermission])
 
@@ -294,7 +256,6 @@ const NewProject = () => {
         return data?.toUpperCase().search(value) !== -1;
       }
     });
-
 
     let value1 = "CREATE-ZONES".toUpperCase();
     let result1 = []
@@ -312,29 +273,27 @@ const NewProject = () => {
       }
     });
 
-    if (result[0] === "EDIT-ZONES" ||
-      result1[0] === "CREATE-ZONES" ||
-      result2[0] === "GET-ZONES") {
-      setEditPermission(result[0])
-      setCreatePermission(result1[0])
-      setViewPermission(result2[0])
-    }
-    else {
-      let value = "ALL".toUpperCase();
-      let result = []
-      result = database?.filter((data) => {
-        if (isNaN(+value)) {
-          return data?.toUpperCase().search(value) !== -1;
-        }
-      });
-      setAllPermissions(result[0])
+    if(result){
+      if ([0] === "EDIT-ZONES" ||
+        result1[0] === "CREATE-ZONES" ||
+        result2[0] === "GET-ZONES") {
+        setEditPermission(result[0])
+        setCreatePermission(result1[0])
+        setViewPermission(result2[0])
+      }
+      else {
+        let value = "ALL".toUpperCase();
+        let result = []
+        result = database?.filter((data) => {
+          if (isNaN(+value)) {
+            return data?.toUpperCase().search(value) !== -1;
+          }
+        });
+        setAllPermissions(result[0])
+      }
     }
 
   }
-
-
-
-
 
   return (
     <div className="flex flex-row justify-start overflow-hidden">
@@ -365,9 +324,7 @@ const NewProject = () => {
               </div>
 
               <div className="col-span-1  pl-14">
-
                 <div className="flex ">
-
                   <div className="mr-[25px] shadow-[buttonshadow] ">
                     <button
                       // onClick={() => setViewSub(o => !o)}
@@ -491,7 +448,6 @@ const NewProject = () => {
                         </>
                       })}
                     </select>
-
 
                   </div>
                   {
@@ -814,7 +770,6 @@ const NewProject = () => {
                     >
                       <div className="p-7 ">
                         <div className="flex pb-3">
-
                           <div style={{ marginLeft: "95%" }}>
                             <span className="text-[red] text-[19px] cursor-pointer" onClick={(e) => CancelButton(e)} >
                               <b>X</b>
@@ -843,7 +798,6 @@ const NewProject = () => {
                                       <td className=" pt-[15px] w-[11%] pb-[14.83px]">{item[0]} </td>
                                       <td className="pt-[15px] w-[20%] pb-[14.83px]">{item[1]}</td>
                                       <td className="pt-[15px] w-[30%] pb-[14.83px]">{item[2]}</td>
-
                                     </tr>
                                     <tr>
                                       <td className="p-[10px]"></td>
@@ -852,19 +806,11 @@ const NewProject = () => {
                                 )
                               }
                             })
-
                             }
-
-
                           </table>
-
                         </div>
-
                       </div>
-
                     </Popup>
-
-
 
                   </div>
                   {/* <div className="mr-[25px] shadow-[buttonshadow] ">

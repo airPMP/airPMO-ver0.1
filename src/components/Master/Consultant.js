@@ -2,17 +2,14 @@ import React, { useState, useEffect } from 'react'
 import SideBar from '../layout/SideBar';
 import Header from '../layout/Header';
 import { useLocation, useNavigate } from "react-router-dom";
-import { reactLocalStorage } from "reactjs-localstorage";
-import axios from "axios";
 import Popup from "reactjs-popup";
 
 const Consultant = () => {
   const [title, setTitle] = useState(null);
   const [projectdata, setProjectData] = useState(null)
   const [filteredData, setFilteredData] = useState(projectdata);
-  const [deleteid, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
-  const [allpermission, setAllPermission] = useState(null)
+
   const [editpermission, setEditPermission] = useState(null)
   let urlTitle = useLocation();
   let navigate = useNavigate();
@@ -50,8 +47,6 @@ const Consultant = () => {
 //     getPermision()
 //   }, [allpermission])
 
-
-
 //   const getPermision = async () => {
 
 //     const url_data = await allpermission
@@ -64,7 +59,6 @@ const Consultant = () => {
 //         return data?.toUpperCase().search(value) !== -1;
 //       }
 //     });
-
 
 //     if (result[0] === "EDIT-PROJECTS") {
 //       setEditPermission(result[0])
@@ -82,13 +76,10 @@ const Consultant = () => {
 
 //   }
 
-
-
   const handleSearch = (e) => {
 
     // let value = e?.target?.value?.toUpperCase();
     // let result = []
-    // console.log("functiom iahsdi")
     // result = projectdata?.filter((data) => {
     //   if (isNaN(+value)) {
     //     return data?.client_name?.toUpperCase().search(value) !== -1;
@@ -147,8 +138,6 @@ const Consultant = () => {
     // setOpen(o => !o)
   }
 
-
-
   return (
     <div className="flex flex-row justify-start overflow-hidden">
       <div>
@@ -156,7 +145,6 @@ const Consultant = () => {
       </div>
       <div className="flex flex-col">
         <Header title={title} />
-
 
         <div className=" flex flex-col max-w-[1099px] mh-[632.01px] mt-[103px] ml-[27px] mr-[80px] rounded-[31.529px] bg-[#FFFFFF] py-[50px] px-[27px]">
           <div className="flex flex-row justify-between">
@@ -331,12 +319,8 @@ const Consultant = () => {
 
           </div>
         </div>
-
-
       </div>
     </div>
-
-
   )
 }
 
