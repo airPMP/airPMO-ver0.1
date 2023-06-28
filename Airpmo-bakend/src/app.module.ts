@@ -24,7 +24,7 @@ import { SpiCpiModule } from './spi-cpi/spi-cpi.module';
 import { LocationModule } from './location/location.module';
 
 @Module({
-  imports: [MongooseModule.forRoot(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}?tls=true&authSource=admin&replicaSet=db-mongodb-blr1-99511&tlsCAFile=${process.env.DB_CERTIFICATE}`), UsersModule, AuthModule,RolesModule,ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule, JobCardsModule, MyJobCardEmployeeModule, MyJobCardEquipmentModule, HrmsApiModule, SpiCpiModule, LocationModule],
+  imports: [MongooseModule.forRoot(`${process.env.DB_CONNECTION_URL}`), UsersModule, AuthModule, RolesModule, ForgetModule, ClientprofileModule, CategoriesModule, ProjectsModule, OrgainizationModule, ZoneModule, SubzoneModule, SubdividedzoneModule, UserRolesModule,PermissionModule,ExcelModule, JobCardsModule, MyJobCardEmployeeModule, MyJobCardEquipmentModule, HrmsApiModule, SpiCpiModule, LocationModule],
 
 })
 export class AppModule {}
