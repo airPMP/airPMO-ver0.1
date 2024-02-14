@@ -189,22 +189,26 @@ export class JobCardsService {
   }
 
   async editjobcardbyid(id: string, project_id: string, UpdateJobCardDto) {
-    const find_all_job = await this.jobcardmodal.findOne({
+    const job_card:any = await this.jobcardmodal.findOne({
       _id: id,
       project_id: project_id,
     });
 
-    if (find_all_job != null) {
-      const update_obj = await this.jobcardmodal.updateOne(
-        { _id: id },
-        { ...UpdateJobCardDto },
-      );
-      if (update_obj.modifiedCount != 0) {
+    const {quantity_to_be_achieved, updated_quantity_to_be_achieved, cumilative_quantity_log} = UpdateJobCardDto;
+    if (job_card) {
+      try {
+
+        job_card.quantity_to_be_achieved = quantity_to_be_achieved;
+        job_card.updated_quantity_to_be_achieved = updated_quantity_to_be_achieved;
+        job_card.cumilative_quantity_log = cumilative_quantity_log;
+
+        await job_card.save();
+
         return {
-          massage: 'update sucessfully',
+          massage: 'update successfully',
         };
-      } else {
-        throw new NotFoundException('not update properly');
+      } catch (error) {
+        throw new NotFoundException('Not update properly');
       }
     } else {
       throw new NotFoundException('sorry data not found');
