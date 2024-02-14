@@ -195,6 +195,7 @@ export class JobCardsService {
     });
 
     if (find_all_job != null) {
+      try{
       const update_obj = await this.jobcardmodal.updateOne(
         { _id: id },
         { $set:{
@@ -208,7 +209,8 @@ export class JobCardsService {
         return {
           massage: 'update successfully',
         };
-      } catch (error) {
+      } 
+    }catch (error) {
         throw new NotFoundException('Not update properly');
       }
     } else {
