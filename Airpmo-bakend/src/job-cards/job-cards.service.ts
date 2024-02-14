@@ -189,21 +189,22 @@ export class JobCardsService {
   }
 
   async editjobcardbyid(id: string, project_id: string, UpdateJobCardDto) {
-    const job_card:any = await this.jobcardmodal.findOne({
+    const find_all_job:any = await this.jobcardmodal.findOne({
       _id: id,
       project_id: project_id,
     });
 
-    const {quantity_to_be_achieved, updated_quantity_to_be_achieved, cumilative_quantity_log} = UpdateJobCardDto;
-    if (job_card) {
-      try {
+    if (find_all_job != null) {
+      const update_obj = await this.jobcardmodal.updateOne(
+        { _id: id },
+        { $set:{
+          quantity_to_be_achieved: UpdateJobCardDto.quantity_to_be_achieved,
+          updated_quantity_to_be_achieved: UpdateJobCardDto.updated_quantity_to_be_achieved,
+          cumilative_quantity_log: UpdateJobCardDto.cumilative_quantity_log,
 
-        job_card.quantity_to_be_achieved = quantity_to_be_achieved;
-        job_card.updated_quantity_to_be_achieved = updated_quantity_to_be_achieved;
-        job_card.cumilative_quantity_log = cumilative_quantity_log;
-
-        await job_card.save();
-
+        } },
+      );
+      if (update_obj.modifiedCount != 0) {
         return {
           massage: 'update successfully',
         };
