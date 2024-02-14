@@ -197,7 +197,12 @@ export class JobCardsService {
     if (find_all_job != null) {
       const update_obj = await this.jobcardmodal.updateOne(
         { _id: id },
-        { ...UpdateJobCardDto },
+        { $set:{
+          quantity_to_be_achieved: UpdateJobCardDto.quantity_to_be_achieved,
+          updated_quantity_to_be_achieved: UpdateJobCardDto.updated_quantity_to_be_achieved,
+          cumilative_quantity_log: UpdateJobCardDto.cumilative_quantity_log,
+
+        } },
       );
       if (update_obj.modifiedCount != 0) {
         return {
