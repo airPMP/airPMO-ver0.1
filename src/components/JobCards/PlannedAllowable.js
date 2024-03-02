@@ -204,7 +204,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 employeechangeData && employeechangeData.forEach((empCheck) =>{
 
                     let ogEmployee = hrmsFormat && hrmsFormat.find(item => item.Id === empCheck.employee_id)
-                    let stdSalary = stdSalaries && stdSalaries.find(item => item.Designation.toLowerCase() === empCheck.designation.toLowerCase())
+                    let stdSalary = stdSalaries && stdSalaries.find(item => item?.Designation?.toLowerCase() === empCheck?.designation?.toLowerCase())
                     let ctc = ogEmployee?.CTC
                     let std = stdSalary?.CTC
                     var date = new Date();

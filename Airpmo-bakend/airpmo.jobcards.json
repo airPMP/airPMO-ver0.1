@@ -1,0 +1,355 @@
+[{
+  "_id": {
+    "$oid": "65b2d1a960a938dcd21df93b"
+  },
+  "subActitvity": [],
+  "isMainActitvity": true,
+  "unit": "M3",
+  "planned_vs_allowable_vs_actual_rollup": [],
+  "planned_vs_allowable_vs_actual": [
+    [
+      [
+        " Labor ",
+        "25.20",
+        "201.36",
+        "8.85",
+        "70.73",
+        70,
+        "509.68",
+        "0.35",
+        "1.06"
+      ]
+    ]
+  ],
+  "actual_equipments": [],
+  "actual_equipments_rollup": [],
+  "actual_employees_rollup": [],
+  "actual_employees": [
+    {
+      "_id": "65b2d26760a938dcd21dfa3d",
+      "create_employee": true,
+      "date": "2023-05-01",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "5",
+      "designation": "Labor",
+      "employee_name": "ASMAT ASMAT ULLAH",
+      "employee_id": "A00693",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:28:07 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:28:07 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1900",
+      "std": "1900",
+      "hourly_salary": 7.661290322580645,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d2cd60a938dcd21dfaeb",
+      "create_employee": true,
+      "date": "2023-05-02",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "9",
+      "designation": "Labor",
+      "employee_name": "ASMAT ASMAT ULLAH",
+      "employee_id": "A00693",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:29:49 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:29:49 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1900",
+      "std": "1900",
+      "hourly_salary": 7.661290322580645,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d36a60a938dcd21dfb53",
+      "create_employee": true,
+      "date": "2023-05-03",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "12",
+      "designation": "Labor",
+      "employee_name": "ASMAT ASMAT ULLAH",
+      "employee_id": "A00693",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:32:26 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:32:26 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1900",
+      "std": "1900",
+      "hourly_salary": 7.661290322580645,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d37e60a938dcd21dfb6b",
+      "create_employee": true,
+      "date": "2023-05-03",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "12",
+      "designation": "Labor",
+      "employee_name": "JEHAGIR JEHAGIR KHAN QALAM SHAH",
+      "employee_id": "J00189",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:32:46 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:32:46 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1700",
+      "std": "1900",
+      "hourly_salary": 6.854838709677419,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d39a60a938dcd21dfb83",
+      "create_employee": true,
+      "date": "2023-05-03",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "10",
+      "designation": "Labor",
+      "employee_name": "IKRAUL IKRAUL HAQ ADUL HUQ",
+      "employee_id": "I00134",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:33:14 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:33:14 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1700",
+      "std": "1900",
+      "hourly_salary": 6.854838709677419,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d7e960a938dcd21dfc32",
+      "create_employee": true,
+      "date": "2023-05-04",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "11",
+      "designation": "Labor",
+      "employee_name": "ASMAT ASMAT ULLAH",
+      "employee_id": "A00693",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:51:37 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:51:37 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1900",
+      "std": "1900",
+      "hourly_salary": 7.661290322580645,
+      "hourly_standard_salary": 7.661290322580645
+    },
+    {
+      "_id": "65b2d80560a938dcd21dfc4a",
+      "create_employee": true,
+      "date": "2023-05-04",
+      "organization_id": "1",
+      "remarks": null,
+      "hour": "11",
+      "designation": "Labor",
+      "employee_name": "JEHAGIR JEHAGIR KHAN QALAM SHAH",
+      "employee_id": "J00189",
+      "jc_id": "65b2d1a960a938dcd21df93b",
+      "max_hour": "12",
+      "project_id": "65b211cb60a938dcd21df896",
+      "updatedAt": "Thu Jan 25 2024 21:52:05 GMT+0000 (Coordinated Universal Time)",
+      "createdAt": "Thu Jan 25 2024 21:52:05 GMT+0000 (Coordinated Universal Time)",
+      "__v": 0,
+      "ctc": "1700",
+      "std": "1900",
+      "hourly_salary": 6.854838709677419,
+      "hourly_standard_salary": 7.661290322580645
+    }
+  ],
+  "permissions": "ALL",
+  "assign_user_id": "",
+  "assign_to": "",
+  "organization_id": "1",
+  "discription": "",
+  "manager_comments": "",
+  "hse_remark": "",
+  "qc_remark": "",
+  "manpower_and_machinary": [
+    {
+      " Labor ": [
+        " Labor ",
+        "25.20",
+        "201.36",
+        "M3"
+      ]
+    }
+  ],
+  "cumilative_quantity_log": [
+    {
+      "date": "2024-01-25",
+      "updated_quantity_to_be_achieved": "18",
+      "cumilative_quantity_to_be_achived": "281"
+    },
+    {
+      "date": "2023-05-01",
+      "updated_quantity_to_be_achieved": "18",
+      "cumilative_quantity_to_be_achived": "281"
+    },
+    {
+      "date": "2024-01-26",
+      "updated_quantity_to_be_achieved": 0,
+      "cumilative_quantity_to_be_achived": "283"
+    },
+    {
+      "date": "2024-01-24",
+      "updated_quantity_to_be_achieved": 0,
+      "cumilative_quantity_to_be_achived": "283"
+    },
+    {
+      "date": "2023-05-04",
+      "updated_quantity_to_be_achieved": "108",
+      "cumilative_quantity_to_be_achived": "283"
+    },
+    {
+      "date": "2023-05-03",
+      "updated_quantity_to_be_achieved": "120",
+      "cumilative_quantity_to_be_achived": 175
+    },
+    {
+      "date": "2023-05-02",
+      "updated_quantity_to_be_achieved": "35",
+      "cumilative_quantity_to_be_achived": 55
+    },
+    {
+      "date": "2023-12-25",
+      "updated_quantity_to_be_achieved": 0,
+      "cumilative_quantity_to_be_achived": ""
+    }
+  ],
+  "updated_quantity_to_be_achieved": "18",
+  "quantity_to_be_achieved": "800",
+  "sub_zone": "Park View 1",
+  "zone": "South Wing",
+  "jc_creation": "2023-05-01",
+  "activity_name": "Excavation (Gantry)",
+  "activity_code": "CNPC01C1380",
+  "project_name": "D1 - Miskana Residencies ",
+  "project_id": "65b211cb60a938dcd21df896",
+  "isDeleted": false,
+  "deletedAt": null,
+  "updatedAt": "Thu Jan 25 2024 21:24:57 GMT+0000 (Coordinated Universal Time)",
+  "createdAt": "Thu Jan 25 2024 21:24:57 GMT+0000 (Coordinated Universal Time)",
+  "__v": 0,
+  "cumilative_quantity_to_be_achived": "281",
+  "hourly_salary": "0.00",
+  "hourly_standard_salary": "0.00",
+  "total_overall_cpi": "1.06",
+  "total_overall_spi": "0.35"
+},
+{
+  "_id": {
+    "$oid": "65b2d1d660a938dcd21df95e"
+  },
+  "subActitvity": [],
+  "isMainActitvity": true,
+  "unit": "M2",
+  "planned_vs_allowable_vs_actual_rollup": [],
+  "planned_vs_allowable_vs_actual": [],
+  "actual_equipments": [],
+  "actual_equipments_rollup": [],
+  "actual_employees_rollup": [],
+  "actual_employees": [],
+  "permissions": "ALL",
+  "assign_user_id": "",
+  "assign_to": "",
+  "organization_id": "1",
+  "discription": "",
+  "manager_comments": "",
+  "hse_remark": "",
+  "qc_remark": "",
+  "manpower_and_machinary": [
+    {
+      " Labor ": [
+        " Labor ",
+        "90.00",
+        "720.0",
+        "M2"
+      ]
+    }
+  ],
+  "cumilative_quantity_log": [],
+  "updated_quantity_to_be_achieved": "",
+  "quantity_to_be_achieved": "200",
+  "sub_zone": "Park View 1",
+  "zone": "South Wing",
+  "jc_creation": "2023-05-16",
+  "activity_name": "PCC & Concrete",
+  "activity_code": "CNPC01C1390",
+  "project_name": "D1 - Miskana Residencies ",
+  "project_id": "65b211cb60a938dcd21df896",
+  "isDeleted": false,
+  "deletedAt": null,
+  "updatedAt": "Thu Jan 25 2024 21:25:42 GMT+0000 (Coordinated Universal Time)",
+  "createdAt": "Thu Jan 25 2024 21:25:42 GMT+0000 (Coordinated Universal Time)",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65b2d20160a938dcd21df990"
+  },
+  "subActitvity": [],
+  "isMainActitvity": true,
+  "unit": "T",
+  "planned_vs_allowable_vs_actual_rollup": [],
+  "planned_vs_allowable_vs_actual": [],
+  "actual_equipments": [],
+  "actual_equipments_rollup": [],
+  "actual_employees_rollup": [],
+  "actual_employees": [],
+  "permissions": "ALL",
+  "assign_user_id": "",
+  "assign_to": "",
+  "organization_id": "1",
+  "discription": "",
+  "manager_comments": "",
+  "hse_remark": "",
+  "qc_remark": "",
+  "manpower_and_machinary": [
+    {
+      " Labor ": [
+        " Labor ",
+        "24.00",
+        "192.0",
+        "T"
+      ],
+      " RIGGER ": [
+        " RIGGER ",
+        "36.00",
+        "288.0",
+        "T"
+      ]
+    }
+  ],
+  "cumilative_quantity_log": [],
+  "updated_quantity_to_be_achieved": "",
+  "quantity_to_be_achieved": "100",
+  "sub_zone": "Park View 1",
+  "zone": "South Wing",
+  "jc_creation": "2023-05-21",
+  "activity_name": "Fabrication & Installation of steel supporting structures",
+  "activity_code": "CNPC01C1510",
+  "project_name": "D1 - Miskana Residencies ",
+  "project_id": "65b211cb60a938dcd21df896",
+  "isDeleted": false,
+  "deletedAt": null,
+  "updatedAt": "Thu Jan 25 2024 21:26:25 GMT+0000 (Coordinated Universal Time)",
+  "createdAt": "Thu Jan 25 2024 21:26:25 GMT+0000 (Coordinated Universal Time)",
+  "__v": 0
+}]
