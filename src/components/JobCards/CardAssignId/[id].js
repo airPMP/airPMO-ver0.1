@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
 import PlannedAllowable from "../PlannedAllowable";
-import { CurrentQuantityTOAchivedData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived,CumilativeQuntity,ExceCuteDate } from "../../../SimplerR/auth";
+import { CurrentQuantityTOAchivedData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived,CumilativeQuntity,ExceCuteDate, CumilativeQuntityChange } from "../../../SimplerR/auth";
 import EmployeComponent from "../EmployeComponent";
 import EquipmentComponent from "../EquipmentComponent";
 
@@ -352,6 +352,7 @@ const NewJobCardMultiId = () => {
                                                 onChange={(e) =>{
                                                     let main_quntity = quantityToBeAchived
                                                     let event_val = e.target.value?Number(e.target.value):0;
+                                                    CumilativeQuntityChange.set(event_val)
                                                     if(cumilativeQuntity){
                                                         if(Number(main_quntity) > event_val){
                                                             let diff = Number(main_quntity) - event_val
