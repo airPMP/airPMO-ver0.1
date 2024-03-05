@@ -189,7 +189,7 @@ export class JobCardsService {
   }
 
   async editjobcardbyid(id: string, project_id: string, UpdateJobCardDto) {
-    const find_all_job = await this.jobcardmodal.findOne({
+    const find_all_job:any = await this.jobcardmodal.findOne({
       _id: id,
       project_id: project_id,
     });
@@ -206,10 +206,10 @@ export class JobCardsService {
       );
       if (update_obj.modifiedCount != 0) {
         return {
-          massage: 'update sucessfully',
+          massage: 'update successfully',
         };
-      } else {
-        throw new NotFoundException('not update properly');
+      } catch (error) {
+        throw new NotFoundException('Not update properly');
       }
     } else {
       throw new NotFoundException('sorry data not found');
