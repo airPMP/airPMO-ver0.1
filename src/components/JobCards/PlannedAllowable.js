@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
 import React, { useState, useEffect } from "react";
-import { CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived, CumilativeQuntity, ExceCuteDate } from '../../SimplerR/auth'
+import { CumilativeQuntityChange, CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived, CumilativeQuntity, ExceCuteDate } from '../../SimplerR/auth'
 
 
 
@@ -28,6 +28,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
     const jobCardEquipmentData = JobCardEquipmentData.use()
     const quantityToBeAchived = QuantityToBeAchived.use()
     const cumilativeQuntity = CumilativeQuntity.use()
+    const cumilativeQuntityChange = CumilativeQuntityChange.use();
     const exceCuteDate = ExceCuteDate.use()
     const [projectDetailsData, setProjectDetailsData] = useState(null);
 
@@ -173,14 +174,14 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     if (item.date && item.date == exceCuteDate) {
                         assign_arr.push({
                             ...item,
-                            'cumilative_quantity_to_be_achived': cumilativeQuntity,
-                            updated_quantity_to_be_achieved: quantityToBeAchived
+                            'cumilative_quantity_to_be_achived': Number(cumilativeQuntity),
+                            updated_quantity_to_be_achieved: Number(quantityToBeAchived)
                         })
                     } else {
                         assign_arr.push(item,{
                             'date': exceCuteDate,
-                            updated_quantity_to_be_achieved: quantityToBeAchived,
-                            'cumilative_quantity_to_be_achived': cumilativeQuntity
+                            updated_quantity_to_be_achieved: Number(quantityToBeAchived),
+                            'cumilative_quantity_to_be_achived': Number(cumilativeQuntity)
                         })
                     }
                 })
@@ -188,7 +189,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                
                 assign_arr.push({
                     'date': exceCuteDate,
-                    'cumilative_quantity_to_be_achived': cumilativeQuntity
+                    'cumilative_quantity_to_be_achived': Number(cumilativeQuntity)
                 })
             }
             const key = 'date';
@@ -217,7 +218,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     hourly_salary = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     hourly_standard_salary = std / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
                     final_employee.push({...empCheck,ctc,std,hourly_salary,hourly_standard_salary})
-                    console.log("************final_employee**************",final_employee);
                 })
 
             }
@@ -234,7 +234,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
                     // To calculate the time difference of two dates
                     var Difference_In_Time = new Date(exceCuteDate).getTime() - firstDay.getTime();
-      
+    
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
                     hourly_salary = ctc / getDaysInCurrentMonth() / Number(projectDetailsData?.min_hours)
@@ -242,6 +242,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     eqData.push({...empCheck,ctc,std,hourly_salary,hourly_standard_salary})
                 })
             }
+            let countQuantity = 0;
+            assign_arr.forEach(e => {
+                countQuantity = countQuantity + e.updated_quantity_to_be_achieved;
+            })
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
                 activity_code: assigncarddataA?.activity_code,
                 project_id: assigncarddataA?.project_id,
@@ -250,7 +254,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 // updated_quantity_to_be_achieved: quantityachieved,
                 updated_quantity_to_be_achieved: quantityToBeAchived,
                 cumilative_quantity_log: assign_arr.length > 0 ? assign_arr : [],
-                cumilative_quantity_to_be_achived: cumilativeQuntity,
+                cumilative_quantity_to_be_achived: countQuantity,
                 manpower_and_machinary: assigncarddataA?.manpower_and_machinary,
                 actual_employees: final_employee ? final_employee : [],
                 actual_equipments: eqData? eqData : [],
@@ -264,7 +268,6 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 })
 
                 .then((response) => {
-                    console.log(response)
                     if (response.status === 200) {
                         MyjobCardAfterPtachApi.set(true)
                         CurrentQuantityTOAchivedData.set(o => !o)
@@ -277,12 +280,16 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 })
 
         }
-
-        PatchCalculatedData()
-
-    }, [quantityToBeAchived,
+        const timeOut = setTimeout(() => {
+            PatchCalculatedData()
+        }, 700);
+        return () => clearTimeout(timeOut);
+    }, [
+        // quantityToBeAchived,
         // quantityachieved, 
-        jobCardEmplyeData, jobCardEquipmentData])
+        // jobCardEmplyeData, jobCardEquipmentData
+        cumilativeQuntityChange
+    ])  
 
 
     return (
