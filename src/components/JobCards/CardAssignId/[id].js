@@ -87,7 +87,7 @@ const NewJobCardMultiId = () => {
         if(!metch){
             QuantityToBeAchived.set(0);
         }
-    },[currentdate])
+    },[currentdate, assignCardData])
 
     useEffect(() => {
         ///this api not Run's  for first time 

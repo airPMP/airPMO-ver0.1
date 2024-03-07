@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { reactLocalStorage } from "reactjs-localstorage";
 import Popup from "reactjs-popup";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CumilativeQuntityChange, CurrentQuantityTOAchivedData, EmployeeChangeData, EquipmentAllData, JobCardEmplyeData, JobCardEquipmentData, MyjobCardAfterPtachApi, MyjobCardAfterPtachApiData, QuantityToBeAchived, CumilativeQuntity, ExceCuteDate } from '../../SimplerR/auth'
 
 
@@ -163,9 +163,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
           0
         ).getDate();
       }
+    const initialRender = useRef(true);
     useEffect(() => {
-
-
+        if (initialRender.current) {
+            initialRender.current = false;
+            return;
+        }
         const PatchCalculatedData = (e) => {
             let assign_arr = []
             if (assigncarddataA.cumilative_quantity_log && assigncarddataA.cumilative_quantity_log.length > 0) {
