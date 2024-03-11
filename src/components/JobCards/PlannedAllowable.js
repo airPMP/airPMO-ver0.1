@@ -288,9 +288,9 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
         }, 700);
         return () => clearTimeout(timeOut);
     }, [
-        // quantityToBeAchived,
+        quantityToBeAchived,
         // quantityachieved, 
-        // jobCardEmplyeData, jobCardEquipmentData
+        jobCardEmplyeData, jobCardEquipmentData,
         cumilativeQuntityChange
     ])  
 
