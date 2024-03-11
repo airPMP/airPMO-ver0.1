@@ -8,7 +8,7 @@ import { CumilativeQuntityChange, CurrentQuantityTOAchivedData, EmployeeChangeDa
 
 
 
-const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA }) => {
+const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDown, assigncarddataA, setLoading }) => {
     const [open, setOpen] = useState(false);
     const [timesheetdata, setTimeSheetData] = useState(null);
     const [timesheetid, setTimeSheetId] = useState(null);
@@ -40,6 +40,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
 
     useEffect(() => {
         const fetchSalary = async () =>{
+            setLoading(true)
             const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Salaries?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
             let ClientIdStore = []
             
@@ -53,9 +54,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 }
             })
             setStdSalaries(ClientIdStore)
+            setLoading(false)
         }
         fetchSalary()
         const fetchStdRentals = async () =>{
+            setLoading(true)
             const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20Std%20Rentals?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
             let ClientIdStore = []
             
@@ -69,10 +72,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 }
             })
             setStdRentals(ClientIdStore)
+            setLoading(false)
         }
         fetchStdRentals()
 
         const fetchHrmsEmployee = async () =>{
+            setLoading(true)
             const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20HRMS%20format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
             let ClientIdStore = []
             
@@ -86,10 +91,12 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 }
             })
             setHrmsFormat(ClientIdStore)
+            setLoading(false)
         }
         fetchHrmsEmployee()
 
         const hEquipment = async () => {
+            setLoading(true)
             const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8/values/AT%20-%20Equipment%20List%20format?key=AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw`)
             let ClientIdStore = []
             
@@ -103,9 +110,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 }
             })
             setHrmsEquipment(ClientIdStore)
+            setLoading(false)
         }
         hEquipment()
         const token = reactLocalStorage.get("access_token", false);
+        setLoading(true)
         axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${assigncarddataA.project_id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -117,10 +126,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
               if (response.status === 201) {
       
               }
+              setLoading(false)
             })
             .catch((error) => {
               console.log(error)
-      
+              setLoading(false)
             })
     },[])
 
@@ -170,6 +180,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             return;
         }
         const PatchCalculatedData = (e) => {
+            setLoading(true)
             let assign_arr = []
             if (assigncarddataA.cumilative_quantity_log && assigncarddataA.cumilative_quantity_log.length > 0) {
                 assigncarddataA.cumilative_quantity_log.forEach((item) => {
@@ -247,7 +258,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
             }
             let countQuantity = 0;
             assign_arr.forEach(e => {
-                countQuantity = countQuantity + e.updated_quantity_to_be_achieved;
+                countQuantity = countQuantity + (e.updated_quantity_to_be_achieved || 0);
             })
             axios.patch(`${process.env.REACT_APP_BASE_URL}/api/update_job_card/${useperma.id}`, {
                 activity_code: assigncarddataA?.activity_code,
@@ -276,10 +287,11 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                         CurrentQuantityTOAchivedData.set(o => !o)
 
                     }
+                    setLoading(false)
                 })
                 .catch((error) => {
                     console.log(error)
-
+                    setLoading(false)
                 })
 
         }

@@ -57,6 +57,7 @@ const NewJobCardMultiId = () => {
     const quantityToBeAchived = QuantityToBeAchived.use()
     const cumilativeQuntity = CumilativeQuntity.use()
     const [roleDataLocal, setRoleDataLocal] = useState(null)
+    const [isLoading, setIsLoading] = useState(false);
 
     const closeModal = () => setOpen(false);
     let urlTitle = useLocation();
@@ -94,6 +95,7 @@ const NewJobCardMultiId = () => {
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
+                setIsLoading(true)
                 const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -103,6 +105,7 @@ const NewJobCardMultiId = () => {
                 JobCardEmplyeData.set(false)
                 JobCardEquipmentData.set(false)
                 CurrentQuantityTOAchivedData.set(false)
+                setIsLoading(false)
             } catch (error) {
                 console.log(error)
             }
@@ -118,6 +121,7 @@ const NewJobCardMultiId = () => {
         const token = reactLocalStorage.get("access_token", false);
         const feach = async () => {
             try {
+                setIsLoading(true)
                 const data = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/find_job_card/${useperma.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -127,6 +131,7 @@ const NewJobCardMultiId = () => {
                     MyjobCardAfterPtachApi.set(true)
                 }
                 setAssignCardData(data?.data)
+                setIsLoading(false)
             } catch (error) {
                 console.log(error)
             }
@@ -153,6 +158,7 @@ const NewJobCardMultiId = () => {
 
     const IssueJc = () => {
         const token = reactLocalStorage.get("access_token", false);
+        setIsLoading(true)
             axios.post(`${process.env.REACT_APP_BASE_URL}/api/create_my_job_card`,
                 {
                     "jc_number": assignCardData?._id,
@@ -169,17 +175,22 @@ const NewJobCardMultiId = () => {
                     //     autoDismiss: true,
                     // })
                 }
+                setIsLoading(false)
             })
             .catch((error) => {
                 // addToast(error.response.data.message, {
                 //     appearance: "error",
                 //     autoDismiss: true,
                 // })
+                setIsLoading(false)
             });
     }
 
     return (
         <div className="flex flex-row justify-start overflow-hidden">
+            {isLoading && <div className="loading-layout">
+                <span className="loading-spinner"></span>
+            </div>}
             <div>
                 <SideBar />
             </div>
@@ -425,6 +436,7 @@ const NewJobCardMultiId = () => {
                                             selectDropDown={false}
                                             Quantityachieved={"Quantity to be achieved"}
                                             assigncarddataA={assignCardData}
+                                            setLoading={setIsLoading}
                                         />
                                     )}
                                 </div>
