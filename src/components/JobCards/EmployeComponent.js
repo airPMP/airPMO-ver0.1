@@ -12,7 +12,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
     assigncarddataId, currentdate, assigncarddataA}) => {
     const [open, setOpen] = useState(false);
     const [hrmsdata, setHRMSData] = useState("AIzaSyDoh4Gj_-xV033rPKneUFSpQSUpbqDqfDw");
-    const [spread_sheet, setSpreadSheet] = useState("1LtpGuZdUivXEA4TqUvK9T3qRr1HER6TKzdSxTYPEAQ8");
+    const [spread_sheet, setSpreadSheet] = useState("");
     const [spread_sheet_id_1, setSpreadSheet_1] = useState('AT - HRMS format');
 
     const [timesheetdata, setTimeSheetData] = useState([null]);
@@ -147,18 +147,40 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
         EmployeeChangeData.set(empoyeealldata)
     }, [empoyeealldata])
 
+    let spitData = currentdate?.split("-")
+    let splitDataArange = `${spitData[2]}${spitData[1]}${spitData[0]}`
+    
+    
+ 
+    useEffect(()=>{
+        const token = reactLocalStorage.get("access_token", false);
+        const feach3 = async () => {
+            try {
+                const data1 = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/projects/${assigncarddataId?.project_id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                setSpreadSheet(data1.data.spread_sheet_id)
+            
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+        feach3();
+    },[])
+
     useEffect(() => {
 
         const token = reactLocalStorage.get("access_token", false);
-        if (currentdate) {
-            let spitData = currentdate?.split("-")
-            let splitDataArange = `${spitData[2]}${spitData[1]}${spitData[0]}`
 
+        if (currentdate && spread_sheet) {
             setCurrentdata(currentdate)
             const feach = async () => {
                 try {
                     const data1 = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spread_sheet}/values/${spread_sheet_id_1}?key=${hrmsdata}`,)
-                   
                     let final_arr = []
                     if(data1?.data?.values.length > 0){
                         for(let i=0;i<data1?.data?.values.length;i++){
@@ -215,7 +237,7 @@ const EmployeComponent = ({ closeModal, heading, Quantityachieved, selectDropDow
             // }
             // feach();
         }
-    }, [currentdate,])
+    }, [currentdate,spread_sheet])
 
 
 
