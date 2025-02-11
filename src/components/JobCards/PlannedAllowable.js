@@ -241,7 +241,7 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                 let hourly_standard_salary = 0
                 equipmentallData && equipmentallData.forEach((empCheck) =>{
                     let ogEmployee = hrmsEquipment && hrmsEquipment.find(item => item.Id === empCheck.equipment_id)
-                    let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type'].toLowerCase() === empCheck.designation.toLowerCase())
+                    let stdSalary = stdRentals && stdRentals.find(item => item['Equipment Type']?.toLowerCase() === empCheck.designation?.toLowerCase())
                     let ctc = ogEmployee?.CTC
                     let std = stdSalary?.CTC
                     var date = new Date();
@@ -290,7 +290,10 @@ const PlannedAllowable = ({ closeModal, heading, Quantityachieved, selectDropDow
                     setLoading(false)
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error);
+                    setLoading(false)
+                })
+                .finally(() => {
                     setLoading(false)
                 })
 
